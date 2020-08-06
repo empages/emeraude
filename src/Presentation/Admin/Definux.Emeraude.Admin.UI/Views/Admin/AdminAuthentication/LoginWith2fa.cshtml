@@ -1,0 +1,15 @@
+﻿@model AdminLoginWith2faViewModel
+@{
+    Layout = "_AdminLoginLayout";
+    ViewData["Title"] = "Admin Login with 2 Factor Authentication";
+}
+<form asp-area="Admin" asp-controller="AdminAuthentication" asp-action="LoginWith2fa" method="post">
+    <div class="form-group">
+        <label>Authentication Code</label>
+        <input asp-for="TwoFactorCode" class="form-control" placeholder="Enter authentication code"/>
+    </div>
+    <form-visible-recaptcha />
+    <div class="form-group">
+        <button class="btn btn-primary submit-btn btn-block">Login</button>
+    </div>
+</form>

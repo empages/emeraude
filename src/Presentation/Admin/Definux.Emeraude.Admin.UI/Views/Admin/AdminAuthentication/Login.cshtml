@@ -1,0 +1,20 @@
+﻿@model AdminLoginViewModel
+@{
+    Layout = "_AdminLoginLayout";
+    ViewData["Title"] = "Admin Login";
+}
+
+<form asp-area="Admin" asp-controller="AdminAuthentication" asp-action="Login" method="post">
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" placeholder="Enter email address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input asp-for="Password" type="password" placeholder="Enter password" class="form-control" />
+    </div>
+    <form-visible-recaptcha />
+    <div class="form-group">
+        <button class="btn btn-primary submit-btn btn-block">Login</button>
+    </div>
+</form>

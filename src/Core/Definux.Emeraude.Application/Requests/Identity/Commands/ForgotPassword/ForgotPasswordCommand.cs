@@ -1,0 +1,58 @@
+﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Utilities.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
+namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
+{
+    public class ForgotPasswordCommand : ForgotPasswordRequest, IRequest<ForgotPasswordRequestResult>
+    {
+        public ForgotPasswordCommand(ForgotPasswordRequest request)
+        {
+            Email = request.Email;
+        }
+
+        public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordRequestResult>
+        {
+            private readonly IUserManager userManager;
+            private readonly IIdentityEventManager identityEventManager;
+            private readonly UrlEncoder urlEncoder;
+            private readonly IHttpContextAccessor httpContextAccessor;
+            private readonly ICurrentLanguageProvider currentLanguageProvider;
+
+            public ForgotPasswordCommandHandler(
+                IUserManager userManager, 
+                IIdentityEventManager identityEventManager,
+                UrlEncoder urlEncoder,
+                IHttpContextAccessor httpContextAccessor,
+                ICurrentLanguageProvider currentLanguageProvider)
+            {
+                this.userManager = userManager;
+                this.identityEventManager = identityEventManager;
+                this.urlEncoder = urlEncoder;
+                this.httpContextAccessor = httpContextAccessor;
+                this.currentLanguageProvider = currentLanguageProvider;
+            }
+
+            public async Task<ForgotPasswordRequestResult> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
+            {
+                var user = await this.userManager.FindUserByEmailAsync(request.Email);
+                if (user != null)
+                {
+                    var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
+                    string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
+
+                    string passwordResetToken = this.urlEncoder.Encode(await this.userManager.GeneratePasswordResetTokenAsync(user));
+                    string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/reset-password?token={passwordResetToken}&email={user.Email}");
+                    await this.identityEventManager.TriggerForgotPasswordEventAsync(user.Id, resetPasswordLink);
+                }
+
+                return new ForgotPasswordRequestResult(true);
+            }
+        }
+    }
+}

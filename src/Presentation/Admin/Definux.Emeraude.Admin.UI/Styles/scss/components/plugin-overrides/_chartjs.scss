@@ -1,0 +1,77 @@
+#chartjs-tooltip {
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0px 0px 15px -5px rgba(0, 0, 0, 0.6);
+  transition: 0.3s ease;
+
+  table {
+    tr {
+      th {
+        color: #ccc;
+      }
+
+      td {
+        display: flex;
+        align-items: center;
+        line-height: 1px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        &:first-letter {
+          text-transform: uppercase;
+        }
+
+        span {
+          width: 7px;
+          height: 7px;
+          display: inline-block;
+          border-radius: 100px;
+          margin-right: 7px;
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
+.chartjs-legend {
+  ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    li {
+      margin-right: 8%;
+      display: flex;
+      align-items: center;
+
+      span {
+        height: 20px;
+        width: 20px;
+        margin-right: 1rem;
+        display: inline-block;
+        font-size: $default-font-size;
+      }
+    }
+  }
+
+  .rtl & {
+    ul {
+      padding-right: 0;
+
+      li {
+        margin-right: 0;
+        margin-left: 8%;
+
+        span {
+          margin-right: 0;
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+}

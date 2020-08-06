@@ -1,0 +1,15 @@
+﻿using System.Collections.Generic;
+
+namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Form
+{
+    public class SelectableGalleryViewModel
+    {
+        public string Controller { get; set; }
+
+        public string Action { get; set; }
+
+        public List<string> Pictures { get; set; }
+
+        public string SelectedPicture { get; set; }
+    }
+}

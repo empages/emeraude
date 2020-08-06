@@ -1,0 +1,25 @@
+﻿@model TableViewViewModel
+@{
+    ViewData.SetTitle(Model.Title);
+}
+
+<div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="d-block w-100">
+            <partial name="Partials/_TableAboveArea" model="Model" view-data="ViewData" />
+            <div class="card">
+                <div class="card-body">
+                    <partial name="Partials/_TableSearchBar" />
+                    <div class="responsive-table">
+                        <table class="table table-hover table-striped table-bordered">
+                            <partial name="Partials/_TableHead" model="Model.Table" />
+                            <partial name="Partials/_TableBody" model="Model.Table" />
+                        </table>
+                    </div>
+                    <partial name="Partials/_TablePagination" model="Model.Table.Pagination" />
+                </div>
+            </div>
+            <partial name="Partials/_TableBelowArea" model="Model" view-data="ViewData" />
+        </div>
+    </div>
+</div>

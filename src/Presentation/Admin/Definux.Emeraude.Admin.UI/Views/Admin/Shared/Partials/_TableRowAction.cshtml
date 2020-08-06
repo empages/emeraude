@@ -1,0 +1,13 @@
+﻿@model TableRowActionViewModel
+
+@if (Model.Method == TableRowActionMethod.Get)
+{
+    <a class="btn btn-icons action-btn btn-primary" title="@Model.Title" href="@Model.Url"><i class="mdi @Model.Icon"></i></a>
+}
+else if (Model.Method == TableRowActionMethod.Post)
+{
+    <form class="d-inline-block" method="post" action="@Model.Url" onsubmit="@(Model.HasConfirmation ? $"showConfirmationMessage(event, '{Model.ConfirmationTitle}', '{Model.ConfirmationMessage}')" : string.Empty)">
+        @Html.AntiForgeryToken()
+        <button type="submit" title="@Model.Title" class="btn btn-icons action-btn btn-primary"><i class="mdi @Model.Icon"></i></button>
+    </form>
+}

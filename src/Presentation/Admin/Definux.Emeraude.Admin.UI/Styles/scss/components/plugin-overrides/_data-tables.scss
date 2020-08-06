@@ -1,0 +1,78 @@
+/* Data Tables */
+
+.dataTables_wrapper {
+  padding-left: 0;
+  padding-right: 0;
+
+  label {
+    font-size: 0.8125rem;
+  }
+
+  select {
+    @extend .form-control;
+    padding: 0.4rem;
+    min-width: 75px;
+  }
+
+  .dataTables_length {
+    select {
+      margin-left: 0.25rem;
+      margin-right: 0.25rem;
+    }
+  }
+
+  .table-footer {
+    padding-top: $card-padding-y;
+  }
+
+  .height-limiter {
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: inset 0px -6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .dataTable {
+    border-collapse: collapse !important;
+
+    .btn {
+      padding: 0.1rem 1rem;
+      vertical-align: top;
+    }
+
+    thead {
+
+      .sorting,
+      .sorting_asc,
+      .sorting_asc_disabled,
+      .sorting_desc,
+      .sorting_desc_disabled {
+
+        &:after,
+        &:before {
+          display: none;
+        }
+      }
+
+      th {
+        vertical-align: middle;
+        padding: $table-cell-padding;
+      }
+    }
+
+    tbody {
+      td {
+        z-index: 10;
+      }
+    }
+  }
+
+  .dataTables_paginate {
+    margin-top: 20px !important;
+  }
+
+  .dataTables_info {
+    font-size: $default-font-size;
+    color: $text-muted;
+    margin-top: 20px;
+  }
+}

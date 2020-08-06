@@ -1,0 +1,12 @@
+﻿@model TableViewViewModel
+@{
+    string tableBelowPartial = ViewData["TableBelowPartial"]?.ToString();
+    bool hasTableBelowPartial = !string.IsNullOrWhiteSpace(tableBelowPartial);
+}
+
+@if (hasTableBelowPartial)
+{
+    <div class="mt-3 mb-1">
+        <partial name="@tableBelowPartial" model="Model" view-data="ViewData" />
+    </div>
+}

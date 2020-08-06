@@ -1,0 +1,14 @@
+﻿{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/env",
+    "@babel/typescript",
+    {
+      "corejs": "3.0.0",
+      "useBuiltIns": "entry"
+    }
+  ],
+    "plugins": [
+        "@babel/proposal-class-properties"
+    ]
+}

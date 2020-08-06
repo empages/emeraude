@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Definux.Emeraude.Domain.Localization" #>
+<#@ import namespace="Definux.Utilities.Extensions" #>
+<# var contentKey = (ContentKey)Session["Key"]; #>
+<# var defaultLanguage = (Language)Session["DefaultLanguage"]; #>
+<template>
+    <div id="static-content-<#=contentKey.Key.ToLower().Replace("_", "-")#>">
+<# foreach (var content in contentKey.StaticContentList) { #>
+        <div v-if="languageId === <#=content.LanguageId#>">
+            <#=content.Content#>
+        </div>
+<# } #>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "<#=string.Join(string.Empty, contentKey.Key.Split("_").Select(x => x.ToLower().ToFirstUpper()))#>StaticContent",
+        props: {
+            languageId: {
+                type: Number,
+                default: <#=defaultLanguage.Id#>
+            }
+        }
+    }
+</script>

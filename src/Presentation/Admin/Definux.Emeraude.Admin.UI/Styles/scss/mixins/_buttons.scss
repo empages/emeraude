@@ -1,0 +1,120 @@
+@mixin social-button($color) {
+	background: $color;
+	color: color(white);
+
+	&:hover {
+		background: darken($color, 10%);
+	}
+
+	&.btn-link {
+		background: none;
+		color: $color;
+
+		&:hover {
+			color: darken($color, 10%);
+		}
+	}
+}
+
+@mixin btn-social-outline-variant($color) {
+	background: transparent;
+	border-color: $color;
+	color: $color;
+
+	&:hover {
+		background: rgba($color, 0.2);
+	}
+}
+
+@mixin button-inverse-variant($color, $color-hover: $white) {
+	color: $color;
+	background-color: rgba($color, 0.2);
+	background-image: none;
+	border-color: rgba($color, 0);
+
+	@include hover {
+		color: $color-hover;
+		background-color: $color;
+		border-color: $color;
+	}
+
+	&.disabled,
+	&:disabled {
+		color: $color;
+		background-color: transparent;
+	}
+
+	&.active,
+	&:active,
+	.show>&.dropdown-toggle {
+		color: $color-hover;
+		background-color: $color;
+		border-color: $color;
+	}
+}
+
+@mixin button-inverse-outline-variant($color, $color-hover: $white) {
+	color: $color;
+	background-image: none;
+	background: transparent;
+	border-color: rgba($color, 0.2);
+
+	@include hover {
+		color: $color;
+		background-color: rgba($color, 0.2);
+		border-color: rgba($color, 0.2);
+	}
+
+	&.focus,
+	&:focus {
+		box-shadow: 0 0 0 3px rgba($color, .5);
+	}
+
+	&.disabled,
+	&:disabled {
+		color: $color;
+		background-color: transparent;
+	}
+
+	&.active,
+	&:active,
+	.show>&.dropdown-toggle {
+		color: $color-hover;
+		border-color: $color;
+	}
+}
+
+@mixin button-classic($color1, $color2, $color3, $color4, $color5, $color6) {
+    border: 1px solid $color3;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: arial, helvetica, sans-serif;
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+    display: inline-block;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    font-weight: bold;
+    color: $white;
+    background-color: $color1;
+    background-image: -webkit-gradient(linear, left top, left bottom, from($color1), to($color2));
+    background-image: -webkit-linear-gradient(top, $color1, $color2);
+    background-image: -moz-linear-gradient(top, $color1, $color2);
+    background-image: -ms-linear-gradient(top, $color1, $color2);
+    background-image: -o-linear-gradient(top, $color1, $color2);
+    background-image: linear-gradient(to bottom, $color1, $color2);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=$color1, endColorstr=$color2);
+
+    @include hover {
+        border: 1px solid $color6;
+        background-color: $color4;
+        background-image: -webkit-gradient(linear, left top, left bottom, from($color4), to($color5));
+        background-image: -webkit-linear-gradient(top, $color4, $color5);
+        background-image: -moz-linear-gradient(top, $color4, $color5);
+        background-image: -ms-linear-gradient(top, $color4, $color5);
+        background-image: -o-linear-gradient(top, $color4, $color5);
+        background-image: linear-gradient(to bottom, $color4, $color5);
+        filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=$color4, endColorstr=$color5);
+    }
+}

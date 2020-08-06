@@ -1,0 +1,88 @@
+﻿@model ErrorLogsViewModel
+@{ 
+    ViewData.SetTitle("Error Logs");
+    var tablePagination = new TablePaginationViewModel(Model.CurrentPage, Model.PagesCount);
+}
+
+<div class="w-100 p-3 float-left">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Error Logs</h5>
+            <partial name="Partials/_TableSearchBar" />
+            <hr/>
+            <div class="fluid-container">
+                @foreach (var errorLog in Model.Items)
+                {
+                    <div class="row ticket-card mt-3 pb-2 border-bottom pb-3 mb-3">
+                        <div class="ticket-details col-md-10">
+                            <div class="d-flex">
+                                <p class="text-primary mr-1 mb-0">[#@errorLog.Id]</p>
+                                <p class="mb-0 text-dark font-weight-semibold">@errorLog.Source (@errorLog.Class)</p>
+                            </div>
+                            <p class="text-gray mb-2">@errorLog.Message</p>
+                            <div class="row text-gray d-md-flex d-none">
+                                <div class="col-12 row m-0">
+                                    <div class="d-flex mr-2">
+                                        <small class="mb-0 mr-2 text-muted text-muted">From:</small>
+                                        <small class="Last-responded mr-2 mb-0 text-muted text-muted">@errorLog.CreatedOn.ToString(SystemFormats.DateTimeFormat)</small>
+                                    </div>
+                                    <div class="d-flex mr-2">
+                                        <small class="mb-0 mr-2 text-muted text-muted">Involved User:</small>
+                                        @if (errorLog.InvolvedUser != null)
+                                        {
+                                            <small class="Last-responded mr-2 mb-0 text-muted text-muted">@errorLog.InvolvedUser.Name (@errorLog.InvolvedUser.Email)</small>
+                                        }
+                                        else
+                                        {
+                                            <small class="Last-responded mr-2 mb-0 text-muted text-muted">Unknown</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            @{
+                                var stackTraceModal = new ModalViewModel
+                                {
+                                    LunchButtonTitle = "View Stack Trace",
+                                    LunchButtonClasses = "dropdown-item",
+                                    LunchButtonIcon = "<i class=\"mdi mdi-page-next-outline mr-2\"></i>",
+                                    ModalId = $"stack-trace-modal-{errorLog.Id}",
+                                    Type = ModalViewModel.ModalType.Large,
+                                    ModalHeaderClasses = "pb-0",
+                                    ModalBodyClasses = "py-0",
+                                    Content = $"<code>{errorLog.StackTrace}</code>",
+                                    ContentClass = "p-2 error-log-stack-trace-container border",
+                                    IsContentHtml = true,
+                                    Title = "Stack Trace",
+                                    HasCloseButton = true
+                                };
+                            }
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-primary dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
+                                <div class="dropdown-menu">
+                                    <partial name="_ModalLunchButton" model="stackTraceModal" />
+                                    <a target="_blank" class="dropdown-item" href="https://www.google.com/search?q=@errorLog.Message.Replace(" ", "+")">
+                                        <i class="mdi mdi-google mr-2"></i>Seach in Google
+                                    </a>
+                                    <form asp-controller="AdminSystem" asp-action="DeleteErrorLog" method="post">
+                                        <input type="hidden" name="LogId" value="@errorLog.Id" />
+                                        <input type="hidden" name="ReturnPage" value="@tablePagination.CurrentPage" />
+                                        <input type="hidden" name="ReturnSearchQuery" value="@ViewData.GetSearchQuery()" />
+                                        <button class="dropdown-item">
+                                            <i class="mdi mdi-trash-can-outline mr-2"></i>Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <partial name="_Modal" model="stackTraceModal" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <partial name="Partials/_TablePagination" model="tablePagination" />
+            </div>
+        </div>
+    </div>
+</div>

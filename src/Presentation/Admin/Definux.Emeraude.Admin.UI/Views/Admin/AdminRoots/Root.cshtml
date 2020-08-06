@@ -1,0 +1,85 @@
+@model RootViewModel
+
+@{
+    string rootPath = $"{Model.Root} Root{(string.IsNullOrWhiteSpace(Model.FolderName) ? "" : "\\")}{Model.FolderName}".Replace("/", "\\");
+    ViewData["Title"] = rootPath;
+
+    string[] rootPathFolders = rootPath.Split('\\');
+}
+
+<div class="col-12 grid-margin stretch-card mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-transform-none">
+                @{
+                    int folderCounter = 0;
+                    string currentRootPath = $"/admin/roots/{Model.Root.ToLower()}";
+                    foreach (var rootPathFolder in rootPathFolders)
+                    {
+                        if (folderCounter == rootPathFolders.Length - 1)
+                        {
+                            <span class="btn btn-outline-light btn-disabled p-1 mr-2 cursor-normal text-light-gray">@rootPathFolder</span>
+                        }
+                        else if (folderCounter == 0)
+                        {
+                            <a class="btn btn-primary btn-sm py-1 px-2" href="@currentRootPath">@($"{Model.Root} Root")</a> <span class="text-small"><span class="mdi mdi-chevron-double-right"></span></span>
+                        }
+                        else
+                        {
+                            currentRootPath += $"/{rootPathFolder}";
+                            <a class="btn btn-primary btn-sm py-1 px-2" href="@currentRootPath">@rootPathFolder</a> <span class="text-small"><span class="mdi mdi-chevron-double-right"></span></span>
+                        }
+                        folderCounter++;
+                    }
+                }
+            </h4>
+            <div class="responsive-table">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Created On</th>
+                            <th>Last Modified On</th>
+                        </tr>
+                    </thead>
+                    <tbody class="root-items-container">
+                        @foreach (var folder in Model.Folders)
+                        {
+                            string folderUrl = $"/admin/roots/{Model.Root.ToLower()}/{folder.RelativePathUrlFormat}";
+                            <tr>
+                                <td class="root-item-icon text-center"><a href="@folderUrl"><i class="mdi mdi-folder-open"></i></a></td>
+                                <td><a href="@folderUrl">@folder.Name</a></td>
+                                <td></td>
+                                <td>@folder.CreatedOn.ToString(SystemFormats.DateTimeFormat)</td>
+                                <td>@folder.LastModifiedOn.ToString(SystemFormats.DateTimeFormat)</td>
+                            </tr>
+                        }
+                        @foreach (var file in Model.Files)
+                        {
+                            string fileUrl = $"/admin/roots/{Model.Root.ToLower()}/file/{file.RelativePathUrlFormat}";
+                            <tr>
+                                @if (fileUrl.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                                fileUrl.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                                fileUrl.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                                fileUrl.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <td class="text-center"><a target="_blank" href="@fileUrl"><img src="@fileUrl" /></a></td>
+                                }
+                                else
+                                {
+                                    <td class="root-item-icon text-center"><a target="_blank" href="@fileUrl"><i class="mdi mdi-file"></i></a></td>
+                                }
+                                <td><a target="_blank" href="@fileUrl">@file.Name</a></td>
+                                <td>@file.SizeString</td>
+                                <td>@file.CreatedOn.ToString(SystemFormats.DateTimeFormat)</td>
+                                <td>@file.LastModifiedOn.ToString(SystemFormats.DateTimeFormat)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

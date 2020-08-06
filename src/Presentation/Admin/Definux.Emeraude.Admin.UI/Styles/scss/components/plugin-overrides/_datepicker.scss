@@ -1,0 +1,224 @@
+/* Datepicker */
+.datepicker.datepicker-dropdown,
+.datepicker.datepicker-inline {
+	padding: 0 25px;
+	width: 30%;
+	max-width: 500px;
+	min-width: 250px;
+
+	.datepicker-days {
+		padding: 0.8rem 0.7rem;
+
+		table.table-condensed {
+			width: 100%;
+
+			thead {
+				tr {
+					th {
+						text-align: center;
+						padding: 0.5rem 0;
+
+						&.prev {
+							color: color(gray);
+							padding-bottom: 1rem;
+							padding-top: 1rem;
+							text-align: left;
+							background: $white;
+						}
+
+						&.datepicker-switch {
+							color: color(gray);
+							background: $white;
+							padding-bottom: 1rem;
+							padding-top: 1rem;
+							font-size: 1rem;
+							font-weight: 600;
+						}
+
+						&.next {
+							color: grey;
+							padding-bottom: 1rem;
+							padding-top: 1rem;
+							text-align: right;
+							background: $white;
+						}
+
+						&.dow {
+							font-family: $type-1;
+							color: color(gray);
+							font-size: 0.875rem;
+							font-weight: initial;
+
+							&:first-child {
+								text-align: left;
+							}
+
+							&:last-child {
+								text-align: right;
+							}
+						}
+					}
+				}
+			}
+
+			tbody {
+				position: relative;
+				top: 13px;
+
+				td {
+					text-align: center;
+
+					&.day {
+						font-size: 0.9375rem;
+						padding: 0.5rem 0;
+						color: color(gray);
+
+						&:hover {
+							background: $white;
+						}
+
+						&:first-child {
+							text-align: left;
+						}
+
+						&:last-child {
+							text-align: right;
+						}
+
+						&.active {
+							color: #fff;
+							background: transparent;
+							position: relative;
+							z-index: 1;
+
+							&:before {
+								content: "";
+								width: 38px;
+								height: 38px;
+								background: theme-color(success);
+								border-radius: 100%;
+								display: block;
+								margin: auto;
+								vertical-align: middle;
+								position: absolute;
+								top: 1px;
+								z-index: -1;
+								left: 0;
+								right: 0;
+							}
+						}
+
+						&.today {
+							color: #fff;
+							background: transparent;
+							position: relative;
+							z-index: 1;
+
+							&:before {
+								content: "";
+								width: 38px;
+								height: 38px;
+								background: theme-color(primary);
+								border-radius: 100%;
+								display: block;
+								margin: auto;
+								vertical-align: middle;
+								position: absolute;
+								top: 1px;
+								z-index: -1;
+								left: 0;
+								right: 0;
+							}
+						}
+					}
+
+					&.old.day {
+						color: darken(color(gray-lightest), 4.5%);
+					}
+
+					&.new.day {}
+
+					&:first-child {
+						&.day {
+
+							&.active,
+							&.today {
+								&:before {
+									left: -42px;
+								}
+							}
+						}
+					}
+
+					&:last-child {
+						&.day {
+
+							&.active,
+							&.today {
+								&:before {
+									left: 30px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.datepicker.datepicker-inline {
+	width: 100%;
+	max-width: 100%;
+	min-width: 250px;
+
+	thead {
+		tr {
+			th {
+				&.prev {
+					color: grey;
+					padding-bottom: 0.5rem;
+					padding-top: 0.5rem;
+				}
+
+				&.datepicker-switch {
+					color: theme-color(primary);
+					padding-bottom: 0.5rem;
+					padding-top: 0.5rem;
+				}
+
+				&.next {
+					color: grey;
+					padding-bottom: 0.5rem;
+					padding-top: 0.5rem;
+				}
+
+				&.dow {}
+			}
+		}
+	}
+}
+
+.datepicker {
+	>div {
+		display: initial;
+		padding: 0.375rem 0.75rem;
+		margin-bottom: 0;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		text-align: center;
+		white-space: nowrap;
+		border-radius: 2px;
+	}
+
+	&.input-group {
+		border: 1px solid $border-color;
+		padding: 0;
+
+		.form-control {
+			border: none;
+		}
+	}
+}

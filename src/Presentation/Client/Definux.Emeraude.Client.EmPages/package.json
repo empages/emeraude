@@ -1,0 +1,30 @@
+{
+  "name": "emeraude-view-renderer",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production"
+  },
+  "author": "Microsoft",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@types/node": "^10.9.2",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "domain-task": "^3.0.3",
+    "ts-loader": "^4.5.0",
+    "typescript": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue": "^2.6.11",
+    "vue-server-renderer": "^2.6.11",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "axios": "^0.19.2"
+  }
+}

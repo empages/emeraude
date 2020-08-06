@@ -1,0 +1,54 @@
+﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment
+@using Microsoft.AspNetCore.Hosting
+
+@{
+    string role = User.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Role).FirstOrDefault()?.Value;
+    var navigationScheme = new AdminNavigationScheme(hostingEnvironment.ContentRootPath, role);
+    int sectionCounter = 1;
+}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <div class="nav-link">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownAppInstance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">System Insights</button>
+                    <div class="dropdown-menu mt-2 p-2" aria-labelledby="dropdownAppInstance">
+                        <a class="dropdown-item pt-2 pb-2 pl-1" target="_blank" href="/"><i class="mr-2 mdi mdi-home"></i> Home Page</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item pt-2 pb-2 pl-1" target="_blank" href="/robots.txt"><i class="mr-2 mdi mdi-robot"></i> robots.txt</a>
+                        <a class="dropdown-item pt-2 pb-2 pl-1" target="_blank" href="/sitemap.xml"><i class="mr-2 mdi mdi-sitemap"></i> Sitemap</a>
+                        @if (hostingEnvironment.IsDevelopment())
+                        {
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item pt-2 pb-2 pl-1" href="/swagger" target="_blank"><i class="mr-2 mdi mdi-json"></i> API Swagger</a>
+                            <a class="dropdown-item pt-2 pb-2 pl-1" href="https://emeraude.dev/" target="_blank"><i class="mr-2 mdi mdi-file-document"></i> Documentation</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/admin/client-builder/scaffold" class="btn btn-primary btn-block d-block">Client Builder</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </li>
+        @foreach (var menuSection in navigationScheme.Menus)
+        {
+            if (menuSection.Single)
+            {
+                <menu-section index="@sectionCounter" controller="@menuSection.Controller" title="@menuSection.Title" icon="@menuSection.Icon" single="true" href="@Url.Action(menuSection.Action, menuSection.Controller, new { Area = "Admin" })" />
+            }
+            else
+            {
+                <menu-section index="@sectionCounter" controllers="@menuSection.Controllers" title="@menuSection.Title" icon="@menuSection.Icon">
+                    @foreach (var navigationLink in menuSection.Children)
+                    {
+                        <sidebar-navigation-link title="@navigationLink.Title" action="@navigationLink.Action" controller="@navigationLink.Controller" route-values="@navigationLink.RouteValues" />
+                    }
+                </menu-section>
+            }
+
+            sectionCounter++;
+        }
+        <li class="nav-item main-nav-item">
+            <a id="sidebar-collapse-btn" href="javascript:void(0)" class="nav-link" data-toggle="minimize" title="Collapse Menu"><i class="menu-icon mdi mdi-arrow-left-drop-circle"></i><span class="menu-title">Collapse Menu</span></a>
+        </li>
+    </ul>
+</nav>

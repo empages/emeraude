@@ -1,0 +1,111 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>2020 Definux</Copyright>
+    <Company>Definux</Company>
+    <Authors>Definux</Authors>
+    <Product>Emeraude</Product>
+    <PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
+    <Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
+    <PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, xamarinforms, xamarin, android, ios, mvc, mvvm, ssr, prism</PackageTags>
+    <Version>$(PACKAGE_VERSION)</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>logo_128.jpg</PackageIcon>
+    <PackageIconUrl />
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ServiceAgents\Templates\EndpointsTemplate.tt">
+      <LastGenOutput>EndpointsTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="ServiceAgents\Templates\EnumsTemplate.tt">
+      <LastGenOutput>EnumsTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="PagesComponents\Templates\ComponentTemplate.tt">
+      <LastGenOutput>ComponentTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="PagesInitialStates\Templates\InitialStateTemplate.tt">
+      <LastGenOutput>InitialStateTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Router\Templates\IndexTemplate.tt">
+      <LastGenOutput>IndexTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Router\Templates\RoutesTemplate.tt">
+      <LastGenOutput>RoutesTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="StaticContent\Templates\StaticContentComponentTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StaticContentComponentTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ServiceAgents\Templates\EndpointsTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndpointsTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ServiceAgents\Templates\EnumsTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumsTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="PagesComponents\Templates\ComponentTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="PagesInitialStates\Templates\InitialStateTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InitialStateTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Router\Templates\IndexTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IndexTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Router\Templates\RoutesTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RoutesTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="StaticContent\Templates\StaticContentComponentTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StaticContentComponentTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\art\logo_128.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

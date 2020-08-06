@@ -1,0 +1,263 @@
+/* Landing */
+
+.landing-page {
+    .navbar {
+        padding: 2rem 0;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+
+        .navbar-brand {
+            background: $white;
+            padding: 7px;
+            border-radius: 50%;
+
+            img {
+                height: 35px;
+            }
+        }
+
+        .navbar-collapse {
+            @media (max-width: 991px) {
+                display: block;
+            }
+
+            &.collapse {
+                display: none;
+            }
+
+            &.show {
+                display: block;
+            }
+
+            .navbar-nav {
+                .nav-item {
+                    .nav-link {
+                        color: $white;
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                        font-size: 0.9375rem;
+                        font-family: $type-1;
+                        text-align: left;
+
+                        @media (min-width: 992px) {
+                            margin-left: 1rem;
+                            margin-right: 1rem;
+
+                            &:first-child {
+                                margin-left: 0;
+                            }
+
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .top-banner {
+        background: $primary-gray;
+
+        .demo-image {
+            img {
+                max-width: 500px;
+
+                @media (min-width: 992px) {
+                    position: absolute;
+                    left: -80px;
+                }
+
+                @media (max-width: 991px) {
+                    margin-top: 1rem;
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .top-banner-content {
+            padding-top: 80px;
+            padding-bottom: 120px;
+        }
+    }
+
+    .middle-section {
+        padding-top: 120px;
+        padding-bottom: 80px;
+        text-align: center;
+        color: $black;
+
+        .card {
+            background: $white;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+            transition: box-shadow 0.5s ease;
+
+            &:hover {
+                box-shadow: 0 1px 0 rgba(0, 0, 0, .05), 0 1px 2px rgba(0, 0, 0, .05), 0 5px 15px rgba(0, 0, 0, .05);
+            }
+
+            &.card-icon-top {
+                position: relative;
+
+                .card-body {
+                    padding: 3rem;
+                }
+
+                .card-icon {
+                    position: absolute;
+                    height: 65px;
+                    top: -30px;
+                    left: calc(50% - 30px);
+                }
+            }
+
+            &.card-item-preview {
+                position: relative;
+
+                .badge {
+                    position: absolute;
+                    top: -25px;
+                    right: -35px;
+                    width: 65px;
+                    height: 65px;
+                    padding: 1rem;
+                    border-radius: 50%;
+                    line-height: 32px;
+                    font-size: 1rem;
+                }
+
+                .card-img-top {
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                }
+            }
+        }
+    }
+
+    .bottom-section {
+        color: $black;
+        text-align: center;
+        padding-top: 80px;
+    }
+
+    .feature-list {
+        margin-top: 100px;
+        margin-bottom: 100px;
+
+        .feature-list-row {
+            &:first-child {
+                @media (min-width: 992px) {
+                    border-bottom: 1px solid $white-smoke;
+                }
+            }
+
+            .feature-list-item {
+                padding-top: 1rem;
+                padding-bottom: 2rem;
+
+                i {
+                    display: block;
+                    font-size: 1.875rem;
+                    margin-bottom: 2rem;
+                }
+
+                h4 {
+                    @extend .font-weight-normal;
+                }
+
+                p {
+                    @extend .font-weight-light;
+                }
+
+                @media (min-width: 992px) {
+                    border-right: 1px solid $white-smoke;
+
+                    &:last-child {
+                        border-right: 0;
+                    }
+                }
+
+                .feature-description {
+                    font-family: $type-1;
+                }
+            }
+        }
+    }
+
+    .footer {
+        background: $primary-gray;
+        margin: 0;
+        width: 100%;
+        padding: 0px;
+
+        .footer-top {
+            border-bottom: 1px solid rgba($white, .2);
+
+            .brand-logo {
+                width: 145px;
+            }
+
+            .footer-social-icons {
+                margin-top: 3rem;
+
+                i {
+                    width: 43px;
+                    height: 43px;
+                    font-size: 1rem;
+                    border-radius: 100%;
+                    text-align: center;
+                    line-height: 43px;
+                    margin-right: 0.5rem;
+                }
+            }
+
+            .contact-details {
+                i {
+                    font-size: 1.25rem;
+                    font-weight: 500;
+                }
+            }
+
+            .nav {
+                .nav-item {
+                    .nav-link {
+                        color: $white;
+                        border-right: 1px solid $border-color;
+                        padding-top: 0;
+                        padding-bottom: 0;
+                        font-size: 0.9375rem;
+                        font-family: $type-1;
+                        line-height: 1;
+                    }
+
+                    &:last-child {
+                        .nav-link {
+                            border-right: 0;
+                        }
+                    }
+
+                    &:first-child {
+                        .nav-link {
+                            padding-left: 0;
+                        }
+                    }
+                }
+            }
+
+            .form-control {
+                background: rgba($black, 0.3);
+                border: none;
+                border-radius: 1.25rem;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+        }
+
+        .footer-bottom {
+            color: $white;
+            font-family: $type-1;
+        }
+    }
+}
