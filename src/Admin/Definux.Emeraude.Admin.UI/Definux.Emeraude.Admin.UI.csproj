@@ -52,17 +52,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
-    <ProjectReference Include="..\..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\..\..\Sdk\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\art\logo_128.jpg">
+    <None Include="..\..\..\art\logo_128.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\..\..\LICENSE">
+    <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

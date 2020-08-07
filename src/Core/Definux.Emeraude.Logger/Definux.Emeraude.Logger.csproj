@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -20,19 +20,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\art\logo_128.jpg">
+    <None Include="..\..\..\art\logo_128.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\..\..\LICENSE">
+    <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

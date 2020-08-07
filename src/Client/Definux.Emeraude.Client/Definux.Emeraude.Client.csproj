@@ -22,34 +22,34 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.21" />
+    <PackageReference Include="IdentityServer4" Version="3.1.2" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.2" />
-    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
-    <ProjectReference Include="..\..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.Analytics.UI\Definux.Emeraude.Admin.Analytics.UI.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.Analytics\Definux.Emeraude.Admin.Analytics.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.ClientBuilder.UI\Definux.Emeraude.Admin.ClientBuilder.UI.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Client.EmPages\Definux.Emeraude.Client.EmPages.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\art\logo_128.jpg">
+    <None Include="..\..\..\art\logo_128.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\..\..\LICENSE">
+    <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

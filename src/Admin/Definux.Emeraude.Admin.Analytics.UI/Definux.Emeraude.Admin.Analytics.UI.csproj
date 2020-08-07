@@ -30,11 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Presentation\Admin\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\admin\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

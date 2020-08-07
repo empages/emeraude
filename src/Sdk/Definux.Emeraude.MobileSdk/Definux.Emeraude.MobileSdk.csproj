@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
   </ItemGroup>
 
   <ItemGroup>
