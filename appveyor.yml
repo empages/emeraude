@@ -1,0 +1,25 @@
+version: 1.0.{build}
+image: Visual Studio 2019
+clone_depth: 1
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  PACKAGE_VERSION: $(appveyor_build_version)-beta
+before_build:
+- cmd: dotnet restore
+build:
+  project: Emeraude.sln
+  publish_nuget: true
+  publish_aspnet_core: true
+  publish_core_console: true
+  verbosity: minimal
+deploy:
+- provider: Environment
+  name: nuget
+  on:
+    branch: master
