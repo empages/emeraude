@@ -1,7 +1,9 @@
 ﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Localization.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Definux.Emeraude.Localization.Extensions
 {
@@ -9,7 +11,7 @@ namespace Definux.Emeraude.Localization.Extensions
     {
         private const string LocalesDatabaseSqlLiteConnectionString = "Data Source=./privateroot/locales.db;";
 
-        public static IServiceCollection RegisterEmeraudeLocalization(this IServiceCollection services)
+        public static IServiceCollection RegisterEmeraudeLocalization(this IServiceCollection services, EmOptions options)
         {
             services.AddDbContext<LocalizationContext>(options =>
                 options.UseSqlite(
@@ -20,6 +22,16 @@ namespace Definux.Emeraude.Localization.Extensions
             services.AddScoped<ILocalizationContext, LocalizationContext>();
             services.AddScoped<ILocalizer, Localizer>();
             services.AddScoped<ILanguageStore, LanguageStore>();
+
+            if (options.ExecuteMigrations)
+            {
+                try
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.GetService<LocalizationContext>().Database.Migrate();
+                }
+                catch (Exception) { }
+            }
 
             return services;
         }

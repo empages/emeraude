@@ -64,7 +64,7 @@ namespace Definux.Emeraude.Extensions
 
             services.RegisterEmeraudeOptions(options);
 
-            services.ConfigureDatabases<TContextInterface, TContextImplementation>(applicationAssembly, configuration);
+            services.ConfigureDatabases<TContextInterface, TContextImplementation>(applicationAssembly, configuration, options);
 
             services.ConfigureMapper(applicationAssembly, options.Mapping);
 
@@ -80,9 +80,9 @@ namespace Definux.Emeraude.Extensions
 
             services.RegisterEmeraudeIdentity();
 
-            services.RegisterEmeraudeLogger();
+            services.RegisterEmeraudeLogger(options);
 
-            services.RegisterEmeraudeLocalization();
+            services.RegisterEmeraudeLocalization(options);
 
             services.RegisterEmailSender();
 
@@ -285,6 +285,7 @@ namespace Definux.Emeraude.Extensions
                 options.UseDefaultIdentity = emeraudeOptions.UseDefaultIdentity;
                 options.Assemblies = emeraudeOptions.Assemblies;
                 options.AdditonalRoles = emeraudeOptions.AdditonalRoles;
+                options.ExecuteMigrations = emeraudeOptions.ExecuteMigrations;
 
                 options.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
             });

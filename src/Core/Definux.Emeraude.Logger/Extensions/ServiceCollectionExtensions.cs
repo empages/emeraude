@@ -1,6 +1,8 @@
 ﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Configuration.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Definux.Emeraude.Logger.Extensions
 {
@@ -8,7 +10,7 @@ namespace Definux.Emeraude.Logger.Extensions
     {
         private const string LoggerDatabaseSqlLiteConnectionString = "Data Source=./privateroot/log.db;";
 
-        public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services)
+        public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services, EmOptions options)
         {
             services.AddDbContext<LoggerContext>(options =>
                 options.UseSqlite(
@@ -17,6 +19,16 @@ namespace Definux.Emeraude.Logger.Extensions
 
             services.AddScoped<ILoggerContext, LoggerContext>();
             services.AddScoped<ILogger, Logger>();
+
+            if (options.ExecuteMigrations)
+            {
+                try
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.GetService<LoggerContext>().Database.Migrate();
+                }
+                catch (Exception) { }
+            }
 
             return services;
         }

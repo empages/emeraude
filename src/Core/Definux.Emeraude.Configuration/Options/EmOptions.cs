@@ -68,6 +68,8 @@ namespace Definux.Emeraude.Configuration.Options
 
         public Dictionary<string, string[]> AdditonalRoles { get; set; }
 
+        public bool ExecuteMigrations { get; set; }
+
         public void AddRole(string roleName, string[] claims)
         {
             AdditonalRoles[roleName] = claims;
