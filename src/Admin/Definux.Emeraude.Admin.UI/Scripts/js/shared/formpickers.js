@@ -12,11 +12,11 @@
   }
 
   if ($(".datepicker-popup").length) {
-    $('.datepicker-popup').datepicker({
-        enableOnReadonly: true,
-        todayHighlight: true,
-        format: 'mm/dd/yyyy'
-    });
+      $('.datepicker-popup').datepicker({
+          enableOnReadonly: true,
+          todayHighlight: true,
+          format: 'dd/mm/yyyy'
+      });
   }
 
 })(jQuery);

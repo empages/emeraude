@@ -106,7 +106,7 @@ namespace Definux.Emeraude.Presentation.Controllers
         }
 
         [NonAction]
-        protected void ManageLanguageCookie()
+        protected virtual void ManageLanguageCookie()
         {
             var currentLanguage = CurrentLanguageProvider.GetCurrentLanguage();
             if (currentLanguage == null || currentLanguage.IsDefault)

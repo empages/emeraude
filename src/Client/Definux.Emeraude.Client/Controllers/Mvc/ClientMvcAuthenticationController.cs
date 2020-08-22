@@ -7,6 +7,7 @@ using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using System;
 using System.Security.Claims;
@@ -84,6 +85,16 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         public override ViewResult View(string viewName, object model)
         {
             return base.View($"Authentication/{viewName}", model);
+        }
+
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            if (!this.emeraudeOptions.Account.HasClientMvcAuthentication)
+            {
+                context.Result = NotFound();
+            }
+
+            return base.OnActionExecutionAsync(context, next);
         }
     }
 }

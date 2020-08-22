@@ -39,6 +39,10 @@
                 white-space: nowrap;
                 color: $sidebar-dark-menu-icon-color;
 
+                &.sidebar-main-menu-item {
+                    white-space: pre-line;
+                }
+
                 i {
                     &.menu-arrow {
                         margin-left: auto;

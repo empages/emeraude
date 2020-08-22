@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             {
                 var requestResult = await Mediator.Send(new ForgotPasswordCommand(request));
 
-                if (requestResult.Success)
+                if (requestResult.Successed)
                 {
                     return Ok();
                 }

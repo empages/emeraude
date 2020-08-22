@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         /// <param name="timeoutMilliseconds">The maximum duration to wait for prerendering to complete.</param>
         /// <param name="requestPathBase">The PathBase for the currently-executing HTTP request.</param>
         /// <returns></returns>
-        public static Task<RenderToStringResult> RenderToString(
+        public static async Task<RenderToStringResult> RenderToString(
             string applicationBasePath,
             INodeServices nodeServices,
             CancellationToken applicationStoppingToken,
@@ -44,7 +44,7 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
             var request = httpContext.Request;
             var unencodedAbsoluteUrl = $"{request.Scheme}://{request.Host}{unencodedPathAndQuery}";
 
-            return nodeServices.InvokeExportAsync<RenderToStringResult>(
+            var renderResult = await nodeServices.InvokeExportAsync<RenderToStringResult>(
                 GetNodeScriptFilename(applicationStoppingToken),
                 "renderToString",
                 serverBundlePath,
@@ -54,6 +54,8 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
                 customDataParameter,
                 timeoutMilliseconds,
                 request.PathBase.ToString());
+
+            return renderResult;
         }
 
         private static string GetNodeScriptFilename(CancellationToken applicationStoppingToken)

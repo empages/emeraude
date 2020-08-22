@@ -58,7 +58,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                 .WithConditionalClasses(string.Empty, "active", collapsed, "nav-item main-nav-item")
                 .Append(x => x
                     .OpenElement(HtmlTags.A)
-                    .WithConditionalClasses("collapsed", string.Empty, Single && collapsed, "nav-link")
+                    .WithConditionalClasses("collapsed", string.Empty, Single && collapsed, "nav-link sidebar-main-menu-item")
                     .WithAttribute("title", Title)
                     .WithAttributeIf("href", Href, Single)
                     .WithAttributeIf("href", $"#{sectionIdentificator}", !Single)

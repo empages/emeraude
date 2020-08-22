@@ -1,5 +1,4 @@
-﻿using Definux.Emeraude.Admin.CrudMappers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,9 +11,9 @@ using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.Delete;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Form;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.DetailsCard;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Table;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Mapping.Mappers;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
 using Definux.Emeraude.Admin.Attributes;
@@ -24,14 +23,14 @@ using Definux.Emeraude.Admin.Utilities;
 
 namespace Definux.Emeraude.Admin.Controllers.Abstractions
 {
-    public abstract class AdminCrudController<TEntity, TEntityViewModel> : AdminController, IAdminCrudController
+    public abstract class AdminEntityController<TEntity, TEntityViewModel> : AdminController, IAdminEntityController
         where TEntity : class, IEntity, new()
         where TEntityViewModel : class, new()
     {
         protected const string BreadcrumbPageTitlePlaceholder = "[PageTitle]";
         protected const string BreadcrumbEntityNamePluralPlaceholder = "[EntityNamePlural]";
 
-        public AdminCrudController() 
+        public AdminEntityController() 
         {
             EntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
         }
@@ -76,7 +75,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             model.Title = model.SingleEntityName.ToPluralString();
             ViewData[BreadcrumbPageTitlePlaceholder] = model.Title;
 
-            model.Table = CrudTableMapper.Map(entitiesResult, BuildTableViewActions()?.ToArray());
+            model.Table = EntityTableMapper.Map(entitiesResult, BuildTableViewActions()?.ToArray());
             model.Table.SetPaginationRedirection(AreaName, ControllerName, ActionName);
             ViewData.Add("SearchQuery", searchQuery);
 
@@ -118,7 +117,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
 
             EntityDetailsViewModel model = new EntityDetailsViewModel();
-            model.Details = CrudDetailsCardMapper.Map(entity);
+            model.Details = EntityDetailsCardMapper.Map(entity);
             string singleEntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
             this.ViewData[BreadcrumbEntityNamePluralPlaceholder] = singleEntityName.ToPluralString();
 
@@ -225,7 +224,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         [Breadcrumb("Edit", false, 1)]
         public virtual async Task<IActionResult> Edit(Guid id, TEntityViewModel model)
         {
-            if (!HasGenericCreate)
+            if (!HasEdit)
             {
                 return NotFound();
             }
@@ -316,17 +315,17 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             var actions = new List<TableRowActionViewModel>();
             if (HasDetails)
             {
-                actions.Add(CrudTableMapper.DetailsAction($"{ControllerRoute}{{0}}", "[Id]"));
+                actions.Add(EntityTableMapper.DetailsAction($"{ControllerRoute}{{0}}", "[Id]"));
             }
 
             if (HasEdit)
             {
-                actions.Add(CrudTableMapper.EditAction($"{ControllerRoute}{{0}}/edit", "[Id]"));
+                actions.Add(EntityTableMapper.EditAction($"{ControllerRoute}{{0}}/edit", "[Id]"));
             }
 
             if (HasDelete)
             {
-                actions.Add(CrudTableMapper.DeleteAction($"{ControllerRoute}{{0}}/delete", "[Id]"));
+                actions.Add(EntityTableMapper.DeleteAction($"{ControllerRoute}{{0}}/delete", "[Id]"));
             }
 
             return actions;
@@ -427,7 +426,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <returns></returns>
         protected virtual IActionResult GetAllView(TableViewViewModel model)
         {
-            return View("CrudViews/GetAll", model);
+            return View("EntityViews/GetAll", model);
         }
 
         /// <summary>
@@ -437,7 +436,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <returns></returns>
         protected virtual IActionResult DetailsView(EntityDetailsViewModel model)
         {
-            return View("CrudViews/Details", model);
+            return View("EntityViews/Details", model);
         }
 
         /// <summary>
@@ -447,7 +446,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <returns></returns>
         protected virtual IActionResult CreateEditView(ICreateEditEntityViewModel model)
         {
-            return View("CrudViews/CreateEdit", model);
+            return View("EntityViews/CreateEdit", model);
         }
 
         /// <summary>
@@ -457,7 +456,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <returns></returns>
         protected virtual IActionResult GalleryView(SelectableGalleryViewModel model)
         {
-            return View("CrudViews/SelectableGallery", model);
+            return View("EntityViews/SelectableGallery", model);
         }
 
         /// <summary>
@@ -502,7 +501,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             ICreateEditEntityViewModel castedModel = (ICreateEditEntityViewModel)model;
             if (castedModel != null)
             {
-                castedModel.Inputs = CrudFormMapper.BuildInputs(castedModel);
+                castedModel.Inputs = EntityFormMapper.BuildInputs(castedModel);
                 ViewData[BreadcrumbEntityNamePluralPlaceholder] = EntityName.ToPluralString();
             }
 

@@ -52,7 +52,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             {
                 var requestResult = await Mediator.Send(new ResetPasswordCommand(request));
 
-                if (requestResult.Success)
+                if (requestResult.Successed)
                 {
                     return ResetPasswordSuccessView(request);
                 }

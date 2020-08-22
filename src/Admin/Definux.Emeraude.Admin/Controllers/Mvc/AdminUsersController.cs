@@ -2,7 +2,7 @@
 using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.Requests.AssignRolesToUser;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Table;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.UI.ViewModels.Users;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Definux.Emeraude.Admin.Controllers.Mvc
 {
     [Route("/admin/users/")]
-    public class AdminUsersController : AdminCrudController<User, UserViewModel>
+    public class AdminUsersController : AdminEntityController<User, UserViewModel>
     {
         private readonly IUserManager userManager;
         private readonly IRoleManager roleManager;
@@ -68,7 +68,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             if (user != null)
             {
                 var result = await Mediator.Send(new AssignRolesToUserCommand(user.Id, model?.SelectedRoles));
-                if (result.Success)
+                if (result.Successed)
                 {
                     ShowSuccessNotification($"Roles have been assigned successfully to {user.Name}");
                     

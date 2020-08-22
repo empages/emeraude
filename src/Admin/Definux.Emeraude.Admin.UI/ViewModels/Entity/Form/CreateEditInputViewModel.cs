@@ -2,7 +2,7 @@ using Definux.Emeraude.Admin.UI.UIElements.Form;
 using Microsoft.AspNetCore.Html;
 using System;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Form
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Form
 {
     public class CreateEditInputViewModel
     {
@@ -11,6 +11,8 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Form
         public string Name { get; set; }
 
         public object Value { get; set; }
+
+        public bool Hidden => FormElement?.Hidden ?? false;
 
         public Type DataSourceType { get; set; }
 

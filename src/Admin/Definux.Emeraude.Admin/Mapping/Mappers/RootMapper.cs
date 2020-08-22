@@ -1,7 +1,8 @@
 ﻿using Definux.Emeraude.Admin.UI.ViewModels.Roots;
+using Definux.Emeraude.Application.Common.Results.Files;
 using System.Collections.Generic;
 
-namespace Definux.Emeraude.Application.Common.Results.Files
+namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
     public static class RootMapper
     {

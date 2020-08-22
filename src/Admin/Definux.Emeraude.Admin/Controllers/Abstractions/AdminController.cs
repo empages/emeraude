@@ -10,10 +10,7 @@ using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Configuration.Authorization;
-using System.Linq;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Domain.Entities;
-using System;
 
 namespace Definux.Emeraude.Admin.Controllers.Abstractions
 {

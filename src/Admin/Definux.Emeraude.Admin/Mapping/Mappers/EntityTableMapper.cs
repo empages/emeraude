@@ -1,6 +1,6 @@
 ﻿using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.Table;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Table;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Utilities.Extensions;
 using Definux.Utilities.Objects;
@@ -8,9 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Definux.Emeraude.Admin.CrudMappers
+namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
-    public static class CrudTableMapper
+    public static class EntityTableMapper
     {
         public static TableViewModel Map<T>(PaginatedList<T> entitiesResult, params TableRowActionViewModel[] actions)
         {

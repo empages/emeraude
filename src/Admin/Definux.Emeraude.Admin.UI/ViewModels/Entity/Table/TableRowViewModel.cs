@@ -2,7 +2,7 @@ using Definux.Emeraude.Admin.UI.UIElements.Table;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Table
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
 {
     public class TableRowViewModel
     {

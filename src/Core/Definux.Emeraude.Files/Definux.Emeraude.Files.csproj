@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.21" />
-    <PackageReference Include="Definux.Utilities.Validation" Version="1.0.21" />
+    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.27" />
+    <PackageReference Include="Definux.Utilities.Validation" Version="1.0.27" />
     <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.16.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.3" />

@@ -26,39 +26,39 @@ class HttpClient {
         };
     }
 
-    get(url) {
+    get(url, headers = null) {
         return fetch(url, {
             method: 'GET',
-            headers: this.requestHeaders,
+            headers: headers || this.requestHeaders,
             credentials: 'include'
         })
             .then(response => response.json());
     }
 
-    post(url, body) {
+    post(url, body, headers = null) {
         return fetch(url, {
             method: 'POST',
-            headers: this.requestHeaders,
+            headers: headers || this.requestHeaders,
             body: JSON.stringify(body),
             credentials: 'include'
         })
             .then(response => response.json());
     }
 
-    put(url, body) {
+    put(url, body, headers = null) {
         return fetch(url, {
             method: 'PUT',
-            headers: this.requestHeaders,
+            headers: headers || this.requestHeaders,
             body: JSON.stringify(body),
             credentials: 'include'
         })
             .then(response => response.json());
     }
 
-    delete(url, body = null) {
+    delete(url, body = null, headers = null) {
         return fetch(url, {
             method: 'DELETE',
-            headers: this.requestHeaders,
+            headers: headers || this.requestHeaders,
             body: JSON.stringify(body),
             credentials: 'include'
         })
@@ -80,10 +80,11 @@ foreach (var argument in endpoint.Arguments) { #>
  * @param {<#=argument.Class.JavaScriptTypeName#>} <#=argument.Name#>
 <#}#>
 <#}#>
+ * @param {Object} headers
  * @returns {Promise}
  */
-<#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#>) {
-	return httpClient.<#=endpoint.MethodName.ToLower()#>(`<#=endpoint.Route.Replace("{", "${")#>`<#if ((endpoint.MethodName.ToLower() == "post" || endpoint.MethodName.ToLower() == "put") && !string.IsNullOrEmpty(endpoint.ArgumentsListString)) { #>, <#=endpoint.ComplexArgument.Name#><# } #>);
+<#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#>, headers = null) {
+	return httpClient.<#=endpoint.MethodName.ToLower()#>(`<#=endpoint.Route.Replace("{", "${")#>`<#if ((endpoint.MethodName.ToLower() == "post" || endpoint.MethodName.ToLower() == "put") && !string.IsNullOrEmpty(endpoint.ArgumentsListString)) { #>, <#=endpoint.ComplexArgument.Name#><# } #>, headers);
 }
 <# } #>
 }

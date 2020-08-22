@@ -71,13 +71,13 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
                 output.Attributes.Add(new TagHelperAttribute("id", "emeraude-app"));
 
                 var result = await ViewRenderer.RenderToString(
-                    this.applicationBasePath,
-                    this.nodeServices,
-                    this.applicationStoppingToken,
-                    ServerBundle,
-                    ViewContext.HttpContext,
-                    InitialStateViewModel,
-                    TimeoutMillisecondsParameter);
+                        this.applicationBasePath,
+                        this.nodeServices,
+                        this.applicationStoppingToken,
+                        ServerBundle,
+                        ViewContext.HttpContext,
+                        InitialStateViewModel,
+                        TimeoutMillisecondsParameter);
 
                 if (!string.IsNullOrEmpty(result.RedirectUrl))
                 {

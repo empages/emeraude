@@ -118,7 +118,7 @@ namespace Definux.Emeraude.Extensions
             assembliesList.AddRange(assemblies);
 
             services.AddMediatR(assembliesList.ToArray());
-            services.RegisterAdminCrudControllersRequests(assembliesList.ToArray());
+            services.RegisterAdminEntityControllersRequests(assembliesList.ToArray());
 
             return services;
         }

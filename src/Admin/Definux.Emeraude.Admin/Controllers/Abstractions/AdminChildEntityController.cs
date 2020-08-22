@@ -11,7 +11,7 @@ using Definux.Emeraude.Admin.Requests.Exists;
 using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.Delete;
 using Definux.Emeraude.Admin.Attributes;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Table;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using System.Collections.Generic;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
 using Definux.Emeraude.Domain.Entities;
@@ -20,7 +20,7 @@ using Definux.Emeraude.Presentation.Controllers;
 
 namespace Definux.Emeraude.Admin.Controllers.Abstractions
 {
-    public abstract class AdminChildCrudController<TEntity, TEntityViewModel, TParentEntity, TParentController> : AdminCrudController<TEntity, TEntityViewModel>, IChildController
+    public abstract class AdminChildEntityController<TEntity, TEntityViewModel, TParentEntity, TParentController> : AdminEntityController<TEntity, TEntityViewModel>, IChildController
         where TEntity : class, IEntity, new()
         where TEntityViewModel : class, new()
         where TParentEntity : class, IEntity, new()

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Definux.Emeraude.Resources;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Definux.Emeraude.ModelBinders
@@ -22,16 +24,27 @@ namespace Definux.Emeraude.ModelBinders
 
             bindingContext.ModelState.SetModelValue(modelName, valueProviderResult);
 
-            if (!double.TryParse(valueProviderResult.FirstValue, out double unixTimeStamp))
+            bool unixTimeStampFormat = double.TryParse(valueProviderResult.FirstValue, out double unixTimeStamp);
+            CultureInfo enUS = new CultureInfo("en-US");
+            bool standardFormat = DateTime.TryParseExact(valueProviderResult.FirstValue, SystemFormats.ShortDateFormat, enUS, DateTimeStyles.None, out DateTime parsedDateTime);
+
+            if (unixTimeStampFormat)
             {
-                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Incorrect DateTime format. Use a Unix TimeStamp format.");
+                DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                DateTime date = start.AddSeconds(unixTimeStamp).ToLocalTime();
+                bindingContext.Result = ModelBindingResult.Success(date);
                 return Task.CompletedTask;
             }
-
-            DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            DateTime date = start.AddSeconds(unixTimeStamp).ToLocalTime();
-            bindingContext.Result = ModelBindingResult.Success(date);
-            return Task.CompletedTask;
+            else if (standardFormat)
+            {
+                bindingContext.Result = ModelBindingResult.Success(parsedDateTime);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Incorrect DateTime format. Use Unix Timestamp or {SystemFormats.ShortDateFormat}");
+                return Task.CompletedTask;
+            }
         }
     }
 }

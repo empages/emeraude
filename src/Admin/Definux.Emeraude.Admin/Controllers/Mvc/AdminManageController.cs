@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
 
                 var requestResult = await Mediator.Send(new ActivateTwoFactorAuthenticationCommand(model.Code));
 
-                if (requestResult.Success)
+                if (requestResult.Successed)
                 {
                     var responseModel = new AdminTwoFactorAuthenticationViewModel
                     {
@@ -135,7 +135,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                     ConfirmedPassword = model.ConfirmedPassword
                 }));
 
-                if (requestResult.Success)
+                if (requestResult.Successed)
                 {
                     ShowSuccessNotification("Password has been changed successfully.");
                     return View();

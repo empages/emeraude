@@ -1,4 +1,4 @@
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Form
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Form
 {
     public class EditEntityViewModel
     {

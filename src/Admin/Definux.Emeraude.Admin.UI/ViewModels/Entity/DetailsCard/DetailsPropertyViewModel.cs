@@ -1,7 +1,7 @@
 using Definux.Emeraude.Admin.UI.UIElements.DetailsCard;
 using Microsoft.AspNetCore.Html;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.DetailsCard
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard
 {
     public class DetailsPropertyViewModel
     {

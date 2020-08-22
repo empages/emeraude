@@ -14,7 +14,7 @@
                 {
                     inputItem.FormElement.LoadServiceProvider(serviceProvider);
                 <div class="form-group">
-                    @if (!inputItem.IsFlag)
+                    @if (!(inputItem.IsFlag || inputItem.Hidden))
                     {
                         <label>@inputItem.Label</label>
                     }

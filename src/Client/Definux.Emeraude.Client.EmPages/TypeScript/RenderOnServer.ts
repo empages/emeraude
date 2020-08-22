@@ -21,42 +21,12 @@ function renderToStringImpl(callback: RenderToStringCallback, serverBundlePath: 
     }
 };
 
-function vueRendererFunc(params: BootFuncParams): Promise<RenderResult> {
-    const fullFilePath = path.join(__dirname, params.serverBundlePath);
-    const code = fs.readFileSync(fullFilePath, 'utf8');
-    const vueRenderer = vueServerRenderer.createBundleRenderer(code);
-
-    return new Promise((resolve, reject) => {
-        const context = {
-            url: params.url,
-            absoluteUrl: params.absoluteUrl,
-            baseUrl: params.baseUrl,
-            data: params.data,
-            domainTasks: params.domainTasks,
-            location: params.location,
-            origin: params.origin
-        };
-
-        vueRenderer.renderToString(context, (error, resultHtml) => {
-            if (error) {
-                reject(error.message);
-            }
-
-            resolve({
-                html: resultHtml,
-                globals: {
-                    __INITIAL_STATE__: context
-                }
-            });
-        })
-    });
-}
-
 function renderViewFunc(callback: RenderToStringCallback, serverBundlePath: string, applicationBasePath: string, absoluteRequestUrl: string, requestPathAndQuery: string, customDataParameter: any, overrideTimeoutMilliseconds: number, requestPathBase: string) {
     const bootFunc = (params: BootFuncParams) => {
         const fullFilePath = path.join(applicationBasePath, params.serverBundlePath);
         const code = fs.readFileSync(fullFilePath, 'utf8');
-        const vueRenderer = vueServerRenderer.createBundleRenderer(code);
+        const vueRenderer = vueServerRenderer.createBundleRenderer(fullFilePath);
+
         return new Promise<RenderResult>((resolve, reject) => {
             const context = {
                 url: params.url,
@@ -67,9 +37,10 @@ function renderViewFunc(callback: RenderToStringCallback, serverBundlePath: stri
                 location: params.location,
                 origin: params.origin
             };
+
             vueRenderer.renderToString(context, (error, resultHtml) => {
                 if (error) {
-                    reject(error.message);
+                    reject(error.message + " --- " + error.stack);
                 }
 
                 resolve({
@@ -126,7 +97,7 @@ function createServerRenderer(bootFunc: BootFunc): RenderToStringFunc {
                 ? wrapWithTimeout(bootFuncPromise, timeoutMilliseconds,
                     `Prerendering timed out after ${timeoutMilliseconds}ms because the boot function `
                     + 'returned a promise that did not resolve or reject. Make sure that your boot function always resolves or '
-                    + 'rejects its promise. You can change the timeout value using the \'asp-prerender-timeout\' tag helper.')
+                    + 'rejects its promise.')
                 : bootFuncPromise;
 
             // Actually perform the rendering

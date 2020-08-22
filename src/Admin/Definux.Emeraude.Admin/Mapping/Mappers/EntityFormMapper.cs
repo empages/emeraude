@@ -1,6 +1,6 @@
 ﻿using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.Form;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.Form;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Utilities.Extensions;
 using System;
 using System.Collections;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
-    public static class CrudFormMapper
+    public static class EntityFormMapper
     {
         public static List<CreateEditInputViewModel> BuildInputs(ICreateEditEntityViewModel entityViewModel)
         {

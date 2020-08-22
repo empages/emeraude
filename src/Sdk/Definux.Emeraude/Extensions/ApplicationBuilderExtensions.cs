@@ -12,9 +12,9 @@ namespace Definux.Emeraude.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseEmeraude(this IApplicationBuilder app, IWebHostEnvironment environment)
+        public static IApplicationBuilder UseEmeraude(this IApplicationBuilder app, IWebHostEnvironment environment, bool forseProduction = false)
         {
-            if (environment.IsDevelopment())
+            if (environment.IsDevelopment() && !forseProduction)
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -23,10 +23,12 @@ namespace Definux.Emeraude.Extensions
             }
             else
             {
-                app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/error/400");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHttpsRedirection();
 

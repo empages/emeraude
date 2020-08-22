@@ -13,5 +13,9 @@
                 return HasFacebookLogin || HasGoogleLogin;
             }
         }
+
+        public bool HasClientMvcAuthentication { get; set; } = true;
+
+        public bool HasClientApiAuthentication { get; set; } = true;
     }
 }

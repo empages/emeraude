@@ -18,6 +18,8 @@ namespace Definux.Emeraude.Admin.UI.UIElements.Form
 
         public object Value { get; set; }
 
+        public bool Hidden { get; set; }
+
         public bool IsNullable
         {
             get

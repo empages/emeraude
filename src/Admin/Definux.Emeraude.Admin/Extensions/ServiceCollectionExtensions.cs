@@ -81,7 +81,7 @@ namespace Definux.Emeraude.Admin.Extensions
             return configuration;
         }
 
-        public static IServiceCollection RegisterAdminCrudControllersRequests(this IServiceCollection services, Assembly[] assemblies)
+        public static IServiceCollection RegisterAdminEntityControllersRequests(this IServiceCollection services, Assembly[] assemblies)
         {
             var controllerTypes = new List<Type>();
 
@@ -91,7 +91,7 @@ namespace Definux.Emeraude.Admin.Extensions
                     .GetTypes()
                     .Where(x => x
                         .GetInterfaces()
-                        .Any(x => x == typeof(IAdminCrudController)) && !x.IsInterface && !x.IsAbstract);
+                        .Any(x => x == typeof(IAdminEntityController)) && !x.IsInterface && !x.IsAbstract);
                 controllerTypes.AddRange(assemblyControllerTypes);
             }
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.DetailsCard
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard
 {
     public class DetailsViewModel
     {

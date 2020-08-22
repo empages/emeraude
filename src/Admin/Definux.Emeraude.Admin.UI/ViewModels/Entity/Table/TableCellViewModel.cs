@@ -1,7 +1,7 @@
 using Definux.Emeraude.Admin.UI.UIElements.Table;
 using Microsoft.AspNetCore.Html;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Table
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
 {
     public class TableCellViewModel
     {

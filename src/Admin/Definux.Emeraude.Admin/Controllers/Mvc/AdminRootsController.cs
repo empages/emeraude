@@ -14,6 +14,7 @@ using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Common.Results.Files;
 using Definux.Emeraude.Application.Common.Interfaces.Files;
 using Definux.Emeraude.Presentation.Extensions;
+using Definux.Emeraude.Admin.Mapping.Mappers;
 
 namespace Definux.Emeraude.Admin.Controllers.Mvc
 {

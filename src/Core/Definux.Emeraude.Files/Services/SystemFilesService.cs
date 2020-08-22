@@ -319,5 +319,26 @@ namespace Definux.Emeraude.Files.Services
                 return default;
             }
         }
+
+        public List<string> GetPublicRootFolderFilesRelativePaths(params string[] paths)
+        {
+            try
+            {
+                var targetPaths = paths.ToList();
+                string publicRootPath = PublicRootDirectory;
+                targetPaths.Insert(0, publicRootPath);
+                string folderPath = Path.Combine(targetPaths.ToArray());
+                List<string> resultPictures = Directory
+                    .GetFiles(folderPath, "*", SearchOption.TopDirectoryOnly)
+                    .Select(x => x.Replace(publicRootPath, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
+                    .ToList();
+
+                return resultPictures;
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
     }
 }

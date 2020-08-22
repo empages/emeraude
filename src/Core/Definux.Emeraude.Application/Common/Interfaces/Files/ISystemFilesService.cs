@@ -12,6 +12,8 @@ namespace Definux.Emeraude.Application.Common.Interfaces.Files
 
         string PrivateRootDirectory { get; }
 
+        List<string> GetPublicRootFolderFilesRelativePaths(params string[] paths);
+
         string GetPathFromPublicRoot(params string[] paths);
 
         string GetPathFromPrivateRoot(params string[] paths);

@@ -34,7 +34,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         {
             var result = await Mediator.Send(new DeleteErrorLogCommand(logId));
 
-            if (result.Success)
+            if (result.Successed)
             {
                 ShowSuccessNotification("Log has been deleted successfully.");
             }

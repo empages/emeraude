@@ -1,13 +1,13 @@
 ﻿using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.DetailsCard;
-using Definux.Emeraude.Admin.UI.ViewModels.Crud.DetailsCard;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard;
 using Definux.Utilities.Extensions;
 using Definux.Utilities.Functions;
 using System;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
-    public static class CrudDetailsCardMapper
+    public static class EntityDetailsCardMapper
     {
         public static DetailsViewModel Map<T>(T entity)
         {

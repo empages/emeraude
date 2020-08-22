@@ -60,7 +60,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Router
             return file.RenderTemplate(new Dictionary<string, object>
             {
                 { "Pages", pages },
-                { "LanguageRouteRegex", languageRouteRegex }
+                { "LanguageRouteRegex", languageRouteRegex },
+                { "SingleLanguage", languages.Count() < 2 }
             });
         }
     }

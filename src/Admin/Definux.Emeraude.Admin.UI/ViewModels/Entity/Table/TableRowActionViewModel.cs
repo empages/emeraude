@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Definux.Emeraude.Admin.UI.ViewModels.Crud.Table
+namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
 {
     public class TableRowActionViewModel
     {

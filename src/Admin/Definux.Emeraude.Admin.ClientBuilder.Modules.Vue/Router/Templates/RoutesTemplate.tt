@@ -13,7 +13,11 @@
 const <#=page.Name#> = () => import('../pages/<#=page.Name.SplitWordsByCapitalLetters().Replace(" ", "-").ToLower()#>/<#=page.Name#>');
 <# } #>
 
+<# if ((bool)Session["SingleLanguage"]) { #>
+const languageRoutePrefix = '';
+<# } else { #>
 const languageRoutePrefix = '/:lang(<#=Session["LanguageRouteRegex"]#>)?';
+<# } #>
 
 export const routes = [
 <# foreach (var page in (List<Page>)Session["Pages"]) { #>
