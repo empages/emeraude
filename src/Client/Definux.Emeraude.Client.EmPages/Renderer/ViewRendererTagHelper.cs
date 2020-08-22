@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -22,11 +23,13 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         private readonly string applicationBasePath;
         private readonly CancellationToken applicationStoppingToken;
         private readonly INodeServices nodeServices;
+        private readonly ILogger logger;
 
-        public ViewRendererTagHelper(IServiceProvider serviceProvider)
+        public ViewRendererTagHelper(IServiceProvider serviceProvider, ILogger logger)
         {
             var hostEnvironment = (IHostEnvironment)serviceProvider.GetService(typeof(IHostEnvironment));
             this.nodeServices = (INodeServices)serviceProvider.GetService(typeof(INodeServices));
+            this.logger = logger;
             this.applicationBasePath = hostEnvironment.ContentRootPath;
 
             var applicationLifetime = (IHostApplicationLifetime)serviceProvider.GetService(typeof(IHostApplicationLifetime));
@@ -66,47 +69,55 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (ActivateEmeraude)
+            try
             {
-                output.Attributes.Add(new TagHelperAttribute("id", "emeraude-app"));
-
-                var result = await ViewRenderer.RenderToString(
-                        this.applicationBasePath,
-                        this.nodeServices,
-                        this.applicationStoppingToken,
-                        ServerBundle,
-                        ViewContext.HttpContext,
-                        InitialStateViewModel,
-                        TimeoutMillisecondsParameter);
-
-                if (!string.IsNullOrEmpty(result.RedirectUrl))
+                if (ActivateEmeraude)
                 {
-                    // It's a redirection
-                    var permanentRedirect = result.StatusCode.GetValueOrDefault() == 301;
-                    ViewContext.HttpContext.Response.Redirect(result.RedirectUrl, permanentRedirect);
-                    return;
+                    output.Attributes.Add(new TagHelperAttribute("id", "emeraude-app"));
+
+                    var result = await ViewRenderer.RenderToString(
+                            this.applicationBasePath,
+                            this.nodeServices,
+                            this.applicationStoppingToken,
+                            ServerBundle,
+                            ViewContext.HttpContext,
+                            InitialStateViewModel,
+                            TimeoutMillisecondsParameter);
+
+                    if (!string.IsNullOrEmpty(result.RedirectUrl))
+                    {
+                        // It's a redirection
+                        var permanentRedirect = result.StatusCode.GetValueOrDefault() == 301;
+                        ViewContext.HttpContext.Response.Redirect(result.RedirectUrl, permanentRedirect);
+                        return;
+                    }
+
+                    if (result.StatusCode.HasValue)
+                    {
+                        ViewContext.HttpContext.Response.StatusCode = result.StatusCode.Value;
+                    }
+
+                    // It's some HTML to inject
+                    output.Content.SetHtmlContent(result.Html);
+
+                    // Also attach any specified globals to the 'window' object. This is useful for transferring
+                    // general state between server and client.
+                    var globalsScript = result.CreateGlobalsAssignmentScript();
+                    if (!string.IsNullOrEmpty(globalsScript))
+                    {
+                        output.PostElement.SetHtmlContent($"<script>{globalsScript}</script>");
+                    }
                 }
-
-                if (result.StatusCode.HasValue)
+                else
                 {
-                    ViewContext.HttpContext.Response.StatusCode = result.StatusCode.Value;
-                }
-
-                // It's some HTML to inject
-                output.Content.SetHtmlContent(result.Html);
-
-                // Also attach any specified globals to the 'window' object. This is useful for transferring
-                // general state between server and client.
-                var globalsScript = result.CreateGlobalsAssignmentScript();
-                if (!string.IsNullOrEmpty(globalsScript))
-                {
-                    output.PostElement.SetHtmlContent($"<script>{globalsScript}</script>");
+                    await base.ProcessAsync(context, output);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                await base.ProcessAsync(context, output);
+                await this.logger.LogErrorAsync(ex);
             }
+
         }
 #pragma warning restore 612, 618
     }
