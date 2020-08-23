@@ -41,12 +41,15 @@ using FluentValidation.AspNetCore;
 using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
 using Definux.Emeraude.Persistence.Seed;
+using Definux.Seo.Options;
 
 namespace Definux.Emeraude.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEmeraude<TContextInterface, TContextImplementation>(this IServiceCollection services, Action<EmOptions> optionsAction = null) 
+        public static IServiceCollection AddEmeraude<TContextInterface, TContextImplementation>(this IServiceCollection services, 
+            Action<EmOptions> optionsAction = null, 
+            Action<DefinuxSeoOptions> seoOptionsAction = null) 
             where TContextInterface : class, IEmContext
             where TContextImplementation : EmContext<TContextImplementation>, TContextInterface
         {
@@ -94,7 +97,7 @@ namespace Definux.Emeraude.Extensions
 
             services.AddEmeraudeClient();
 
-            services.AddDefinuxSeo(Assembly.GetCallingAssembly());
+            services.AddDefinuxSeo(Assembly.GetCallingAssembly(), seoOptionsAction);
 
             services.RegisterMediatR(options.Assemblies);
 
