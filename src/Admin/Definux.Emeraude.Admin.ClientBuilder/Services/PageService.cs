@@ -29,6 +29,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 emPagesTypes.AddRange(assemblyTypes);
             }
 
+            emPagesTypes = emPagesTypes.Distinct().ToList();
+
             List<Page> resultPages = new List<Page>();
             foreach (var pageType in emPagesTypes)
             {

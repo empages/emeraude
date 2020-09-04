@@ -27,6 +27,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 apiControllersTypes.AddRange(assemblyTypes);
             }
 
+            apiControllersTypes = apiControllersTypes.Distinct().ToList();
+
             List<Endpoint> resultEndpoints = new List<Endpoint>();
             foreach (var controllerType in apiControllersTypes)
             {
