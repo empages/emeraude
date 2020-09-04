@@ -59,7 +59,10 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     ClientRoute = clientRouteTemplate
                 };
 
-                resultPages.Add(currentPage);
+                if (resultPages.FirstOrDefault(x => x.Id != currentPage.Id) == null)
+                {
+                    resultPages.Add(currentPage);
+                }
             }
 
             return ReorderPagesBasedOnClientRoute(resultPages);

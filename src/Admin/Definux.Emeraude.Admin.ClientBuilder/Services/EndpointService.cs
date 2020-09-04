@@ -50,7 +50,10 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                         Arguments = endpoint.GetParameters().Select(x => DescriptionExtractor.ExtractArgumentDescription(x.Name, x.ParameterType)).ToList()
                     };
 
-                    resultEndpoints.Add(currentEntpoint);
+                    if (resultEndpoints.FirstOrDefault(x => x.Id == currentEntpoint.Id) == null)
+                    {
+                        resultEndpoints.Add(currentEntpoint);
+                    }
                 }
             }
 
