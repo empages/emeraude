@@ -146,9 +146,9 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             }
 
             int segmentLength = routeSegment.Length - startIndex;
-            char segmentLetter = routeSegment[startIndex];
+            string segmentText = routeSegment.Substring(startIndex);
 
-            return $"{segmentPrefix}{segmentLetter}{segmentLength}";
+            return $"{segmentPrefix}{segmentText}{segmentLength}";
         }
 
         internal class RouteKeyPagePair
