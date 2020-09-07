@@ -126,6 +126,36 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        public IEnumerable<TempFileLog> GetFilesByIds(IEnumerable<int> ids)
+        {
+            var resultFiles = new List<TempFileLog>();
+            foreach (var fileid in ids)
+            {
+                var currentFile = GetFileById(fileid);
+                if (currentFile != null)
+                {
+                    resultFiles.Add(currentFile);
+                }
+            }
+
+            return resultFiles;
+        }
+
+        public async Task<IEnumerable<TempFileLog>> GetFilesByIdsAsync(IEnumerable<int> ids)
+        {
+            var resultFiles = new List<TempFileLog>();
+            foreach (var fileid in ids)
+            {
+                var currentFile = await GetFileByIdAsync(fileid);
+                if (currentFile != null)
+                {
+                    resultFiles.Add(currentFile);
+                }
+            }
+
+            return resultFiles;
+        }
+
         public IEnumerable<SystemFileItem> ScanDirectory(string directory, string baseDirectory = "")
         {
             if (!(directory.StartsWith(PublicRootDirectory) || directory.StartsWith(PrivateRootDirectory)))
