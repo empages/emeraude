@@ -290,7 +290,7 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
-        public async Task<TempFileLog> MoveFileToPrivateDirectoryAsync(int fileId, string targetDirectory)
+        public async Task<TempFileLog> ApplyTempFileToPrivateDirectoryAsync(int fileId, string targetDirectory)
         {
             try
             {
@@ -320,7 +320,7 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
-        public async Task<TempFileLog> MoveFileToPublicDirectoryAsync(int fileId, string targetDirectory)
+        public async Task<TempFileLog> ApplyTempFileToPublicDirectoryAsync(int fileId, string targetDirectory)
         {
             try
             {
@@ -368,6 +368,42 @@ namespace Definux.Emeraude.Files.Services
             catch (Exception)
             {
                 return new List<string>();
+            }
+        }
+
+        public async Task<bool> ApplyTempFilesToPrivateDirectoryAsync(IEnumerable<int> ids, string targetDirectory)
+        {
+            try
+            {
+                foreach (var fileId in ids)
+                {
+                    await ApplyTempFileToPrivateDirectoryAsync(fileId, targetDirectory);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await this.logger.LogErrorAsync(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> ApplyTempFilesToPublicDirectoryAsync(IEnumerable<int> ids, string targetDirectory)
+        {
+            try
+            {
+                foreach (var fileId in ids)
+                {
+                    await ApplyTempFileToPublicDirectoryAsync(fileId, targetDirectory);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await this.logger.LogErrorAsync(ex);
+                return false;
             }
         }
     }

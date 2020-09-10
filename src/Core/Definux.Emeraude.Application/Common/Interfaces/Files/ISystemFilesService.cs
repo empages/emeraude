@@ -38,9 +38,13 @@ namespace Definux.Emeraude.Application.Common.Interfaces.Files
 
         Task<IEnumerable<TempFileLog>> GetFilesByIdsAsync(IEnumerable<int> ids);
 
-        Task<TempFileLog> MoveFileToPrivateDirectoryAsync(int fileId, string targetDirectory);
+        Task<TempFileLog> ApplyTempFileToPrivateDirectoryAsync(int fileId, string targetDirectory);
 
-        Task<TempFileLog> MoveFileToPublicDirectoryAsync(int fileId, string targetDirectory);
+        Task<TempFileLog> ApplyTempFileToPublicDirectoryAsync(int fileId, string targetDirectory);
+
+        Task<bool> ApplyTempFilesToPrivateDirectoryAsync(IEnumerable<int> ids, string targetDirectory);
+
+        Task<bool> ApplyTempFilesToPublicDirectoryAsync(IEnumerable<int> ids, string targetDirectory);
 
         Task<bool> CreateFolderAsync(string folderName, string folderPath);
     }
