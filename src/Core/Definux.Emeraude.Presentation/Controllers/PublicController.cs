@@ -1,7 +1,6 @@
 ﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Domain.Localization;
 using Definux.Emeraude.Localization.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;

@@ -1,0 +1,29 @@
+@model LoginRequest
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = await Localizer.TranslateKeyAsync("LOGIN");
+}
+
+<form action="@Url.LoginAction(ViewData)" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group mb-1">
+        <t element="label" class="mb-0">EMAIL</t>
+        <input class="form-control" asp-for="Email" />
+        <span class="text-danger text-small"><t>@Html.ValidationMessage(nameof(Model.Email))</t></span>
+    </div>
+    <div class="form-group mb-1">
+        <t element="label" class="mb-0">PASSWORD</t>
+        <input class="form-control" type="password" asp-for="Password" />
+        <span class="text-danger text-small"><t>@Html.ValidationMessage(nameof(Model.Password))</t></span>
+    </div>
+    <a class="text-small" href="@Url.ForgotPasswordAction()"><t>FORGOT_PASSWORD</t>?</a>
+    <div class="d-block w-100 mt-3">
+        <button class="btn btn-primary btn-lg btn-shadow w-100" type="submit"><t>LOGIN</t></button>
+    </div>
+    <div class="form-group mb-1 text-center">
+        <span class="text-danger text-small"><t>@Html.ValidationSummary(true)</t></span>
+    </div>
+    <div class="d-block w-100 text-center">
+        <a class="text-small" href="@Url.RegisterAction()"><t>DONT_HAVE_A_PROFILE</t></a>
+    </div>
+</form>

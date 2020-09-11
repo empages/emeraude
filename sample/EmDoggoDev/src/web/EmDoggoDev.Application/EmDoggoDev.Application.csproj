@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\Persistance\Seed\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\EmDoggoDev.Domain\EmDoggoDev.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

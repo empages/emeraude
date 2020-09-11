@@ -1,17 +1,27 @@
 ﻿using Definux.Emeraude.Client.EmPages.Attributes;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Definux.Emeraude.Client.EmPages.Models
 {
-    public abstract class InitialStateModel<TData> : IInitialStateModel<TData>
-        where TData : class, IInitialStateModelData, new()
+    public class InitialStateModel<TViewModel> : IInitialStateModel<TViewModel>
+        where TViewModel : class, IEmViewModel, new()
     {
         public InitialStateModel(string routeName)
         {
             StateString = Guid.NewGuid().ToString();
-            User = new InitialStateUserModel();
-            RouteName = routeName;
+            User = new RequestUser();
+            ViewData = new Dictionary<string, object>();
+
+            if (routeName.EndsWith("Page", StringComparison.OrdinalIgnoreCase))
+            {
+                RouteName = routeName.Substring(0, routeName.Length - 4);
+            }
+            else
+            {
+                RouteName = routeName;
+            }
         }
 
         [JsonProperty("routeName")]
@@ -23,7 +33,7 @@ namespace Definux.Emeraude.Client.EmPages.Models
 
         [JsonProperty("user")]
         [EmReadOnly]
-        public InitialStateUserModel User { get; set; }
+        public RequestUser User { get; set; }
 
         [JsonProperty("languageCode")]
         [EmReadOnly]
@@ -33,7 +43,18 @@ namespace Definux.Emeraude.Client.EmPages.Models
         [EmReadOnly]
         public int LanguageId { get; set; }
 
-        [JsonProperty("data")]
-        public TData Data { get; set; }
+        [JsonProperty("viewModel")]
+        public TViewModel ViewModel { get; set; }
+
+        [JsonProperty("viewData")]
+        public Dictionary<string, object> ViewData { get; }
+
+        public void AddViewDataItem(string key, object value)
+        {
+            if (!ViewData.ContainsKey(key))
+            {
+                ViewData[key] = value;
+            }
+        }
     }
 }

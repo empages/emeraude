@@ -13,87 +13,72 @@
  * @typedef <#=classItem.Name#>
 <# foreach (var property in classItem.Properties) { #>
  * @property {<#=property.Type.JavaScriptTypeName#>} <#=property.Name.ToFirstLower()#>
-<# } #>
+<#}#>
  */
-
 <# } } #>
-
-class HttpClient {
-    constructor() {
-        this.requestHeaders = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        };
-    }
-
-    get(url, headers = null) {
-        return fetch(url, {
-            method: 'GET',
-            headers: headers || this.requestHeaders,
-            credentials: 'include'
-        })
-            .then(response => response.json());
-    }
-
-    post(url, body, headers = null) {
-        return fetch(url, {
-            method: 'POST',
-            headers: headers || this.requestHeaders,
-            body: JSON.stringify(body),
-            credentials: 'include'
-        })
-            .then(response => response.json());
-    }
-
-    put(url, body, headers = null) {
-        return fetch(url, {
-            method: 'PUT',
-            headers: headers || this.requestHeaders,
-            body: JSON.stringify(body),
-            credentials: 'include'
-        })
-            .then(response => response.json());
-    }
-
-    delete(url, body = null, headers = null) {
-        return fetch(url, {
-            method: 'DELETE',
-            headers: headers || this.requestHeaders,
-            body: JSON.stringify(body),
-            credentials: 'include'
-        })
-            .then(response => response.json());
-    }
-}
-
-const httpClient = new HttpClient();
-
 <# foreach (var controller in (List<string>)Session["EndpointsControllers"]) { #>
 
 export class <#=controller.Replace("ApiController", string.Empty)#>ServiceAgent {
 <# foreach (var endpoint in ((List<Endpoint>)Session["Endpoints"]).Where(x => x.ControllerName == controller).ToList()) { #>
 
-/**
- * <#=endpoint.ControllerName#>/<#=endpoint.ActionName#>
-<#if (endpoint.Arguments.Count > 0) {
-foreach (var argument in endpoint.Arguments) { #>
- * @param {<#=argument.Class.JavaScriptTypeName#>} <#=argument.Name#>
+    /**
+     * <#=endpoint.ControllerName#>/<#=endpoint.ActionName#>
+<#if (endpoint.Arguments.Count > 0) {foreach (var argument in endpoint.Arguments) { #>
+     * @param {<#=argument.Class.JavaScriptTypeName#>} <#=argument.Name#>
 <#}#>
 <#}#>
- * @param {Object} headers
- * @returns {Promise}
- */
-<#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#>, headers = null) {
-	return httpClient.<#=endpoint.MethodName.ToLower()#>(`<#=endpoint.Route.Replace("{", "${")#>`<#if ((endpoint.MethodName.ToLower() == "post" || endpoint.MethodName.ToLower() == "put") && !string.IsNullOrEmpty(endpoint.ArgumentsListString)) { #>, <#=endpoint.ComplexArgument.Name#><# } #>, headers);
-}
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    <#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#>, queryParams = null, headers = null) {<# var requestUrl = "`" + endpoint.Route.Replace("{", "${") + "`";#> 
+        let url = new URL(<#=requestUrl#>, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+<#if (endpoint.MethodName.ToUpper() == "GET") {#>
+        return fetch(url, {
+            method: 'GET',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            credentials: 'include'
+        })
+            .then(response => response.json());
+<#}#>
+<#if (endpoint.MethodName.ToUpper() == "POST") {#>
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: <#if (!string.IsNullOrEmpty(endpoint.ArgumentsListString)) { #>JSON.stringify(<#=endpoint.ComplexArgument.Name#>)<# } else {#>null<#}#>,
+            credentials: 'include'
+        })
+            .then(response => response.json());
+<#}#>
+<#if (endpoint.MethodName.ToUpper() == "PUT") {#>
+        return fetch(url, {
+            method: 'PUT',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: <#if (!string.IsNullOrEmpty(endpoint.ArgumentsListString)) { #>JSON.stringify(<#=endpoint.ComplexArgument.Name#>)<# } else {#>null<#}#>,
+            credentials: 'include'
+        })
+            .then(response => response.json());
+<#}#>
+<#if (endpoint.MethodName.ToUpper() == "DELETE") {#>
+        return fetch(url, {
+            method: 'DELETE',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(body),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+<#}#>
+    }
 <# } #>
 }
 <# } #>
-
 <# foreach (var controller in (List<string>)Session["EndpointsControllers"]) { #>
+
 /**
  * @type {<#=controller.Replace("ApiController", string.Empty)#>ServiceAgent}
  */
 export const <#=controller.Replace("ApiController", string.Empty).ToFirstLower()#>ServiceAgent = new <#=controller.Replace("ApiController", string.Empty)#>ServiceAgent();
-
 <# } #>

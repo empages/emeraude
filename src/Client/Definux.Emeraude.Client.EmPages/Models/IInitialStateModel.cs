@@ -1,11 +1,13 @@
-﻿namespace Definux.Emeraude.Client.EmPages.Models
+﻿using System.Collections.Generic;
+
+namespace Definux.Emeraude.Client.EmPages.Models
 {
-    public interface IInitialStateModel<TData> : IInitialState
-        where TData : class, IInitialStateModelData, new()
+    public interface IInitialStateModel<TViewModel> : IInitialState
+        where TViewModel : class, IEmViewModel, new()
     {
         string RouteName { get; }
 
-        InitialStateUserModel User { get; }
+        RequestUser User { get; }
 
         string LanguageCode { get; set; }
 
@@ -13,6 +15,10 @@
 
         string StateString { get; }
 
-        TData Data { get; set; }
+        TViewModel ViewModel { get; set; }
+
+        Dictionary<string, object> ViewData { get; }
+
+        void AddViewDataItem(string key, object value);
     }
 }

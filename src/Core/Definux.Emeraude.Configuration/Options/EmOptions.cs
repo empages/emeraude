@@ -17,7 +17,7 @@ namespace Definux.Emeraude.Configuration.Options
             AdditonalRoles = new Dictionary<string, string[]>();
         }
 
-        public string ProjectName { get; set; }
+        public string ProjectName { get; set; } = "Emeraude";
 
         public string AdminDashboardIndexRedirectRoute
         {

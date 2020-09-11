@@ -1,6 +1,4 @@
-﻿
-using Definux.Emeraude.Application.Common.Exceptions;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace Definux.Emeraude.Application.Behaviours
 
         public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var context = new ValidationContext(request);
+            var context = new ValidationContext<TRequest>(request);
 
             var failures = this.validators
                 .Select(x => x.Validate(context))

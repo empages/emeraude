@@ -45,8 +45,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 string clientRouteTemplate = ConvertAspNetRouteToVueRoute(routeTemplate);
 
                 var initialStateModelType = pageType.GetProperty("InitialStateModel").PropertyType;
-                var initialStateModelDataType = pageType.GetProperty("InitialStateModelData").PropertyType;
-                var initialStateModelDataRequestType = pageType.GetProperty("InitialStateModelDataRequest").PropertyType;
+                var viewModelType = pageType.GetProperty("ViewModel").PropertyType;
+                var initialStateRequestType = pageType.GetProperty("InitialStateRequest").PropertyType;
 
                 Page currentPage = new Page
                 {

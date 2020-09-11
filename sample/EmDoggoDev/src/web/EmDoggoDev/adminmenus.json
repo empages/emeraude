@@ -1,0 +1,11 @@
+{
+  "navigation": [
+    {
+      "title": "Dashboard",
+      "controller": "AdminAnalytics",
+      "action": "Index",
+      "single": true,
+      "icon": "mdi mdi-television"
+    }
+  ]
+}

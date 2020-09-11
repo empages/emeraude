@@ -33,25 +33,21 @@
       <LastGenOutput>EnumsTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="PagesComponents\Templates\ComponentTemplate.tt">
+    <None Update="EmPages\Templates\ComponentTemplate.tt">
       <LastGenOutput>ComponentTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="PagesInitialStates\Templates\InitialStateTemplate.tt">
-      <LastGenOutput>InitialStateTemplate.cs</LastGenOutput>
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-    </None>
-    <None Update="Router\Templates\IndexTemplate.tt">
-      <LastGenOutput>IndexTemplate.cs</LastGenOutput>
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-    </None>
-    <None Update="Router\Templates\RoutesTemplate.tt">
+    <None Update="Routes\Templates\RoutesTemplate.tt">
       <LastGenOutput>RoutesTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
     <None Update="StaticContent\Templates\StaticContentComponentTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StaticContentComponentTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="TranslationsResources\Templates\I18nConfigTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>I18nConfigTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -70,22 +66,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EnumsTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="PagesComponents\Templates\ComponentTemplate.cs">
+    <Compile Update="EmPages\Templates\ComponentTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ComponentTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="PagesInitialStates\Templates\InitialStateTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>InitialStateTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Router\Templates\IndexTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IndexTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Router\Templates\RoutesTemplate.cs">
+    <Compile Update="Routes\Templates\RoutesTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoutesTemplate.tt</DependentUpon>
@@ -94,6 +80,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StaticContentComponentTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TranslationsResources\Templates\I18nConfigTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>I18nConfigTemplate.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

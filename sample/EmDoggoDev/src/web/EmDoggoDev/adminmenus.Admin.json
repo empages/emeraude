@@ -1,0 +1,79 @@
+{
+  "navigation": [
+    {
+      "title": "Dashboard",
+      "controller": "AdminAnalytics",
+      "action": "Index",
+      "single": true,
+      "icon": "mdi mdi-television"
+    },
+    {
+      "title": "Dogs",
+      "single": true,
+      "icon": "mdi mdi-dog-side",
+      "action": "GetAll",
+      "controller": "AdminDogs"
+    },
+    {
+      "title": "Foods",
+      "single": true,
+      "icon": "mdi mdi-food-apple",
+      "controller": "AdminFoods",
+      "action": "GetAll"
+    },
+    {
+      "title": "Shops",
+      "single": true,
+      "icon": "mdi mdi-store",
+      "controller": "AdminShops",
+      "action": "GetAll"
+    },
+    {
+      "title": "Roots",
+      "single": false,
+      "icon": "mdi mdi-folder-open",
+      "children": [
+        {
+          "title": "Public Root",
+          "action": "Root",
+          "controller": "AdminRoots",
+          "routeValues": {
+            "root": "public"
+          }
+        },
+        {
+          "title": "Private Root",
+          "action": "Root",
+          "controller": "AdminRoots",
+          "routeValues": {
+            "root": "private"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "single": false,
+      "icon": "mdi mdi-account",
+      "children": [
+        {
+          "title": "All Users",
+          "action": "GetAll",
+          "controller": "AdminUsers"
+        }
+      ]
+    },
+    {
+      "title": "System",
+      "single": false,
+      "icon": "mdi mdi-settings",
+      "children": [
+        {
+          "title": "Error Logs",
+          "action": "ErrorLogs",
+          "controller": "AdminSystem"
+        }
+      ]
+    }
+  ]
+}
