@@ -20,6 +20,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
 
         public string Route { get; set; }
 
+        public bool Authorized { get; set; }
+
         [JsonIgnore]
         public ResponseDescription Response { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
@@ -14,25 +15,40 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
     public class PageService : IPageService
     {
         private readonly ClientBuilderOptions clientBuilderOptions;
-        public PageService(IOptions<ClientBuilderOptions> clientBuilderOptions)
+        private readonly ILogger logger;
+
+        public PageService(IOptions<ClientBuilderOptions> clientBuilderOptions, ILogger logger)
         {
             this.clientBuilderOptions = clientBuilderOptions.Value;
+            this.logger = logger;
         }
 
         public List<Page> GetAllPages()
         {
-            var options = this.clientBuilderOptions;
             List<Type> emPagesTypes = new List<Type>();
-            foreach (var assembly in options.Assemblies)
+            foreach (var assembly in this.clientBuilderOptions.Assemblies)
             {
                 var assemblyTypes = assembly.GetTypes().Where(x => x.GetInterfaces().Any(y => y == typeof(IEmPage)) && !x.IsAbstract).ToList();
                 emPagesTypes.AddRange(assemblyTypes);
             }
 
-            emPagesTypes = emPagesTypes.Distinct().ToList();
-
             List<Page> resultPages = new List<Page>();
             foreach (var pageType in emPagesTypes)
+            {
+                var currentPage = BuildPage(pageType);
+
+                if (currentPage != null && resultPages.FirstOrDefault(x => x.Id == currentPage.Id) == null)
+                {
+                    resultPages.Add(currentPage);
+                }
+            }
+
+            return ReorderPagesBasedOnClientRoute(resultPages);
+        }
+
+        private Page BuildPage(Type pageType)
+        {
+            try
             {
                 string pageName = pageType.Name;
                 if (pageName.EndsWith("Page", StringComparison.OrdinalIgnoreCase))
@@ -59,13 +75,13 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     ClientRoute = clientRouteTemplate
                 };
 
-                if (resultPages.FirstOrDefault(x => x.Id == currentPage.Id) == null)
-                {
-                    resultPages.Add(currentPage);
-                }
+                return currentPage;
             }
-
-            return ReorderPagesBasedOnClientRoute(resultPages);
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+                return null;
+            }
         }
 
         private string ConvertAspNetRouteToVueRoute(string aspNetRoute)

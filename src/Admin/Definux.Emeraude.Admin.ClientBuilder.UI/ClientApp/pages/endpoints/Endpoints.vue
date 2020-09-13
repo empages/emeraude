@@ -3,6 +3,10 @@
         <hr />
         <div class="responsive-table">
             <b-table striped hover :items="endpoints" :fields="fields">
+                <template v-slot:cell(authorized)="data">
+                    <b-form-checkbox v-model="data.item.authorized" :disabled="true">
+                    </b-form-checkbox>
+                </template>
             </b-table>
         </div>
     </div>
@@ -14,11 +18,11 @@
         data() {
             return {
                 fields: bootstrapTableFields(
-                    'id',
                     'controllerName',
                     'actionName',
                     'route',
-                    'methodName'
+                    'methodName',
+                    'authorized'
                 ),
                 endpoints: []
             };

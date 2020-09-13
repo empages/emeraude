@@ -123,5 +123,28 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
 
             return BadRequest(errorMessage);
         }
+
+        [HttpPost]
+        [Route("scaffold/generate/{parentModuleId}")]
+        public IActionResult GenerateModulesByParentModuleId(string parentModuleId)
+        {
+            string errorMessage = null;
+            try
+            {
+                var modules = this.scaffoldModulesProvider.GetModulesByParentModuleId(parentModuleId);
+                foreach (var module in modules)
+                {
+                    this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+
+            return BadRequest(errorMessage);
+        }
     }
 }

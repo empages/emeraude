@@ -1,8 +1,8 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.EmPages;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Routes;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.ServiceAgents;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.StaticContent;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.TranslationsResources;
+﻿using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.EmPages;
+using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Routes;
+using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.ServiceAgents;
+using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.StaticContent;
+using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.TranslationsResources;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions

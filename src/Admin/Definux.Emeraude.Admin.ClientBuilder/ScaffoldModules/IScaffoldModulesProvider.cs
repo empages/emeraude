@@ -10,6 +10,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
 
         List<ScaffoldModule> MobileModules { get; }
 
+        List<ScaffoldModule> GetModulesByParentModuleId(string parentModuleId);
+
         bool GenerateModule(string moduleId, out string errorMessage);
     }
 }

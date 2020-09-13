@@ -11,7 +11,7 @@
  * @property {string} createdEntityId
  */
 /**
- * @typedef AddDogRequest
+ * @typedef AddDogCommand
  * @property {string} name
  * @property {number} type
  * @property {number} breed
@@ -27,7 +27,7 @@ export class DogsServiceAgent {
 
     /**
      * DogsApiController/AddDog
-     * @param {AddDogRequest} request
+     * @param {AddDogCommand} request
      * @param {Object} queryParams
      * @param {Object} headers
      * @returns {Promise}

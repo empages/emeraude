@@ -1,53 +1,41 @@
 ﻿<template>
-    <div>
-        <b-row>
-            <b-col cols="6">
-                <b-card no-body class="overflow-hidden h-100">
+    <div id="scaffold-page">
+        <b-card class="bulk-card" title="Modules generation" sub-title="By click the button all modules from selected section will be generated.">
+            <b-row>
+                <hr class="w-100"/>
+                <b-col cols="12">
+                    <h5>By instance type</h5>
                     <b-row no-gutters>
-                        <b-col cols="4">
-                            <b-card-img src="/admin/images/vuejs.jpg" class="rounded-0"></b-card-img>
-                        </b-col>
-                        <b-col cols="8">
-                            <b-card-body title="Web Modules">
-                                <b-card-text>
-                                    This module generate all VueJs modules in the order specified from the system. After generation a WebPack build is a required action.
-                                </b-card-text>
-                                <button class="btn btn-primary" @click="generateWebModules">Generate</button>
-                            </b-card-body>
-                        </b-col>
+                        <button class="btn btn-primary cb-gen-btn" v-if="hasWebModules" @click="generateWebModules"><i class="mdi mdi-desktop-mac"></i> Web Modules</button>
+                        <button class="btn btn-primary cb-gen-btn" v-if="hasMobileModules" @click="generateMobileModules"><i class="mdi mdi-cellphone"></i> Mobile Modules</button>
                     </b-row>
-                </b-card>
-            </b-col>
-            <b-col cols="6">
-                <b-card no-body class="overflow-hidden h-100">
+                </b-col>
+                <hr class="w-100" />
+                <b-col cols="12">
+                    <h5>By parent type</h5>
                     <b-row no-gutters>
-                        <b-col cols="4">
-                            <b-card-img src="/admin/images/xamarin.jpg" class="rounded-0"></b-card-img>
-                        </b-col>
-                        <b-col cols="8">
-                            <b-card-body title="Mobile Modules">
-                                <b-card-text>
-                                    This module generate all Xamarin modules in the order specified from the system. After generation the a Xamarin project build is a required action.
-                                </b-card-text>
-                                <button class="btn btn-primary" @click="generateMobileModules">Generate</button>
-                            </b-card-body>
-                        </b-col>
+                        <button class="btn btn-primary cb-gen-btn" v-for="(uniqueModule, uniqueModuleIdIndex) in uniqueModulesByParent" :key="uniqueModule.parentModuleId" @click="generateModules(uniqueModule.parentModuleId)"><img :src="'data:image/png;base64, ' + uniqueModule.icon" class="cb-gen-btn-img" /> <span class="cb-gen-btn-text">{{ uniqueModule.scaffoldTypeName }} Modules</span></button>
                     </b-row>
-                </b-card>
-            </b-col>
-        </b-row>
+                </b-col>
+            </b-row>
+        </b-card>
         <hr />
         <div>
             <div class="responsive-table">
                 <b-table striped hover :items="modules" :fields="fields" v-if="modules.length > 0">
+                    <template v-slot:cell(icon)="data">
+                        <img class="table-row-icon" :src="'data:image/png;base64, ' + data.item.icon"/>
+                    </template>
                     <template v-slot:cell(name)="data">
                         <span>{{data.item.name}}</span>
                     </template>
                     <template v-slot:cell(type)="data">
                         <span class="badge" :class="{
+                             'badge-dark' : data.item.type === 0,
                              'badge-primary' : data.item.type === 1,
                              'badge-info' : data.item.type === 2 }">
                             <i class="mdi" :class="{
+                             'mdi-sticker-outline' : data.item.type === 0,
                              'mdi-desktop-mac' : data.item.type === 1,
                              'mdi-cellphone' : data.item.type === 2 }">
                             </i>
@@ -62,7 +50,7 @@
                         </b-form-checkbox>
                     </template>
                     <template v-slot:cell(actions)="data">
-                        <button type="button" class="btn btn-icons btn-primary" @click="generate(data.item)" title="Generate"><i class="mdi mdi-flash"></i></button>
+                        <button type="button" class="btn btn-icons btn-primary" @click="generate(data.item)" title="Generate"><i class="mdi mdi-play-speed"></i></button>
                     </template>
                 </b-table>
             </div>
@@ -77,6 +65,7 @@
             return {
                 modules: [],
                 fields: bootstrapTableFields(
+                    'icon',
                     'name',
                     'type',
                     'generated',
@@ -85,7 +74,42 @@
                 ),
             }
         },
+        computed: {
+            hasWebModules() {
+                return this.modules.filter(x => x.type == 1).length > 0;
+            },
+            hasMobileModules() {
+                return this.modules.filter(x => x.type == 2).length > 0;
+            },
+            uniqueModulesIdsByParent() {
+                if (this.modules != null && this.modules.length > 0) {
+                    return this.modules.map(x => x.parentModuleId).filter((value, index, self) => {
+                        return self.indexOf(value) === index;
+                    });
+                }
+
+                return [];
+            },
+            uniqueModulesByParent() {
+                let modules = [];
+                for (let i = 0; i < this.uniqueModulesIdsByParent.length; i++) {
+                    modules.push(this.getDefaultModuleByParentModuleId(this.uniqueModulesIdsByParent[i]))
+                }
+
+                return modules;
+            }
+        },
         methods: {
+            getDefaultModuleByParentModuleId(parentModuleId) {
+                if (this.modules != null && this.modules.length > 0) {
+                    let currentModules = this.modules.filter(x => x.parentModuleId == parentModuleId);
+                    if (currentModules.length > 0) {
+                        return currentModules[0];
+                    }
+                }
+
+                return null;
+            },
             loadModules() {
                 let self = this;
                 this.$http.get('/api/client-builder/scaffold/modules')
@@ -103,6 +127,27 @@
                 })
                     .then(response => {
                         self.$bvToast.toast(module.name + ' has been generated successfully.', {
+                            title: 'Generation Completed',
+                            autoHideDelay: 3000,
+                            variant: 'success',
+                            solid: true
+                        });
+                        self.loadModules();
+                    })
+                    .catch(error => {
+                        self.$bvToast.toast(error.response.data, {
+                            title: 'Generation Failed',
+                            autoHideDelay: 3000,
+                            variant: 'danger',
+                            solid: true
+                        });
+                    });
+            },
+            generateModules(parentModuleId) {
+                let self = this;
+                this.$http.post('/api/client-builder/scaffold/generate/' + parentModuleId, {})
+                    .then(response => {
+                        self.$bvToast.toast('Modules have been generated successfully.', {
                             title: 'Generation Completed',
                             autoHideDelay: 3000,
                             variant: 'success',
@@ -167,3 +212,54 @@
         }
     }
 </script>
+
+<style lang="scss">
+    #scaffold-page {
+        .bulk-card {
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .card-title {
+                margin: 0px !important;
+            }
+
+            .card-subtitle {
+                margin-top: 0px !important;
+                font-size: 12px;
+                margin-bottom: 15px !important;
+            }
+        }
+
+        .table-row-icon {
+            border-radius: 0px !important;
+        }
+
+        .cb-gen-btn {
+            margin-right: 4px;
+
+            .cb-gen-btn-img {
+                height: 16px;
+            }
+                        
+            &:hover,
+            &:active,
+            &:focus {
+                .cb-gen-btn-img {
+                    -webkit-filter: brightness(0) invert(1);
+                    filter: brightness(0) invert(1);
+                }
+            }
+
+            .cb-gen-btn-text {
+                position: relative;
+                top: 2px;
+            }
+        }
+    }
+
+</style>

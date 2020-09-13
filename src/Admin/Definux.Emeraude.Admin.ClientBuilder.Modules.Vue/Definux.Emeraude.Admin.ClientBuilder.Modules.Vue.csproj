@@ -25,27 +25,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ServiceAgents\Templates\EndpointsTemplate.tt">
+    <None Update="Implementations\ServiceAgents\Templates\EndpointsTemplate.tt">
       <LastGenOutput>EndpointsTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="ServiceAgents\Templates\EnumsTemplate.tt">
+    <None Update="Implementations\ServiceAgents\Templates\EnumsTemplate.tt">
       <LastGenOutput>EnumsTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="EmPages\Templates\ComponentTemplate.tt">
+    <None Update="Implementations\EmPages\Templates\ComponentTemplate.tt">
       <LastGenOutput>ComponentTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="Routes\Templates\RoutesTemplate.tt">
+    <None Update="Implementations\Routes\Templates\RoutesTemplate.tt">
       <LastGenOutput>RoutesTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </None>
-    <None Update="StaticContent\Templates\StaticContentComponentTemplate.tt">
+    <None Update="Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StaticContentComponentTemplate.cs</LastGenOutput>
     </None>
-    <None Update="TranslationsResources\Templates\I18nConfigTemplate.tt">
+    <None Update="Implementations\TranslationsResources\Templates\I18nConfigTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>I18nConfigTemplate.cs</LastGenOutput>
     </None>
@@ -56,35 +56,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ServiceAgents\Templates\EndpointsTemplate.cs">
+    <Compile Update="Implementations\ServiceAgents\Templates\EndpointsTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EndpointsTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="ServiceAgents\Templates\EnumsTemplate.cs">
+    <Compile Update="Implementations\ServiceAgents\Templates\EnumsTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EnumsTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="EmPages\Templates\ComponentTemplate.cs">
+    <Compile Update="Implementations\EmPages\Templates\ComponentTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ComponentTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="Routes\Templates\RoutesTemplate.cs">
+    <Compile Update="Implementations\Routes\Templates\RoutesTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoutesTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="StaticContent\Templates\StaticContentComponentTemplate.cs">
+    <Compile Update="Implementations\StaticContent\Templates\StaticContentComponentTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StaticContentComponentTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="TranslationsResources\Templates\I18nConfigTemplate.cs">
+    <Compile Update="Implementations\TranslationsResources\Templates\I18nConfigTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>I18nConfigTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -97,6 +102,13 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -58,6 +58,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
             return Modules.FirstOrDefault(x => x.Id == moduleId);
         }
 
+        public List<ScaffoldModule> GetModulesByParentModuleId(string parentModuleId)
+        {
+            return Modules?
+                .Where(x => x.ParentModuleId.ToLower() == parentModuleId)
+                .OrderBy(x => x.Order)
+                .ToList();
+        }
+
         public bool GenerateModule(string moduleId, out string errorMessage)
         {
             var module = GetModule(moduleId);

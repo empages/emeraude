@@ -24,31 +24,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DataTransferObjects\Templates\DtoTemplate.tt">
+    <None Update="Implementations\DataTransferObjects\Templates\DtoTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DtoTemplate.cs</LastGenOutput>
     </None>
-    <None Update="DataTransferObjects\Templates\EnumsTemplate.tt">
+    <None Update="Implementations\DataTransferObjects\Templates\EnumsTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>EnumsTemplate.cs</LastGenOutput>
     </None>
-    <None Update="ServiceAgents\Templates\ServiceAgentInterfaceTemplate.tt">
+    <None Update="Implementations\ServiceAgents\Templates\ServiceAgentInterfaceTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ServiceAgentInterfaceTemplate.cs</LastGenOutput>
     </None>
-    <None Update="ServiceAgents\Templates\ServiceAgentClassTemplate.tt">
+    <None Update="Implementations\ServiceAgents\Templates\ServiceAgentClassTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ServiceAgentClassTemplate.cs</LastGenOutput>
     </None>
-    <None Update="ServiceAgents\Templates\ServiceAgentsRegistratorTemplate.tt">
+    <None Update="Implementations\ServiceAgents\Templates\ServiceAgentsRegistratorTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ServiceAgentsRegistratorTemplate.cs</LastGenOutput>
     </None>
-    <None Update="TranslationsResources\Templates\TranslationsKeysTemplate.tt">
+    <None Update="Implementations\TranslationsResources\Templates\TranslationsKeysTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TranslationsKeysTemplate.cs</LastGenOutput>
     </None>
-    <None Update="TranslationsResources\Templates\TranslationsTemplate.tt">
+    <None Update="Implementations\TranslationsResources\Templates\TranslationsTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TranslationsTemplate.cs</LastGenOutput>
     </None>
@@ -59,40 +59,45 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DataTransferObjects\Templates\DtoTemplate.cs">
+    <Compile Update="Implementations\DataTransferObjects\Templates\DtoTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DtoTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="DataTransferObjects\Templates\EnumsTemplate.cs">
+    <Compile Update="Implementations\DataTransferObjects\Templates\EnumsTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EnumsTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="ServiceAgents\Templates\ServiceAgentInterfaceTemplate.cs">
+    <Compile Update="Implementations\ServiceAgents\Templates\ServiceAgentInterfaceTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ServiceAgentInterfaceTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="ServiceAgents\Templates\ServiceAgentClassTemplate.cs">
+    <Compile Update="Implementations\ServiceAgents\Templates\ServiceAgentClassTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ServiceAgentClassTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="ServiceAgents\Templates\ServiceAgentsRegistratorTemplate.cs">
+    <Compile Update="Implementations\ServiceAgents\Templates\ServiceAgentsRegistratorTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ServiceAgentsRegistratorTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="TranslationsResources\Templates\TranslationsKeysTemplate.cs">
+    <Compile Update="Implementations\TranslationsResources\Templates\TranslationsKeysTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TranslationsKeysTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="TranslationsResources\Templates\TranslationsTemplate.cs">
+    <Compile Update="Implementations\TranslationsResources\Templates\TranslationsTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TranslationsTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -105,6 +110,13 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

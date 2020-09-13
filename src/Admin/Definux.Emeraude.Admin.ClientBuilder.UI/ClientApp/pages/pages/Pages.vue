@@ -3,6 +3,13 @@
         <hr />
         <div class="responsive-table">
             <b-table striped hover :items="pages" :fields="fields">
+                <template v-slot:cell(authorized)="data">
+                    <b-form-checkbox v-model="data.item.authorized" :disabled="true">
+                    </b-form-checkbox>
+                </template>
+                <template v-slot:cell(actions)="data">
+                    <a :href="data.item.route" class="btn btn-icons btn-primary" target="_blank" title="Visit"><i class="mdi mdi-web"></i></a>
+                </template>
             </b-table>
         </div>
     </div>
@@ -14,10 +21,10 @@
         data() {
             return {
                 fields: bootstrapTableFields(
-                    'id',
                     'name',
                     'route',
-                    'authorized'
+                    'authorized',
+                    'actions'
                 ),
                 pages: [],
             }

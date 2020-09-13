@@ -37,7 +37,13 @@ namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
 
         public string Name { get; set; }
 
+        public string Icon { get; protected set; }
+
+        public string ScaffoldTypeName { get; protected set; }
+
         public InstanceType Type { get; set; }
+
+        public string ParentModuleId { get; protected set; }
 
         public List<ModuleFile> Files { get; private set; }
 
