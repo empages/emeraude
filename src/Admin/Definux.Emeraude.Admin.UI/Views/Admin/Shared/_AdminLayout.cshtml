@@ -24,22 +24,7 @@
         </div>
         <partial name="_Footer"/>
     </div>
-    <div id="resolution-message-container">
-        <div class="resolution-card">
-            <div class="card">
-                <div class="card-header">
-                    <p><img src="~/admin/images/warning-icon.png" /> Unsupported Screen Resolution</p>
-                </div>
-                <div class="card-body">
-                    <p>Definux requires your screen resolution must be at least 1024 px. If you desktop machine does not support required resolution please log out from the system.</p>
-                    <form action="@Url.Action("Logout", "AdminAccount")" method="post">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="float-right btn btn-primary-inverse dropdown-item w-auto">Log out</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_ResolutionMessageContainer"/>
     <partial name="_AdminSharedScripts"/>
     @RenderSection("Scripts", required: false)
 </body>

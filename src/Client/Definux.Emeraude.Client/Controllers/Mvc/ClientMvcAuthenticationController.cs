@@ -39,6 +39,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             HideActivityLogParameters = true;
         }
 
+        [HttpGet]
         [HttpPost]
         [Route(LogoutRoute)]
         public async Task<IActionResult> Logout()

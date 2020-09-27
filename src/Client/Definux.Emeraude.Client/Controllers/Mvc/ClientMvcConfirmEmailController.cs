@@ -42,7 +42,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
         public ViewResult ConfirmEmailView(object model)
         {
-            return View("ConfirmEmail", model);
+            return View("ConfirmEmailSuccess", model);
         }
     }
 }
