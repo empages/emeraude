@@ -25,7 +25,9 @@ namespace Definux.Emeraude.Admin.UI.AdminMenu
 
             string schemeContentString = File.ReadAllText(Path.Combine(contentRootPath, schemeFileName));
             AdminNavigationScheme sheme = JsonConvert.DeserializeObject<AdminNavigationScheme>(schemeContentString);
+
             this.Menus = sheme.Menus;
+            this.InsightsItems = sheme.InsightsItems;
         }
 
         public AdminNavigationScheme()
@@ -35,5 +37,19 @@ namespace Definux.Emeraude.Admin.UI.AdminMenu
 
         [JsonProperty("navigation")]
         public List<SidebarMenuSectionItem> Menus { get; set; }
+
+        [JsonProperty("insights")]
+        public List<SidebarInsightItem> InsightsItems { get; set; }
+
+        public void ApplyCurrentRoute(string currentRoute)
+        {
+            if (Menus != null && Menus.Count > 0)
+            {
+                foreach (var menu in Menus)
+                {
+                    menu.BuildState(currentRoute);
+                }
+            }
+        }
     }
 }

@@ -1,38 +1,19 @@
-﻿using Definux.HtmlBuilder;
-using Microsoft.AspNetCore.Html;
+﻿using Definux.Emeraude.Admin.UI.AdminMenu;
+using Definux.HtmlBuilder;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Definux.Emeraude.Admin.UI.TagHelpers
 {
     [HtmlTargetElement("menu-section", TagStructure = TagStructure.NormalOrSelfClosing)]
     public class MenuSectionTagHelper : TagHelper
     {
-        [HtmlAttributeName("controllers")]
-        public List<string> Controllers { get; set; }
-
-        [HtmlAttributeName("controller")]
-        public string Controller { get; set; }
-
         [HtmlAttributeName("index")]
         public int Index { get; set; }
 
-        [HtmlAttributeName("icon")]
-        public string Icon { get; set; }
-
-        [HtmlAttributeName("title")]
-        public string Title { get; set; }
-
-        [HtmlAttributeName("href")]
-        public string Href { get; set; }
-
-        [HtmlAttributeName("single")]
-        public bool Single { get; set; }
-
+        [HtmlAttributeName("model")]
+        public SidebarMenuSectionItem Model { get; set; }
 
         [ViewContext]
         [HtmlAttributeNotBound]
@@ -47,45 +28,57 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
 
         private TagHelperOutput ProcessOutput(TagHelperOutput output)
         {
-            var controllersNames = Controllers?.Select(x => x.ToLower()).ToList();
             string sectionIdentificator = $"section{Index}";
-            string routeController = ViewContext.RouteData.Values["controller"].ToString().ToLower();
-            bool collapsed = controllersNames != null ? !controllersNames.Contains(routeController) : !Controller.ToLower().Equals(routeController);
 
             var htmlBuilder = new HtmlBuilder.HtmlBuilder();
             htmlBuilder
                 .StartElement(HtmlTags.Li)
-                .WithConditionalClasses(string.Empty, "active", collapsed, "nav-item main-nav-item")
+                .WithConditionalClasses("active", string.Empty, Model.IsActive, "nav-item main-nav-item")
                 .Append(x => x
                     .OpenElement(HtmlTags.A)
-                    .WithConditionalClasses("collapsed", string.Empty, Single && collapsed, "nav-link sidebar-main-menu-item")
-                    .WithAttribute("title", Title)
-                    .WithAttributeIf("href", Href, Single)
-                    .WithAttributeIf("href", $"#{sectionIdentificator}", !Single)
-                    .WithAttributeIf("aria-controls", sectionIdentificator, !Single)
-                    .WithAttributeIf("aria-expanded", (!collapsed).ToString().ToLower(), !Single)
-                    .WithAttributeIf("data-toggle", "collapse", !Single)
+                    .WithConditionalClasses("collapsed", string.Empty, Model.IsSingle && Model.IsActive, "nav-link sidebar-main-menu-item")
+                    .WithAttribute("title", Model.Title)
+                    .WithAttributeIf("href", Model.SingleLinkItem?.DefaultRoute, Model.IsSingle && !Model.Dropdown)
+                    .WithAttributeIf("href", $"#{sectionIdentificator}", Model.Dropdown)
+                    .WithAttributeIf("aria-controls", sectionIdentificator, !Model.IsSingle)
+                    .WithAttributeIf("aria-expanded", Model.IsActive.ToString().ToLower(), Model.Dropdown)
+                    .WithAttributeIf("data-toggle", "collapse", Model.Dropdown)
                     .Append(xx => xx
                         .OpenElement(HtmlTags.I)
-                        .WithClasses($"menu-icon {Icon}")
+                        .WithClasses($"menu-icon {Model.Icon}")
                     )
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Span)
                         .WithClasses("menu-title")
-                        .Append(Title)
+                        .Append(Model.Title)
                     )
-                    .AppendIf(!Single, xx => xx
+                    .AppendIf(Model.Dropdown, xx => xx
                         .OpenElement(HtmlTags.I)
                         .WithClasses("menu-arrow")
                     ))
-                .AppendIf(!Single, x => x
+                .AppendIf(Model.Dropdown, x => x
                     .OpenElement(HtmlTags.Div)
-                    .WithConditionalClasses(string.Empty, "show", collapsed, "collapse")
+                    .WithConditionalClasses("show", string.Empty, Model.IsActive && Model.Dropdown, "collapse")
                     .WithId(sectionIdentificator)
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Ul)
                         .WithClasses("nav flex-column sub-menu")
-                        .Append(output.GetChildContentAsync()?.Result?.GetContent())
+                        .AppendMultiple(xxx => 
+                        {
+                            foreach (var child in Model.Children)
+                            {
+                                xxx.Append(xxxx => xxxx
+                                    .OpenElement(HtmlTags.Li)
+                                    .WithClasses("nav-item")
+                                    .Append(xxxxx => xxxxx
+                                        .OpenElement(HtmlTags.A)
+                                        .WithConditionalClasses("active", string.Empty, child.IsActive, "nav-link")
+                                        .WithAttribute("title", child.Title)
+                                        .WithAttribute("href", child.DefaultRoute)
+                                        .Append(child.Title)
+                                    ));
+                            }
+                        })
                     ));
 
             output = htmlBuilder.ApplyToTagHelperOutput(output);

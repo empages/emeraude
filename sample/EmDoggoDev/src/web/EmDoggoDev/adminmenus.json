@@ -2,10 +2,16 @@
   "navigation": [
     {
       "title": "Dashboard",
-      "controller": "AdminAnalytics",
-      "action": "Index",
-      "single": true,
-      "icon": "mdi mdi-television"
+      "icon": "mdi mdi-television",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin",
+            "/admin/analytics"
+          ]
+        }
+      ]
     }
   ]
 }

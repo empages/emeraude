@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Styles\scss\shared\" />
     <Folder Include="wwwroot\admin\fonts\" />
     <Folder Include="wwwroot\admin\css\" />
     <Folder Include="wwwroot\admin\icons\" />

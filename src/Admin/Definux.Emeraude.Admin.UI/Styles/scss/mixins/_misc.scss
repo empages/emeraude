@@ -1,4 +1,9 @@
-//generic transform
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
 @mixin transform($transforms) {
   -moz-transform: $transforms;
   -o-transform: $transforms;

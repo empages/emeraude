@@ -11,26 +11,20 @@ namespace Definux.Emeraude.Admin.UI.UIElements.Form.Implementations
                 .WithClasses("row m-0")
                 .Append(x => x
                     .OpenElement(HtmlTags.Div)
-                    .WithClasses("form-check form-check-flat col-4")
+                    .WithClasses("custom-control custom-checkbox")
+                    .Append(xx => xx
+                        .OpenElement(HtmlTags.Input)
+                        .WithId(this.TargetProperty)
+                        .WithClasses("custom-control-input")
+                        .WithAttribute("type", "checkbox")
+                        .WithAttribute("name", TargetProperty)
+                        .WithAttributeIf("checked", "checked", Convert.ToBoolean(Value)))
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Label)
-                        .WithClasses("form-check-label")
-                        .Append(xxx => xxx
-                            .OpenElement(HtmlTags.Input)
-                            .WithId($"flat-checkbox-{Guid.NewGuid()}")
-                            .WithAttribute("type", "checkbox")
-                            .WithAttribute("name", TargetProperty)
-                            .WithAttributeIf("checked", "checked", Convert.ToBoolean(Value))
-                            .WithAttribute("value", "true")
-                            .WithClasses("form-check-input")
-                        )
-                        .Append($" {this.Label} ")
-                        .Append(xxx => xxx
-                            .OpenElement(HtmlTags.I)
-                            .WithClasses("input-helper")
-                        )
-                    )
-                );
+                        .WithClasses("custom-control-label")
+                        .WithAttribute("for", this.TargetProperty)
+                        .Append(this.Label)
+                 ));
         }
     }
 }

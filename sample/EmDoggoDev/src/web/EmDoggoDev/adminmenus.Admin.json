@@ -1,77 +1,108 @@
 {
+  "insights": [
+    {
+      "title": "Client Login",
+      "route": "/login",
+      "icon": "mdi mdi-account",
+      "blank": true
+    }
+  ],
   "navigation": [
     {
       "title": "Dashboard",
-      "controller": "AdminAnalytics",
-      "action": "Index",
-      "single": true,
-      "icon": "mdi mdi-television"
+      "icon": "mdi mdi-television",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin",
+            "/admin/analytics"
+          ]
+        }
+      ]
     },
     {
       "title": "Dogs",
-      "single": true,
       "icon": "mdi mdi-dog-side",
-      "action": "GetAll",
-      "controller": "AdminDogs"
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/dogs",
+            "/admin/dogs/{*}"
+          ]
+        }
+      ]
     },
     {
       "title": "Foods",
-      "single": true,
       "icon": "mdi mdi-food-apple",
-      "controller": "AdminFoods",
-      "action": "GetAll"
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/foods",
+            "/admin/foods/{*}"
+          ]
+        }
+      ]
     },
     {
       "title": "Shops",
-      "single": true,
       "icon": "mdi mdi-store",
-      "controller": "AdminShops",
-      "action": "GetAll"
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/shops",
+            "/admin/shops/{*}"
+          ]
+        }
+      ]
     },
     {
       "title": "Roots",
-      "single": false,
       "icon": "mdi mdi-folder-open",
       "children": [
         {
           "title": "Public Root",
-          "action": "Root",
-          "controller": "AdminRoots",
-          "routeValues": {
-            "root": "public"
-          }
+          "routes": [
+            "/admin/roots/public",
+            "/admin/roots/public/{*}"
+          ]
         },
         {
           "title": "Private Root",
-          "action": "Root",
-          "controller": "AdminRoots",
-          "routeValues": {
-            "root": "private"
-          }
+          "routes": [
+            "/admin/roots/private",
+            "/admin/roots/private/{*}"
+          ]
         }
       ]
     },
     {
       "title": "Users",
-      "single": false,
       "icon": "mdi mdi-account",
       "children": [
         {
-          "title": "All Users",
-          "action": "GetAll",
-          "controller": "AdminUsers"
+          "title": "Index",
+          "routes": [
+            "/admin/users",
+            "/admin/users/{*}"
+          ]
         }
       ]
     },
     {
       "title": "System",
-      "single": false,
       "icon": "mdi mdi-settings",
+      "dropdown": true,
       "children": [
         {
           "title": "Error Logs",
-          "action": "ErrorLogs",
-          "controller": "AdminSystem"
+          "routes": [
+            "/admin/system/error-logs"
+          ]
         }
       ]
     }

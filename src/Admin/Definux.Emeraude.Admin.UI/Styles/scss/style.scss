@@ -2,12 +2,8 @@
 @import "../../node_modules/bootstrap/scss/variables";
 
 @import "variables";
-@import "csharp-variables";
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
-/*-------------------------------------------------------------------*/
-
-/* === Template mixins === */
 
 @import "mixins/animation";
 @import "mixins/accordions";
@@ -18,15 +14,11 @@
 @import "mixins/buttons";
 @import "mixins/cards";
 @import "mixins/misc";
-@import "mixins/no-ui-slider";
 @import "mixins/pagination";
 @import "mixins/text";
 @import "mixins/popovers";
 @import "mixins/tabs";
 @import "mixins/tooltips";
-/*-------------------------------------------------------------------*/
-
-/* === Core Styles === */
 
 @import "reset";
 @import "fonts";
@@ -34,20 +26,14 @@
 @import "typography";
 @import "misc";
 @import "utilities";
-@import "demo";
-@import "dashboard";
 @import "sidebar";
 @import "navbar";
 @import "layouts";
 @import "footer";
-/*-------------------------------------------------------------------*/
-
-/* === Components === */
 
 @import "components/accordions";
 @import "components/badges";
 @import "components/bootstrap-alerts";
-@import "components/bootstrap-progress";
 @import "components/buttons";
 @import "components/breadcrumbs";
 @import "components/borders";
@@ -55,84 +41,17 @@
 @import "components/checkbox-radio";
 @import "components/dropdown";
 @import "components/forms";
-@import "components/google-maps";
-@import "components/icons";
 @import "components/lists";
-@import "components/loaders/loaders";
 @import "components/modals";
 @import "components/nav";
-@import "components/new-account";
 @import "components/pagination";
 @import "components/popovers";
-@import "components/portfolio";
-@import "components/preview";
-@import "components/pricing-table";
 @import "components/tables";
 @import "components/tabs";
-@import "components/settings-panel";
-@import "components/todo-list";
 @import "components/tooltips";
-@import "components/user-profile";
-@import "components/widgets";
-@import "components/timeline/timeline-horizontal";
-@import "components/timeline/timeline-vertical";
-@import "components/csharp-color-buttons";
-/*-------------------------------------------------------------------*/
-
-/* === Email === */
-
-@import "components/mail-components/mail-sidebar";
-@import "components/mail-components/view-controller/view-controller";
-/*-------------------------------------------------------------------*/
-
-/* === Plugin overrides === */
-
-@import "components/plugin-overrides/ace";
-@import "components/plugin-overrides/avgrund";
-@import "components/plugin-overrides/bootstrap-tour";
-@import "components/plugin-overrides/chartjs";
-@import "components/plugin-overrides/chartist";
-@import "components/plugin-overrides/codemirror";
-@import "components/plugin-overrides/colcade";
-@import "components/plugin-overrides/colorpicker";
-@import "components/plugin-overrides/context-menu";
-@import "components/plugin-overrides/clockpicker";
-@import "components/plugin-overrides/data-tables";
-@import "components/plugin-overrides/datepicker";
-@import "components/plugin-overrides/dropify";
-@import "components/plugin-overrides/dropzone";
-@import "components/plugin-overrides/flot-chart";
-@import "components/plugin-overrides/google-charts";
-@import "components/plugin-overrides/icheck";
-@import "components/plugin-overrides/jquery-file-upload";
-@import "components/plugin-overrides/js-grid";
-@import "components/plugin-overrides/jvectormap";
-@import "components/plugin-overrides/light-gallery";
-@import "components/plugin-overrides/listify";
-@import "components/plugin-overrides/no-ui-slider";
-@import "components/plugin-overrides/owl-carousel";
-@import "components/plugin-overrides/progressbar-js";
-@import "components/plugin-overrides/pws-tabs";
-@import "components/plugin-overrides/quill";
-@import "components/plugin-overrides/rating";
-@import "components/plugin-overrides/select2";
-@import "components/plugin-overrides/summernote";
-@import "components/plugin-overrides/sweet-alert";
-@import "components/plugin-overrides/switchery";
-@import "components/plugin-overrides/tags";
-@import "components/plugin-overrides/tinymce";
-@import "components/plugin-overrides/toast";
-@import "components/plugin-overrides/typeahead";
-@import "components/plugin-overrides/wysieditor";
-@import "components/plugin-overrides/x-editable";
-@import "components/plugin-overrides/wizard";
-/*-------------------------------------------------------------------*/
-
-/* === Landing screens === */
+@import "components/dropzone";
+@import "components/codemirror";
+@import "components/datepicker";
+@import "components/sweet-alert";
 
 @import "screens/auth";
-@import "screens/error";
-@import "screens/lock-screen";
-@import "screens/landing";
-@import "screens/profile-page";
-/*-------------------------------------------------------------------*/

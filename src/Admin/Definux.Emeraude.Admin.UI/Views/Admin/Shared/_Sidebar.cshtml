@@ -4,8 +4,10 @@
 @{
     string role = User.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Role).FirstOrDefault()?.Value;
     var navigationScheme = new AdminNavigationScheme(hostingEnvironment.ContentRootPath, role);
+    navigationScheme.ApplyCurrentRoute(ViewContext.HttpContext.Request.Path);
     int sectionCounter = 1;
 }
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item nav-profile">
@@ -17,6 +19,24 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item pt-2 pb-2 pl-1" target="_blank" href="/robots.txt"><i class="mr-2 mdi mdi-robot"></i> robots.txt</a>
                         <a class="dropdown-item pt-2 pb-2 pl-1" target="_blank" href="/sitemap.xml"><i class="mr-2 mdi mdi-sitemap"></i> Sitemap</a>
+                        @if (navigationScheme.InsightsItems != null && navigationScheme.InsightsItems.Count > 0)
+                        {
+                            <div class="dropdown-divider"></div>
+                            foreach (var item in navigationScheme.InsightsItems)
+                            {
+                                string targetBlank = item.Blank ? "target=\"_blank\"" : string.Empty;
+                                string iconMargin = item.IsButton ? string.Empty : " mr-2";
+                                string icon = !string.IsNullOrWhiteSpace(item.Icon) ? $"<i class=\"{item.Icon}{iconMargin}\"></i> " : string.Empty;
+                                if (!item.IsButton)
+                                {
+                                    <a class="dropdown-item pt-2 pb-2 pl-1" href="@item.Route" @targetBlank>@Html.Raw(icon)@item.Title</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary btn-block d-block" href="@item.Route" @targetBlank>@Html.Raw(icon)@item.Title</a>
+                                }
+                            }
+                        }
                         @if (hostingEnvironment.IsDevelopment())
                         {
                             <div class="dropdown-divider"></div>
@@ -31,20 +51,7 @@
         </li>
         @foreach (var menuSection in navigationScheme.Menus)
         {
-            if (menuSection.Single)
-            {
-                <menu-section index="@sectionCounter" controller="@menuSection.Controller" title="@menuSection.Title" icon="@menuSection.Icon" single="true" href="@Url.Action(menuSection.Action, menuSection.Controller, new { Area = "Admin" })" />
-            }
-            else
-            {
-                <menu-section index="@sectionCounter" controllers="@menuSection.Controllers" title="@menuSection.Title" icon="@menuSection.Icon">
-                    @foreach (var navigationLink in menuSection.Children)
-                    {
-                        <sidebar-navigation-link title="@navigationLink.Title" action="@navigationLink.Action" controller="@navigationLink.Controller" route-values="@navigationLink.RouteValues" />
-                    }
-                </menu-section>
-            }
-
+            <menu-section model="@menuSection" index="sectionCounter" />
             sectionCounter++;
         }
         <li class="nav-item main-nav-item">

@@ -4,38 +4,35 @@ var gulp = require("gulp"),
     sass = require('gulp-sass'),
     concat = require('gulp-concat'),
     cssmin = require('gulp-cssmin'),
-    rename = require('gulp-rename'),
     uglify = require('gulp-uglify-es').default;
 
-gulp.task('styles', function () {
-    return gulp
+gulp.task('styles', () =>
+    gulp
         .src('./Styles/scss/style.scss')
         .pipe(sass())
         .pipe(cssmin({ keepSpecialComments: 0 }))
         .pipe(concat('style.min.css'))
-        .pipe(gulp.dest('./wwwroot/admin/css'));
-});
+        .pipe(gulp.dest('./wwwroot/admin/css'))
+);
 
-gulp.task('styles:vendors', function () {
-    return gulp
+gulp.task('styles:vendors', () =>
+    gulp
         .src([
             './node_modules/bootstrap/dist/css/bootstrap.min.css',
             './node_modules/perfect-scrollbar/css/perfect-scrollbar.css',
             './node_modules/jquery-tags-input/dist/jquery.tagsinput.min.css',
-            './node_modules/sweetalert2/dist/sweetalert2.min.css',
             './node_modules/bootstrap-vue/dist/bootstrap-vue.min.css',
-            './node_modules/apexcharts/dist/apexcharts.css',
             './node_modules/dropzone/dist/dropzone.css',
             './node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
             './node_modules/jquery-timepicker/jquery.timepicker.css'
         ])
         .pipe(cssmin({ keepSpecialComments: 0 }))
         .pipe(concat('style.vendors.min.css'))
-        .pipe(gulp.dest('./wwwroot/admin/css'));
-});
+        .pipe(gulp.dest('./wwwroot/admin/css'))
+);
 
-gulp.task('scripts', function () {
-    return gulp.src([
+gulp.task('scripts', () =>
+    gulp.src([
         "./Scripts/js/shared/off-canvas.js",
         "./Scripts/js/shared/hoverable-collapse.js",
         "./Scripts/js/shared/misc.js",
@@ -50,8 +47,8 @@ gulp.task('scripts', function () {
     ])
         .pipe(uglify())
         .pipe(concat("scripts.min.js"))
-        .pipe(gulp.dest('./wwwroot/admin/js/'));
-});
+        .pipe(gulp.dest('./wwwroot/admin/js/'))
+);
 
 gulp.task('scripts:vendors', function () {
     return gulp.src([
@@ -72,6 +69,6 @@ gulp.task('scripts:vendors', function () {
         .pipe(gulp.dest('./wwwroot/admin/js/'));
 });
 
-gulp.task('generate:admin:assets:styles', ['styles', 'styles:vendors']);
-gulp.task('generate:admin:assets:scripts', ['scripts', 'scripts:vendors']);
-gulp.task('generate:admin:assets', ['generate:admin:assets:styles', 'generate:admin:assets:scripts']);
+gulp.task('generate:admin:assets:styles', gulp.series('styles', 'styles:vendors'));
+gulp.task('generate:admin:assets:scripts', gulp.series('scripts', 'scripts:vendors'));
+gulp.task('default', gulp.series('generate:admin:assets:styles', 'generate:admin:assets:scripts'));

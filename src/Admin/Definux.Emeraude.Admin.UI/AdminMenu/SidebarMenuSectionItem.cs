@@ -4,32 +4,40 @@ using System.Linq;
 
 namespace Definux.Emeraude.Admin.UI.AdminMenu
 {
-    public class SidebarMenuSectionItem : SidebarNavigationLinkItem
+    public class SidebarMenuSectionItem
     {
-        [JsonProperty("single")]
-        public bool Single { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
         [JsonProperty("icon")]
         public string Icon { get; set; }
 
         [JsonProperty("children")]
         public List<SidebarNavigationLinkItem> Children { get; set; }
-        
-        public List<string> Controllers 
-        { 
-            get 
-            {
-                List<string> controllers = Children?.Select(x => x.Controller).ToList() ?? new List<string>();
-                List<string> subControllers = new List<string>();
-                Children?
-                    .Where(x => x.SubControllers != null && x.SubControllers.Length > 0)
-                    .Select(x => x.SubControllers.Select(y => y.ToLower()).ToList())
-                    .ToList()
-                    .ForEach(x => subControllers.AddRange(x));
-                controllers.AddRange(subControllers);
 
-                return controllers;
-            } 
+        [JsonProperty("dropdown")]
+        public bool Dropdown { get; set; }
+
+        public bool IsSingle => Children != null && Children.Count == 1;
+
+        public SidebarNavigationLinkItem SingleLinkItem => IsSingle ? Children.FirstOrDefault() : null;
+
+        public bool IsActive => Children.Any(x => x.IsActive);
+
+        public virtual void BuildState(string currentRoute)
+        {
+            if (Children != null && Children.Count > 0)
+            {
+                foreach (var child in Children)
+                {
+                    child.BuildState(currentRoute);
+                }
+
+                if (Children.Count > 1)
+                {
+                    Dropdown = true;
+                }
+            }
         }
     }
 }

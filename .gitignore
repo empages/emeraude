@@ -353,3 +353,5 @@ MigrationBackup/
 
 sample/EmDoggoDev/src/web/EmDoggoDev/privateroot/log.db
 sample/EmDoggoDev/src/web/EmDoggoDev/appsettings.json
+
+sample/EmDoggoDev/src/web/EmDoggoDev/wwwroot/uploads/

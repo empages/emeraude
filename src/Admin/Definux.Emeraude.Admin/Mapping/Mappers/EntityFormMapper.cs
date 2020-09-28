@@ -31,12 +31,12 @@ namespace Definux.Emeraude.Admin.Mapping.Mappers
                         Order = propertyAttribute.Order,
                     };
 
-                    if (inputViewModel.DataSourceType == null && property.PropertyType.IsArray && property.PropertyType.GetElementType().IsEnum)
+                    if (property.PropertyType.IsArray && property.PropertyType.GetElementType().IsEnum)
                     {
                         inputViewModel.DataSourceType = property.PropertyType.GetElementType();
                     }
 
-                    if (inputViewModel.DataSourceType == null && property.PropertyType.GetInterface(nameof(IEnumerable)) != null && (property.PropertyType.GetGenericArguments().FirstOrDefault()?.IsEnum ?? false))
+                    if (property.PropertyType.GetInterface(nameof(IEnumerable)) != null && (property.PropertyType.GetGenericArguments().FirstOrDefault()?.IsEnum ?? false))
                     {
                         inputViewModel.DataSourceType = property.PropertyType.GetGenericArguments().FirstOrDefault();
                     }

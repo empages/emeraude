@@ -2,7 +2,7 @@
 @{
     ViewData.SetTitle("Select Roles");
 }
-<div class="col-12 col-md-6 grid-margin stretch-card mt-3 mx-auto">
+<div class="col-12 grid-margin stretch-card mt-3 mx-auto">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Select Roles</h4>
@@ -11,11 +11,9 @@
                 {
                     @for (int i = 0; i < Model.RoleOptions.Count; i++)
                     {
-                        <div class="form-check form-check-flat">
-                            <label class="form-check-label" for="role-check-@Model.RoleOptions[i].Name">
-                                <input class="form-check-input" @(Model.SelectedRoles.Contains(Model.RoleOptions[i].Value) ? "checked=\"checked\"" : string.Empty) type="checkbox" name="SelectedRoles[]" value="@Model.RoleOptions[i].Value" id="role-check-@Model.RoleOptions[i].Name">
-                                @Model.RoleOptions[i].Name
-                            </label>
+                        <div class="custom-control custom-checkbox">
+                            <input id="role-check-@Model.RoleOptions[i].Name" value="@Model.RoleOptions[i].Value" class="custom-control-input" type="checkbox" name="SelectedRoles[]" @(Model.SelectedRoles.Contains(Model.RoleOptions[i].Value) ? "checked=\"checked\"" : string.Empty)>
+                            <label class="custom-control-label" for="role-check-@Model.RoleOptions[i].Name">@Model.RoleOptions[i].Name</label>
                         </div>
                     }
                 }

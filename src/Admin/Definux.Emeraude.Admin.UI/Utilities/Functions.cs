@@ -16,5 +16,19 @@ namespace Definux.Emeraude.Admin.UI.Utilities
 
             return databaseEntitiesDictionary;
         }
+
+        public static string NormalizeRoute(string route)
+        {
+            if (!string.IsNullOrWhiteSpace(route))
+            {
+                route = route.ToLower().Trim();
+                if (route.EndsWith("/"))
+                {
+                    route = route.Substring(0, route.Length - 1);
+                }
+            }
+
+            return route;
+        }
     }
 }

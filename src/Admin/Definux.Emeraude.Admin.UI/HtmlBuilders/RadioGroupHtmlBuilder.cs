@@ -16,24 +16,21 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                     {
                         x.Append(xx => xx
                             .OpenElement(HtmlTags.Div)
-                            .WithClasses("form-radio form-radio-flat col-4")
-                            .Append(xxx => xxx
-                                .OpenElement(HtmlTags.Label)
-                                .WithClasses("form-check-label")
-                                .Append(xxxx => xxxx
+                            .WithClasses("custom-control custom-radio mr-3")
+                            .Append(xxxx => xxxx
                                     .OpenElement(HtmlTags.Input)
-                                    .WithId($"flat-radios-{Guid.NewGuid()}")
+                                    .WithId($"rad-{targetProperty}-{dataItem.Key}")
                                     .WithAttribute("type", "radio")
                                     .WithAttribute("name", targetProperty)
                                     .WithAttributeIf("checked", "checked", dataItem.Key.Equals(selectedValue))
                                     .WithAttribute("value", dataItem.Key.ToString())
-                                    .WithClasses("form-check-input")
+                                    .WithClasses("custom-control-input")
                                 )
-                                .Append($" {dataItem.Value} ")
-                                .Append(xxxx => xxxx
-                                    .OpenElement(HtmlTags.I)
-                                    .WithClasses("input-helper")
-                                )
+                            .Append(xxx => xxx
+                                .OpenElement(HtmlTags.Label)
+                                .WithClasses("custom-control-label")
+                                .WithAttribute("for", $"rad-{targetProperty}-{dataItem.Key}")
+                                .Append(dataItem.Value)
                             )
                         );
                     }

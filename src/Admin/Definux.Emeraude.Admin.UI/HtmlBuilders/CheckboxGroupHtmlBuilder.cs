@@ -15,28 +15,21 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                     {
                         foreach (var dataItem in data)
                         {
-                            x.Append(xx => xx
-                                .OpenElement(HtmlTags.Div)
-                                .WithClasses("form-check form-check-flat col-4")
-                                .Append(xxx => xxx
-                                    .OpenElement(HtmlTags.Label)
-                                    .WithClasses("form-check-label")
-                                    .Append(xxxx => xxxx
-                                        .OpenElement(HtmlTags.Input)
-                                        .WithId($"flat-checkbox-{Guid.NewGuid()}")
-                                        .WithAttribute("type", "checkbox")
-                                        .WithAttribute("name", $"{targetProperty}[]")
-                                        .WithAttributeIf("checked", "checked", selectedValues?.Contains(dataItem.Key) ?? false)
-                                        .WithAttribute("value", dataItem.Key.ToString())
-                                        .WithClasses("form-check-input")
-                                    )
-                                    .Append($" {dataItem.Value} ")
-                                    .Append(xxxx => xxxx
-                                        .OpenElement(HtmlTags.I)
-                                        .WithClasses("input-helper")
-                                    )
-                                )
-                            );
+                            x.Append(xx => xx.OpenElement(HtmlTags.Div)
+                            .WithClasses("custom-control custom-checkbox mr-3")
+                            .Append(xxx => xxx
+                                .OpenElement(HtmlTags.Input)
+                                .WithId($"ch-{targetProperty}-{dataItem.Key}")
+                                .WithClasses("custom-control-input")
+                                .WithAttribute("type", "checkbox")
+                                .WithAttribute("name", $"{targetProperty}[]")
+                                .WithAttributeIf("checked", "checked", selectedValues?.Contains(dataItem.Key) ?? false))
+                            .Append(xxx => xxx
+                                .OpenElement(HtmlTags.Label)
+                                .WithClasses("custom-control-label")
+                                .WithAttribute("for", $"ch-{targetProperty}-{dataItem.Key}")
+                                .Append(dataItem.Value)
+                         ));
                         }
                     });
         }
