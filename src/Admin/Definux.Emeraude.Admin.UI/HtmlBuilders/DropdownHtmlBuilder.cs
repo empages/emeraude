@@ -1,10 +1,21 @@
-﻿using Definux.HtmlBuilder;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Definux.HtmlBuilder;
 
 namespace Definux.Emeraude.Admin.UI.HtmlBuilders
 {
+    /// <summary>
+    /// Built wrapper for HTML builder which creates dropdown element.
+    /// </summary>
+    /// <typeparam name="TKey">Value type.</typeparam>
     public class DropdownHtmlBuilder<TKey> : HtmlBuilder.HtmlBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DropdownHtmlBuilder{TKey}"/> class.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="targetProperty"></param>
+        /// <param name="selectedValue"></param>
+        /// <param name="isNullable"></param>
         public DropdownHtmlBuilder(Dictionary<TKey, string> data, string targetProperty, TKey selectedValue, bool isNullable)
         {
             this.StartElement(HtmlTags.Select)
@@ -17,8 +28,7 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                         x.Append(xx => xx
                             .OpenElement(HtmlTags.Option)
                             .WithAttribute("value", string.Empty)
-                            .Append(" - ")
-                        );
+                            .Append(" - "));
                     }
 
                     foreach (var dataItem in data)
@@ -27,8 +37,7 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                             .OpenElement(HtmlTags.Option)
                             .WithAttribute("value", dataItem.Key.ToString())
                             .WithAttributeIf("selected", "selected", dataItem.Key.Equals(selectedValue))
-                            .Append(dataItem.Value)
-                        );
+                            .Append(dataItem.Value));
                     }
                 });
         }

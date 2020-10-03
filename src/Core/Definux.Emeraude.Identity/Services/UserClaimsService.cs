@@ -1,24 +1,31 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Domain.Entities;
-using Definux.Emeraude.Identity.Entities;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="IUserClaimsService"/>
     public class UserClaimsService : IUserClaimsService
     {
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserClaimsService"/> class.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <param name="logger"></param>
         public UserClaimsService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
@@ -29,13 +36,12 @@ namespace Definux.Emeraude.Identity.Services
             this.logger = logger;
         }
 
-
+        /// <inheritdoc/>
         public async Task<bool> CheckUserForAccessAdministrationPermissionAsync(string email)
         {
             try
             {
                 var user = await this.userManager.FindByEmailAsync(email);
-                
                 var userClaims = await this.GetAllUserClaimsAsync(user);
                 string claimType = Configuration.Authorization.ClaimTypes.Permission;
                 string claimValue = AdminPermissions.AccessAdministration;
@@ -49,12 +55,13 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Claim>> GetUserClaimsForCookieAsync(Guid userId)
         {
             try
             {
                 var user = await this.userManager.FindByIdAsync(userId.ToString());
-                var claims = await GetAllUserClaimsAsync(user);
+                var claims = await this.GetAllUserClaimsAsync(user);
                 claims.Add(new Claim(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id.ToString()));
                 claims.Add(new Claim(System.Security.Claims.ClaimTypes.Name, user.Email));
                 claims.Add(new Claim(System.Security.Claims.ClaimTypes.Email, user.Email));
@@ -68,12 +75,13 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Claim>> GetUserClaimsForJwtTokenAsync(Guid userId)
         {
             try
             {
                 var user = await this.userManager.FindByIdAsync(userId.ToString());
-                var claims = await GetAllUserClaimsAsync(user);
+                var claims = await this.GetAllUserClaimsAsync(user);
                 claims.Add(new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()));
                 claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Email));
 
@@ -95,12 +103,12 @@ namespace Definux.Emeraude.Identity.Services
 
             var userClaims = await this.userManager.GetClaimsAsync((User)user);
             var userRoles = await this.userManager.GetRolesAsync((User)user);
-            var rolesClaims = await GetRolesClaimsAsync(userRoles);
+            var rolesClaims = await this.GetRolesClaimsAsync(userRoles);
             var resultClaims = userClaims?.ToList();
 
             resultClaims.AddRange(rolesClaims);
 
-            return DistinctClaims(resultClaims);
+            return this.DistinctClaims(resultClaims);
         }
 
         private async Task<List<Claim>> GetRolesClaimsAsync(IList<string> roles)
@@ -118,7 +126,7 @@ namespace Definux.Emeraude.Identity.Services
                 }
             }
 
-            return DistinctClaims(rolesClaims);
+            return this.DistinctClaims(rolesClaims);
         }
 
         private List<Claim> DistinctClaims(List<Claim> claims)

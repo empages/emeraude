@@ -1,32 +1,50 @@
-﻿using Definux.Emeraude.Admin.Analytics.Extensions;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Admin.Analytics.Extensions;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPeriod
 {
-    public class GetRouteVisitsPerPeriodQuery : IRequest<RouteVisitsPerPeriodDto>
+    /// <summary>
+    /// Query that returns all routes visits for specified period.
+    /// </summary>
+    public class GetRouteVisitsPerPeriodQuery : IRequest<RouteVisitsPerPeriodResult>
     {
+        /// <summary>
+        /// Target route.
+        /// </summary>
         public string Route { get; set; }
 
+        /// <summary>
+        /// Period start date.
+        /// </summary>
         public DateTime? FromDate { get; set; }
 
+        /// <summary>
+        /// Period end date.
+        /// </summary>
         public DateTime? ToDate { get; set; }
 
-        public class GetRouteVisitsPerPeriodQueryHandler : IRequestHandler<GetRouteVisitsPerPeriodQuery, RouteVisitsPerPeriodDto>
+        /// <inheritdoc/>
+        public class GetRouteVisitsPerPeriodQueryHandler : IRequestHandler<GetRouteVisitsPerPeriodQuery, RouteVisitsPerPeriodResult>
         {
             private readonly ILoggerContext context;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GetRouteVisitsPerPeriodQueryHandler"/> class.
+            /// </summary>
+            /// <param name="context"></param>
             public GetRouteVisitsPerPeriodQueryHandler(ILoggerContext context)
             {
                 this.context = context;
             }
 
-            public async Task<RouteVisitsPerPeriodDto> Handle(GetRouteVisitsPerPeriodQuery request, CancellationToken cancellationToken)
+            /// <inheritdoc/>
+            public async Task<RouteVisitsPerPeriodResult> Handle(GetRouteVisitsPerPeriodQuery request, CancellationToken cancellationToken)
             {
                 var logs = await this.context
                     .GetLogsPerRouteAndPeriod(request.Route, request.FromDate, request.ToDate)
@@ -37,7 +55,7 @@ namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPer
                     return null;
                 }
 
-                RouteVisitsPerPeriodDto result = new RouteVisitsPerPeriodDto();
+                RouteVisitsPerPeriodResult result = new RouteVisitsPerPeriodResult();
 
                 result.RouteName = request.Route;
                 result.PeriodType = "Days";
@@ -46,7 +64,7 @@ namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPer
                 {
                     foreach (var date in uniqueDates)
                     {
-                        result.Data.Add(new RouteVisitsPerPeriodDto.VisitsPerPeriodPoint
+                        result.Data.Add(new RouteVisitsPerPeriodResult.VisitsPerPeriodPoint
                         {
                             Date = date,
                             Visits = logs.Where(x => x.CreatedOn.Date == date).Count(),
@@ -54,7 +72,7 @@ namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPer
                                 .Where(x => x.CreatedOn.Date == date)
                                 .Select(x => x.TraceId)
                                 .Distinct()
-                                .Count()
+                                .Count(),
                         });
                     }
                 }
@@ -70,7 +88,7 @@ namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPer
                     {
                         var currentDateTime = startDateTime.AddHours(i);
                         var currentNextDateTime = currentDateTime.AddHours(1);
-                        result.Data.Add(new RouteVisitsPerPeriodDto.VisitsPerPeriodPoint
+                        result.Data.Add(new RouteVisitsPerPeriodResult.VisitsPerPeriodPoint
                         {
                             Date = currentDateTime,
                             Visits = logs.Where(x => x.CreatedOn >= currentDateTime && x.CreatedOn <= currentNextDateTime).Count(),
@@ -78,7 +96,7 @@ namespace Definux.Emeraude.Admin.Analytics.Requests.Queries.GetRouteVisitsPerPer
                                 .Where(x => x.CreatedOn >= currentDateTime && x.CreatedOn <= currentNextDateTime)
                                 .Select(x => x.TraceId)
                                 .Distinct()
-                                .Count()
+                                .Count(),
                         });
                     }
                 }

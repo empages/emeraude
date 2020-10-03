@@ -1,11 +1,17 @@
-﻿using Definux.Emeraude.Domain.Entities;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Application.Common.Interfaces.Identity.Services
 {
+    /// <summary>
+    /// Helper accessor service that provides the identity user for the current request.
+    /// </summary>
     public interface ICurrentUserProvider
     {
+        /// <summary>
+        /// Current user id.
+        /// </summary>
         Guid? CurrentUserId { get; }
 
         /// <summary>

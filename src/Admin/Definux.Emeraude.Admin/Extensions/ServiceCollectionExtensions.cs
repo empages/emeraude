@@ -1,37 +1,45 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using Definux.Emeraude.Admin.UI.Extensions;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Definux.Emeraude.Admin.RouteConstraints;
-using System.Reflection;
-using MediatR;
-using Definux.Emeraude.Admin.Requests.GetAll;
-using Definux.Emeraude.Admin.Requests.ApplyImage;
-using System.Linq;
-using Definux.Emeraude.Admin.Requests.GetEntityImage;
-using Definux.Emeraude.Admin.Requests.Details;
-using Definux.Emeraude.Admin.Requests.Exists;
-using Definux.Emeraude.Admin.Requests.Delete;
-using Definux.Emeraude.Admin.Requests.Edit;
-using Definux.Emeraude.Admin.Requests.Create;
+﻿using System;
 using System.Collections.Generic;
-using Definux.Emeraude.Admin.Controllers.Abstractions;
-using Definux.Utilities.Objects;
-using Definux.Emeraude.Domain.Entities;
-using Definux.Emeraude.Admin.UI.Adapters;
+using System.Linq;
+using System.Reflection;
+using AutoMapper;
 using Definux.Emeraude.Admin.Adapters;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Admin.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Admin.Analytics.UI.Extensions;
+using Definux.Emeraude.Admin.ClientBuilder.UI.Extensions;
+using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.Requests.ApplyImage;
+using Definux.Emeraude.Admin.Requests.Create;
+using Definux.Emeraude.Admin.Requests.Delete;
+using Definux.Emeraude.Admin.Requests.Details;
+using Definux.Emeraude.Admin.Requests.Edit;
+using Definux.Emeraude.Admin.Requests.Exists;
+using Definux.Emeraude.Admin.Requests.GetAll;
+using Definux.Emeraude.Admin.Requests.GetEntityImage;
+using Definux.Emeraude.Admin.RouteConstraints;
+using Definux.Emeraude.Admin.UI.Adapters;
+using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Domain.Entities;
+using Definux.Utilities.Objects;
+using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Definux.Emeraude.Admin.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IServiceCollection"/>.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Register all required Emeraude administration services.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddEmeraudeAdmin(this IServiceCollection services)
         {
             services.ConfigureAdminUI();
@@ -59,6 +67,11 @@ namespace Definux.Emeraude.Admin.Extensions
             return services;
         }
 
+        /// <summary>
+        /// Register Emeraude administration authentication scheme.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static AuthenticationBuilder AddAdminCookie(this AuthenticationBuilder builder)
         {
             builder.AddCookie(AuthenticationDefaults.AdminAuthenticationScheme, options =>
@@ -72,6 +85,11 @@ namespace Definux.Emeraude.Admin.Extensions
             return builder;
         }
 
+        /// <summary>
+        /// Register Emeraude administration mapping configuration.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static IMapperConfigurationExpression AddAdminMapperConfiguration(this IMapperConfigurationExpression configuration)
         {
             configuration.AddMaps("Definux.Emeraude.Admin");
@@ -81,6 +99,12 @@ namespace Definux.Emeraude.Admin.Extensions
             return configuration;
         }
 
+        /// <summary>
+        /// Register Emeraude administration generic requests for all <see cref="IAdminEntityController"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assemblies"></param>
+        /// <returns></returns>
         public static IServiceCollection RegisterAdminEntityControllersRequests(this IServiceCollection services, Assembly[] assemblies)
         {
             var controllerTypes = new List<Type>();
@@ -182,6 +206,7 @@ namespace Definux.Emeraude.Admin.Extensions
             services.AddTransient(constructedCommandRequestHandlerType, constructedCommandHandler);
             return services;
         }
+
         private static IServiceCollection RegisterDeleteGenericCommands(this IServiceCollection services, Type entityType, Type viewModelType)
         {
             Type requestHandlerType = typeof(IRequestHandler<,>);

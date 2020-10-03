@@ -1,12 +1,19 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using System;
+using Definux.Emeraude.Domain.Entities;
 using MediatR;
-using System;
 
 namespace Definux.Emeraude.Admin.Requests.Delete
 {
-    public interface IDeleteCommand<TEntity> : IRequest<bool>
+    /// <summary>
+    /// Generic command that delete an entity.
+    /// </summary>
+    /// <typeparam name="TEntity">Target entity.</typeparam>
+    public interface IDeleteCommand<TEntity> : IRequest<bool>, IGenericEntityRequest
         where TEntity : class, IEntity, new()
     {
+        /// <summary>
+        /// Id of the entity.
+        /// </summary>
         Guid EntityId { get; set; }
     }
 }

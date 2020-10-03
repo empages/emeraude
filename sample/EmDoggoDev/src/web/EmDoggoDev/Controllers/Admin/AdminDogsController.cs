@@ -10,7 +10,7 @@ namespace EmDoggoDev.Controllers.Admin
     {
         public AdminDogsController()
         {
-            HasGenericCreate = false;
+            HasCreate = false;
             HasEdit = false;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateContentKeyWithContent;
+﻿using System.Threading.Tasks;
+using Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateContentKeyWithContent;
 using Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateKeyWithValues;
 using Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateLanguage;
 using Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.DeleteContentKey;
@@ -21,14 +22,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
 {
+    /// <summary>
+    /// Client builder controller that manages the languages, translations and static content items of the application.
+    /// </summary>
     [Route("/api/client-builder/languages/")]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
-    public class ClientBuilderLanguagesApiController : ApiController
+    public sealed class ClientBuilderLanguagesApiController : ApiController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientBuilderLanguagesApiController"/> class.
+        /// </summary>
+        /// <param name="hostEnvironment"></param>
         public ClientBuilderLanguagesApiController(IHostEnvironment hostEnvironment)
         {
             if (!hostEnvironment.IsDevelopment())
@@ -37,121 +44,191 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
             }
         }
 
+        /// <summary>
+        /// Get list of all supported languages.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetLanguages()
         {
-            return Ok(await Mediator.Send(new GetLanguagesQuery()));
+            return this.Ok(await this.Mediator.Send(new GetLanguagesQuery()));
         }
 
+        /// <summary>
+        /// Get all language keys and their translations into grid format.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("grid-data")]
         public async Task<IActionResult> GetTranslationsGridData()
         {
-            return Ok(await Mediator.Send(new GetTranslationGridDataQuery()));
+            return this.Ok(await this.Mediator.Send(new GetTranslationGridDataQuery()));
         }
 
+        /// <summary>
+        /// Gets all static content keys.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("content-keys")]
         public async Task<IActionResult> GetContentKeys()
         {
-            return Ok(await Mediator.Send(new GetStaticContentKeysQuery()));
+            return this.Ok(await this.Mediator.Send(new GetStaticContentKeysQuery()));
         }
 
+        /// <summary>
+        /// Gets a specified static content key.
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("content-keys/{keyId}")]
         public async Task<IActionResult> GetContentKeys(int keyId)
         {
-            return Ok(await Mediator.Send(new GetStaticContentKeyQuery { KeyId = keyId }));
+            return this.Ok(await this.Mediator.Send(new GetStaticContentKeyQuery { KeyId = keyId }));
         }
 
+        /// <summary>
+        /// Creates a translation key with values.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("keys")]
         public async Task<IActionResult> CreateKeyWithValues([FromBody]NewKeyWithValuesRequest request)
         {
-            return Ok(await Mediator.Send(new CreateKeyWithValuesCommand(request)));
+            return this.Ok(await this.Mediator.Send(new CreateKeyWithValuesCommand(request)));
         }
 
+        /// <summary>
+        /// Creates a static content key with values.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("content-keys")]
         public async Task<IActionResult> CreateContentKeyWithValues([FromBody]NewContentKeyWithContentRequest request)
         {
-            return Ok(await Mediator.Send(new CreateContentKeyWithContentCommand(request)));
+            return this.Ok(await this.Mediator.Send(new CreateContentKeyWithContentCommand(request)));
         }
 
+        /// <summary>
+        /// Edits a translation key.
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("keys/{keyId}/edit")]
         public async Task<IActionResult> EditKey(int keyId, [FromBody]SingleValueObject<string> newValue)
         {
-            return Ok(await Mediator.Send(new EditTranslationKeyCommand 
-            { 
+            return this.Ok(await this.Mediator.Send(new EditTranslationKeyCommand
+            {
                 KeyId = keyId,
-                NewValue = newValue.Value
+                NewValue = newValue.Value,
             }));
         }
 
+        /// <summary>
+        /// Edits a static content key.
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("content-keys/{keyId}")]
         public async Task<IActionResult> EditContentKey(int keyId, [FromBody]ContentKeyWithContentRequest request)
         {
-            return Ok(await Mediator.Send(new EditContentKeyWithContentCommand(keyId, request)));
+            return this.Ok(await this.Mediator.Send(new EditContentKeyWithContentCommand(keyId, request)));
         }
 
+        /// <summary>
+        /// Edits a translation value.
+        /// </summary>
+        /// <param name="translationId"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("translations/{translationId}/edit")]
         public async Task<IActionResult> EditTranslation(int translationId, [FromBody]SingleValueObject<string> newValue)
         {
-            return Ok(await Mediator.Send(new EditTranslationCommand 
-            { 
+            return this.Ok(await this.Mediator.Send(new EditTranslationCommand
+            {
                 TranslationId = translationId,
-                NewValue = newValue.Value
+                NewValue = newValue.Value,
             }));
         }
 
+        /// <summary>
+        /// Deletes a translation key.
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("keys/{keyId}")]
         public async Task<IActionResult> DeleteKey(int keyId)
         {
-            return Ok(await Mediator.Send(new DeleteKeyCommand
+            return this.Ok(await this.Mediator.Send(new DeleteKeyCommand
             {
-                KeyId = keyId
+                KeyId = keyId,
             }));
         }
 
+        /// <summary>
+        /// Deletes a static content key.
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("content-keys/{keyId}")]
         public async Task<IActionResult> DeleteContentKey(int keyId)
         {
-            return Ok(await Mediator.Send(new DeleteContentKeyCommand
+            return this.Ok(await this.Mediator.Send(new DeleteContentKeyCommand
             {
-                KeyId = keyId
+                KeyId = keyId,
             }));
         }
 
+        /// <summary>
+        /// Makes a language default.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("default")]
         public async Task<IActionResult> MakeLanguageDefault([FromBody]SingleValueObject<int> request)
         {
-            return Ok(await Mediator.Send(new MakeLanguageDefaultCommand
+            return this.Ok(await this.Mediator.Send(new MakeLanguageDefaultCommand
             {
-                LanguageId = request.Value
+                LanguageId = request.Value,
             }));
         }
 
+        /// <summary>
+        /// Creates a language.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateLanguage([FromBody]CreateLanguageRequest request)
         {
-            return Ok(await Mediator.Send(new CreateLanguageCommand(request)));
+            return this.Ok(await this.Mediator.Send(new CreateLanguageCommand(request)));
         }
 
+        /// <summary>
+        /// Deletes a language.
+        /// </summary>
+        /// <param name="languageId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{languageId}")]
         public async Task<IActionResult> DeleteLanguage(int languageId)
         {
-            return Ok(await Mediator.Send(new DeleteLanguageCommand
+            return this.Ok(await this.Mediator.Send(new DeleteLanguageCommand
             {
-                LanguageId = languageId
+                LanguageId = languageId,
             }));
         }
     }

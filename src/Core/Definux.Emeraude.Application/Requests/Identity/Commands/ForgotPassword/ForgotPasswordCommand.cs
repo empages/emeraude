@@ -1,21 +1,30 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
+﻿using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
+
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
 {
+    /// <summary>
+    /// Command for forgot password request.
+    /// </summary>
     public class ForgotPasswordCommand : ForgotPasswordRequest, IRequest<ForgotPasswordRequestResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ForgotPasswordCommand"/> class.
+        /// </summary>
+        /// <param name="request"></param>
         public ForgotPasswordCommand(ForgotPasswordRequest request)
         {
-            Email = request.Email;
+            this.Email = request.Email;
         }
 
+        /// <inheritdoc/>
         public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordRequestResult>
         {
             private readonly IUserManager userManager;
@@ -24,8 +33,16 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
             private readonly IHttpContextAccessor httpContextAccessor;
             private readonly ICurrentLanguageProvider currentLanguageProvider;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ForgotPasswordCommandHandler"/> class.
+            /// </summary>
+            /// <param name="userManager"></param>
+            /// <param name="identityEventManager"></param>
+            /// <param name="urlEncoder"></param>
+            /// <param name="httpContextAccessor"></param>
+            /// <param name="currentLanguageProvider"></param>
             public ForgotPasswordCommandHandler(
-                IUserManager userManager, 
+                IUserManager userManager,
                 IIdentityEventManager identityEventManager,
                 UrlEncoder urlEncoder,
                 IHttpContextAccessor httpContextAccessor,
@@ -38,6 +55,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
                 this.currentLanguageProvider = currentLanguageProvider;
             }
 
+            /// <inheritdoc/>
             public async Task<ForgotPasswordRequestResult> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
             {
                 var user = await this.userManager.FindUserByEmailAsync(request.Email);

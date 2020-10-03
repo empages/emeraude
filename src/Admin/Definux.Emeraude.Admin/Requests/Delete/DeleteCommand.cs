@@ -1,35 +1,35 @@
-﻿using Definux.Emeraude.Domain.Entities;
-using System;
+﻿using System;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.Requests.Delete
 {
-    public class DeleteCommand<TEntity> : IDeleteCommand<TEntity>
+    /// <inheritdoc cref="IDeleteCommand{TEntity}"/>
+    public class DeleteCommand<TEntity> : GenericEntityRequst, IDeleteCommand<TEntity>
         where TEntity : class, IEntity, new()
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCommand{TEntity}"/> class.
+        /// </summary>
+        /// <param name="entityId"></param>
         public DeleteCommand(Guid entityId)
         {
-            EntityId = entityId;
+            this.EntityId = entityId;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCommand{TEntity}"/> class.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="foreignKeyProperty"></param>
+        /// <param name="foreignKeyValue"></param>
         public DeleteCommand(Guid entityId, string foreignKeyProperty, string foreignKeyValue)
         {
-            EntityId = entityId;
-            ForeignKeyProperty = foreignKeyProperty;
-            ForeignKeyValue = foreignKeyValue;
+            this.EntityId = entityId;
+            this.ForeignKeyProperty = foreignKeyProperty;
+            this.ForeignKeyValue = foreignKeyValue;
         }
 
+        /// <inheritdoc/>
         public Guid EntityId { get; set; }
-
-        public bool ValidateParent
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(ForeignKeyProperty) && !string.IsNullOrWhiteSpace(ForeignKeyValue);
-            }
-        }
-
-        public string ForeignKeyProperty { get; set; }
-
-        public string ForeignKeyValue { get; set; }
     }
 }

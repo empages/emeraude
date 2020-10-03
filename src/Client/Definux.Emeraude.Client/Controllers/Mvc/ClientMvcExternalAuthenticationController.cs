@@ -1,28 +1,35 @@
-﻿using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <inheritdoc/>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string ExternalLoginRoute = "/external-login";
-        public const string ExternalLoginCallbackRoute = "/external-login/callback";
+        private const string ExternalLoginRoute = "/external-login";
+        private const string ExternalLoginCallbackRoute = "/external-login/callback";
 
+        /// <summary>
+        /// External login action.
+        /// </summary>
+        /// <param name="externalProvider"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route(ExternalLoginRoute)]
         [LanguageRoute(ExternalLoginRoute)]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin([FromForm(Name = "externalProvider")]string externalProvider, string returnUrl = "")
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             List<string> allowedProviders = new List<string>();
@@ -30,6 +37,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             {
                 allowedProviders.Add("Facebook");
             }
+
             if (this.emeraudeOptions.Account.HasGoogleLogin)
             {
                 allowedProviders.Add("Google");
@@ -37,44 +45,49 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             if (!allowedProviders.Contains(externalProvider))
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var callbackUrl = GetLanguageRoute($"{ExternalLoginCallbackRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
+            var callbackUrl = this.GetLanguageRoute($"{ExternalLoginCallbackRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
             var properties = this.signInManager.ConfigureExternalAuthenticationProperties(externalProvider, callbackUrl);
 
-            return Challenge(properties, externalProvider);
+            return this.Challenge(properties, externalProvider);
         }
 
+        /// <summary>
+        /// External login callback action.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route(ExternalLoginCallbackRoute)]
         [LanguageRoute(ExternalLoginCallbackRoute)]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
-            var result = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
+            var result = await this.HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
             if (result?.Succeeded != true || result.Principal == null)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            var requestResult = await Mediator.Send(new ExternalAuthenticationCommand(result.Principal));
+            var requestResult = await this.Mediator.Send(new ExternalAuthenticationCommand(result.Principal));
             if (requestResult.Result.Succeeded)
             {
-                await SignInAsync(requestResult.User);
+                await this.SignInAsync(requestResult.User);
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
-                    return LocalRedirect(returnUrl);
+                    return this.LocalRedirect(returnUrl);
                 }
 
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
-            return RedirectToAction(nameof(Login));
+            return this.RedirectToAction(nameof(this.Login));
         }
     }
 }

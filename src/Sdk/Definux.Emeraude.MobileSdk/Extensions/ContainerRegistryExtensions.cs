@@ -1,18 +1,27 @@
-﻿using Definux.Emeraude.MobileSdk.ServiceAgents;
+﻿using System;
+using System.Resources;
+using Definux.Emeraude.MobileSdk.ServiceAgents;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Http;
 using Definux.Emeraude.MobileSdk.Services;
 using Definux.Emeraude.MobileSdk.Settings;
 using Definux.Emeraude.MobileSdk.Stores;
 using Definux.Emeraude.MobileSdk.ViewModels;
 using Prism.Ioc;
-using System;
-using System.Resources;
 using Xamarin.Forms;
 
 namespace Definux.Emeraude.MobileSdk.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IContainerRegistry"/>.
+    /// </summary>
     public static class ContainerRegistryExtensions
     {
+        /// <summary>
+        /// Register all required services of Emeraude Mobile SDK.
+        /// </summary>
+        /// <param name="containerRegistry"></param>
+        /// <param name="settingsAction"></param>
+        /// <returns></returns>
         public static IContainerRegistry RegisterEmeraudeCore(this IContainerRegistry containerRegistry, Action<EmeraudeMobileSettings> settingsAction = null)
         {
             var settings = new EmeraudeMobileSettings();
@@ -37,11 +46,17 @@ namespace Definux.Emeraude.MobileSdk.Extensions
 
             containerRegistry.RegisterSingleton<ISystemSettingsStore, SystemSettingsStore>();
             containerRegistry.RegisterSingleton<IAuthenticationStore, AuthenticationStore>();
-            containerRegistry.RegisterSingleton<ILoggingStore, LoggingStore>();
 
             return containerRegistry;
         }
 
+        /// <summary>
+        /// Register default Emeraude localizer service.
+        /// </summary>
+        /// <param name="containerRegistry"></param>
+        /// <param name="resourceManager"></param>
+        /// <param name="systemSettingsStore"></param>
+        /// <returns></returns>
         public static IContainerRegistry RegisterEmeraudeLocalizer(this IContainerRegistry containerRegistry, ResourceManager resourceManager, ISystemSettingsStore systemSettingsStore)
         {
             containerRegistry.RegisterInstance<ILocalizer>(new Localizer(resourceManager, systemSettingsStore));

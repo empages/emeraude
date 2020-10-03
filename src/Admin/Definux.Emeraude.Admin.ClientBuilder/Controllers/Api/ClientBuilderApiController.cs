@@ -1,26 +1,36 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
+﻿using System;
 using Definux.Emeraude.Admin.ClientBuilder.DataTransferObjects;
+using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using Microsoft.AspNetCore.Hosting;
 using Definux.Emeraude.Admin.ClientBuilder.Shared;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authorization;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
 {
+    /// <summary>
+    /// Client Builder API controller that provide all access and generation features.
+    /// </summary>
     [Route("/api/client-builder/")]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
-    public class ClientBuilderApiController : ApiController
+    public sealed class ClientBuilderApiController : ApiController
     {
         private readonly IPageService pageService;
         private readonly IEndpointService endpointService;
         private readonly IScaffoldModulesProvider scaffoldModulesProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientBuilderApiController"/> class.
+        /// </summary>
+        /// <param name="hostEnvironment"></param>
+        /// <param name="pageService"></param>
+        /// <param name="endpointService"></param>
+        /// <param name="scaffoldModulesProvider"></param>
         public ClientBuilderApiController(
             IHostEnvironment hostEnvironment,
             IPageService pageService,
@@ -37,27 +47,44 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
             this.scaffoldModulesProvider = scaffoldModulesProvider;
         }
 
+        /// <summary>
+        /// Get all marked pages detected by Client Builder.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("pages")]
         public IActionResult GetAllPages()
         {
-            return Ok(this.pageService.GetAllPages());
+            return this.Ok(this.pageService.GetAllPages());
         }
 
+        /// <summary>
+        /// Get all marked API endpoints detected by Client Builder.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("endpoints")]
         public IActionResult GetAllEndpoints()
         {
-            return Ok(this.endpointService.GetAllEndpoints());
+            return this.Ok(this.endpointService.GetAllEndpoints());
         }
 
+        /// <summary>
+        /// Get all loaded scaffold modules.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("scaffold/modules")]
         public IActionResult GetAllModules()
         {
-            return Ok(this.scaffoldModulesProvider.Modules);
+            return this.Ok(this.scaffoldModulesProvider.Modules);
         }
 
+        /// <summary>
+        /// Trigger specified module generation.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("scaffold/generate")]
         public IActionResult GenerateModule([FromBody]ScaffoldGenerateRequest request)
@@ -67,7 +94,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
             {
                 if (this.scaffoldModulesProvider.GenerateModule(request.ModuleId, out errorMessage))
                 {
-                    return Ok();
+                    return this.Ok();
                 }
             }
             catch (Exception ex)
@@ -75,9 +102,13 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
                 errorMessage = ex.Message;
             }
 
-            return BadRequest(errorMessage);
+            return this.BadRequest(errorMessage);
         }
 
+        /// <summary>
+        /// Trigger all loaded web modules generation.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("scaffold/generate/web")]
         public IActionResult GenerateWebModules()
@@ -91,16 +122,20 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
                     this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
                 }
 
-                return Ok();
+                return this.Ok();
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
             }
 
-            return BadRequest(errorMessage);
+            return this.BadRequest(errorMessage);
         }
 
+        /// <summary>
+        /// Trigger all loaded mobile modules generation.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("scaffold/generate/mobile")]
         public IActionResult GenerateMobileModules()
@@ -114,16 +149,21 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
                     this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
                 }
 
-                return Ok();
+                return this.Ok();
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
             }
 
-            return BadRequest(errorMessage);
+            return this.BadRequest(errorMessage);
         }
 
+        /// <summary>
+        /// Trigger all filtered by parent module id loaded modules generation.
+        /// </summary>
+        /// <param name="parentModuleId"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("scaffold/generate/{parentModuleId}")]
         public IActionResult GenerateModulesByParentModuleId(string parentModuleId)
@@ -137,14 +177,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Controllers.Api
                     this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
                 }
 
-                return Ok();
+                return this.Ok();
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
             }
 
-            return BadRequest(errorMessage);
+            return this.BadRequest(errorMessage);
         }
     }
 }

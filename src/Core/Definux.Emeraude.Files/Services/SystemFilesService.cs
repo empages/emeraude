@@ -1,5 +1,11 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Files;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Files;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Common.Models;
 using Definux.Emeraude.Application.Common.Results.Files;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Resources;
@@ -8,20 +14,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Files.Services
 {
+    /// <inheritdoc cref="ISystemFilesService"/>
     public class SystemFilesService : ISystemFilesService
     {
         private readonly ILogger logger;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILoggerContext loggerContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemFilesService"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="hostingEnvironment"></param>
+        /// <param name="loggerContext"></param>
         public SystemFilesService(
             ILogger logger,
             IHostingEnvironment hostingEnvironment,
@@ -32,31 +40,36 @@ namespace Definux.Emeraude.Files.Services
             this.loggerContext = loggerContext;
         }
 
+        /// <inheritdoc/>
         public string PublicRootDirectory => this.hostingEnvironment.WebRootPath;
 
+        /// <inheritdoc/>
         public string PrivateRootDirectory => Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName);
 
+        /// <inheritdoc/>
         public string GetPathFromPublicRoot(params string[] paths)
         {
             var resultPaths = paths.ToList();
-            resultPaths.Insert(0, PublicRootDirectory);
+            resultPaths.Insert(0, this.PublicRootDirectory);
 
             return Path.Combine(resultPaths.ToArray());
         }
 
+        /// <inheritdoc/>
         public string GetPathFromPrivateRoot(params string[] paths)
         {
             var resultPaths = paths.ToList();
-            resultPaths.Insert(0, PrivateRootDirectory);
+            resultPaths.Insert(0, this.PrivateRootDirectory);
 
             return Path.Combine(resultPaths.ToArray());
         }
 
+        /// <inheritdoc/>
         public async Task<bool> CreateFolderAsync(string folderName, string folderPath)
         {
             try
             {
-                if (!(folderPath.StartsWith(PublicRootDirectory) || folderPath.StartsWith(PrivateRootDirectory)))
+                if (!(folderPath.StartsWith(this.PublicRootDirectory) || folderPath.StartsWith(this.PrivateRootDirectory)))
                 {
                     return false;
                 }
@@ -79,6 +92,7 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<SystemFileResult> GetFileAsync(string filePath)
         {
             if (File.Exists(filePath))
@@ -96,6 +110,7 @@ namespace Definux.Emeraude.Files.Services
             return null;
         }
 
+        /// <inheritdoc/>
         public async Task<TempFileLog> GetFileByIdAsync(int id)
         {
             try
@@ -111,6 +126,7 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public TempFileLog GetFileById(int id)
         {
             try
@@ -126,12 +142,13 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TempFileLog> GetFilesByIds(IEnumerable<int> ids)
         {
             var resultFiles = new List<TempFileLog>();
             foreach (var fileid in ids)
             {
-                var currentFile = GetFileById(fileid);
+                var currentFile = this.GetFileById(fileid);
                 if (currentFile != null)
                 {
                     resultFiles.Add(currentFile);
@@ -141,12 +158,13 @@ namespace Definux.Emeraude.Files.Services
             return resultFiles;
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<TempFileLog>> GetFilesByIdsAsync(IEnumerable<int> ids)
         {
             var resultFiles = new List<TempFileLog>();
             foreach (var fileid in ids)
             {
-                var currentFile = await GetFileByIdAsync(fileid);
+                var currentFile = await this.GetFileByIdAsync(fileid);
                 if (currentFile != null)
                 {
                     resultFiles.Add(currentFile);
@@ -156,20 +174,21 @@ namespace Definux.Emeraude.Files.Services
             return resultFiles;
         }
 
-        public IEnumerable<SystemFileItem> ScanDirectory(string directory, string baseDirectory = "")
+        /// <inheritdoc/>
+        public IEnumerable<SystemItem> ScanDirectory(string directory, string baseDirectory = "")
         {
-            if (!(directory.StartsWith(PublicRootDirectory) || directory.StartsWith(PrivateRootDirectory)))
+            if (!(directory.StartsWith(this.PublicRootDirectory) || directory.StartsWith(this.PrivateRootDirectory)))
             {
                 return null;
             }
 
-            List<SystemFileItem> fileSystemItems = new List<SystemFileItem>();
+            List<SystemItem> fileSystemItems = new List<SystemItem>();
             var files = Directory.GetFiles(directory);
             var folders = Directory.GetDirectories(directory);
 
             foreach (var folder in folders)
             {
-                SystemFileItem currentFileSystemItem = new SystemFileItem();
+                SystemItem currentFileSystemItem = new SystemItem();
                 if (Directory.Exists(folder))
                 {
                     DirectoryInfo directoryInfo = new DirectoryInfo(folder);
@@ -180,11 +199,13 @@ namespace Definux.Emeraude.Files.Services
                     currentFileSystemItem.CreatedOn = directoryInfo.CreationTime;
                     currentFileSystemItem.LastModifiedOn = directoryInfo.LastWriteTime;
                 }
+
                 fileSystemItems.Add(currentFileSystemItem);
             }
+
             foreach (var file in files)
             {
-                SystemFileItem currentFileSystemItem = new SystemFileItem();
+                SystemItem currentFileSystemItem = new SystemItem();
                 if (File.Exists(file))
                 {
                     FileInfo fileInfo = new FileInfo(file);
@@ -203,21 +224,24 @@ namespace Definux.Emeraude.Files.Services
             return fileSystemItems;
         }
 
-        public IEnumerable<SystemFileItem> ScanPrivateDirectory()
+        /// <inheritdoc/>
+        public IEnumerable<SystemItem> ScanPrivateDirectory()
         {
-            return ScanDirectory(PrivateRootDirectory, PrivateRootDirectory);
+            return this.ScanDirectory(this.PrivateRootDirectory, this.PrivateRootDirectory);
         }
 
-        public IEnumerable<SystemFileItem> ScanPublicDirectory()
+        /// <inheritdoc/>
+        public IEnumerable<SystemItem> ScanPublicDirectory()
         {
-            return ScanDirectory(PublicRootDirectory, PublicRootDirectory);
+            return this.ScanDirectory(this.PublicRootDirectory, this.PublicRootDirectory);
         }
 
+        /// <inheritdoc/>
         public async Task<TempFileLog> UploadFileAsync(IFormFile formFile)
         {
             try
             {
-                string saveDirectory = Path.Combine(hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
+                string saveDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
                 string resultFileName = FilesFunctions.GetUniqueFileName();
                 string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
                 string relativeSaveDirectory = Path.Combine(Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
@@ -234,7 +258,7 @@ namespace Definux.Emeraude.Files.Services
                 {
                     Name = resultFileName,
                     Path = fileRelativePath,
-                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension)
+                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
                 };
                 fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
 
@@ -250,11 +274,12 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<TempFileLog> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
         {
             try
             {
-                string rootDirectory = publicRoot ? PublicRootDirectory : PrivateRootDirectory;
+                string rootDirectory = publicRoot ? this.PublicRootDirectory : this.PrivateRootDirectory;
                 string fullSaveDirectory = Path.Combine(rootDirectory, saveDirectory);
                 string rootFolderName = publicRoot ? Folders.PublicRootFolderName : Folders.PrivateRootFolderName;
                 string resultFileName = FilesFunctions.GetUniqueFileName();
@@ -274,7 +299,7 @@ namespace Definux.Emeraude.Files.Services
                     Name = resultFileName,
                     Path = fileRelativePath,
                     FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
-                    Applied = true
+                    Applied = true,
                 };
                 fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
 
@@ -290,15 +315,16 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<TempFileLog> ApplyTempFileToPrivateDirectoryAsync(int fileId, string targetDirectory)
         {
             try
             {
-                var file = await GetFileByIdAsync(fileId);
+                var file = await this.GetFileByIdAsync(fileId);
                 var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
                 if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
                 {
-                    string privateRootTempUploadDirectory = Path.Combine(hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
+                    string privateRootTempUploadDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
                     string sourceFilePath = Path.Combine(privateRootTempUploadDirectory, file.NameWithExtension);
                     File.Move(sourceFilePath, targetFilePath);
 
@@ -320,15 +346,16 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<TempFileLog> ApplyTempFileToPublicDirectoryAsync(int fileId, string targetDirectory)
         {
             try
             {
-                var file = await GetFileByIdAsync(fileId);
+                var file = await this.GetFileByIdAsync(fileId);
                 var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
                 if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
                 {
-                    string publicRootTempUploadDirectory = Path.Combine(hostingEnvironment.ContentRootPath, Folders.PublicRootFolderName);
+                    string publicRootTempUploadDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PublicRootFolderName);
                     string sourceFilePath = Path.Combine(publicRootTempUploadDirectory, file.NameWithExtension);
                     File.Move(sourceFilePath, targetFilePath);
 
@@ -350,20 +377,21 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public List<string> GetPublicRootFolderFilesRelativePaths(params string[] paths)
         {
             try
             {
                 var targetPaths = paths.ToList();
-                string publicRootPath = PublicRootDirectory;
+                string publicRootPath = this.PublicRootDirectory;
                 targetPaths.Insert(0, publicRootPath);
                 string folderPath = Path.Combine(targetPaths.ToArray());
-                List<string> resultPictures = Directory
+                List<string> resultFiles = Directory
                     .GetFiles(folderPath, "*", SearchOption.TopDirectoryOnly)
                     .Select(x => x.Replace(publicRootPath, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
                     .ToList();
 
-                return resultPictures;
+                return resultFiles;
             }
             catch (Exception)
             {
@@ -371,13 +399,14 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> ApplyTempFilesToPrivateDirectoryAsync(IEnumerable<int> ids, string targetDirectory)
         {
             try
             {
                 foreach (var fileId in ids)
                 {
-                    await ApplyTempFileToPrivateDirectoryAsync(fileId, targetDirectory);
+                    await this.ApplyTempFileToPrivateDirectoryAsync(fileId, targetDirectory);
                 }
 
                 return true;
@@ -389,13 +418,14 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> ApplyTempFilesToPublicDirectoryAsync(IEnumerable<int> ids, string targetDirectory)
         {
             try
             {
                 foreach (var fileId in ids)
                 {
-                    await ApplyTempFileToPublicDirectoryAsync(fileId, targetDirectory);
+                    await this.ApplyTempFileToPublicDirectoryAsync(fileId, targetDirectory);
                 }
 
                 return true;

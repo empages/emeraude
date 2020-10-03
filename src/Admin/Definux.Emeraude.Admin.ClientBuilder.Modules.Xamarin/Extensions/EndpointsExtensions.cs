@@ -1,13 +1,21 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Models;
-using Definux.Utilities.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Definux.Emeraude.Admin.ClientBuilder.Models;
+using Definux.Utilities.Extensions;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="Endpoint"/>.
+    /// </summary>
     public static class EndpointsExtensions
     {
+        /// <summary>
+        /// Get the name of the expected service agent name C# format for the current endpoint.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
         public static string GetServiceAgentExecutionMethod(this Endpoint endpoint)
         {
             string methodName = $"{endpoint.MethodName?.ToLower().ToFirstUpper()}Async";
@@ -36,7 +44,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
             else if (endpoint.Method == HttpMethod.Put)
             {
                 methodArgumentsComma = ", ";
-                
                 if (endpoint.Arguments != null && endpoint.Arguments.Count > 0)
                 {
                     methodGenericParameters.Add(endpoint.ComplexArgument?.Class?.Name + "Bindable");
@@ -58,6 +65,11 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
             return result;
         }
 
+        /// <summary>
+        /// Get response type as a string in C# format for the current endpoint.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
         public static string GetResponseBindableBuildTypeName(this Endpoint endpoint)
         {
             if (endpoint.Response != null)
@@ -68,7 +80,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
                 }
 
                 string typeName = endpoint.Response?.Class?.Name + "Bindable";
-                
                 if (endpoint.Response.IsCollection)
                 {
                     typeName = $"ObservableCollection<{typeName}>";
@@ -80,6 +91,11 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
             return string.Empty;
         }
 
+        /// <summary>
+        /// Get arguments list as a string C# format for the current endpoint.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
         public static string GetBindableStrongTypedArgumentsListString(this Endpoint endpoint)
         {
             if (endpoint.Arguments == null || endpoint.Arguments.Count == 0)

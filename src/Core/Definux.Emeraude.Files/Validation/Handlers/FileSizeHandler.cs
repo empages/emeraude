@@ -1,21 +1,31 @@
+using System;
 using Definux.Utilities.Validation;
 using Microsoft.AspNetCore.Http;
-using System;
 
 namespace Definux.Emeraude.Files.Validation.Handlers
 {
+    /// <summary>
+    /// File validation handler for the size of the file.
+    /// </summary>
     internal class FileSizeHandler : Handler<IFormFile>
     {
         private readonly long maxAllowedFileSize;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileSizeHandler"/> class.
+        /// </summary>
+        /// <param name="maxAllowedFileSize"></param>
         public FileSizeHandler(long maxAllowedFileSize)
         {
             if (maxAllowedFileSize == 0)
             {
                 throw new NullReferenceException("Allowed file size must be greater than 0.");
             }
+
             this.maxAllowedFileSize = maxAllowedFileSize;
         }
+
+        /// <inheritdoc/>
         protected override string HandleProcessAction()
         {
             string resultMessage = string.Empty;
@@ -27,7 +37,7 @@ namespace Definux.Emeraude.Files.Validation.Handlers
             else if (this.requestObject.Length > this.maxAllowedFileSize)
             {
                 this.requestObject = null;
-                resultMessage = $"File size exceeds allowed {maxAllowedFileSize} bytes. ";
+                resultMessage = $"File size exceeds allowed {this.maxAllowedFileSize} bytes. ";
             }
 
             return resultMessage;

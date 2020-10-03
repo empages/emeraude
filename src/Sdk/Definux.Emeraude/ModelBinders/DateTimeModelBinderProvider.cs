@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Definux.Emeraude.ModelBinders
 {
+    /// <summary>
+    /// Customized <see cref="DateTime"/> model binder provider for the needs of Emeraude.
+    /// </summary>
     public class DateTimeModelBinderProvider : IModelBinderProvider
     {
+        /// <inheritdoc/>
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             if (context == null)

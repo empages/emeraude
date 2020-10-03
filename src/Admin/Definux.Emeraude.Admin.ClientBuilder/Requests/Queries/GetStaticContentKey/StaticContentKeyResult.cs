@@ -1,24 +1,23 @@
-﻿using Definux.Emeraude.Application.Common.Mapping;
+﻿using System.Collections.Generic;
+using Definux.Emeraude.Application.Common.Mapping;
 using Definux.Emeraude.Domain.Localization;
-using System.Collections.Generic;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetStaticContentKey
 {
+    /// <summary>
+    /// Result of static content key with its related contents - result of <see cref="GetStaticContentKeyQuery"/>.
+    /// </summary>
     public class StaticContentKeyResult : IMapFrom<ContentKey>
     {
+        /// <inheritdoc cref="ContentKey.Id"/>
         public int Id { get; set; }
 
+        /// <inheritdoc cref="ContentKey.Key"/>
         public string Key { get; set; }
 
+        /// <summary>
+        /// List of all static content keys with content implemented by <see cref="ContentKeyContentResult"/>.
+        /// </summary>
         public IEnumerable<ContentKeyContentResult> StaticContentList { get; set; }
-    }
-
-    public class ContentKeyContentResult : IMapFrom<StaticContent>
-    {
-        public int Id { get; set; }
-
-        public int LanguageId { get; set; }
-
-        public string Content { get; set; }
     }
 }

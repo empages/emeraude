@@ -1,34 +1,49 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Emeraude.Domain.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateContentKeyWithContent
 {
+    /// <summary>
+    /// Command that create a content key with its static contents for each language.
+    /// </summary>
     public class CreateContentKeyWithContentCommand : NewContentKeyWithContentRequest, IRequest<CreatedResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateContentKeyWithContentCommand"/> class.
+        /// </summary>
+        /// <param name="request"></param>
         public CreateContentKeyWithContentCommand(NewContentKeyWithContentRequest request)
         {
-            Key = request.Key;
-            StaticContentList = request.StaticContentList;
+            this.Key = request.Key;
+            this.StaticContentList = request.StaticContentList;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateContentKeyWithContentCommand"/> class.
+        /// </summary>
         public CreateContentKeyWithContentCommand()
         {
-
         }
 
+        /// <inheritdoc/>
         public class CreateContentKeyWithValuesCommandHandler : IRequestHandler<CreateContentKeyWithContentCommand, CreatedResult>
         {
             private readonly ILocalizationContext context;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CreateContentKeyWithValuesCommandHandler"/> class.
+            /// </summary>
+            /// <param name="context"></param>
             public CreateContentKeyWithValuesCommandHandler(ILocalizationContext context)
             {
                 this.context = context;
             }
 
+            /// <inheritdoc/>
             public async Task<CreatedResult> Handle(CreateContentKeyWithContentCommand request, CancellationToken cancellationToken)
             {
                 var key = new ContentKey
@@ -41,7 +56,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.CreateContentKe
                     key.StaticContentList.Add(new StaticContent
                     {
                         LanguageId = value.LanguageId,
-                        Content = value.Content
+                        Content = value.Content,
                     });
                 }
 

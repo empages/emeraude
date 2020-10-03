@@ -1,8 +1,11 @@
-﻿using Definux.Emeraude.Domain.Localization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Definux.Emeraude.Domain.Localization;
 
 namespace Definux.Emeraude.Application.Common.Interfaces.Localization
 {
+    /// <summary>
+    /// Helper service accessor that provides the language extracted from the current request.
+    /// </summary>
     public interface ICurrentLanguageProvider
     {
         /// <summary>

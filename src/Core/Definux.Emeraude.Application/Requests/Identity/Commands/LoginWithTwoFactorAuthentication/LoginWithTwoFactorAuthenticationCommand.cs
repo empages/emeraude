@@ -1,47 +1,61 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.LoginWithTwoFactorAuthentication
 {
+    /// <summary>
+    /// Command for user login with two factor authentication.
+    /// </summary>
     public class LoginWithTwoFactorAuthenticationCommand : IRequest<LoginWithTwoFactorAuthenticationRequestResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginWithTwoFactorAuthenticationCommand"/> class.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="code"></param>
         public LoginWithTwoFactorAuthenticationCommand(IUser user, string code)
         {
-            User = user;
-            Code = code;
+            this.User = user;
+            this.Code = code;
         }
 
+        /// <summary>
+        /// Two factor authentication code.
+        /// </summary>
         public string Code { get; set; }
 
+        /// <summary>
+        /// Target user.
+        /// </summary>
         public IUser User { get; set; }
 
+        /// <inheritdoc/>
         public class LoginWithTwoFactorAuthenticationCommandHandler : IRequestHandler<LoginWithTwoFactorAuthenticationCommand, LoginWithTwoFactorAuthenticationRequestResult>
         {
             private const string TwoFactorAuthenticationTokenProvider = "Authenticator";
 
             private readonly IUserManager userManager;
-            private readonly ICurrentUserProvider currentUserProvider;
 
-            public LoginWithTwoFactorAuthenticationCommandHandler(IUserManager userManager, ICurrentUserProvider currentUserProvider)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="LoginWithTwoFactorAuthenticationCommandHandler"/> class.
+            /// </summary>
+            /// <param name="userManager"></param>
+            /// <param name="currentUserProvider"></param>
+            public LoginWithTwoFactorAuthenticationCommandHandler(IUserManager userManager)
             {
                 this.userManager = userManager;
-                this.currentUserProvider = currentUserProvider;
             }
 
+            /// <inheritdoc/>
             public async Task<LoginWithTwoFactorAuthenticationRequestResult> Handle(LoginWithTwoFactorAuthenticationCommand request, CancellationToken cancellationToken)
             {
                 var result = new LoginWithTwoFactorAuthenticationRequestResult
                 {
-                    User = request.User
+                    User = request.User,
                 };
 
                 var authenticatorCode = request.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
@@ -67,5 +81,4 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.LoginWithTwoFa
             }
         }
     }
-
 }

@@ -1,30 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Definux.Emeraude.Configuration.Options
 {
+    /// <summary>
+    /// Emeraude framework options class.
+    /// </summary>
     public class EmOptions
     {
         private string adminDashboardIndexRedirectRoute = "/admin/analytics";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmOptions"/> class.
+        /// </summary>
         public EmOptions()
         {
-            Account = new AccountOptions();
-            Mapping = new MappingOptions();
-            Assemblies = new List<Assembly>();
-            AdditonalRoles = new Dictionary<string, string[]>();
+            this.Account = new AccountOptions();
+            this.Mapping = new MappingOptions();
+            this.Assemblies = new List<Assembly>();
+            this.AdditonalRoles = new Dictionary<string, string[]>();
         }
 
+        /// <summary>
+        /// General name of the project. Default value is 'Emeraude'.
+        /// </summary>
         public string ProjectName { get; set; } = "Emeraude";
 
+        /// <summary>
+        /// Route used for the administration index page. The string must starts with '/admin/' and cannot be set to '/admin'. The default value is '/admin/analytics'.
+        /// </summary>
         public string AdminDashboardIndexRedirectRoute
         {
             get
             {
                 return this.adminDashboardIndexRedirectRoute;
             }
+
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -56,31 +68,55 @@ namespace Definux.Emeraude.Configuration.Options
             }
         }
 
+        /// <summary>
+        /// AutoMapper configuration options. For more information see <see cref="MappingOptions"/>.
+        /// </summary>
         public MappingOptions Mapping { get; set; }
 
+        /// <summary>
+        /// Account configuration options. For more information see <see cref="AccountOptions"/>.
+        /// </summary>
         public AccountOptions Account { get; set; }
 
-        public bool UseDefaultIdentity { get; set; } = true;
-
+        /// <summary>
+        /// List with all assemblies used for registration of execution services and requests.
+        /// </summary>
         public List<Assembly> Assemblies { get; set; }
 
+        /// <summary>
+        /// Execution assembly of the application.
+        /// </summary>
         public Assembly EmeraudeAssembly { get; private set; }
 
+        /// <summary>
+        /// Dictionary that contains all additional roles and their claims.
+        /// </summary>
         public Dictionary<string, string[]> AdditonalRoles { get; set; }
 
+        /// <summary>
+        /// Flag that turn on/off auto execution of migrations for all database contexts.
+        /// </summary>
         public bool ExecuteMigrations { get; set; }
 
-        public void AddRole(string roleName, string[] claims)
-        {
-            AdditonalRoles[roleName] = claims;
-        }
-
+        /// <summary>
+        /// Get the current Emeraude Framework version.
+        /// </summary>
         public string EmeraudeVersion
         {
             get
             {
-                return EmeraudeAssembly?.GetName()?.Version?.ToString();
+                return this.EmeraudeAssembly?.GetName()?.Version?.ToString();
             }
+        }
+
+        /// <summary>
+        /// Add additional role to the roles of the system. It is prefered to be added before first initialization of the system.
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="claims"></param>
+        public void AddRole(string roleName, string[] claims)
+        {
+            this.AdditonalRoles[roleName] = claims;
         }
 
         /// <summary>
@@ -89,7 +125,7 @@ namespace Definux.Emeraude.Configuration.Options
         /// <param name="assemblyName"></param>
         public void AddAssembly(string assemblyName)
         {
-            Assemblies.Add(Assembly.Load(assemblyName));
+            this.Assemblies.Add(Assembly.Load(assemblyName));
         }
 
         /// <summary>
@@ -98,14 +134,18 @@ namespace Definux.Emeraude.Configuration.Options
         /// <param name="assembly"></param>
         public void AddAssembly(Assembly assembly)
         {
-            Assemblies.Add(assembly);
+            this.Assemblies.Add(assembly);
         }
 
+        /// <summary>
+        /// Set the application execution assembly if the value is not set.
+        /// </summary>
+        /// <param name="assembly"></param>
         public void SetEmeraudeAssembly(Assembly assembly)
         {
-            if (EmeraudeAssembly == null)
+            if (this.EmeraudeAssembly == null)
             {
-                EmeraudeAssembly = assembly;
+                this.EmeraudeAssembly = assembly;
             }
         }
     }

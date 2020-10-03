@@ -1,26 +1,37 @@
+using System.Threading.Tasks;
+using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.HtmlBuilder;
 using Definux.Utilities.Options;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.UI.TagHelpers
 {
+    /// <summary>
+    /// Tag helper that add visible recaptcha input + all required scripts into the head and body.
+    /// </summary>
     [HtmlTargetElement("form-visible-recaptcha", TagStructure = TagStructure.NormalOrSelfClosing)]
     public class FormVisibleRecaptchaTagHelper : TagHelper
     {
         private readonly GoogleRecaptchaKeysOptions recaptchaOptions;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormVisibleRecaptchaTagHelper"/> class.
+        /// </summary>
+        /// <param name="options"></param>
         public FormVisibleRecaptchaTagHelper(IOptions<GoogleRecaptchaKeysOptions> options)
         {
             this.recaptchaOptions = options.Value;
         }
 
+        /// <inheritdoc cref="Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>
         [HtmlAttributeNotBound]
         [ViewContext]
         public ViewContext ViewContext { get; set; }
 
+        /// <inheritdoc/>
         public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var htmlBuilder = new HtmlBuilder.HtmlBuilder();
@@ -33,21 +44,19 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                     .WithDataAttribute("sitekey", this.recaptchaOptions.VisibleRecaptcha.SiteKey)
                     .AppendMultiple(xx =>
                     {
-                        if (ViewContext.ModelState.ContainsKey("ReCaptcha") && 
-                            ViewContext.ModelState["ReCaptcha"].Errors != null && 
-                            ViewContext.ModelState["ReCaptcha"].Errors.Count > 0)
+                        if (this.ViewContext.ModelState.ContainsKey("ReCaptcha") &&
+                            this.ViewContext.ModelState["ReCaptcha"].Errors != null &&
+                            this.ViewContext.ModelState["ReCaptcha"].Errors.Count > 0)
                         {
-                            foreach (var error in ViewContext.ModelState["ReCaptcha"].Errors)
+                            foreach (var error in this.ViewContext.ModelState["ReCaptcha"].Errors)
                             {
                                 xx.Append(xxx => xxx
                                     .OpenElement(HtmlTags.Span)
                                     .WithClasses("text-danger text-small")
-                                    .Append(error.ErrorMessage)
-                                );
+                                    .Append(error.ErrorMessage));
                             }
                         }
-                    })
-                );
+                    }));
 
             output = htmlBuilder.ApplyToTagHelperOutput(output);
 
@@ -58,10 +67,9 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                 .WithAttribute("async", "true")
                 .WithAttribute("defer", "true");
 
-            ViewContext.AppendIntoTheHead(headHtmlBuilder.RenderHtml());
+            this.ViewContext.AppendIntoTheHead(headHtmlBuilder.RenderHtml());
 
             return base.ProcessAsync(context, output);
         }
-
     }
 }

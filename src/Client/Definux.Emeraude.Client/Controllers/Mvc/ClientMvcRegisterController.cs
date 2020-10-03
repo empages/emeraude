@@ -1,73 +1,83 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
-using Definux.Emeraude.Presentation.Extensions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Register;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <inheritdoc/>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string RegisterRoute = "/register";
+        private const string RegisterRoute = "/register";
 
+        /// <summary>
+        /// Register action for GET request.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
         public IActionResult Register()
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             var request = new RegisterRequest();
 
-            return RegisterView(request);
+            return this.RegisterView(request);
         }
 
+        /// <summary>
+        /// Register action for POST request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new RegisterCommand(request));
+                var requestResult = await this.Mediator.Send(new RegisterCommand(request));
 
                 if (requestResult.Result.Succeeded)
                 {
-                    return View("RegisterSuccess");
+                    return this.View("RegisterSuccess");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                    this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
             }
 
-            return RegisterView(request);
+            return this.RegisterView(request);
         }
 
-        public ViewResult RegisterView(object model)
+        private ViewResult RegisterView(object model)
         {
-            return View("Register", model);
+            return this.View("Register", model);
         }
     }
 }

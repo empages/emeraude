@@ -2,8 +2,16 @@
 
 namespace Definux.Emeraude.Application.Common.Mapping
 {
+    /// <summary>
+    /// Auto configure mapping for specified mapping object with implemented entity.
+    /// </summary>
+    /// <typeparam name="TEntity">Mapping object.</typeparam>
     public interface IMapFrom<TEntity>
     {
-        void Mapping(Profile profile) => profile.CreateMap(typeof(TEntity), GetType()).ReverseMap();
+        /// <summary>
+        /// Configure mapping for mapping object with implemented entity.
+        /// </summary>
+        /// <param name="profile"></param>
+        void Mapping(Profile profile) => profile.CreateMap(typeof(TEntity), this.GetType()).ReverseMap();
     }
 }

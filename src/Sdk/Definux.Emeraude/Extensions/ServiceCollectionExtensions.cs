@@ -1,61 +1,74 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using AutoMapper;
+using Definux.Emeraude.ActionFilters;
+using Definux.Emeraude.Admin;
+using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Admin.Extensions;
+using Definux.Emeraude.Admin.Mapping.Profiles;
 using Definux.Emeraude.Admin.UI;
+using Definux.Emeraude.Application.Behaviours;
+using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
 using Definux.Emeraude.Client.Extensions;
+using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Converters;
+using Definux.Emeraude.Emails.Extensions;
+using Definux.Emeraude.Files.Extensions;
+using Definux.Emeraude.Identity.Entities;
+using Definux.Emeraude.Identity.Extensions;
+using Definux.Emeraude.Localization.Extensions;
+using Definux.Emeraude.Logger.Extensions;
+using Definux.Emeraude.ModelBinders;
+using Definux.Emeraude.Persistence;
+using Definux.Emeraude.Persistence.Extensions;
+using Definux.Emeraude.Persistence.Seed;
+using Definux.Seo.Extensions;
+using Definux.Seo.Options;
+using Definux.Utilities.DataAnnotations;
 using Definux.Utilities.Extensions;
+using Definux.Utilities.Options;
+using FluentValidation.AspNetCore;
 using IdentityServer4;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Reflection;
-using Definux.Emeraude.Admin;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authentication;
-using Definux.Utilities.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Definux.Emeraude.ActionFilters;
-using Definux.Emeraude.ModelBinders;
-using Definux.Emeraude.Logger.Extensions;
-using Definux.Emeraude.Files.Extensions;
-using Definux.Emeraude.Admin.Mapping.Profiles;
-using Definux.Utilities.DataAnnotations;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Persistence;
-using Definux.Emeraude.Identity.Entities;
-using Definux.Emeraude.Localization.Extensions;
-using Definux.Emeraude.Emails.Extensions;
-using Definux.Seo.Extensions;
-using Definux.Emeraude.Persistence.Extensions;
-using Definux.Emeraude.Identity.Extensions;
-using Definux.Emeraude.Application.Behaviours;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using FluentValidation.AspNetCore;
-using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
-using Definux.Emeraude.Persistence.Seed;
-using Definux.Seo.Options;
 
 namespace Definux.Emeraude.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IServiceCollection"/>.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEmeraude<TContextInterface, TContextImplementation>(this IServiceCollection services, 
-            Action<EmOptions> optionsAction = null, 
-            Action<DefinuxSeoOptions> seoOptionsAction = null) 
+        /// <summary>
+        /// Configure Emeraude framework required services and functionalities.
+        /// </summary>
+        /// <typeparam name="TContextInterface">Interface of the application database context.</typeparam>
+        /// <typeparam name="TContextImplementation">Implementation of the application database context.</typeparam>
+        /// <param name="services"></param>
+        /// <param name="optionsAction"></param>
+        /// <param name="seoOptionsAction"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddEmeraude<TContextInterface, TContextImplementation>(
+            this IServiceCollection services,
+            Action<EmOptions> optionsAction = null,
+            Action<DefinuxSeoOptions> seoOptionsAction = null)
             where TContextInterface : class, IEmContext
             where TContextImplementation : EmContext<TContextImplementation>, TContextInterface
         {
             var options = new EmOptions();
             if (optionsAction != null)
-            {    
+            {
                 optionsAction.Invoke(options);
             }
 
@@ -258,7 +271,7 @@ namespace Definux.Emeraude.Extensions
                 options.UseCentralEmPagesRoutePrefix();
                 options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
             })
-                .AddFluentValidation(options => 
+                .AddFluentValidation(options =>
                 {
                     options.RegisterValidatorsFromAssemblies(emeraudeOptions.Assemblies);
                 })
@@ -285,7 +298,6 @@ namespace Definux.Emeraude.Extensions
                 options.AdminDashboardIndexRedirectRoute = emeraudeOptions.AdminDashboardIndexRedirectRoute;
                 options.Mapping = emeraudeOptions.Mapping;
                 options.Account = emeraudeOptions.Account;
-                options.UseDefaultIdentity = emeraudeOptions.UseDefaultIdentity;
                 options.Assemblies = emeraudeOptions.Assemblies;
                 options.AdditonalRoles = emeraudeOptions.AdditonalRoles;
                 options.ExecuteMigrations = emeraudeOptions.ExecuteMigrations;
@@ -318,7 +330,7 @@ namespace Definux.Emeraude.Extensions
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtOptions.Issuer,
                         ValidAudience = jwtOptions.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
                     };
                 });
 

@@ -5,19 +5,28 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Definux.Emeraude.Controllers
 {
-    public class ErrorController : PublicController
+    /// <summary>
+    /// Generic error controller which is triggered by the error interceptor.
+    /// </summary>
+    public sealed class ErrorController : PublicController
     {
+        /// <summary>
+        /// Error index action that returns a status code result if there no defined error view or the view placed on 'Views/Client/Error/Index.cshtml'.
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="compositeViewEngine"></param>
+        /// <returns></returns>
         [HttpGet("/error/{statusCode}")]
         public IActionResult Index(int statusCode, [FromServices]ICompositeViewEngine compositeViewEngine)
         {
-            var reExecute = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+            var reExecute = this.HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
 
-            if (compositeViewEngine.FindView(ControllerContext, "Index", false).Success)
+            if (compositeViewEngine.FindView(this.ControllerContext, "Index", false).Success)
             {
-                return View(statusCode);
+                return this.View(statusCode);
             }
-            
-            return StatusCode(statusCode);
+
+            return this.StatusCode(statusCode);
         }
     }
 }

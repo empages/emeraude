@@ -1,4 +1,6 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Localization.Extensions;
@@ -7,15 +9,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Presentation.Controllers
 {
+    /// <summary>
+    /// Abstraction for controllers which will be used on the client side of the application (not for the administration).
+    /// </summary>
     [ApiExplorerSettings(IgnoreApi = true)]
     public abstract class PublicController : Controller
     {
-        protected const string LanguageCookieName = ".Emeraude.Language";
+        private const string LanguageCookieName = ".Emeraude.Language";
 
         private ILogger logger;
         private ICurrentUserProvider currentUserProvider;
@@ -23,6 +26,7 @@ namespace Definux.Emeraude.Presentation.Controllers
         private IMediator mediator;
         private IUserManager userManager;
 
+        /// <inheritdoc cref="ILogger"/>
         protected ILogger Logger
         {
             get
@@ -36,6 +40,7 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
+        /// <inheritdoc cref="ICurrentLanguageProvider"/>
         protected ICurrentLanguageProvider CurrentLanguageProvider
         {
             get
@@ -49,6 +54,7 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
+        /// <inheritdoc cref="ICurrentUserProvider"/>
         protected ICurrentUserProvider CurrentUserProvider
         {
             get
@@ -62,19 +68,21 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
+        /// <inheritdoc cref="IMediator"/>
         protected IMediator Mediator
         {
             get
             {
                 if (this.mediator is null)
                 {
-                    this.mediator = HttpContext?.RequestServices?.GetService<IMediator>();
+                    this.mediator = this.HttpContext?.RequestServices?.GetService<IMediator>();
                 }
 
                 return this.mediator;
             }
         }
 
+        /// <inheritdoc cref="IUserManager"/>
         protected IUserManager UserManager
         {
             get
@@ -88,26 +96,35 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
-        public bool DisableActivityLog { get; set; }
+        /// <summary>
+        /// Flag that activate and disable activity logging by Emeraude logger.
+        /// </summary>
+        protected bool DisableActivityLog { get; set; }
 
-        public bool HideActivityLogParameters { get; set; }
+        /// <summary>
+        /// Flag that hide or show the request params in activity log.
+        /// </summary>
+        protected bool HideActivityLogParameters { get; set; }
 
-
+        /// <inheritdoc/>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ManageLanguageCookie();
-            if (!DisableActivityLog)
+            this.ManageLanguageCookie();
+            if (!this.DisableActivityLog)
             {
-                Logger.LogActivity(context, HideActivityLogParameters);
+                this.Logger.LogActivity(context, this.HideActivityLogParameters);
             }
 
             base.OnActionExecuting(context);
         }
 
+        /// <summary>
+        /// Process current language and set language cookie in the client's browser.
+        /// </summary>
         [NonAction]
         protected virtual void ManageLanguageCookie()
         {
-            var currentLanguage = CurrentLanguageProvider.GetCurrentLanguage();
+            var currentLanguage = this.CurrentLanguageProvider.GetCurrentLanguage();
             if (currentLanguage == null || currentLanguage.IsDefault)
             {
                 return;
@@ -118,36 +135,57 @@ namespace Definux.Emeraude.Presentation.Controllers
             CookieOptions options = new CookieOptions
             {
                 Expires = DateTime.Now.AddYears(1),
-                IsEssential = true
+                IsEssential = true,
             };
 
             if (cookieExist)
             {
                 this.Response.Cookies.Delete(LanguageCookieName);
             }
+
             this.Response.Cookies.Append(LanguageCookieName, currentLanguage.Code, options);
         }
 
+        /// <summary>
+        /// Get route with language code (async extraction) at the beginning based on current language.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
         protected async Task<string> GetLanguageRouteAsync(string route)
         {
             var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
             return this.GetRouteWithAppliedLanguage(route, currentLanguage);
         }
 
+        /// <summary>
+        /// Get route with language code at the beginning based on current language.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
         protected string GetLanguageRoute(string route)
         {
             var currentLanguage = this.currentLanguageProvider.GetCurrentLanguage();
             return this.GetRouteWithAppliedLanguage(route, currentLanguage);
         }
 
+        /// <summary>
+        /// Redirect to local url merged with current language code (async extraction).
+        /// </summary>
+        /// <param name="localUrl"></param>
+        /// <returns></returns>
         protected async Task<IActionResult> LanguageLocalRedirectAsync(string localUrl)
         {
-            return LocalRedirect(await GetLanguageRouteAsync(localUrl));
+            return this.LocalRedirect(await this.GetLanguageRouteAsync(localUrl));
         }
 
+        /// <summary>
+        /// Redirect to local url merged with current language code.
+        /// </summary>
+        /// <param name="localUrl"></param>
+        /// <returns></returns>
         protected IActionResult LanguageLocalRedirect(string localUrl)
         {
-            return LocalRedirect(GetLanguageRoute(localUrl));
+            return this.LocalRedirect(this.GetLanguageRoute(localUrl));
         }
     }
 }

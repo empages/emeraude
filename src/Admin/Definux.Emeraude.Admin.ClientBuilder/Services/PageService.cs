@@ -1,28 +1,36 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
+using Definux.Emeraude.Admin.ClientBuilder.Shared.Helpers;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Services
 {
+    /// <inheritdoc cref="IPageService"/>
     public class PageService : IPageService
     {
         private readonly ClientBuilderOptions clientBuilderOptions;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageService"/> class.
+        /// </summary>
+        /// <param name="clientBuilderOptions"></param>
+        /// <param name="logger"></param>
         public PageService(IOptions<ClientBuilderOptions> clientBuilderOptions, ILogger logger)
         {
             this.clientBuilderOptions = clientBuilderOptions.Value;
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public List<Page> GetAllPages()
         {
             List<Type> emPagesTypes = new List<Type>();
@@ -35,7 +43,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             List<Page> resultPages = new List<Page>();
             foreach (var pageType in emPagesTypes)
             {
-                var currentPage = BuildPage(pageType);
+                var currentPage = this.BuildPage(pageType);
 
                 if (currentPage != null && resultPages.FirstOrDefault(x => x.Id == currentPage.Id) == null)
                 {
@@ -43,7 +51,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 }
             }
 
-            return ReorderPagesBasedOnClientRoute(resultPages);
+            return this.ReorderPagesBasedOnClientRoute(resultPages);
         }
 
         private Page BuildPage(Type pageType)
@@ -58,7 +66,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
 
                 var routeAttribute = pageType.GetAttribute<EmRouteAttribute>();
                 string routeTemplate = routeAttribute.Template;
-                string clientRouteTemplate = ConvertAspNetRouteToVueRoute(routeTemplate);
+                string clientRouteTemplate = this.ConvertAspNetRouteToVueRoute(routeTemplate);
 
                 var initialStateModelType = pageType.GetProperty("InitialStateModel").PropertyType;
                 var viewModelType = pageType.GetProperty("ViewModel").PropertyType;
@@ -72,7 +80,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     Route = routeTemplate,
                     InitialStateModelType = initialStateModelType,
                     InitialStateModelClass = DescriptionExtractor.ExtractClassDescription(initialStateModelType),
-                    ClientRoute = clientRouteTemplate
+                    ClientRoute = clientRouteTemplate,
                 };
 
                 return currentPage;
@@ -118,20 +126,20 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             var reorderingDictionary = new List<RouteKeyPagePair>();
             foreach (var page in pages)
             {
-                string orderKey = "";
+                string orderKey = string.Empty;
                 if (page.ClientRoute == "/" || string.IsNullOrWhiteSpace(page.ClientRoute))
                 {
                     orderKey = "0";
                 }
                 else
                 {
-                    orderKey = string.Join(string.Empty, page.ClientRoute.Split('/').Select(x => ExtractOrderKeyFromRouteSegment(x)));
+                    orderKey = string.Join(string.Empty, page.ClientRoute.Split('/').Select(x => this.ExtractOrderKeyFromRouteSegment(x)));
                 }
 
                 reorderingDictionary.Add(new RouteKeyPagePair
                 {
                     Key = orderKey,
-                    Page = page
+                    Page = page,
                 });
             }
 
@@ -165,13 +173,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             string segmentText = routeSegment.Substring(startIndex);
 
             return $"{segmentPrefix}{segmentText}{segmentLength}";
-        }
-
-        internal class RouteKeyPagePair
-        {
-            internal string Key { get; set; }
-
-            internal Page Page { get; set; }
         }
     }
 }

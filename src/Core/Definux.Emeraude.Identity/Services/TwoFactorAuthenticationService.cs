@@ -1,15 +1,16 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="ITwoFactorAuthenticationService"/>
     public class TwoFactorAuthenticationService : ITwoFactorAuthenticationService
     {
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -17,6 +18,12 @@ namespace Definux.Emeraude.Identity.Services
         private readonly UrlEncoder urlEncoder;
         private readonly EmOptions options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TwoFactorAuthenticationService"/> class.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="urlEncoder"></param>
+        /// <param name="optionsAccessor"></param>
         public TwoFactorAuthenticationService(UserManager<User> userManager, UrlEncoder urlEncoder, IOptions<EmOptions> optionsAccessor)
         {
             this.userManager = userManager;
@@ -24,9 +31,10 @@ namespace Definux.Emeraude.Identity.Services
             this.options = optionsAccessor.Value;
         }
 
+        /// <inheritdoc/>
         public async Task<string> GetFormattedKeyAsync(IUser user)
         {
-            string unformattedKey = await GetUnformattedKeyAsync(user);
+            string unformattedKey = await this.GetUnformattedKeyAsync(user);
 
             var result = new StringBuilder();
             int currentPosition = 0;
@@ -35,6 +43,7 @@ namespace Definux.Emeraude.Identity.Services
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
                 currentPosition += 4;
             }
+
             if (currentPosition < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition));
@@ -43,9 +52,10 @@ namespace Definux.Emeraude.Identity.Services
             return result.ToString().ToLowerInvariant();
         }
 
+        /// <inheritdoc/>
         public async Task<string> GenerateQrCodeUriAsync(IUser user)
         {
-            string unformattedKey = await GetUnformattedKeyAsync(user);
+            string unformattedKey = await this.GetUnformattedKeyAsync(user);
 
             return string.Format(
                 AuthenticatorUriFormat,
@@ -54,6 +64,7 @@ namespace Definux.Emeraude.Identity.Services
                 unformattedKey);
         }
 
+        /// <inheritdoc/>
         public bool IsTwoFactorEnabled(IUser user)
         {
             return ((User)user).TwoFactorEnabled;

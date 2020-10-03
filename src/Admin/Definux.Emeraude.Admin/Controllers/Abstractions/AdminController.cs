@@ -1,24 +1,30 @@
-﻿using Definux.Emeraude.Admin.UI.ViewModels.Layout;
+﻿using System.Collections.Generic;
+using System.Text.Encodings.Web;
+using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Admin.UI.ViewModels.Layout;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Configuration.Authorization;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Definux.Emeraude.Admin.UI.Extensions;
-using System.Collections.Generic;
-using System.Text.Encodings.Web;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 
 namespace Definux.Emeraude.Admin.Controllers.Abstractions
 {
+    /// <summary>
+    /// Abstract admin controller that provides all required services and methods you need in the administration panel.
+    /// </summary>
     [Area(AdminAreaName)]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
     public abstract class AdminController : Controller
     {
+        /// <summary>
+        /// Admin area name.
+        /// </summary>
         protected const string AdminAreaName = "Admin";
 
         private ILogger logger;
@@ -26,11 +32,38 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         private IMediator mediator;
         private ICurrentUserProvider currentUserProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminController"/> class.
+        /// </summary>
         public AdminController()
         {
-            ControllerRoute = this.GetType().GetAttribute<RouteAttribute>()?.Template;
+            this.ControllerRoute = this.GetType().GetAttribute<RouteAttribute>()?.Template;
         }
 
+        /// <summary>
+        /// Name of the area of the controller.
+        /// </summary>
+        [ViewData]
+        public string AreaName => this.HttpContext.Request.RouteValues["Area"]?.ToString();
+
+        /// <summary>
+        /// Name of the controller.
+        /// </summary>
+        [ViewData]
+        public string ControllerName => this.HttpContext.Request.RouteValues["Controller"]?.ToString();
+
+        /// <summary>
+        /// Name of the action.
+        /// </summary>
+        [ViewData]
+        public string ActionName => this.HttpContext.Request.RouteValues["Action"]?.ToString();
+
+        /// <summary>
+        /// Route of the controller.
+        /// </summary>
+        public string ControllerRoute { get; protected set; }
+
+        /// <inheritdoc cref="ILogger"/>
         protected ILogger Logger
         {
             get
@@ -44,6 +77,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
         }
 
+        /// <inheritdoc cref="IMediator"/>
         protected IMediator Mediator
         {
             get
@@ -57,6 +91,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
         }
 
+        /// <inheritdoc cref="System.Text.Encodings.Web.UrlEncoder"/>
         protected UrlEncoder UrlEncoder
         {
             get
@@ -70,6 +105,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
         }
 
+        /// <inheritdoc cref="ICurrentUserProvider"/>
         protected ICurrentUserProvider CurrentUserProvider
         {
             get
@@ -83,22 +119,33 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
         }
 
-        public bool DisableActivityLog { get; set; }
+        /// <summary>
+        /// Flag that activate and disable activity logging by Emeraude logger.
+        /// </summary>
+        protected bool DisableActivityLog { get; set; }
 
-        public bool HideActivityLogParameters { get; set; }
+        /// <summary>
+        /// Flag that hide or show the request params in activity log.
+        /// </summary>
+        protected bool HideActivityLogParameters { get; set; }
 
-        [ViewData]
-        public string AreaName => HttpContext.Request.RouteValues["Area"]?.ToString();
+        /// <inheritdoc cref="OnActionExecuting(ActionExecutingContext)"/>
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (!this.DisableActivityLog)
+            {
+                this.Logger.LogActivity(context, this.HideActivityLogParameters);
+            }
 
-        [ViewData]
-        public string ControllerName => HttpContext.Request.RouteValues["Controller"]?.ToString();
+            base.OnActionExecuting(context);
+        }
 
-        [ViewData]
-        public string ActionName => HttpContext.Request.RouteValues["Action"]?.ToString();
-
-        public string ControllerRoute { get; protected set; }
-
-        public string BuildControllerRoute(string route)
+        /// <summary>
+        /// Build controller route for current controller.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
+        protected string BuildControllerRoute(string route)
         {
             string correctedRoute = route;
             if (correctedRoute.StartsWith("/"))
@@ -106,7 +153,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
                 correctedRoute = correctedRoute.Substring(1);
             }
 
-            string basePart = ControllerRoute;
+            string basePart = this.ControllerRoute;
             if (!basePart.EndsWith("/"))
             {
                 basePart = basePart + "/";
@@ -115,19 +162,13 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             return $"{basePart}{correctedRoute}";
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            if (!DisableActivityLog)
-            {
-                Logger.LogActivity(context, HideActivityLogParameters);
-            }
-
-            base.OnActionExecuting(context);
-        }
-
+        /// <summary>
+        /// Initialize navigation actions for the navbar of the admin panel.
+        /// </summary>
+        /// <param name="actions"></param>
         protected void InitializeNavigationActions(IEnumerable<NavigationActionViewModel> actions)
         {
-            ViewData.InitializeNavigationActions(actions);
+            this.ViewData.InitializeNavigationActions(actions);
         }
 
         /// <summary>
@@ -136,7 +177,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <param name="message"></param>
         protected virtual void ShowSuccessNotification(string message)
         {
-            TempData["SuccessStatusMessage"] = message;
+            this.TempData["SuccessStatusMessage"] = message;
         }
 
         /// <summary>
@@ -145,7 +186,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// <param name="message"></param>
         protected virtual void ShowErrorNotification(string message)
         {
-            TempData["ErrorStatusMessage"] = message;
+            this.TempData["ErrorStatusMessage"] = message;
         }
 
         /// <summary>
@@ -158,11 +199,11 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         {
             if (success)
             {
-                ShowSuccessNotification(successMessage);
+                this.ShowSuccessNotification(successMessage);
             }
             else
             {
-                ShowErrorNotification(errorMessage);
+                this.ShowErrorNotification(errorMessage);
             }
         }
     }

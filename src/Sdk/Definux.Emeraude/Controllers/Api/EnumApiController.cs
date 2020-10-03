@@ -1,16 +1,24 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.DataAnnotations;
+﻿using System.Collections.Generic;
+using Definux.Emeraude.Admin.ClientBuilder.DataAnnotations;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Definux.Emeraude.Controllers.Api
 {
+    /// <summary>
+    /// Enumeration API controller that provide access to enumeration types and their values.
+    /// </summary>
     [Route("/api/enums/")]
     [ApiEndpointsController]
-    public class EnumApiController : ApiController
+    public sealed class EnumApiController : ApiController
     {
+        /// <summary>
+        /// Get all enumerations with their values.
+        /// </summary>
+        /// <param name="enumTypeName"></param>
+        /// <returns></returns>
         [Route("{enumTypeName}")]
         [HttpGet]
         [Endpoint(typeof(IEnumerable<EnumValueItem>))]
@@ -19,12 +27,18 @@ namespace Definux.Emeraude.Controllers.Api
             var valueList = EnumFunctions.GetEnumValueItems(enumTypeName);
             if (valueList != null)
             {
-                return Ok(valueList);
+                return this.Ok(valueList);
             }
 
-            return BadRequest();
+            return this.BadRequest();
         }
 
+        /// <summary>
+        /// Get a specified enumeration by the enumeration type and value.
+        /// </summary>
+        /// <param name="enumTypeName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("{enumTypeName}/{value}")]
         [HttpGet]
         [Endpoint(typeof(EnumValueItem))]
@@ -33,10 +47,10 @@ namespace Definux.Emeraude.Controllers.Api
             var result = EnumFunctions.GetEnumItemFromTypeByValue(value, enumTypeName);
             if (result != null)
             {
-                return Ok(result);
+                return this.Ok(result);
             }
 
-            return BadRequest();
+            return this.BadRequest();
         }
     }
 }

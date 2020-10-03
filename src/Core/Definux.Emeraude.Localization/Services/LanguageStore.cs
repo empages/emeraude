@@ -1,25 +1,34 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Domain.Localization;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Domain.Localization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Localization.Services
 {
+    /// <summary>
+    /// Storage implementation for all localization data - languages, translations.
+    /// </summary>
     public class LanguageStore : ILanguageStore
     {
         private readonly ILocalizationContext context;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageStore"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="logger"></param>
         public LanguageStore(ILocalizationContext context, ILogger logger)
         {
             this.context = context;
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public string[] GetAllLanguageCodes()
         {
             try
@@ -36,6 +45,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<string[]> GetAllLanguageCodesAsync()
         {
             try
@@ -52,6 +62,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public Language GetDefaultLanguage()
         {
             try
@@ -65,11 +76,12 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<Language> GetDefaultLanguageAsync()
         {
             try
             {
-                return await this.context.Languages.AsQueryable().FirstOrDefaultAsync(x => x.IsDefault); ;
+                return await this.context.Languages.AsQueryable().FirstOrDefaultAsync(x => x.IsDefault);
             }
             catch (Exception ex)
             {
@@ -78,6 +90,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public List<string> GetTranslationsKeys()
         {
             try
@@ -95,6 +108,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Language> GetLanguages()
         {
             try
@@ -108,6 +122,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Language>> GetLanguagesAsync()
         {
             try
@@ -121,6 +136,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public Dictionary<string, string> GetLanguageTranslationDictionary(int languageId)
         {
             try

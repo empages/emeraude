@@ -1,16 +1,24 @@
-﻿using Definux.Emeraude.Admin.Attributes;
-using Definux.Emeraude.Admin.UI.UIElements.Form;
-using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
-using Definux.Utilities.Extensions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Definux.Emeraude.Admin.Attributes;
+using Definux.Emeraude.Admin.UI.UIElements.Form;
+using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
+using Definux.Utilities.Extensions;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
+    /// <summary>
+    /// Static mapper that convert entities in the form format.
+    /// </summary>
     public static class EntityFormMapper
     {
+        /// <summary>
+        /// Converts specified ViewModel (<see cref="ICreateEditEntityViewModel"/>) to collection of <see cref="CreateEditInputViewModel"/> by using the decorated properties of the view model entity implementation by <seealso cref="FormInputAttribute"/>.
+        /// </summary>
+        /// <param name="entityViewModel"></param>
+        /// <returns></returns>
         public static List<CreateEditInputViewModel> BuildInputs(ICreateEditEntityViewModel entityViewModel)
         {
             var resultList = new List<CreateEditInputViewModel>();

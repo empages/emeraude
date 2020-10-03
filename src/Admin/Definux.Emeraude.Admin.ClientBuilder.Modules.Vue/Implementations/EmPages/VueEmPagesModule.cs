@@ -1,52 +1,61 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Abstractions;
+﻿using System.Collections.Generic;
+using System.IO;
+using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Abstractions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.EmPages.Templates;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
 using Definux.Utilities.Extensions;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.EmPages
 {
+    /// <summary>
+    /// Vue EmPages module for generation of all pages components for created EmPages in Vue application.
+    /// The generation of this module is executing once in case when the page does not exist.
+    /// </summary>
     public class VueEmPagesModule : VueScaffoldModule
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VueEmPagesModule"/> class.
+        /// </summary>
         public VueEmPagesModule()
             : base("Vue EmPages", false)
         {
-            Order = 20;
+            this.Order = 20;
         }
 
+        /// <inheritdoc/>
         public override void DefineFiles()
         {
-            var pageService = GetService<IPageService>();
+            var pageService = this.GetService<IPageService>();
             var pages = pageService.GetAllPages();
-            string relativePath = Path.Combine(Options.WebAppPath, VueAppFolders.Pages);
+            string relativePath = Path.Combine(this.Options.WebAppPath, VueAppFolders.Pages);
 
             foreach (var page in pages)
             {
                 string currentPageFileName = page.Name.Replace(" ", string.Empty);
                 string currentPageFolderName = page.Name.SplitWordsByCapitalLetters().Replace(" ", "-").ToLower();
 
-                AddFile(new ModuleFile
+                this.AddFile(new ModuleFile
                 {
                     Name = $"{currentPageFileName}.vue",
                     RelativePath = Path.Combine(relativePath, currentPageFolderName),
                     TemplateType = typeof(ComponentTemplate),
                     ReferenceId = page.Name,
-                    RenderFunction = RenderPageComponent
+                    RenderFunction = this.RenderPageComponent,
                 });
             }
         }
 
+        /// <inheritdoc/>
         public override void DefineFolders()
         {
-            string relativePath = Path.Combine(Options.WebAppPath, VueAppFolders.Pages);
-            var pageService = GetService<IPageService>();
+            string relativePath = Path.Combine(this.Options.WebAppPath, VueAppFolders.Pages);
+            var pageService = this.GetService<IPageService>();
             var pages = pageService.GetAllPages();
 
             foreach (var page in pages)
             {
-                AddFolder(new ModuleFolder
+                this.AddFolder(new ModuleFolder
                 {
                     Name = page.Name.SplitWordsByCapitalLetters().Replace(" ", "-").ToLower(),
                     RelativePath = relativePath,

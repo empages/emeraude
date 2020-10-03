@@ -5,21 +5,32 @@ using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Admin.Controllers.Mvc
 {
-
+    /// <summary>
+    /// Admin dashboard controller used for index view of the administration.
+    /// </summary>
     [Route("/admin/")]
-    public class AdminDashboardController : AdminController
+    public sealed class AdminDashboardController : AdminController
     {
         private readonly EmOptions options;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminDashboardController"/> class.
+        /// </summary>
+        /// <param name="optionsAccessor"></param>
         public AdminDashboardController(IOptions<EmOptions> optionsAccessor)
         {
             this.options = optionsAccessor.Value;
         }
 
+        /// <summary>
+        /// Index action of the controller.
+        /// </summary>
+        /// <returns></returns>
         [Route("")]
         [HttpGet]
         public IActionResult Index()
         {
-            return LocalRedirect(this.options.AdminDashboardIndexRedirectRoute);
+            return this.LocalRedirect(this.options.AdminDashboardIndexRedirectRoute);
         }
     }
 }

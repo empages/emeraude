@@ -1,4 +1,9 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Emails;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Emails;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Models.Emails;
 using Definux.Emeraude.Application.Common.Results.Emails;
@@ -12,14 +17,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Emails.Services
 {
+    /// <inheritdoc cref="IEmailSender"/>
     public class EmailSender : IEmailSender
     {
         private readonly IRazorViewEngine razorViewEngine;
@@ -28,6 +29,14 @@ namespace Definux.Emeraude.Emails.Services
         private readonly ILogger logger;
         private readonly SmtpOptions smtpOptions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailSender"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="razorViewEngine"></param>
+        /// <param name="tempDataProvider"></param>
+        /// <param name="serviceProvider"></param>
+        /// <param name="smtpOptionsAccessor"></param>
         public EmailSender(
             ILogger logger,
             IRazorViewEngine razorViewEngine,
@@ -42,6 +51,7 @@ namespace Definux.Emeraude.Emails.Services
             this.smtpOptions = smtpOptionsAccessor.Value;
         }
 
+        /// <inheritdoc/>
         public async Task<SendEmailResult> SendEmailAsync(string templateName, EmailModel model)
         {
             bool sent = false;
@@ -49,7 +59,7 @@ namespace Definux.Emeraude.Emails.Services
             string message = string.Empty;
             try
             {
-                message = await RenderToStringAsync(templateName, model);
+                message = await this.RenderToStringAsync(templateName, model);
 
                 SmtpClient client = new SmtpClient(this.smtpOptions.Host);
                 client.UseDefaultCredentials = false;
@@ -94,7 +104,7 @@ namespace Definux.Emeraude.Emails.Services
 
                 var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
-                    Model = model
+                    Model = model,
                 };
 
                 var viewContext = new ViewContext(
@@ -103,8 +113,7 @@ namespace Definux.Emeraude.Emails.Services
                     viewDictionary,
                     new TempDataDictionary(actionContext.HttpContext, this.tempDataProvider),
                     stringWriter,
-                    new HtmlHelperOptions()
-                );
+                    new HtmlHelperOptions());
 
                 await viewResult.View.RenderAsync(viewContext);
                 return stringWriter.ToString();

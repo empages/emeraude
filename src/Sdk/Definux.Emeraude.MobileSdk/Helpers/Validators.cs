@@ -1,12 +1,21 @@
-﻿using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Resources;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Mail;
+using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Resources;
 
 namespace Definux.Emeraude.MobileSdk.Helpers
 {
+    /// <summary>
+    /// Built validators for strings and parameters.
+    /// </summary>
     public static class Validators
     {
+        /// <summary>
+        /// Check validity of email address.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
         public static bool IsValidEmail(string email, out string errorMessage)
         {
             try
@@ -28,7 +37,14 @@ namespace Definux.Emeraude.MobileSdk.Helpers
             }
         }
 
-        public static bool IsValidPassword(string password, out string errorMessage)
+        /// <summary>
+        /// Check validity of password based on Emeraude framework requirements.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="errorMessage"></param>
+        /// <param name="minLength"></param>
+        /// <returns></returns>
+        public static bool IsValidPassword(string password, out string errorMessage, int minLength = EmIdentityConstants.PasswordRequiredLength)
         {
             errorMessage = null;
 
@@ -57,7 +73,6 @@ namespace Definux.Emeraude.MobileSdk.Helpers
             }
 
             return true;
-        } 
-
+        }
     }
 }

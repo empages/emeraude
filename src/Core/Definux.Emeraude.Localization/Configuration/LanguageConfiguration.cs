@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Definux.Emeraude.Localization.Configuration
 {
+    /// <inheritdoc cref="IEntityTypeConfiguration{TEntity}"/>
     public class LanguageConfiguration : IEntityTypeConfiguration<Language>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<Language> builder)
         {
             builder

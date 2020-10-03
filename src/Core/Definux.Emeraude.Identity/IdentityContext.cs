@@ -1,18 +1,27 @@
-﻿using Definux.Emeraude.Identity.Entities;
+﻿using System;
+using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Definux.Emeraude.Identity
 {
+    /// <summary>
+    /// Implementation of <see cref="IdentityDbContext"/> that wrap the identity functionality of ASP.NET Core for the purposes of Emeraude.
+    /// </summary>
+    /// <typeparam name="TContext"><see cref="IdentityContext{TContext}"/>.</typeparam>
     public abstract class IdentityContext<TContext> : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
         where TContext : IdentityContext<TContext>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdentityContext{TContext}"/> class.
+        /// </summary>
+        /// <param name="options"></param>
         public IdentityContext(DbContextOptions<TContext> options)
             : base(options)
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -1,21 +1,27 @@
-﻿using Definux.Emeraude.MobileSdk.Configuration;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Definux.Emeraude.MobileSdk.Configuration;
 using Definux.Emeraude.MobileSdk.Constants;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Settings;
 using Definux.Emeraude.MobileSdk.Stores;
 using Definux.Emeraude.Resources;
 using Plugin.DeviceInfo;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace Definux.Emeraude.MobileSdk.ServiceAgents.Http
 {
+    /// <inheritdoc cref="IRequestHeaderHelper"/>
     public class RequestHeaderHelper : IRequestHeaderHelper
     {
         private readonly ISystemSettingsStore systemSettingsStore;
         private readonly IEmConfiguration configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestHeaderHelper"/> class.
+        /// </summary>
+        /// <param name="systemSettingsStore"></param>
+        /// <param name="configuration"></param>
         public RequestHeaderHelper(
             ISystemSettingsStore systemSettingsStore,
             IEmConfiguration configuration)
@@ -24,6 +30,7 @@ namespace Definux.Emeraude.MobileSdk.ServiceAgents.Http
             this.configuration = configuration;
         }
 
+        /// <inheritdoc/>
         public async Task InitializeHeadersAsync(HttpClient client, HostSettings settings)
         {
             client.DefaultRequestHeaders.Accept.Clear();
@@ -38,7 +45,7 @@ namespace Definux.Emeraude.MobileSdk.ServiceAgents.Http
             client.DefaultRequestHeaders.Add(HeaderKeys.MobileApplicationVersion, CrossDeviceInfo.Current.AppVersion.ToString());
             client.DefaultRequestHeaders.Add(HeaderKeys.ApplicationLanguage, this.systemSettingsStore.SelectedLanguage.Code);
 
-            client = await SetBearerAuthHeaderAsync(client);
+            client = await this.SetBearerAuthHeaderAsync(client);
 
             if (settings.Headers != null && settings.Headers.Count > 0)
             {

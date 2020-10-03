@@ -1,4 +1,10 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
@@ -6,15 +12,10 @@ using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.Requests.GetAll
 {
+    /// <inheritdoc/>
     public class GetAllQueryHandler<TEntity, TRequestModel> : IGetAllQueryHandler<GetAllQuery<TEntity, TRequestModel>, TEntity, TRequestModel>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
@@ -23,6 +24,12 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetAllQueryHandler{TEntity, TRequestModel}"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="mapper"></param>
+        /// <param name="logger"></param>
         public GetAllQueryHandler(IEmContext context, IMapper mapper, ILogger logger)
         {
             this.context = context;
@@ -30,18 +37,14 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
             this.logger = logger;
         }
 
-        public Expression<Func<TEntity, bool>> GetSearchQueryExpression(string searchQuery)
-        {
-            return ExpressionBuilders.BuildQueryExpressionBySearchQuery<TEntity>(searchQuery);
-        }
-
+        /// <inheritdoc/>
         public async Task<PaginatedList<TRequestModel>> Handle(GetAllQuery<TEntity, TRequestModel> request, CancellationToken cancellationToken)
         {
             PaginatedList<TRequestModel> result = new PaginatedList<TRequestModel>();
 
             try
             {
-                var requestExpression = BuildRequestExpression(request);
+                var requestExpression = this.BuildRequestExpression(request);
 
                 result.AllItemsCount = this.context
                         .Set<TEntity>()

@@ -1,46 +1,52 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
-    public partial class ClientApiAuthenticationController : ApiController
+    /// <inheritdoc/>
+    public sealed partial class ClientApiAuthenticationController : ApiController
     {
+        /// <summary>
+        /// Forgot password action.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordRequest request)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new ForgotPasswordCommand(request));
+                var requestResult = await this.Mediator.Send(new ForgotPasswordCommand(request));
 
                 if (requestResult.Successed)
                 {
-                    return Ok();
+                    return this.Ok();
                 }
                 else
                 {
-                    await Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
-                    return Ok();
+                    await this.Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
+                    return this.Ok();
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

@@ -1,16 +1,26 @@
-﻿using Definux.Emeraude.Admin.UI.ViewModels.Roots;
+﻿using System.Collections.Generic;
+using Definux.Emeraude.Admin.UI.ViewModels.Roots;
+using Definux.Emeraude.Application.Common.Models;
 using Definux.Emeraude.Application.Common.Results.Files;
-using System.Collections.Generic;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
+    /// <summary>
+    /// Static mapper that supports roots feature.
+    /// </summary>
     public static class RootMapper
     {
-        public static RootViewModel Map(string folderName, IEnumerable<SystemFileItem> fileSystemItems)
+        /// <summary>
+        /// Method that sorting a collection of <see cref="SystemItem"/> into a <seealso cref="RootViewModel"/> files and folders.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <param name="fileSystemItems"></param>
+        /// <returns></returns>
+        public static RootViewModel Map(string folderName, IEnumerable<SystemItem> fileSystemItems)
         {
             RootViewModel model = new RootViewModel
             {
-                FolderName = folderName
+                FolderName = folderName,
             };
 
             foreach (var item in fileSystemItems)

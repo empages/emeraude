@@ -1,22 +1,24 @@
-﻿using Definux.Emeraude.MobileSdk.Services;
+﻿using System.Threading.Tasks;
+using Definux.Emeraude.MobileSdk.FormModels;
+using Definux.Emeraude.MobileSdk.Services;
 using Definux.Emeraude.MobileSdk.Stores;
 using Prism.Commands;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.MobileSdk.ViewModels
 {
-    public class RegisterViewModel : ViewModelBase
+    /// <summary>
+    /// An abstract ViewModel that defines the binding model for a page that contains register form.
+    /// </summary>
+    public abstract class RegisterViewModel : ViewModelBase
     {
-        private string fullName;
-        private string email;
-        private string password;
-        private string confirmedPassword;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterViewModel"/> class.
+        /// </summary>
+        /// <param name="navigationService"></param>
+        /// <param name="systemSettingsStore"></param>
+        /// <param name="authenticationStore"></param>
+        /// <param name="localizer"></param>
         public RegisterViewModel(
             INavigationService navigationService,
             ISystemSettingsStore systemSettingsStore,
@@ -24,53 +26,34 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
             ILocalizer localizer)
             : base(navigationService, systemSettingsStore, localizer)
         {
-            AuthenticationStore = authenticationStore;
-
-            GoToLoginPageCommand = new DelegateCommand(() => NavigationService.NavigateAsync("LoginPage"));
-            SubmitRegistrationCommand = new DelegateCommand(async () => await SubmitRegistrationAsync());
+            this.AuthenticationStore = authenticationStore;
+            this.GoToLoginPageCommand = new DelegateCommand(() => this.NavigationService.NavigateAsync("LoginPage"));
+            this.SubmitRegistrationCommand = new DelegateCommand(async () => await this.SubmitRegistrationAsync());
         }
 
+        /// <inheritdoc cref="IAuthenticationStore"/>
         public IAuthenticationStore AuthenticationStore { get; private set; }
 
+        /// <summary>
+        /// Command that redirect to login page.
+        /// </summary>
         public DelegateCommand GoToLoginPageCommand { get; set; }
+
+        /// <summary>
+        /// Command that submit the register form.
+        /// </summary>
         public DelegateCommand SubmitRegistrationCommand { get; set; }
 
-        #region FormProperties
-
-        public string FullName
-        {
-            get => this.fullName;
-            set => SetProperty(ref this.fullName, value);
-        }
-
-        public string Email
-        {
-            get => this.email;
-            set => SetProperty(ref this.email, value);
-        }
-
-        public string Password
-        {
-            get => this.password;
-            set => SetProperty(ref this.password, value);
-        }
-
-        public string ConfirmedPassword
-        {
-            get => this.confirmedPassword;
-            set => SetProperty(ref this.confirmedPassword, value);
-        }
-
-        #endregion
+        /// <summary>
+        /// Binding model for the register form.
+        /// </summary>
+        public RegisterFormModel RegisterModel { get; set; }
 
         private async Task SubmitRegistrationAsync()
         {
-
-        }
-
-        private bool ValidateEnteredData()
-        {
-            return false;
+            if (this.RegisterModel.IsValid())
+            {
+            }
         }
     }
 }

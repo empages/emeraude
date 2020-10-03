@@ -1,4 +1,11 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
+﻿using System;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
@@ -7,35 +14,49 @@ using Definux.Emeraude.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication
 {
+    /// <summary>
+    /// Command for external authentication of user.
+    /// </summary>
     public class ExternalAuthenticationCommand : IRequest<ExternalAuthenticationRequestResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExternalAuthenticationCommand"/> class.
+        /// </summary>
+        /// <param name="claimsPrincipal"></param>
         public ExternalAuthenticationCommand(ClaimsPrincipal claimsPrincipal)
         {
-            ClaimsPrincipal = claimsPrincipal;
+            this.ClaimsPrincipal = claimsPrincipal;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExternalAuthenticationCommand"/> class.
+        /// </summary>
+        /// <param name="externalAuthenticationData"></param>
         public ExternalAuthenticationCommand(ExternalAuthenticationData externalAuthenticationData)
         {
-            ExternalAuthenticationData = externalAuthenticationData;
+            this.ExternalAuthenticationData = externalAuthenticationData;
         }
 
+        /// <inheritdoc cref="System.Security.Claims.ClaimsPrincipal"/>
         public ClaimsPrincipal ClaimsPrincipal { get; set; }
 
+        /// <inheritdoc cref="ExternalAuthentication.ExternalAuthenticationData"/>
         public ExternalAuthenticationData ExternalAuthenticationData { get; set; }
 
+        /// <inheritdoc/>
         public class ExternalAuthenticationCommandHandler : IRequestHandler<ExternalAuthenticationCommand, ExternalAuthenticationRequestResult>
         {
+            /// <summary>
+            /// Name of the Facebook external provider.
+            /// </summary>
             public const string FacebookExternalProvider = "Facebook";
+
+            /// <summary>
+            /// Name of the Google external provider.
+            /// </summary>
             public const string GoogleExternalProvider = "Google";
 
             private readonly ILogger logger;
@@ -44,6 +65,14 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             private readonly IUserAvatarService userAvatarService;
             private readonly IIdentityEventManager eventManager;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ExternalAuthenticationCommandHandler"/> class.
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="context"></param>
+            /// <param name="userManager"></param>
+            /// <param name="userAvatarService"></param>
+            /// <param name="eventManager"></param>
             public ExternalAuthenticationCommandHandler(
                 ILogger logger,
                 IEmContext context,
@@ -58,14 +87,15 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                 this.eventManager = eventManager;
             }
 
+            /// <inheritdoc/>
             public async Task<ExternalAuthenticationRequestResult> Handle(ExternalAuthenticationCommand request, CancellationToken cancellationToken)
             {
-                var externalUser = await GetExternalUserAsync(request);
+                var externalUser = await this.GetExternalUserAsync(request);
                 var user = await this.userManager.FindUserByLoginAsync(externalUser.Provider, externalUser.Id) ?? await this.userManager.FindUserByEmailAsync(externalUser.EmailAddress);
                 var result = new ExternalAuthenticationRequestResult
                 {
                     Result = SignInResult.Failed,
-                    User = user
+                    User = user,
                 };
 
                 if (user != null)
@@ -73,20 +103,18 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     bool isProviderRegistered = await this.userManager.FindUserByLoginAsync(externalUser.Provider, externalUser.Id) != null;
                     if (!isProviderRegistered)
                     {
-                        await AddExternalProviderToUserAsync(user.Id, externalUser);
+                        await this.AddExternalProviderToUserAsync(user.Id, externalUser);
                     }
-                    
+
                     result.Result = SignInResult.Success;
-                    
                     await this.eventManager.TriggerExternalLoginEventAsync(user.Id);
                 }
                 else
                 {
-                    var newUser = await RegisterUserViaExternalProviderUserAsync(externalUser);
+                    var newUser = await this.RegisterUserViaExternalProviderUserAsync(externalUser);
                     if (newUser != null)
                     {
                         result.Result = SignInResult.Success;
-                        
                         await this.eventManager.TriggerExternalRegisterEventAsync(newUser.Id);
                     }
                 }
@@ -98,11 +126,11 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             {
                 if (command.ClaimsPrincipal != null)
                 {
-                    return await GetExternalUserAsync(command.ClaimsPrincipal);
+                    return await this.GetExternalUserAsync(command.ClaimsPrincipal);
                 }
                 else if (command.ExternalAuthenticationData != null)
                 {
-                    return await GetExternalUserAsync(command.ExternalAuthenticationData);
+                    return await this.GetExternalUserAsync(command.ExternalAuthenticationData);
                 }
 
                 return null;
@@ -125,8 +153,8 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     if (provider == FacebookExternalProvider)
                     {
                         externalUser = new FacebookExternalUser();
-                        ((FacebookExternalUser)externalUser).Picture = new FacebookExternalUser.ProfilePicture();
-                        ((FacebookExternalUser)externalUser).Picture.Data = new FacebookExternalUser.ProfilePicture.ProfilePictureData();
+                        ((FacebookExternalUser)externalUser).Picture = new ProfilePicture();
+                        ((FacebookExternalUser)externalUser).Picture.Data = new ProfilePictureData();
                         ((FacebookExternalUser)externalUser).Picture.Data.Url = $"https://graph.facebook.com/{nameIdentifier}/picture?type=large";
                     }
                     else if (provider == GoogleExternalProvider)
@@ -211,7 +239,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     var registerResult = await this.userManager.CreateAsync(user);
                     if (registerResult.Succeeded)
                     {
-                        await AddExternalProviderToUserAsync(user.Id, externalUser);
+                        await this.AddExternalProviderToUserAsync(user.Id, externalUser);
                         await this.userManager.AddToRoleAsync(user, ApplicationRoles.User);
 
                         // apply avatar

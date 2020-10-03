@@ -1,15 +1,26 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
+﻿using System.Linq;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Linq;
 
 namespace Definux.Emeraude.Locales.Constraints
 {
+    /// <summary>
+    /// Implementation of <see cref="IRouteConstraint"/> for language code constraint that validate the request language code.
+    /// </summary>
     public class LanguageRouteConstraint : IRouteConstraint
     {
+        /// <summary>
+        /// Language value property that is applied to the route parameters.
+        /// </summary>
         public const string LanguageValueKey = "languageCode";
+
+        /// <summary>
+        /// Short name of the language constraint.
+        /// </summary>
         public const string LanguageConstraintKey = "lang";
 
+        /// <inheritdoc/>
         public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
             var languageStore = (ILanguageStore)httpContext.RequestServices.GetService(typeof(ILanguageStore));
@@ -28,8 +39,8 @@ namespace Definux.Emeraude.Locales.Constraints
                     filteredAllowedLanguages = allowedLanguages.Where(x => x != defaultLanguage.Code.ToLower()).ToArray();
                 }
 
-                if (languageCode != null && 
-                    filteredAllowedLanguages != null && 
+                if (languageCode != null &&
+                    filteredAllowedLanguages != null &&
                     filteredAllowedLanguages.Count() > 0 &&
                     filteredAllowedLanguages.Contains(languageCode))
                 {

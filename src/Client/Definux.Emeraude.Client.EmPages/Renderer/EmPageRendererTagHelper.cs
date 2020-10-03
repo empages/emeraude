@@ -1,18 +1,20 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 namespace Definux.Emeraude.Client.EmPages.Renderer
 {
+    /// <summary>
+    /// EmPage Vue server-side rendering tag helper which prerender the Vue application by the server bundle and initial state model.
+    /// </summary>
     [HtmlTargetElement(Attributes = EmeraudeAppAttributeName)]
-    public class ViewRendererTagHelper : TagHelper
+    public class EmPageRendererTagHelper : TagHelper
     {
 #pragma warning disable 612, 618
         private const string EmeraudeAppAttributeName = "asp-emeraude-app";
@@ -25,7 +27,12 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         private readonly INodeServices nodeServices;
         private readonly ILogger logger;
 
-        public ViewRendererTagHelper(IServiceProvider serviceProvider, ILogger logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmPageRendererTagHelper"/> class.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <param name="logger"></param>
+        public EmPageRendererTagHelper(IServiceProvider serviceProvider, ILogger logger)
         {
             var hostEnvironment = (IHostEnvironment)serviceProvider.GetService(typeof(IHostEnvironment));
             this.nodeServices = (INodeServices)serviceProvider.GetService(typeof(INodeServices));
@@ -37,7 +44,7 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         }
 
         /// <summary>
-        /// Flag that indicates Emeraude app initialization
+        /// Flag that indicates Emeraude app initialization.
         /// </summary>
         [HtmlAttributeName(EmeraudeAppAttributeName)]
         public bool ActivateEmeraude { get; set; }
@@ -49,7 +56,7 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         public string ServerBundle { get; set; }
 
         /// <summary>
-        /// An JSON-serializable parameter to be supplied to the current page as a store state.
+        /// The initial state model parameter that will be applied into the application store state.
         /// </summary>
         [HtmlAttributeName(InitialStateViewModelAttributeName)]
         public object InitialStateViewModel { get; set; }
@@ -67,41 +74,38 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         [ViewContext]
         public ViewContext ViewContext { get; set; }
 
+        /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             try
             {
-                if (ActivateEmeraude)
+                if (this.ActivateEmeraude)
                 {
                     output.Attributes.Add(new TagHelperAttribute("id", "emeraude-app"));
 
-                    var result = await ViewRenderer.RenderToString(
+                    var result = await EmPageRenderer.RenderToString(
                             this.applicationBasePath,
                             this.nodeServices,
                             this.applicationStoppingToken,
-                            ServerBundle,
-                            ViewContext.HttpContext,
-                            InitialStateViewModel,
-                            TimeoutMillisecondsParameter);
+                            this.ServerBundle,
+                            this.ViewContext.HttpContext,
+                            this.InitialStateViewModel,
+                            this.TimeoutMillisecondsParameter);
 
                     if (!string.IsNullOrEmpty(result.RedirectUrl))
                     {
                         // It's a redirection
                         var permanentRedirect = result.StatusCode.GetValueOrDefault() == 301;
-                        ViewContext.HttpContext.Response.Redirect(result.RedirectUrl, permanentRedirect);
+                        this.ViewContext.HttpContext.Response.Redirect(result.RedirectUrl, permanentRedirect);
                         return;
                     }
 
                     if (result.StatusCode.HasValue)
                     {
-                        ViewContext.HttpContext.Response.StatusCode = result.StatusCode.Value;
+                        this.ViewContext.HttpContext.Response.StatusCode = result.StatusCode.Value;
                     }
 
-                    // It's some HTML to inject
                     output.Content.SetHtmlContent(result.Html);
-
-                    // Also attach any specified globals to the 'window' object. This is useful for transferring
-                    // general state between server and client.
                     var globalsScript = result.CreateGlobalsAssignmentScript();
                     if (!string.IsNullOrEmpty(globalsScript))
                     {
@@ -117,7 +121,6 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
             {
                 await this.logger.LogErrorAsync(ex);
             }
-
         }
 #pragma warning restore 612, 618
     }

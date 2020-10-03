@@ -2,36 +2,22 @@
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetTranslationsGridData
 {
+    /// <summary>
+    /// Transformed translations and their referenced keys into grid format.
+    /// </summary>
     public class TranslationsGridDataResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TranslationsGridDataResult"/> class.
+        /// </summary>
         public TranslationsGridDataResult()
         {
-            Items = new List<TranslationsGridItem>();
+            this.Items = new List<TranslationsGridItem>();
         }
 
+        /// <summary>
+        /// Rows items of the grid.
+        /// </summary>
         public List<TranslationsGridItem> Items { get; set; }
-    }
-
-    public class TranslationsGridItem
-    {
-        public TranslationsGridItem()
-        {
-            LanguageValues = new List<TranslationsLanguageValue>();
-        }
-
-        public int KeyId { get; set; }
-
-        public string Key { get; set; }
-
-        public List<TranslationsLanguageValue> LanguageValues { get; set; }
-    }
-
-    public class TranslationsLanguageValue
-    {
-        public string LanguageCode { get; set; }
-
-        public int Id { get; set; }
-
-        public string Value { get; set; }
     }
 }

@@ -1,37 +1,45 @@
-﻿using Definux.Emeraude.Admin.UI.HtmlBuilders;
+﻿using System;
+using Definux.Emeraude.Admin.UI.HtmlBuilders;
 using Definux.HtmlBuilder;
 using Microsoft.AspNetCore.Html;
-using System;
 
 namespace Definux.Emeraude.Admin.UI.UIElements
 {
+    /// <inheritdoc cref="IUIElement"/>
     public abstract class UIElement : IUIElement
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UIElement"/> class.
+        /// </summary>
         public UIElement()
         {
-            HtmlBuilder = new HtmlBuilder.HtmlBuilder();
+            this.HtmlBuilder = new HtmlBuilder.HtmlBuilder();
         }
 
+        /// <inheritdoc/>
         public object DataSource { get; set; }
 
+        /// <inheritdoc cref="IHtmlBuilder"/>
         protected IHtmlBuilder HtmlBuilder { get; set; }
 
+        /// <inheritdoc cref="IServiceProvider"/>
         protected IServiceProvider ServiceProvider { get; set; }
 
+        /// <inheritdoc/>
         public IHtmlContent RenderHtmlString()
         {
-            if (HtmlBuilder != null)
+            if (this.HtmlBuilder != null)
             {
                 try
                 {
-                    DefineHtmlBuilder();
+                    this.DefineHtmlBuilder();
                 }
                 catch (Exception)
                 {
-                    ShowError();
+                    this.ShowError();
                 }
-                
-                return new HtmlString(HtmlBuilder.RenderHtml());
+
+                return new HtmlString(this.HtmlBuilder.RenderHtml());
             }
             else
             {
@@ -41,16 +49,22 @@ namespace Definux.Emeraude.Admin.UI.UIElements
             }
         }
 
+        /// <inheritdoc/>
         public void LoadServiceProvider(IServiceProvider serviceProvider)
         {
-            ServiceProvider = serviceProvider;
+            this.ServiceProvider = serviceProvider;
         }
 
+        /// <inheritdoc/>
         public abstract void DefineHtmlBuilder();
 
+        /// <summary>
+        /// Method that apply an error into HTML builder of the element.
+        /// </summary>
+        /// <param name="message"></param>
         protected virtual void ShowError(string message = "Invalid Property or Attribute definition.")
         {
-            HtmlBuilder = new ErrorNotificationHtmlBuilder(message);
+            this.HtmlBuilder = new ErrorNotificationHtmlBuilder(message);
         }
     }
 }

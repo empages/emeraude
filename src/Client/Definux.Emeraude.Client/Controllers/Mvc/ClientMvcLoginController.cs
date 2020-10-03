@@ -1,96 +1,108 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
-using Definux.Emeraude.Presentation.Extensions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Localization.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <inheritdoc/>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string LoginRoute = "/login";
+        private const string LoginRoute = "/login";
 
+        /// <summary>
+        /// Login action for GET request.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
         public IActionResult Login(string returnUrl = null)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             string returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
 
             var request = new LoginRequest();
-            ViewData["ReturnUrl"] = returnUrl;
+            this.ViewData["ReturnUrl"] = returnUrl;
 
             if (!string.IsNullOrEmpty(returnUrlLanguageCode) && string.IsNullOrEmpty(this.HttpContext.GetLanguageCode()))
             {
-                return LocalRedirect($"/{returnUrlLanguageCode}{LoginRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
+                return this.LocalRedirect($"/{returnUrlLanguageCode}{LoginRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
             }
             else
             {
-                return LoginView(request);
+                return this.LoginView(request);
             }
         }
 
+        /// <summary>
+        /// Login action for GET request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginRequest request, string returnUrl = "")
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new LoginCommand(request));
+                var requestResult = await this.Mediator.Send(new LoginCommand(request));
 
                 if (requestResult.Result.Succeeded)
                 {
-                    await SignInAsync(requestResult.User);
+                    await this.SignInAsync(requestResult.User);
                     if (string.IsNullOrWhiteSpace(returnUrl))
                     {
-                        return RedirectToHomeIndex();
+                        return this.RedirectToHomeIndex();
                     }
 
-                    return LocalRedirect(returnUrl);
+                    return this.LocalRedirect(returnUrl);
                 }
                 else if (requestResult.Result.IsLockedOut)
                 {
-                    return View("Lockout");
+                    return this.View("Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Messages.YourEmailOrPasswordIsIncorrect);
+                    this.ModelState.AddModelError(string.Empty, Messages.YourEmailOrPasswordIsIncorrect);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourLoginAttemptHasFailed);
+                this.ModelState.AddModelError(string.Empty, Messages.YourLoginAttemptHasFailed);
             }
 
-            ViewData["ReturnUrl"] = returnUrl;
+            this.ViewData["ReturnUrl"] = returnUrl;
 
-            return LoginView(request);
+            return this.LoginView(request);
         }
 
-        public ViewResult LoginView(object model)
+        private ViewResult LoginView(object model)
         {
-            return View("Login", model);
+            return this.View("Login", model);
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.Requests.Delete
 {
+    /// <inheritdoc cref="IDeleteCommandHandler{TDeleteCommand, TEntity}"/>
     public class DeleteCommandHandler<TEntity> : IDeleteCommandHandler<DeleteCommand<TEntity>, TEntity>
         where TEntity : class, IEntity, new()
     {
@@ -19,6 +19,12 @@ namespace Definux.Emeraude.Admin.Requests.Delete
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCommandHandler{TEntity}"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="mapper"></param>
+        /// <param name="logger"></param>
         public DeleteCommandHandler(IEmContext context, IMapper mapper, ILogger logger)
         {
             this.context = context;
@@ -26,6 +32,7 @@ namespace Definux.Emeraude.Admin.Requests.Delete
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> Handle(DeleteCommand<TEntity> request, CancellationToken cancellationToken)
         {
             try

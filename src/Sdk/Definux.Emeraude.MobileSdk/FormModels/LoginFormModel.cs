@@ -3,53 +3,47 @@ using Definux.Emeraude.MobileSdk.Helpers;
 
 namespace Definux.Emeraude.MobileSdk.FormModels
 {
+    /// <summary>
+    /// Form model for login form.
+    /// </summary>
     public class LoginFormModel : FormModel
     {
         private string email;
         private string password;
 
-        private string emailErrorMessage;
-        private string passwordErrorMessage;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginFormModel"/> class.
+        /// </summary>
+        public LoginFormModel()
+            : base()
+        {
+        }
 
+        /// <summary>
+        /// Email of the user.
+        /// </summary>
         public string Email
         {
             get => this.email;
-            set => SetProperty(ref this.email, value);
+            set => this.SetProperty(ref this.email, value);
         }
 
+        /// <summary>
+        /// User password.
+        /// </summary>
         public string Password
         {
             get => this.password;
-            set => SetProperty(ref this.password, value);
+            set => this.SetProperty(ref this.password, value);
         }
 
-        public string EmailErrorMessage
-        {
-            get => this.emailErrorMessage;
-            set => SetProperty(ref this.emailErrorMessage, value);
-        }
-
-        public string PasswordErrorMessage
-        {
-            get => this.passwordErrorMessage;
-            set => SetProperty(ref this.passwordErrorMessage, value);
-        }
-
+        /// <inheritdoc/>
         public override bool IsValid()
         {
             bool correctData = true;
-            EmailErrorMessage = null;
-            PasswordErrorMessage = null;
-            string errorMessage = null;
-            if (!Validators.IsValidEmail(Email, out errorMessage))
+            if (!Validators.IsValidEmail(this.Email, out string emailErrorMessage))
             {
-                EmailErrorMessage = errorMessage;
-                correctData = false;
-            }
-
-            if (!Validators.IsValidPassword(Password, out errorMessage))
-            {
-                PasswordErrorMessage = errorMessage;
+                this.AddError(nameof(this.Email), emailErrorMessage);
                 correctData = false;
             }
 

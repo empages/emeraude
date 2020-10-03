@@ -3,24 +3,31 @@ using Ganss.XSS;
 
 namespace Definux.Emeraude.Admin.UI.UIElements
 {
+    /// <summary>
+    /// Implementation of <see cref="UIElement"/> for texts.
+    /// </summary>
     public abstract class UITextElement : UIElement
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UITextElement"/> class.
+        /// </summary>
         public UITextElement()
             : base()
         {
         }
 
+        /// <inheritdoc/>
         public override void DefineHtmlBuilder()
         {
             string sourceString = string.Empty;
             var sanitizer = new HtmlSanitizer();
 
-            if (DataSource != null)
+            if (this.DataSource != null)
             {
-                sourceString = sanitizer.Sanitize(DataSource.ToString());
+                sourceString = sanitizer.Sanitize(this.DataSource.ToString());
             }
 
-            HtmlBuilder.StartElement(HtmlTags.Span)
+            this.HtmlBuilder.StartElement(HtmlTags.Span)
                 .Append(sourceString);
         }
     }

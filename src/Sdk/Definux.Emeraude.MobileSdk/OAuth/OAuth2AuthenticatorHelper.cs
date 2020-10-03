@@ -1,11 +1,22 @@
-﻿using Definux.Emeraude.MobileSdk.Configuration;
-using System;
+﻿using System;
+using Definux.Emeraude.MobileSdk.Configuration;
 using Xamarin.Auth;
 
 namespace Definux.Emeraude.MobileSdk.OAuth
 {
+    /// <summary>
+    /// Helper that contains predefined OAuth2 authenticators.
+    /// </summary>
     public static class OAuth2AuthenticatorHelper
     {
+        /// <inheritdoc cref="OAuth2Authenticator"/>
+        public static OAuth2Authenticator AuthenticationState { get; private set; }
+
+        /// <summary>
+        /// Creates predefined Facebook OAuth2 authenticator.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static OAuth2Authenticator CreateFacebookOAuth2Authenticator(IEmConfiguration configuration)
         {
             AuthenticationState = new OAuth2Authenticator(
@@ -15,15 +26,19 @@ namespace Definux.Emeraude.MobileSdk.OAuth
                 redirectUrl: new Uri(configuration.FacebookRedirectUrl),
                 getUsernameAsync: null,
                 isUsingNativeUI: true)
-            { 
+            {
                 AllowCancel = true,
-                ShowErrors = false
-                
+                ShowErrors = false,
             };
 
             return AuthenticationState;
         }
 
+        /// <summary>
+        /// Creates predefined Google OAuth2 authenticator.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static OAuth2Authenticator CreateGoogleOAuth2Authenticator(IEmConfiguration configuration)
         {
             AuthenticationState = new OAuth2Authenticator(
@@ -36,12 +51,10 @@ namespace Definux.Emeraude.MobileSdk.OAuth
                 isUsingNativeUI: true)
             {
                 AllowCancel = true,
-                ShowErrors = false
+                ShowErrors = false,
             };
 
             return AuthenticationState;
         }
-
-        public static OAuth2Authenticator AuthenticationState { get; private set; }
     }
 }

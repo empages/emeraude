@@ -1,15 +1,16 @@
-﻿using Definux.Emeraude.MobileSdk.Configuration;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.MobileSdk.Configuration;
 using Definux.Emeraude.MobileSdk.Constants;
 using Definux.Emeraude.MobileSdk.Events;
 using Definux.Emeraude.MobileSdk.ServiceAgents;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Models.Requests;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Models.Results;
-using System;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace Definux.Emeraude.MobileSdk.Stores
 {
+    /// <inheritdoc cref="IAuthenticationStore"/>
     public class AuthenticationStore : Store, IAuthenticationStore
     {
         private readonly IAuthenticationServiceAgent authenticationServiceAgent;
@@ -17,6 +18,12 @@ namespace Definux.Emeraude.MobileSdk.Stores
 
         private BearerAuthenticationResult authenticationResult;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationStore"/> class.
+        /// </summary>
+        /// <param name="authenticationServiceAgent"></param>
+        /// <param name="loggingServiceAgent"></param>
+        /// <param name="configuration"></param>
         public AuthenticationStore(
             IAuthenticationServiceAgent authenticationServiceAgent,
             ILoggingServiceAgent loggingServiceAgent,
@@ -27,40 +34,44 @@ namespace Definux.Emeraude.MobileSdk.Stores
             this.configuration = configuration;
         }
 
+        /// <inheritdoc/>
+        public event EventHandler<LoginCompletedEventArgs> LoginCompleted;
+
+        /// <inheritdoc/>
         public bool IsAuthenticated => this.authenticationResult != null && this.authenticationResult.Success;
 
+        /// <inheritdoc/>
         public async Task RequestTokenAsync(LoginRequest loginRequest)
         {
-            if (!IsAuthenticated)
+            if (!this.IsAuthenticated)
             {
                 this.authenticationResult = await this.authenticationServiceAgent.RequestTokenAsync(loginRequest);
-                await LoadUserTokensAsync();
+                await this.LoadUserTokensAsync();
             }
         }
 
+        /// <inheritdoc/>
         public async Task RequestTokenWithExternalProviderAsync(ExternalLoginRequest externalLoginRequest)
         {
-            if (!IsAuthenticated)
+            if (!this.IsAuthenticated)
             {
                 this.authenticationResult = await this.authenticationServiceAgent.RequestTokenWithExternalProviderAsync(externalLoginRequest);
-                await LoadUserTokensAsync();
+                await this.LoadUserTokensAsync();
             }
         }
 
         private async Task LoadUserTokensAsync()
         {
-            if (IsAuthenticated)
+            if (this.IsAuthenticated)
             {
                 await SecureStorage.SetAsync(Tokens.AccessTokenString, this.authenticationResult.JsonWebToken);
                 await SecureStorage.SetAsync(Tokens.RefreshTokenString, this.authenticationResult.RefreshToken);
-                LoginCompleted.Invoke(this, new LoginCompletedEventArgs(true));
+                this.LoginCompleted.Invoke(this, new LoginCompletedEventArgs(true));
             }
             else
             {
-                LoginCompleted.Invoke(this, new LoginCompletedEventArgs(false));
+                this.LoginCompleted.Invoke(this, new LoginCompletedEventArgs(false));
             }
         }
-
-        public event EventHandler<LoginCompletedEventArgs> LoginCompleted;
     }
 }

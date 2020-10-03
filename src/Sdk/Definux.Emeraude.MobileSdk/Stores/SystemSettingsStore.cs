@@ -1,51 +1,59 @@
-﻿using Definux.Emeraude.MobileSdk.Events;
-using Definux.Emeraude.MobileSdk.Settings;
-using Definux.Emeraude.MobileSdk.Stores;
-using Plugin.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xamarin.Forms;
+using Definux.Emeraude.MobileSdk.Events;
+using Definux.Emeraude.MobileSdk.Settings;
+using Plugin.Settings;
 
 namespace Definux.Emeraude.MobileSdk.Stores
 {
+    /// <inheritdoc cref="SystemSettingsStore"/>
     public class SystemSettingsStore : ISystemSettingsStore
     {
-        private readonly ISettingsProvider settingsProvider;
-
         private const string LanguageSettingsKey = "system.language";
 
+        private readonly ISettingsProvider settingsProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemSettingsStore"/> class.
+        /// </summary>
+        /// <param name="settingsProvider"></param>
         public SystemSettingsStore(ISettingsProvider settingsProvider)
         {
             this.settingsProvider = settingsProvider;
-            Languages = this.settingsProvider.Languages;
+            this.Languages = this.settingsProvider.Languages;
         }
 
+        /// <inheritdoc/>
+        public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
+
+        /// <inheritdoc/>
         public IEnumerable<ApplicationLanguage> Languages { get; private set; }
 
+        /// <inheritdoc/>
         public ApplicationLanguage SelectedLanguage { get; private set; }
 
+        /// <inheritdoc/>
         public void SelectLanguage(ApplicationLanguage language)
         {
-            if (SelectedLanguage != language)
+            if (this.SelectedLanguage != language)
             {
-                SelectedLanguage = language;
+                this.SelectedLanguage = language;
                 CrossSettings.Current.AddOrUpdateValue(LanguageSettingsKey, language.Code);
-                LanguageChanged?.Invoke(this, new LanguageChangedEventArgs(language.Code));
+                this.LanguageChanged?.Invoke(this, new LanguageChangedEventArgs(language.Code));
             }
         }
 
+        /// <inheritdoc/>
         public void ApplyCurrentLanguage()
         {
-            string languageFromSettings = Languages.Where(x => x.IsDefault).Select(x => x.Code).FirstOrDefault();
+            string languageFromSettings = this.Languages.Where(x => x.IsDefault).Select(x => x.Code).FirstOrDefault();
             if (CrossSettings.Current.Contains(LanguageSettingsKey))
             {
                 languageFromSettings = CrossSettings.Current.GetValueOrDefault(LanguageSettingsKey, languageFromSettings);
             }
 
-            SelectLanguage(Languages.FirstOrDefault(x => x.Code == languageFromSettings));
+            this.SelectLanguage(this.Languages.FirstOrDefault(x => x.Code == languageFromSettings));
         }
-
-        public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
     }
 }

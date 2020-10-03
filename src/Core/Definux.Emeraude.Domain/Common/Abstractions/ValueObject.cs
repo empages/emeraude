@@ -3,35 +3,22 @@ using System.Linq;
 
 namespace Definux.Emeraude.Domain.Common.Abstractions
 {
+    /// <summary>
+    /// Abstract class for domain value object definition.
+    /// </summary>
     public abstract class ValueObject
     {
-        protected static bool EqualOperator(ValueObject left, ValueObject right)
-        {
-            if (left is null ^ right is null)
-            {
-                return false;
-            }
-
-            return left?.Equals(right) != false;
-        }
-
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
-        {
-            return !(EqualOperator(left, right));
-        }
-
-        protected abstract IEnumerable<object> GetAtomicValues();
-
+        /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj == null || obj.GetType() != this.GetType())
             {
                 return false;
             }
 
             var other = (ValueObject)obj;
-            var thisValues = GetAtomicValues().GetEnumerator();
-            var otherValues = other.GetAtomicValues().GetEnumerator();
+            var thisValues = this.GetEqualityComponents().GetEnumerator();
+            var otherValues = other.GetEqualityComponents().GetEnumerator();
 
             while (thisValues.MoveNext() && otherValues.MoveNext())
             {
@@ -50,11 +37,45 @@ namespace Definux.Emeraude.Domain.Common.Abstractions
             return !thisValues.MoveNext() && !otherValues.MoveNext();
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return GetAtomicValues()
+            return this.GetEqualityComponents()
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
         }
+
+        /// <summary>
+        /// Check for equality between two value objects.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        protected static bool EqualOperator(ValueObject left, ValueObject right)
+        {
+            if (left is null ^ right is null)
+            {
+                return false;
+            }
+
+            return left?.Equals(right) != false;
+        }
+
+        /// <summary>
+        /// Checo for lack of equality between two value objects.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        {
+            return !EqualOperator(left, right);
+        }
+
+        /// <summary>
+        /// Method that returns equality components of the value object.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IEnumerable<object> GetEqualityComponents();
     }
 }
