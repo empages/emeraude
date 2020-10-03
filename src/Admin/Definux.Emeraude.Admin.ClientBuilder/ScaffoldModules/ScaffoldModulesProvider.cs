@@ -1,80 +1,99 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.Options;
-using Definux.Emeraude.Admin.ClientBuilder.Shared;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using Definux.Emeraude.Admin.ClientBuilder.Options;
+using Definux.Emeraude.Admin.ClientBuilder.Shared;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
 {
+    /// <inheritdoc cref=" IScaffoldModulesProvider"/>
     public class ScaffoldModulesProvider : IScaffoldModulesProvider
     {
         private readonly IWebHostEnvironment hostEnvironment;
         private readonly ClientBuilderOptions clientBuilderOptions;
         private readonly IServiceProvider serviceProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScaffoldModulesProvider"/> class.
+        /// </summary>
+        /// <param name="hostEnvironment"></param>
+        /// <param name="options"></param>
+        /// <param name="serviceProvider"></param>
         public ScaffoldModulesProvider(
-            IWebHostEnvironment hostEnvironment, 
-            IOptions<ClientBuilderOptions> options, 
+            IWebHostEnvironment hostEnvironment,
+            IOptions<ClientBuilderOptions> options,
             IServiceProvider serviceProvider)
         {
             this.hostEnvironment = hostEnvironment;
             this.clientBuilderOptions = options.Value;
             this.serviceProvider = serviceProvider;
 
-            LoadModules();
-            SyncModules();
+            this.LoadModules();
+            this.SyncModules();
         }
 
+        /// <inheritdoc/>
         public List<ScaffoldModule> Modules { get; private set; }
 
+        /// <inheritdoc/>
         public List<ScaffoldModule> WebModules
         {
             get
             {
-                return Modules?
+                return this.Modules?
                     .Where(x => x.Type == InstanceType.WebModule)
                     .OrderBy(x => x.Order)
                     .ToList();
             }
         }
 
+        /// <inheritdoc/>
         public List<ScaffoldModule> MobileModules
         {
             get
             {
-                return Modules?
+                return this.Modules?
                     .Where(x => x.Type == InstanceType.MobileModule)
                     .OrderBy(x => x.Order)
                     .ToList();
             }
         }
 
-        public ScaffoldModule GetModule(string moduleId)
-        {
-            return Modules.FirstOrDefault(x => x.Id == moduleId);
-        }
-
+        /// <inheritdoc/>
         public List<ScaffoldModule> GetModulesByParentModuleId(string parentModuleId)
         {
-            return Modules?
+            return this.Modules?
                 .Where(x => x.ParentModuleId.ToLower() == parentModuleId)
                 .OrderBy(x => x.Order)
                 .ToList();
         }
 
+        /// <inheritdoc/>
         public bool GenerateModule(string moduleId, out string errorMessage)
         {
-            var module = GetModule(moduleId);
+            var module = this.GetModule(moduleId);
             return module.Generate(out errorMessage);
+        }
+
+        private ScaffoldModule GetModule(string moduleId)
+        {
+            return this.Modules.FirstOrDefault(x => x.Id == moduleId);
+        }
+
+        private void SyncModules()
+        {
+            foreach (var module in this.Modules)
+            {
+                module.Sync();
+            }
         }
 
         private void LoadModules()
         {
-            Modules = new List<ScaffoldModule>();
+            this.Modules = new List<ScaffoldModule>();
 
             string sourceDirectory = Path.GetFullPath(
                 Path.Combine(
@@ -91,57 +110,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
                 moduleInstance.LoadOptions(this.clientBuilderOptions);
                 moduleInstance.DefineFiles();
                 moduleInstance.DefineFolders();
-                Modules.Add(moduleInstance);
+                this.Modules.Add(moduleInstance);
             }
-        }
-
-        public void SyncModules()
-        {
-            foreach (var module in Modules)
-            {
-                module.Sync();
-            }
-        }
-
-        public ScaffoldModulesProcessResult GenerateAll(out string errorMessage)
-        {
-            try
-            {
-                int generatedModules = 0;
-                errorMessage = null;
-                StringBuilder errorMessageStringBuilder = new StringBuilder();
-                string currentErrorMessage = string.Empty;
-                foreach (var module in Modules)
-                {
-                    if (!module.Generate(out currentErrorMessage))
-                    {
-                        errorMessageStringBuilder.AppendLine(currentErrorMessage);
-                    }
-                    else
-                    {
-                        generatedModules++;
-                    }
-                }
-
-                if (generatedModules == Modules.Count)
-                {
-                    return ScaffoldModulesProcessResult.Success;
-                }
-                else if (generatedModules > 0 && generatedModules < Modules.Count)
-                {
-                    errorMessage = errorMessageStringBuilder.ToString();
-                    return ScaffoldModulesProcessResult.SuccessWithErrors;
-                }
-                else if (generatedModules == 0)
-                {
-                    errorMessage = errorMessageStringBuilder.ToString();
-                    return ScaffoldModulesProcessResult.Unsuccess;
-                }
-            }
-            catch (Exception) { }
-
-            errorMessage = "An unexpected error occured!";
-            return ScaffoldModulesProcessResult.Error;
         }
     }
 }

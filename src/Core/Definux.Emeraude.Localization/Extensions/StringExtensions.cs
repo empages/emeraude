@@ -2,8 +2,16 @@
 
 namespace Definux.Emeraude.Localization.Extensions
 {
+    /// <summary>
+    /// Extensions for strings.
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// Extract language code from specified URL.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string GetLanguageCodeFromUrl(this string url)
         {
             string returnUrlLanguageCode = null;
@@ -16,6 +24,7 @@ namespace Definux.Emeraude.Localization.Extensions
                     {
                         tempReturnUrl = tempReturnUrl.Substring(1);
                     }
+
                     string returnUrlLanguagePart = tempReturnUrl.Substring(0, 3);
                     if (returnUrlLanguagePart.EndsWith("/", StringComparison.OrdinalIgnoreCase))
                     {
@@ -23,7 +32,9 @@ namespace Definux.Emeraude.Localization.Extensions
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
 
             return returnUrlLanguageCode;
         }

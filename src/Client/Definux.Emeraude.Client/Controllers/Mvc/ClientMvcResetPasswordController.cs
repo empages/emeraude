@@ -1,85 +1,98 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <inheritdoc/>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string ResetPasswordRoute = "/reset-password";
+        private const string ResetPasswordRoute = "/reset-password";
 
+        /// <summary>
+        /// Reset password action for GET request.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route(ResetPasswordRoute)]
         [LanguageRoute(ResetPasswordRoute)]
         public IActionResult ResetPassword([FromQuery]string token, [FromQuery]string email)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrEmpty(token))
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var request = new ResetPasswordRequest
             {
                 Token = token,
-                Email = email
+                Email = email,
             };
 
-            return ResetPasswordView(request);
+            return this.ResetPasswordView(request);
         }
 
+        /// <summary>
+        /// Reset password action for POST request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route(ResetPasswordRoute)]
         [LanguageRoute(ResetPasswordRoute)]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new ResetPasswordCommand(request));
+                var requestResult = await this.Mediator.Send(new ResetPasswordCommand(request));
 
                 if (requestResult.Successed)
                 {
-                    return ResetPasswordSuccessView(request);
+                    return this.ResetPasswordSuccessView(request);
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
+                    this.ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
+                this.ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
             }
 
-            return ResetPasswordView(request);
+            return this.ResetPasswordView(request);
         }
 
-        public ViewResult ResetPasswordView(object model)
+        private ViewResult ResetPasswordView(object model)
         {
-            return View("ResetPassword", model);
+            return this.View("ResetPassword", model);
         }
-        public ViewResult ResetPasswordSuccessView(object model)
+
+        private ViewResult ResetPasswordSuccessView(object model)
         {
-            return View("ResetPasswordSuccess", model);
+            return this.View("ResetPasswordSuccess", model);
         }
     }
 }

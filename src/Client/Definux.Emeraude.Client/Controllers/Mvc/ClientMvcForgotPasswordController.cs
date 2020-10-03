@@ -1,78 +1,88 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <inheritdoc/>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string ForgotPasswordRoute = "/forgot-password";
+        private const string ForgotPasswordRoute = "/forgot-password";
 
+        /// <summary>
+        /// Forgot password action for GET request.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
         public IActionResult ForgotPassword()
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             ForgotPasswordRequest request = new ForgotPasswordRequest();
 
-            return ForgotPasswordView(request);
+            return this.ForgotPasswordView(request);
         }
 
+        /// <summary>
+        /// Forgot password action for POST request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToHomeIndex();
+                return this.RedirectToHomeIndex();
             }
 
             try
             {
-                var result = await Mediator.Send(new ForgotPasswordCommand(request));
+                var result = await this.Mediator.Send(new ForgotPasswordCommand(request));
                 if (result.Successed)
                 {
-                    return ForgotPasswordSuccessView(request);
+                    return this.ForgotPasswordSuccessView(request);
                 }
                 else
                 {
-                    await Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
-                    return ForgotPasswordSuccessView(request);
+                    await this.Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
+                    return this.ForgotPasswordSuccessView(request);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
+                this.ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
             }
 
-            return ForgotPasswordView(request);
+            return this.ForgotPasswordView(request);
         }
 
-        public ViewResult ForgotPasswordView(object model)
+        private ViewResult ForgotPasswordView(object model)
         {
-            return View("ForgotPassword", model);
+            return this.View("ForgotPassword", model);
         }
 
-        public ViewResult ForgotPasswordSuccessView(object model)
+        private ViewResult ForgotPasswordSuccessView(object model)
         {
-            return View("ForgotPasswordSuccess", model);
+            return this.View("ForgotPasswordSuccess", model);
         }
     }
 }

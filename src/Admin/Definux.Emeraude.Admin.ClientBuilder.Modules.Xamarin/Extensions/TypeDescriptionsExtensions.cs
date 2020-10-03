@@ -2,8 +2,16 @@
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
 {
-    public static class DtoTypesExtensions
+    /// <summary>
+    /// Extensions for <see cref="TypeDescription"/>.
+    /// </summary>
+    public static class TypeDescriptionsExtensions
     {
+        /// <summary>
+        /// Gets bindable type of the current type description.
+        /// </summary>
+        /// <param name="typeDescription"></param>
+        /// <returns></returns>
         public static string GetBindableBuildTypeName(this TypeDescription typeDescription)
         {
             string typeName = typeDescription.Name + (typeDescription.IsComplexType ? "Bindable" : string.Empty);
@@ -11,11 +19,9 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
             {
                 typeName = typeDescription.Name + "Enum";
             }
-            typeName = $"{typeName}{((typeDescription.IsNullable && !typeDescription.IsComplexType && typeDescription.Name != "string") ? "?" : string.Empty)}";
-            if (typeDescription.IsEnum)
-            {
 
-            }
+            typeName = $"{typeName}{((typeDescription.IsNullable && !typeDescription.IsComplexType && typeDescription.Name != "string") ? "?" : string.Empty)}";
+
             if (typeDescription.IsCollection)
             {
                 typeName = $"ObservableCollection<{typeName}>";

@@ -1,13 +1,22 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Definux.Emeraude.Presentation.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="ModelStateDictionary"/>.
+    /// </summary>
     public static class ModelStateDictionaryExtensions
     {
+        /// <summary>
+        /// Apply validation exceptions to current model state.
+        /// </summary>
+        /// <param name="modelState"></param>
+        /// <param name="exception"></param>
+        /// <param name="skipTranslationKey"></param>
         public static void ApplyValidationException(this ModelStateDictionary modelState, ValidationException exception, bool skipTranslationKey = false)
         {
             if (exception != null && exception.Failures != null && exception.Failures.Count > 0)
@@ -29,6 +38,11 @@ namespace Definux.Emeraude.Presentation.Extensions
             }
         }
 
+        /// <summary>
+        /// Get list of validation errors.
+        /// </summary>
+        /// <param name="modelState"></param>
+        /// <returns></returns>
         public static Dictionary<string, IEnumerable<string>> GetValidationErrors(this ModelStateDictionary modelState)
         {
             return modelState.ToDictionary(k => k.Key, v => v.Value.Errors.Select(x => x.ErrorMessage));

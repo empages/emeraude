@@ -1,12 +1,22 @@
-﻿using Definux.HtmlBuilder;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Definux.HtmlBuilder;
 
 namespace Definux.Emeraude.Admin.UI.HtmlBuilders
 {
+    /// <summary>
+    /// Built wrapper for HTML builder which creates checkbox group element.
+    /// </summary>
+    /// <typeparam name="TKey">Value type.</typeparam>
     public class CheckboxGroupHtmlBuilder<TKey> : HtmlBuilder.HtmlBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckboxGroupHtmlBuilder{TKey}"/> class.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="targetProperty"></param>
+        /// <param name="selectedValues"></param>
         public CheckboxGroupHtmlBuilder(Dictionary<TKey, string> data, string targetProperty, TKey[] selectedValues)
         {
             this.StartElement(HtmlTags.Div)
@@ -23,13 +33,13 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                                 .WithClasses("custom-control-input")
                                 .WithAttribute("type", "checkbox")
                                 .WithAttribute("name", $"{targetProperty}[]")
+                                .WithAttribute("value", dataItem.Key.ToString())
                                 .WithAttributeIf("checked", "checked", selectedValues?.Contains(dataItem.Key) ?? false))
                             .Append(xxx => xxx
                                 .OpenElement(HtmlTags.Label)
                                 .WithClasses("custom-control-label")
                                 .WithAttribute("for", $"ch-{targetProperty}-{dataItem.Key}")
-                                .Append(dataItem.Value)
-                         ));
+                                .Append(dataItem.Value)));
                         }
                     });
         }

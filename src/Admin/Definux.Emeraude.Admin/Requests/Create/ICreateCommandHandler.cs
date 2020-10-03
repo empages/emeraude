@@ -1,9 +1,10 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using System;
+using Definux.Emeraude.Domain.Entities;
 using MediatR;
-using System;
 
 namespace Definux.Emeraude.Admin.Requests.Create
 {
+    /// <inheritdoc/>
     public interface ICreateCommandHandler<TCreateCommand, TEntity, TRequestModel> : IRequestHandler<TCreateCommand, Guid?>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()

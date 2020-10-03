@@ -1,4 +1,6 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.RefreshAccessToken;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
@@ -7,13 +9,17 @@ using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
-    public partial class ClientApiAuthenticationController : ApiController
+    /// <inheritdoc/>
+    public sealed partial class ClientApiAuthenticationController : ApiController
     {
+        /// <summary>
+        /// Refresh JWT token action.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("refresh")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -21,20 +27,20 @@ namespace Definux.Emeraude.Client.Controllers.Api
         {
             try
             {
-                var requestResult = await Mediator.Send(new RefreshAccessTokenCommand(HttpContext.GetJwtUserId(), request));
+                var requestResult = await this.Mediator.Send(new RefreshAccessTokenCommand(this.HttpContext.GetJwtUserId(), request));
 
                 if (requestResult.Success)
                 {
-                    return Ok(requestResult);
+                    return this.Ok(requestResult);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

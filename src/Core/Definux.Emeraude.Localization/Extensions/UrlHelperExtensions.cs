@@ -1,10 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Localization.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IUrlHelper"/>.
+    /// </summary>
     public static class UrlHelperExtensions
     {
+        /// <summary>
+        /// Get transformed route with language code of the current language in case when the current language is not the default one.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="action"></param>
+        /// <param name="controller"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         public static string LanguageAction(this IUrlHelper url, string action, string controller, object values = null)
         {
             string languageCode = url.ActionContext.HttpContext.GetLanguageCode();

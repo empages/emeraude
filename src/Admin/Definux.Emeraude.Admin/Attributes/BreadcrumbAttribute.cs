@@ -1,13 +1,16 @@
-﻿using Definux.Emeraude.Admin.UI.Extensions;
+﻿using System.Linq;
+using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using System.Linq;
 
 namespace Definux.Emeraude.Admin.Attributes
 {
+    /// <summary>
+    /// Attribute that add filled data as a breadcrumb item.
+    /// </summary>
     public class BreadcrumbAttribute : ActionFilterAttribute
     {
         private string title;
@@ -18,6 +21,16 @@ namespace Definux.Emeraude.Admin.Attributes
         private int order;
         private bool active;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BreadcrumbAttribute"/> class.
+        /// </summary>
+        /// <param name="title">Title text in the breadcrumb. Use "[SomeKey]" to add custom title based on the route. The key must be part of the ViewData collection.</param>
+        /// <param name="active"></param>
+        /// <param name="order"></param>
+        /// <param name="action"></param>
+        /// <param name="controller"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="parameterValue"></param>
         public BreadcrumbAttribute(string title, bool active, int order, string action = null, string controller = null, string parameterName = null, string parameterValue = null)
         {
             this.title = title;
@@ -29,13 +42,17 @@ namespace Definux.Emeraude.Admin.Attributes
             this.parameterValue = parameterValue;
         }
 
+        /// <summary>
+        /// Route key that represent the parent reference.
+        /// </summary>
         public string ParentRouteKey { get; set; }
 
         /// <summary>
-        /// To use this property the caller controller must inherit Definux.Emeraude.Common.Interfaces.IChildController
+        /// To use this property the caller controller must inherit <see cref="IChildController"/>.
         /// </summary>
         public bool UseParentController { get; set; }
 
+        /// <inheritdoc/>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var controller = (Controller)context.Controller;
@@ -49,12 +66,12 @@ namespace Definux.Emeraude.Admin.Attributes
             string parentRouteKey = null;
             string parentRouteValue = null;
 
-            if (!string.IsNullOrEmpty(ParentRouteKey) && context.Controller.GetType().GetProperties().Any(x => x.Name == ParentRouteKey))
+            if (!string.IsNullOrEmpty(this.ParentRouteKey) && context.Controller.GetType().GetProperties().Any(x => x.Name == this.ParentRouteKey))
             {
                 parentRouteKey = context
                     .Controller
                     .GetType()
-                    .GetProperty(ParentRouteKey)
+                    .GetProperty(this.ParentRouteKey)
                     .GetValue(context.Controller)?
                     .ToString();
 
@@ -64,7 +81,7 @@ namespace Definux.Emeraude.Admin.Attributes
                 }
             }
 
-            if (UseParentController)
+            if (this.UseParentController)
             {
                 this.controller = ((IChildController)context.Controller).ParentController.Replace("Controller", string.Empty);
             }
@@ -79,7 +96,7 @@ namespace Definux.Emeraude.Admin.Attributes
                 Order = this.order,
                 Active = this.active,
                 ParentReferenceKey = parentRouteKey,
-                ParentReferenceValue = parentRouteValue
+                ParentReferenceValue = parentRouteValue,
             };
 
             controller.ViewData.AddBreadcrumb(currentBreadcrumb);

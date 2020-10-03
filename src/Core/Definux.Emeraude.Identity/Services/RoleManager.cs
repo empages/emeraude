@@ -1,19 +1,18 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Interfaces.Shared;
-using Definux.Emeraude.Domain.Entities;
-using Definux.Emeraude.Identity.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="IRoleManager"/>
     public class RoleManager : IRoleManager
     {
         private readonly Application.Common.Interfaces.Logging.ILogger logger;
@@ -21,6 +20,13 @@ namespace Definux.Emeraude.Identity.Services
         private readonly UserManager<User> userManager;
         private readonly IEmContext context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleManager"/> class.
+        /// </summary>
+        /// <param name="roleManager"></param>
+        /// <param name="userManager"></param>
+        /// <param name="context"></param>
+        /// <param name="logger"></param>
         public RoleManager(
             RoleManager<Role> roleManager,
             UserManager<User> userManager,
@@ -33,6 +39,7 @@ namespace Definux.Emeraude.Identity.Services
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetRolesAsync()
         {
             try
@@ -46,6 +53,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> CreateRoleAsync(string roleName, IEnumerable<string> claims)
         {
             try
@@ -71,7 +79,7 @@ namespace Definux.Emeraude.Identity.Services
 
                         if (!result.Succeeded)
                         {
-                            await DeleteRoleAsync(role.Name);
+                            await this.DeleteRoleAsync(role.Name);
                             return false;
                         }
                     }
@@ -86,6 +94,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> DeleteRoleAsync(string roleName)
         {
             try
@@ -107,6 +116,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetUserRolesAsync(IUser user)
         {
             try
@@ -125,6 +135,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> UnassignAllRolesFromUserAsync(IUser user)
         {
             try
@@ -141,6 +152,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> AssignRolesToUserAsync(IUser user, IEnumerable<Guid> roleIds)
         {
             try

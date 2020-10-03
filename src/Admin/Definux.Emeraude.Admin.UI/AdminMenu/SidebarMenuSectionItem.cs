@@ -1,41 +1,69 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Definux.Emeraude.Admin.UI.AdminMenu
 {
+    /// <summary>
+    /// Model that defines sidebar section of the admin menu.
+    /// </summary>
     public class SidebarMenuSectionItem
     {
+        /// <summary>
+        /// Title of the section.
+        /// </summary>
         [JsonProperty("title")]
         public string Title { get; set; }
 
+        /// <summary>
+        /// Icon of the section.
+        /// </summary>
         [JsonProperty("icon")]
         public string Icon { get; set; }
 
+        /// <summary>
+        /// List of all sub-items of the section.
+        /// </summary>
         [JsonProperty("children")]
         public List<SidebarNavigationLinkItem> Children { get; set; }
 
+        /// <summary>
+        /// Flag that indicates whether the section has behavior of dropdown or not.
+        /// </summary>
         [JsonProperty("dropdown")]
         public bool Dropdown { get; set; }
 
-        public bool IsSingle => Children != null && Children.Count == 1;
+        /// <summary>
+        /// Computed flag that return true when there is just one sub-item in the section.
+        /// </summary>
+        public bool IsSingle => this.Children != null && this.Children.Count == 1;
 
-        public SidebarNavigationLinkItem SingleLinkItem => IsSingle ? Children.FirstOrDefault() : null;
+        /// <summary>
+        /// Computed property that return the single link item if the section is single.
+        /// </summary>
+        public SidebarNavigationLinkItem SingleLinkItem => this.IsSingle ? this.Children.FirstOrDefault() : null;
 
-        public bool IsActive => Children.Any(x => x.IsActive);
+        /// <summary>
+        /// Flag that indicates the active state of the section for the current request.
+        /// </summary>
+        public bool IsActive => this.Children.Any(x => x.IsActive);
 
+        /// <summary>
+        /// Method that apply current route to the state of the section.
+        /// </summary>
+        /// <param name="currentRoute"></param>
         public virtual void BuildState(string currentRoute)
         {
-            if (Children != null && Children.Count > 0)
+            if (this.Children != null && this.Children.Count > 0)
             {
-                foreach (var child in Children)
+                foreach (var child in this.Children)
                 {
                     child.BuildState(currentRoute);
                 }
 
-                if (Children.Count > 1)
+                if (this.Children.Count > 1)
                 {
-                    Dropdown = true;
+                    this.Dropdown = true;
                 }
             }
         }

@@ -1,17 +1,24 @@
 ﻿using Definux.Emeraude.Admin.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using System.IO;
 
 namespace Definux.Emeraude.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IApplicationBuilder"/>.
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Registers and configures Emeraude required middlewares.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="environment"></param>
+        /// <param name="forseProduction"></param>
+        /// <returns></returns>
         public static IApplicationBuilder UseEmeraude(this IApplicationBuilder app, IWebHostEnvironment environment, bool forseProduction = false)
         {
             if (environment.IsDevelopment() && !forseProduction)
@@ -24,6 +31,7 @@ namespace Definux.Emeraude.Extensions
             else
             {
                 app.UseExceptionHandler("/error/400");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

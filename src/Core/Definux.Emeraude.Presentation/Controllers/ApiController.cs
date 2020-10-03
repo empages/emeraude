@@ -7,12 +7,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Presentation.Controllers
 {
+    /// <summary>
+    /// Abstract class for creating API controllers.
+    /// </summary>
     [ApiController]
-    public class ApiController : Controller
+    public abstract class ApiController : Controller
     {
         private ILogger logger;
         private IMediator mediator;
 
+        /// <inheritdoc cref="ILogger"/>
         protected ILogger Logger
         {
             get
@@ -26,6 +30,7 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
+        /// <inheritdoc cref="IMediator"/>
         protected IMediator Mediator
         {
             get
@@ -39,35 +44,50 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
-        public bool DisableActivityLog { get; set; }
+        /// <summary>
+        /// Flag that activate and disable activity logging by Emeraude logger.
+        /// </summary>
+        protected bool DisableActivityLog { get; set; }
 
-        public bool HideActivityLogParameters { get; set; }
+        /// <summary>
+        /// Flag that hide or show the request params in activity log.
+        /// </summary>
+        protected bool HideActivityLogParameters { get; set; }
 
+        /// <inheritdoc/>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!DisableActivityLog)
+            if (!this.DisableActivityLog)
             {
-                Logger.LogActivity(context, HideActivityLogParameters);
+                this.Logger.LogActivity(context, this.HideActivityLogParameters);
             }
-
-
 
             base.OnActionExecuting(context);
         }
 
+        /// <summary>
+        /// Get HTTP default OK or Bad request response based on the passed flag.
+        /// </summary>
+        /// <param name="success"></param>
+        /// <returns></returns>
         protected IActionResult GetSuccessResponse(bool success)
         {
             if (success)
             {
-                return Ok();
+                return this.Ok();
             }
 
-            return BadRequest();
+            return this.BadRequest();
         }
 
+        /// <summary>
+        /// Get HTTP OK response with <see cref="SimpleResult"/>.
+        /// </summary>
+        /// <param name="success"></param>
+        /// <returns></returns>
         protected IActionResult GetSimpleResponse(bool success)
         {
-            return Ok(new SimpleResult(success));
+            return this.Ok(new SimpleResult(success));
         }
     }
 }

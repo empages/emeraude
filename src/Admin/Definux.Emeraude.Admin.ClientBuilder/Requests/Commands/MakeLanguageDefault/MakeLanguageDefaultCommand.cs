@@ -1,26 +1,38 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.MakeLanguageDefault
 {
+    /// <summary>
+    /// Command that make specified language a default one.
+    /// </summary>
     public class MakeLanguageDefaultCommand : IRequest<SimpleResult>
     {
+        /// <summary>
+        /// Id of the language.
+        /// </summary>
         public int LanguageId { get; set; }
 
+        /// <inheritdoc/>
         public class MakeLanguageDefaultCommandHandler : IRequestHandler<MakeLanguageDefaultCommand, SimpleResult>
         {
             private readonly ILocalizationContext context;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MakeLanguageDefaultCommandHandler"/> class.
+            /// </summary>
+            /// <param name="context"></param>
             public MakeLanguageDefaultCommandHandler(ILocalizationContext context)
             {
                 this.context = context;
             }
 
+            /// <inheritdoc/>
             public async Task<SimpleResult> Handle(MakeLanguageDefaultCommand request, CancellationToken cancellationToken)
             {
                 var languages = await this.context
@@ -49,5 +61,4 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.MakeLanguageDef
             }
         }
     }
-
 }

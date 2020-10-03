@@ -1,12 +1,14 @@
-﻿using Definux.Emeraude.Domain.Localization;
+﻿using System;
+using Definux.Emeraude.Domain.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace Definux.Emeraude.Localization.Configuration
 {
+    /// <inheritdoc/>
     public class StaticContentConfiguration : IEntityTypeConfiguration<StaticContent>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<StaticContent> builder)
         {
             builder

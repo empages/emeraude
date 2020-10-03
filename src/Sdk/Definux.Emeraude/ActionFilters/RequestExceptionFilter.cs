@@ -1,29 +1,35 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 
 namespace Definux.Emeraude.ActionFilters
 {
+    /// <summary>
+    /// Filter for catching specific exceptions during request execution.
+    /// </summary>
     public class RequestExceptionFilter : ExceptionFilterAttribute
     {
         private readonly IDictionary<Type, Action<ExceptionContext>> exceptionHandlers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestExceptionFilter"/> class.
+        /// </summary>
         public RequestExceptionFilter()
         {
             this.exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                { typeof(ValidationException), HandleValidationException },
-                { typeof(PageNotFoundException), HandlePageNotFoundException },
-                { typeof(EntityNotFoundException), HandleEntityNotFoundException }
+                { typeof(ValidationException), this.HandleValidationException },
+                { typeof(PageNotFoundException), this.HandlePageNotFoundException },
+                { typeof(EntityNotFoundException), this.HandleEntityNotFoundException },
             };
         }
 
+        /// <inheritdoc/>
         public override void OnException(ExceptionContext context)
         {
-            TryHandleException(context);
-
+            this.TryHandleException(context);
             base.OnException(context);
         }
 
@@ -42,7 +48,7 @@ namespace Definux.Emeraude.ActionFilters
 
             var details = new ValidationProblemDetails(exception.Failures)
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             };
 
             context.Result = new BadRequestObjectResult(details);
@@ -67,7 +73,7 @@ namespace Definux.Emeraude.ActionFilters
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = "The specified resource was not found.",
-                Detail = exception.Message
+                Detail = exception.Message,
             };
 
             context.Result = new NotFoundObjectResult(details);

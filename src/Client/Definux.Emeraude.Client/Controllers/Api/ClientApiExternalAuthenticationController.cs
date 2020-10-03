@@ -1,41 +1,47 @@
-﻿using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
-    public partial class ClientApiAuthenticationController : ApiController
+    /// <inheritdoc/>
+    public sealed partial class ClientApiAuthenticationController : ApiController
     {
+        /// <summary>
+        /// External login provider authentication action.
+        /// </summary>
+        /// <param name="authData"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("external")]
         public async Task<IActionResult> ExternalAuthentication([FromBody]ExternalAuthenticationData authData)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new ExternalAuthenticationCommand(authData));
+                var requestResult = await this.Mediator.Send(new ExternalAuthenticationCommand(authData));
 
                 if (requestResult.Result.Succeeded)
                 {
                     var tokenResult = await this.userTokensService.BuildJwtTokenForUserAsync(requestResult.User.Id);
-                    return Ok(tokenResult);
+                    return this.Ok(tokenResult);
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                    this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
                 }
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

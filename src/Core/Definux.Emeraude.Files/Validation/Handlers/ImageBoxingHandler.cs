@@ -1,12 +1,16 @@
+using System;
 using Definux.Utilities.Validation;
 using ImageMagick;
 using Microsoft.AspNetCore.Http;
-using System;
 
 namespace Definux.Emeraude.Files.Validation.Handlers
 {
+    /// <summary>
+    /// File validation handler that check whether a file can be cast to a image.
+    /// </summary>
     internal class ImageBoxingHandler : Handler<IFormFile>
     {
+        /// <inheritdoc/>
         protected override string HandleProcessAction()
         {
             string resultMessage = string.Empty;

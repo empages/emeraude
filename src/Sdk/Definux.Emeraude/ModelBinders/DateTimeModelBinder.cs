@@ -1,13 +1,17 @@
-﻿using Definux.Emeraude.Resources;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Definux.Emeraude.Resources;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Definux.Emeraude.ModelBinders
 {
+    /// <summary>
+    /// Customized <see cref="DateTime"/> model binder for the needs of Emeraude.
+    /// </summary>
     public class DateTimeModelBinder : IModelBinder
     {
+        /// <inheritdoc/>
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)

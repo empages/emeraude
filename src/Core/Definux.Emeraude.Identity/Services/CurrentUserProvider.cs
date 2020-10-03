@@ -1,26 +1,30 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="ICurrentUserProvider"/>
     public class CurrentUserProvider : ICurrentUserProvider
     {
         private readonly UserManager<User> userManager;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CurrentUserProvider"/> class.
+        /// </summary>
+        /// <param name="httpAccessor"></param>
+        /// <param name="userManager"></param>
+        /// <param name="logger"></param>
         public CurrentUserProvider(
-            IHttpContextAccessor httpAccessor, 
-            UserManager<User> userManager, 
+            IHttpContextAccessor httpAccessor,
+            UserManager<User> userManager,
             ILogger logger)
         {
             this.CurrentUserId = httpAccessor.GetCurrentUserId();
@@ -28,8 +32,10 @@ namespace Definux.Emeraude.Identity.Services
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public Guid? CurrentUserId { get; }
 
+        /// <inheritdoc/>
         public async Task<IUser> GetCurrentUserAsync()
         {
             try

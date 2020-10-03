@@ -1,46 +1,52 @@
-﻿using Definux.Emeraude.Application.Common.Exceptions;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Register;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
-    public partial class ClientApiAuthenticationController : ApiController
+    /// <inheritdoc/>
+    public sealed partial class ClientApiAuthenticationController : ApiController
     {
+        /// <summary>
+        /// Register action.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]RegisterRequest request)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
             try
             {
-                var requestResult = await Mediator.Send(new RegisterCommand(request));
+                var requestResult = await this.Mediator.Send(new RegisterCommand(request));
 
                 if (requestResult.Result.Succeeded)
                 {
-                    return Ok();
+                    return this.Ok();
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                    this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex);
+                this.ModelState.ApplyValidationException(ex);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
             }
 
             return this.BadRequestWithModelErrors();

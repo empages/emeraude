@@ -1,4 +1,8 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
@@ -9,22 +13,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
-using System;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
-    public partial class ClientMvcAuthenticationController : PublicController
+    /// <summary>
+    /// Client controller for MVC authentication.
+    /// </summary>
+    public sealed partial class ClientMvcAuthenticationController : PublicController
     {
-        public const string LogoutRoute = "/logout";
+        private const string LogoutRoute = "/logout";
 
         private readonly IUserClaimsService userClaimsService;
         private readonly UrlEncoder urlEncoder;
         private readonly EmOptions emeraudeOptions;
         private readonly SignInManager<User> signInManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientMvcAuthenticationController"/> class.
+        /// </summary>
+        /// <param name="userClaimsService"></param>
+        /// <param name="urlEncoder"></param>
+        /// <param name="emeraudeOptionsAccessor"></param>
+        /// <param name="signInManager"></param>
         public ClientMvcAuthenticationController(
             IUserClaimsService userClaimsService,
             UrlEncoder urlEncoder,
@@ -36,37 +46,58 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             this.emeraudeOptions = emeraudeOptionsAccessor.Value;
             this.signInManager = signInManager;
 
-            HideActivityLogParameters = true;
+            this.HideActivityLogParameters = true;
         }
 
-        [HttpGet]
-        [HttpPost]
-        [Route(LogoutRoute)]
-        public async Task<IActionResult> Logout()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return BadRequest();
-            }
-
-            await HttpContext.SignOutAsync(AuthenticationDefaults.ClientAuthenticationScheme);
-
-            return RedirectToHomeIndex();
-        }
-
-        protected AuthenticationProperties AuthenticationProperties
+        private AuthenticationProperties AuthenticationProperties
         {
             get
             {
                 return new AuthenticationProperties
                 {
                     IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddMonths(1)
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
                 };
             }
         }
 
-        protected async Task SignInAsync(IUser user)
+        /// <summary>
+        /// Logout action for GET and POST requests.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [HttpPost]
+        [Route(LogoutRoute)]
+        public async Task<IActionResult> Logout()
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return this.BadRequest();
+            }
+
+            await this.HttpContext.SignOutAsync(AuthenticationDefaults.ClientAuthenticationScheme);
+
+            return this.RedirectToHomeIndex();
+        }
+
+        /// <inheritdoc/>
+        public override ViewResult View(string viewName, object model)
+        {
+            return base.View($"Authentication/{viewName}", model);
+        }
+
+        /// <inheritdoc/>
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            if (!this.emeraudeOptions.Account.HasClientMvcAuthentication)
+            {
+                context.Result = this.NotFound();
+            }
+
+            return base.OnActionExecutionAsync(context, next);
+        }
+
+        private async Task SignInAsync(IUser user)
         {
             var claims = await this.userClaimsService.GetUserClaimsForCookieAsync(user.Id);
             var claimsIdentity = new ClaimsIdentity(claims, AuthenticationDefaults.ClientAuthenticationScheme);
@@ -75,27 +106,12 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             await this.HttpContext.SignInAsync(
                 AuthenticationDefaults.ClientAuthenticationScheme,
                 claimsPrincipal,
-                AuthenticationProperties);
+                this.AuthenticationProperties);
         }
 
-        protected IActionResult RedirectToHomeIndex()
+        private IActionResult RedirectToHomeIndex()
         {
-            return RedirectToAction("Index", "Home");
-        }
-
-        public override ViewResult View(string viewName, object model)
-        {
-            return base.View($"Authentication/{viewName}", model);
-        }
-
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            if (!this.emeraudeOptions.Account.HasClientMvcAuthentication)
-            {
-                context.Result = NotFound();
-            }
-
-            return base.OnActionExecutionAsync(context, next);
+            return this.RedirectToAction("Index", "Home");
         }
     }
 }

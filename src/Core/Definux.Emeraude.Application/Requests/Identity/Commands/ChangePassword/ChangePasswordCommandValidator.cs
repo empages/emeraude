@@ -1,23 +1,29 @@
-﻿using Definux.Emeraude.Configuration.Options;
+﻿using System.Linq;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Resources;
 using FluentValidation;
-using System.Linq;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
 {
+    /// <summary>
+    /// Validator of change password command.
+    /// </summary>
     public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChangePasswordCommandValidator"/> class.
+        /// </summary>
         public ChangePasswordCommandValidator()
         {
-            RuleFor(x => x.CurrentPassword)
+            this.RuleFor(x => x.CurrentPassword)
                 .NotEmpty()
                 .WithMessage(Messages.CurrentPasswordIsARequiredField);
 
-            RuleFor(x => x.NewPassword)
+            this.RuleFor(x => x.NewPassword)
                 .NotEmpty()
                 .WithMessage(Messages.PasswordIsARequiredField);
 
-            RuleFor(x => x.NewPassword)
+            this.RuleFor(x => x.NewPassword)
                 .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
                 .WithMessage(string.Format(Messages.PasswordMustBeAtLeastSymbols, EmIdentityConstants.PasswordRequiredLength))
                 .Must(x => x.Any(y => char.IsLetter(y)))
@@ -26,7 +32,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
                 .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit)
                 .When(x => !string.IsNullOrEmpty(x.NewPassword));
 
-            RuleFor(x => x.ConfirmedPassword)
+            this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.NewPassword)
                 .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword)
                 .When(x => !string.IsNullOrEmpty(x.NewPassword));

@@ -1,14 +1,13 @@
 ﻿using Definux.Emeraude.Domain.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Definux.Emeraude.Logger.Configuration
 {
+    /// <inheritdoc cref="IEntityTypeConfiguration{TEntity}"/>
     public class ActivityLogConfiguration : IEntityTypeConfiguration<ActivityLog>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<ActivityLog> builder)
         {
             builder.ConfigureLoggerEntity();

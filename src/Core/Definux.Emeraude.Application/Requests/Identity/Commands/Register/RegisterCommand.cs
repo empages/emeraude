@@ -1,33 +1,47 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Configuration.Authorization;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
 {
+    /// <summary>
+    /// Command for client user registration.
+    /// </summary>
     public class RegisterCommand : RegisterRequest, IRequest<RegisterRequestResult>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterCommand"/> class.
+        /// </summary>
+        /// <param name="request"></param>
         public RegisterCommand(RegisterRequest request)
         {
-            Name = request.Name;
-            Email = request.Email;
-            Password = request.Password;
-            ConfirmedPassword = request.ConfirmedPassword;
+            this.Name = request.Name;
+            this.Email = request.Email;
+            this.Password = request.Password;
+            this.ConfirmedPassword = request.ConfirmedPassword;
         }
 
+        /// <inheritdoc/>
         public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterRequestResult>
         {
             private readonly IUserManager userManager;
             private readonly IIdentityEventManager eventManager;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RegisterCommandHandler"/> class.
+            /// </summary>
+            /// <param name="userManager"></param>
+            /// <param name="eventManager"></param>
             public RegisterCommandHandler(IUserManager userManager, IIdentityEventManager eventManager)
             {
                 this.userManager = userManager;
                 this.eventManager = eventManager;
             }
 
+            /// <inheritdoc/>
             public async Task<RegisterRequestResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
                 var user = this.userManager.CreateUserObject(request.Email, request.Name);
@@ -45,5 +59,4 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
             }
         }
     }
-
 }

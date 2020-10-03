@@ -1,10 +1,10 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
+﻿using System;
+using System.Reflection;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
+using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Reflection;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Extensions
 {

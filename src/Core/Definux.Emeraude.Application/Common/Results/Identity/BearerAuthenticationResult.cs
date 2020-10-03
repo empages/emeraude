@@ -2,28 +2,38 @@
 
 namespace Definux.Emeraude.Application.Common.Results.Identity
 {
+    /// <summary>
+    /// Bearer authentication result for API authentication request.
+    /// </summary>
     public class BearerAuthenticationResult : IBearerAuthenticationResult
     {
+        /// <summary>
+        /// Static property that returns failed bearer result.
+        /// </summary>
+        public static BearerAuthenticationResult FailedResult => new BearerAuthenticationResult
+        {
+            Success = false,
+            Message = "Authentication failed.",
+        };
+
+        /// <inheritdoc/>
         public bool Success { get; set; }
 
+        /// <inheritdoc/>
         public string Message { get; set; }
 
+        /// <inheritdoc/>
         public string JsonWebToken { get; set; }
 
+        /// <inheritdoc/>
         public string RefreshToken { get; set; }
 
-        public static BearerAuthenticationResult FailedResult
-        {
-            get
-            {
-                return new BearerAuthenticationResult
-                {
-                    Success = false,
-                    Message = "Authentication failed."
-                };
-            }
-        }
-
+        /// <summary>
+        /// Static method that returns success bearer result.
+        /// </summary>
+        /// <param name="jsonWebToken"></param>
+        /// <param name="refreshToken"></param>
+        /// <returns></returns>
         public static BearerAuthenticationResult SuccessResult(string jsonWebToken, string refreshToken)
         {
             return new BearerAuthenticationResult
@@ -31,7 +41,7 @@ namespace Definux.Emeraude.Application.Common.Results.Identity
                 Success = true,
                 Message = "Successful authentication.",
                 JsonWebToken = jsonWebToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
             };
         }
     }

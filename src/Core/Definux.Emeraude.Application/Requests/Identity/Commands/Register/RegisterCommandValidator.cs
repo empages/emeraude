@@ -1,36 +1,42 @@
-﻿using FluentValidation;
-using System.Linq;
+﻿using System.Linq;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Resources;
+using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
 {
+    /// <summary>
+    /// Validator for client registration command.
+    /// </summary>
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterCommandValidator"/> class.
+        /// </summary>
+        /// <param name="userManager">User Manager provided from Emeraude Identity.</param>
         public RegisterCommandValidator(IUserManager userManager)
         {
-            RuleFor(x => x.Email)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+            this.RuleFor(x => x.Email)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage(Messages.EmailIsARequiredField)
                 .EmailAddress()
                 .WithMessage(Messages.EnteredEmailIsInTheWrongFormat)
                 .DependentRules(() =>
                 {
-                    RuleFor(x => x)
-                        .Cascade(CascadeMode.StopOnFirstFailure)
+                    this.RuleFor(x => x)
+                        .Cascade(CascadeMode.Stop)
                         .MustAsync(async (x, c) => await userManager.FindUserByEmailAsync(x.Email) == null)
                         .WithMessage(Messages.UserCannotBeRegistered);
                 });
-                
 
-            RuleFor(x => x.Name)
+            this.RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage(Messages.NameIsARequiedField);
 
-            RuleFor(x => x.Password)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+            this.RuleFor(x => x.Password)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage(Messages.PasswordIsARequiredField)
                 .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
@@ -40,7 +46,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
                 .Must(x => x.Any(y => char.IsDigit(y)))
                 .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit);
 
-            RuleFor(x => x.ConfirmedPassword)
+            this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.Password)
                 .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword)
                 .When(x => !string.IsNullOrEmpty(x.Password));

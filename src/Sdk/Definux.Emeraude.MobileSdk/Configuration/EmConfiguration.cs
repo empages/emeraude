@@ -1,21 +1,33 @@
-﻿using Definux.Emeraude.MobileSdk.ServiceAgents.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Definux.Emeraude.MobileSdk.ServiceAgents.Settings;
 using Xamarin.Essentials;
 
 namespace Definux.Emeraude.MobileSdk.Configuration
 {
+    /// <inheritdoc cref="IEmConfiguration"/>
     public abstract class EmConfiguration : IEmConfiguration
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmConfiguration"/> class.
+        /// </summary>
+        /// <param name="rootBaseUrl"></param>
         public EmConfiguration(string rootBaseUrl)
         {
             if (string.IsNullOrEmpty(rootBaseUrl))
             {
                 throw new ArgumentNullException(rootBaseUrl);
             }
-            RootBaseUrl = rootBaseUrl;
+
+            this.RootBaseUrl = rootBaseUrl;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmConfiguration"/> class.
+        /// </summary>
+        /// <param name="hostMachineIp"></param>
+        /// <param name="addressPort"></param>
+        /// <param name="useHttps"></param>
         public EmConfiguration(string hostMachineIp, string addressPort, bool useHttps = true)
         {
             if (string.IsNullOrEmpty(hostMachineIp))
@@ -33,42 +45,48 @@ namespace Definux.Emeraude.MobileSdk.Configuration
             if (DeviceInfo.DeviceType == DeviceType.Virtual)
             {
                 string ipAddress = DeviceInfo.Platform == DevicePlatform.Android ? "10.0.2.2" : "localhost";
-                RootBaseUrl = string.Format(rootBaseUrlTemplate, ipAddress);
+                this.RootBaseUrl = string.Format(rootBaseUrlTemplate, ipAddress);
             }
             else if (DeviceInfo.DeviceType == DeviceType.Physical || DeviceInfo.DeviceType == DeviceType.Unknown)
             {
-                RootBaseUrl = string.Format(rootBaseUrlTemplate, hostMachineIp);
+                this.RootBaseUrl = string.Format(rootBaseUrlTemplate, hostMachineIp);
             }
         }
 
+        /// <inheritdoc/>
         public string RootBaseUrl { get; }
 
+        /// <inheritdoc/>
         public Dictionary<string, string> Headers { get; protected set; }
 
+        /// <inheritdoc/>
         public string FacebookAppId { get; protected set; }
 
+        /// <inheritdoc/>
         public string GoogleClientId { get; protected set; }
 
+        /// <inheritdoc/>
         public string FacebookRedirectUrl
         {
             get
             {
-                if (!string.IsNullOrEmpty(FacebookAppId))
+                if (!string.IsNullOrEmpty(this.FacebookAppId))
                 {
-                    return $"fb{FacebookAppId}://authorize";
+                    return $"fb{this.FacebookAppId}://authorize";
                 }
 
                 return "/";
             }
         }
 
+        /// <inheritdoc/>
         public string GoogleRedirectUrl
         {
             get
             {
-                if (!string.IsNullOrEmpty(GoogleClientId))
+                if (!string.IsNullOrEmpty(this.GoogleClientId))
                 {
-                    var clientElements = GoogleClientId.Split('.');
+                    var clientElements = this.GoogleClientId.Split('.');
                     Array.Reverse(clientElements);
 
                     return $"{string.Join(".", clientElements)}:/oauth2redirect";
@@ -78,16 +96,18 @@ namespace Definux.Emeraude.MobileSdk.Configuration
             }
         }
 
+        /// <inheritdoc/>
         public HostSettings ToHostSettings()
         {
             return new HostSettings
             {
-                Headers = Headers,
-                Url = $"{RootBaseUrl}/"
+                Headers = this.Headers,
+                Url = $"{this.RootBaseUrl}/",
             };
         }
 
-        public string SetBasedOnDevicePlatform(string androidValue, string iOSValue)
+        /// <inheritdoc/>
+        public string GetValueBasedOnDevicePlatform(string androidValue, string iOSValue)
         {
             if (DeviceInfo.Platform == DevicePlatform.Android)
             {

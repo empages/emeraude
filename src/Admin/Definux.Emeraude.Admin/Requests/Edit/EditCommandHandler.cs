@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.Requests.Edit
 {
+    /// <inheritdoc cref="IEditCommandHandler{TEditCommand, TEntity, TRequestModel}"/>
     public class EditCommandHandler<TEntity, TRequestModel> : IEditCommandHandler<EditCommand<TEntity, TRequestModel>, TEntity, TRequestModel>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
@@ -19,6 +20,12 @@ namespace Definux.Emeraude.Admin.Requests.Edit
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditCommandHandler{TEntity, TRequestModel}"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="mapper"></param>
+        /// <param name="logger"></param>
         public EditCommandHandler(IEmContext context, IMapper mapper, ILogger logger)
         {
             this.context = context;
@@ -26,6 +33,7 @@ namespace Definux.Emeraude.Admin.Requests.Edit
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<Guid?> Handle(EditCommand<TEntity, TRequestModel> request, CancellationToken cancellationToken)
         {
             try

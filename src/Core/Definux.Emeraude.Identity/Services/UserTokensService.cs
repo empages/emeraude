@@ -1,4 +1,10 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Application.Common.Results;
@@ -11,15 +17,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="IUserTokensService"/>
     public class UserTokensService : IUserTokensService
     {
         private readonly UserManager<User> userManager;
@@ -28,10 +29,18 @@ namespace Definux.Emeraude.Identity.Services
         private readonly JsonWebTokenOptions jwtOptions;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserTokensService"/> class.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="context"></param>
+        /// <param name="userClaimsService"></param>
+        /// <param name="jsonWebTokenOptions"></param>
+        /// <param name="logger"></param>
         public UserTokensService(
             UserManager<User> userManager,
             IEmContext context,
-            IUserClaimsService userClaimsService, 
+            IUserClaimsService userClaimsService,
             IOptions<JsonWebTokenOptions> jsonWebTokenOptions,
             ILogger logger)
         {
@@ -42,13 +51,14 @@ namespace Definux.Emeraude.Identity.Services
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(Guid userId)
         {
             try
             {
                 var user = await this.userManager.FindByIdAsync(userId.ToString());
                 var userClaims = await this.userClaimsService.GetUserClaimsForJwtTokenAsync(userId);
-                string jwt = BuildJwtToken(userClaims);
+                string jwt = this.BuildJwtToken(userClaims);
                 string refreshToken = this.context.BuildRefreshToken(user);
                 await this.context.SaveChangesAsync();
 
@@ -61,22 +71,23 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<BearerAuthenticationResult> BuildJwtTokenForExternalUserAsync(IExternalUser externalUser)
         {
             try
             {
                 var user = await this.userManager.FindByLoginAsync(externalUser.Provider, externalUser.Id);
 
-                return await BuildJwtTokenForUserAsync(user.Id);
+                return await this.BuildJwtTokenForUserAsync(user.Id);
             }
             catch (Exception ex)
             {
                 await this.logger.LogErrorAsync(ex);
                 return null;
             }
-            
         }
 
+        /// <inheritdoc/>
         public async Task<BearerAuthenticationResult> RefreshJwtTokenAsync(Guid? userId, string refreshToken)
         {
             User user = null;
@@ -92,7 +103,7 @@ namespace Definux.Emeraude.Identity.Services
             if (user != null && user.RefreshToken == refreshToken && user.RefreshTokenExpiration.HasValue && user.RefreshTokenExpiration > DateTime.Now)
             {
                 var userClaims = await this.userClaimsService.GetUserClaimsForJwtTokenAsync(user.Id);
-                string jwt = BuildJwtToken(userClaims);
+                string jwt = this.BuildJwtToken(userClaims);
 
                 return BearerAuthenticationResult.SuccessResult(jwt, refreshToken);
             }
@@ -100,12 +111,13 @@ namespace Definux.Emeraude.Identity.Services
             return BearerAuthenticationResult.FailedResult;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> ResetRefreshTokenAsync(Guid userId)
         {
             var user = await this.userManager.FindByIdAsync(userId.ToString());
             if (user != null)
             {
-                context.ResetRefreshToken(user);
+                this.context.ResetRefreshToken(user);
                 await this.context.SaveChangesAsync();
 
                 return true;

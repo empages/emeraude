@@ -1,18 +1,25 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Localization.Services
 {
+    /// <inheritdoc cref="ILocalizer"/>
     public class Localizer : ILocalizer
     {
         private readonly ILocalizationContext context;
         private readonly ILogger logger;
         private readonly ICurrentLanguageProvider currentLanguageProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Localizer"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="logger"></param>
+        /// <param name="currentLanguageProvider"></param>
         public Localizer(ILocalizationContext context, ILogger logger, ICurrentLanguageProvider currentLanguageProvider)
         {
             this.context = context;
@@ -20,6 +27,7 @@ namespace Definux.Emeraude.Localization.Services
             this.currentLanguageProvider = currentLanguageProvider;
         }
 
+        /// <inheritdoc/>
         public string TranslateKey(string key)
         {
             try
@@ -40,6 +48,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public string TranslateKey(string key, string languageCode)
         {
             try
@@ -59,6 +68,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<string> TranslateKeyAsync(string key)
         {
             try
@@ -79,6 +89,7 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<string> TranslateKeyAsync(string key, string languageCode)
         {
             try

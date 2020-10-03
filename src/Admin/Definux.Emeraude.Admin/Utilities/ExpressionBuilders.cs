@@ -1,13 +1,22 @@
-﻿using Definux.Utilities.Functions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Definux.Utilities.Functions;
 
 namespace Definux.Emeraude.Admin.Utilities
 {
+    /// <summary>
+    /// Expression builders that helps for extraction expressions from simple arguments.
+    /// </summary>
     public static class ExpressionBuilders
     {
+        /// <summary>
+        /// Extract filter expression for entity by search string.
+        /// </summary>
+        /// <typeparam name="TEntity">Target entity.</typeparam>
+        /// <param name="searchQuery"></param>
+        /// <returns></returns>
         public static Expression<Func<TEntity, bool>> BuildQueryExpressionBySearchQuery<TEntity>(string searchQuery)
         {
             if (!string.IsNullOrWhiteSpace(searchQuery))
@@ -39,6 +48,13 @@ namespace Definux.Emeraude.Admin.Utilities
             return resultExpression;
         }
 
+        /// <summary>
+        /// Extract filter expression for entity by referenced entity property and its value.
+        /// </summary>
+        /// <typeparam name="TEntity">Target entity.</typeparam>
+        /// <param name="foreignKeyProperty"></param>
+        /// <param name="foreignKeyValue"></param>
+        /// <returns></returns>
         public static Expression<Func<TEntity, bool>> BuildQueryExpressionByParentForeignKey<TEntity>(string foreignKeyProperty, string foreignKeyValue)
         {
             Expression<Func<TEntity, bool>> expression = x =>

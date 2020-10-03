@@ -1,20 +1,30 @@
-﻿using Definux.Emeraude.MobileSdk.Configuration;
+﻿using System;
+using Definux.Emeraude.MobileSdk.Configuration;
 using Definux.Emeraude.MobileSdk.OAuth;
-using Definux.Emeraude.MobileSdk.Stores;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Models.Requests;
+using Definux.Emeraude.MobileSdk.Services;
+using Definux.Emeraude.MobileSdk.Stores;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
-using System;
-using System.Resources;
 using Xamarin.Auth;
 using Xamarin.Auth.Presenters;
-using Definux.Emeraude.MobileSdk.Services;
 
 namespace Definux.Emeraude.MobileSdk.ViewModels
 {
-    public class AccountViewModel : ViewModelBase
+    /// <summary>
+    /// An abstract ViewModel that defines the binding model for a page that contains access to login, register and external login actions.
+    /// </summary>
+    public abstract class AccountViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountViewModel"/> class.
+        /// </summary>
+        /// <param name="navigationService"></param>
+        /// <param name="systemSettingsStore"></param>
+        /// <param name="localizer"></param>
+        /// <param name="authenticationStore"></param>
+        /// <param name="configuration"></param>
         public AccountViewModel(
             INavigationService navigationService,
             ISystemSettingsStore systemSettingsStore,
@@ -23,46 +33,63 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
             IEmConfiguration configuration)
             : base(navigationService, systemSettingsStore, localizer)
         {
-            AuthenticationStore = authenticationStore;
-            Configuration = configuration;
+            this.AuthenticationStore = authenticationStore;
+            this.Configuration = configuration;
 
-            GoToLoginPageCommand = new DelegateCommand(() => NavigationService.NavigateAsync("LoginPage"));
-            GoToRegisterPageCommand = new DelegateCommand(() => NavigationService.NavigateAsync("RegisterPage"));
-            LoginWithFacebookCommand = new DelegateCommand(() => LoginWithFacebook());
-            LoginWithGoogleCommand = new DelegateCommand(() => LoginWithGoogle());
+            this.GoToLoginPageCommand = new DelegateCommand(() => this.NavigationService.NavigateAsync("LoginPage"));
+            this.GoToRegisterPageCommand = new DelegateCommand(() => this.NavigationService.NavigateAsync("RegisterPage"));
+            this.LoginWithFacebookCommand = new DelegateCommand(() => this.LoginWithFacebook());
+            this.LoginWithGoogleCommand = new DelegateCommand(() => this.LoginWithGoogle());
         }
 
+        /// <inheritdoc cref="IEmConfiguration"/>
         public IEmConfiguration Configuration { get; private set; }
 
+        /// <inheritdoc cref="IAuthenticationStore"/>
         public IAuthenticationStore AuthenticationStore { get; private set; }
 
+        /// <inheritdoc cref="OAuthLoginPresenter"/>
         public OAuthLoginPresenter OAuthLoginPresenter { get; protected set; }
 
+        /// <inheritdoc cref="OAuth2Authenticator"/>
         public OAuth2Authenticator OAuth2Authenticator { get; protected set; }
 
+        /// <inheritdoc cref="OAuth2ProviderType"/>
         public OAuth2ProviderType OAuth2AuthenticatorType { get; set; }
 
+        /// <summary>
+        /// Command that redirect to login page.
+        /// </summary>
         public DelegateCommand GoToLoginPageCommand { get; set; }
 
+        /// <summary>
+        /// Command that redirect to register page.
+        /// </summary>
         public DelegateCommand GoToRegisterPageCommand { get; set; }
 
+        /// <summary>
+        /// Command that login with Facebook.
+        /// </summary>
         public DelegateCommand LoginWithFacebookCommand { get; set; }
 
+        /// <summary>
+        /// Command that login with Google.
+        /// </summary>
         public DelegateCommand LoginWithGoogleCommand { get; set; }
 
         private void LoginWithFacebook()
         {
             try
             {
-                OAuth2AuthenticatorType = OAuth2ProviderType.Facebook;
-                OAuth2Authenticator = OAuth2AuthenticatorHelper.CreateFacebookOAuth2Authenticator(Configuration);
-                OAuth2Authenticator.Completed += OAuth2AuthenticatorCompleted;
-                OAuth2Authenticator.Error += OAuth2AuthenticatorError;
+                this.OAuth2AuthenticatorType = OAuth2ProviderType.Facebook;
+                this.OAuth2Authenticator = OAuth2AuthenticatorHelper.CreateFacebookOAuth2Authenticator(this.Configuration);
+                this.OAuth2Authenticator.Completed += this.OAuth2AuthenticatorCompleted;
+                this.OAuth2Authenticator.Error += this.OAuth2AuthenticatorError;
 
-                OAuthLoginPresenter = new OAuthLoginPresenter();
-                OAuthLoginPresenter.Login(OAuth2Authenticator);
+                this.OAuthLoginPresenter = new OAuthLoginPresenter();
+                this.OAuthLoginPresenter.Login(this.OAuth2Authenticator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -71,15 +98,15 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
         {
             try
             {
-                OAuth2AuthenticatorType = OAuth2ProviderType.Google;
-                OAuth2Authenticator = OAuth2AuthenticatorHelper.CreateGoogleOAuth2Authenticator(Configuration);
-                OAuth2Authenticator.Completed += OAuth2AuthenticatorCompleted;
-                OAuth2Authenticator.Error += OAuth2AuthenticatorError;
+                this.OAuth2AuthenticatorType = OAuth2ProviderType.Google;
+                this.OAuth2Authenticator = OAuth2AuthenticatorHelper.CreateGoogleOAuth2Authenticator(this.Configuration);
+                this.OAuth2Authenticator.Completed += this.OAuth2AuthenticatorCompleted;
+                this.OAuth2Authenticator.Error += this.OAuth2AuthenticatorError;
 
-                OAuthLoginPresenter = new OAuthLoginPresenter();
-                OAuthLoginPresenter.Login(OAuth2Authenticator);
+                this.OAuthLoginPresenter = new OAuthLoginPresenter();
+                this.OAuthLoginPresenter.Login(this.OAuth2Authenticator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -90,22 +117,24 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
             {
                 if (e.IsAuthenticated)
                 {
-                    ExternalLoginRequest externalLoginRequest = new ExternalLoginRequest { Provider = OAuth2AuthenticatorType.ToString() }; 
+                    ExternalLoginRequest externalLoginRequest = new ExternalLoginRequest
+                    {
+                        Provider = this.OAuth2AuthenticatorType.ToString(),
+                    };
                     var tokenResult = JsonConvert.DeserializeObject<OAuth2TokenResult>(JsonConvert.SerializeObject(e.Account.Properties));
 
                     externalLoginRequest.AccessToken = tokenResult.AccessToken;
 
-                    AuthenticationStore.RequestTokenWithExternalProviderAsync(externalLoginRequest);
+                    this.AuthenticationStore.RequestTokenWithExternalProviderAsync(externalLoginRequest);
                 }
             }
             catch (Exception)
             {
-
             }
             finally
             {
-                OAuth2Authenticator.Completed -= OAuth2AuthenticatorCompleted;
-                OAuth2Authenticator.Error -= OAuth2AuthenticatorError;
+                this.OAuth2Authenticator.Completed -= this.OAuth2AuthenticatorCompleted;
+                this.OAuth2Authenticator.Error -= this.OAuth2AuthenticatorError;
             }
         }
 
@@ -113,18 +142,15 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
         {
             try
             {
-
             }
             catch (Exception)
             {
-
             }
             finally
             {
-                OAuth2Authenticator.Completed -= OAuth2AuthenticatorCompleted;
-                OAuth2Authenticator.Error -= OAuth2AuthenticatorError;
+                this.OAuth2Authenticator.Completed -= this.OAuth2AuthenticatorCompleted;
+                this.OAuth2Authenticator.Error -= this.OAuth2AuthenticatorError;
             }
         }
     }
-
 }

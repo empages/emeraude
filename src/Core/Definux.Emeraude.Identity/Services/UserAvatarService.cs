@@ -1,4 +1,8 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Files;
+﻿using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Files;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
@@ -8,33 +12,41 @@ using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Identity.Services
 {
+    /// <inheritdoc cref="IUserAvatarService"/>
     public class UserAvatarService : IUserAvatarService
     {
-        private readonly ILogger logger;
         private readonly IEmContext context;
         private readonly UserManager<User> userManager;
         private readonly IHostingEnvironment hostEnvironment;
         private readonly ISystemFilesService systemFilesService;
+        private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAvatarService"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userManager"></param>
+        /// <param name="hostEnvironment"></param>
+        /// <param name="systemFilesService"></param>
+        /// <param name="logger"></param>
         public UserAvatarService(
             IEmContext context,
             UserManager<User> userManager,
             IHostingEnvironment hostEnvironment,
-            ISystemFilesService systemFilesService)
+            ISystemFilesService systemFilesService,
+            ILogger logger)
         {
             this.context = context;
             this.userManager = userManager;
             this.hostEnvironment = hostEnvironment;
             this.systemFilesService = systemFilesService;
+            this.logger = logger;
         }
-        
+
+        /// <inheritdoc/>
         public async Task ApplyAvatarToUserAsync(Guid userId, string avatarUrl)
         {
             try
@@ -54,6 +66,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<string> CreateAvatarFromUrlAsync(string externalSourceAvatarUrl)
         {
             try
@@ -85,6 +98,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<string> CreateUserAvatarAsync(byte[] avatarFileByteArray)
         {
             try
@@ -110,6 +124,7 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
+        /// <inheritdoc/>
         public string GetUserAvatarRelativePath(IUser user)
         {
             return ((User)user)?.AvatarRelativePath;

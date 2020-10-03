@@ -1,24 +1,44 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using System;
+using Definux.Emeraude.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using System;
 
 namespace Definux.Emeraude.Identity.Entities
 {
+    /// <summary>
+    /// Role entity used from the application that implements ASP.NET Core <see cref="IdentityRole{TKey}"/>.
+    /// </summary>
     public class Role : IdentityRole<Guid>, IEntity
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Role"/> class.
+        /// </summary>
         public Role()
         {
         }
 
-        public Role(string roleName) : base(roleName)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Role"/> class.
+        /// </summary>
+        /// <param name="roleName"></param>
+        public Role(string roleName)
+            : base(roleName)
         {
         }
 
-        public Role(string roleName, string description) : base(roleName)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Role"/> class.
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="description"></param>
+        public Role(string roleName, string description)
+            : base(roleName)
         {
-            Description = description;
+            this.Description = description;
         }
 
+        /// <summary>
+        /// Description of the role.
+        /// </summary>
         public string Description { get; set; }
     }
 }

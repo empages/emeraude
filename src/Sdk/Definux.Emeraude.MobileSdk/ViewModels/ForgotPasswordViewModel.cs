@@ -1,16 +1,24 @@
-﻿using Definux.Emeraude.MobileSdk.Services;
+﻿using System.Threading.Tasks;
+using Definux.Emeraude.MobileSdk.FormModels;
+using Definux.Emeraude.MobileSdk.Services;
 using Definux.Emeraude.MobileSdk.Stores;
 using Prism.Commands;
 using Prism.Navigation;
-using System.Resources;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.MobileSdk.ViewModels
 {
-    public class ForgotPasswordViewModel : ViewModelBase
+    /// <summary>
+    /// An abstract ViewModel that defines the binding model for a page that contains forgot password form.
+    /// </summary>
+    public abstract class ForgotPasswordViewModel : ViewModelBase
     {
-        private string email;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ForgotPasswordViewModel"/> class.
+        /// </summary>
+        /// <param name="navigationService"></param>
+        /// <param name="systemSettingsStore"></param>
+        /// <param name="authenticationStore"></param>
+        /// <param name="localizer"></param>
         public ForgotPasswordViewModel(
             INavigationService navigationService,
             ISystemSettingsStore systemSettingsStore,
@@ -18,28 +26,28 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
             ILocalizer localizer)
             : base(navigationService, systemSettingsStore, localizer)
         {
-            AuthenticationStore = authenticationStore;
-
-            SubmitResetPasswordCommand = new DelegateCommand(async () => await SubmitResetPasswordAsync());
+            this.AuthenticationStore = authenticationStore;
+            this.SubmitForgotPasswordFormCommand = new DelegateCommand(async () => await this.SubmitForgotPasswordFormAsync());
         }
 
+        /// <inheritdoc cref="IAuthenticationStore"/>
         public IAuthenticationStore AuthenticationStore { get; private set; }
 
-        public DelegateCommand SubmitResetPasswordCommand { get; set; }
+        /// <summary>
+        /// Command that submit the forgot password form.
+        /// </summary>
+        public DelegateCommand SubmitForgotPasswordFormCommand { get; set; }
 
-        #region FormProperties
+        /// <summary>
+        /// Binding model for the forgot password form.
+        /// </summary>
+        public ForgotPasswordFormModel ForgotPasswordModel { get; set; }
 
-        public string Email
+        private async Task SubmitForgotPasswordFormAsync()
         {
-            get => this.email;
-            set => SetProperty(ref this.email, value);
-        }
-
-        #endregion
-
-        private async Task SubmitResetPasswordAsync()
-        {
-
+            if (this.ForgotPasswordModel.IsValid())
+            {
+            }
         }
     }
 }

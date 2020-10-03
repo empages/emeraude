@@ -1,25 +1,37 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Localization;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.DeleteLanguage
 {
+    /// <summary>
+    /// Command that delete specified language and all resources related to it. If there other languages, the first selected will become default.
+    /// </summary>
     public class DeleteLanguageCommand : IRequest<SimpleResult>
     {
+        /// <summary>
+        /// Id of the language.
+        /// </summary>
         public int LanguageId { get; set; }
 
+        /// <inheritdoc/>
         public class CommandHandler : IRequestHandler<DeleteLanguageCommand, SimpleResult>
         {
             private readonly ILocalizationContext context;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CommandHandler"/> class.
+            /// </summary>
+            /// <param name="context"></param>
             public CommandHandler(ILocalizationContext context)
             {
                 this.context = context;
             }
 
+            /// <inheritdoc/>
             public async Task<SimpleResult> Handle(DeleteLanguageCommand request, CancellationToken cancellationToken)
             {
                 var language = await this.context
@@ -49,5 +61,4 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.DeleteLanguage
             }
         }
     }
-
 }

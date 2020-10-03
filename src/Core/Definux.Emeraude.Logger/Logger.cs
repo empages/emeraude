@@ -1,43 +1,33 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
+﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
 using Definux.Emeraude.Domain.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Logger
 {
+    /// <inheritdoc cref="ILogger"/>
     public class Logger : ILogger
     {
         private const string TraceIdCookieName = "trcid";
 
         private readonly LoggerContext context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Logger"/> class.
+        /// </summary>
+        /// <param name="context"></param>
         public Logger(LoggerContext context)
         {
             this.context = context;
         }
 
-        public async Task<bool> ClearAllErrorLogsAsync()
-        {
-            try
-            {
-                this.context.ErrorLogs.RemoveRange(await this.context.ErrorLogs.AsQueryable().ToListAsync());
-                await this.context.SaveChangesAsync();
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                await LogErrorAsync(ex);
-                return false;
-            }
-        }
-
+        /// <inheritdoc/>
         public void LogActivity(ActionExecutingContext context, bool hideParameters = false)
         {
             try
@@ -78,10 +68,11 @@ namespace Definux.Emeraude.Logger
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                this.LogError(ex);
             }
         }
 
+        /// <inheritdoc/>
         public async Task LogErrorAsync(Exception exception, [CallerMemberName]string method = "")
         {
             try
@@ -93,15 +84,18 @@ namespace Definux.Emeraude.Logger
                     Source = exception.Source,
                     Message = exception.Message,
                     Method = method,
-                    Class = serviceClass
+                    Class = serviceClass,
                 };
 
                 this.context.ErrorLogs.Add(log);
                 await this.context.SaveChangesAsync();
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
         }
 
+        /// <inheritdoc/>
         public void LogError(Exception exception, [CallerMemberName]string method = "")
         {
             try
@@ -113,15 +107,18 @@ namespace Definux.Emeraude.Logger
                     Source = exception.Source,
                     Message = exception.Message,
                     Method = method,
-                    Class = serviceClass
+                    Class = serviceClass,
                 };
 
                 this.context.ErrorLogs.Add(log);
                 this.context.SaveChanges();
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
         }
 
+        /// <inheritdoc/>
         public async Task LogEmailAsync(string receiver, string subject, string body, bool sent)
         {
             try
@@ -139,7 +136,7 @@ namespace Definux.Emeraude.Logger
             }
             catch (Exception ex)
             {
-                await LogErrorAsync(ex);
+                await this.LogErrorAsync(ex);
             }
         }
     }

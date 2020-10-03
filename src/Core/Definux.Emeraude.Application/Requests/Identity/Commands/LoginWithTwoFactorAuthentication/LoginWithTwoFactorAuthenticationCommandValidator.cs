@@ -2,11 +2,17 @@
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.LoginWithTwoFactorAuthentication
 {
+    /// <summary>
+    /// Validator for login with two factor authentication command.
+    /// </summary>
     public class LoginWithTwoFactorAuthenticationCommandValidator : AbstractValidator<LoginWithTwoFactorAuthenticationCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginWithTwoFactorAuthenticationCommandValidator"/> class.
+        /// </summary>
         public LoginWithTwoFactorAuthenticationCommandValidator()
         {
-            RuleFor(x => x.Code)
+            this.RuleFor(x => x.Code)
                 .NotEmpty()
                 .WithMessage("Code is a required field.");
         }

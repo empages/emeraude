@@ -17,6 +17,8 @@
     <PackageIcon>logo_128.jpg</PackageIcon>
     <PackageIconUrl />
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>../../../Emeraude.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +31,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
   </ItemGroup>

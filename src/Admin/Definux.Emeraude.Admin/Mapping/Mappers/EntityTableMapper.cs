@@ -1,17 +1,28 @@
-﻿using Definux.Emeraude.Admin.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.Table;
+using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Utilities.Extensions;
 using Definux.Utilities.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {
+    /// <summary>
+    /// Static mapper that convert entities in the table format.
+    /// </summary>
     public static class EntityTableMapper
     {
+        /// <summary>
+        /// Map entities to <see cref="TableViewModel"/> by using the decorated properties of the view model entity implementation by <seealso cref="TableColumnAttribute"/>.
+        /// </summary>
+        /// <typeparam name="T">ViewModel entity implementation.</typeparam>
+        /// <param name="entitiesResult"></param>
+        /// <param name="actions"></param>
+        /// <returns></returns>
         public static TableViewModel Map<T>(PaginatedList<T> entitiesResult, params TableRowActionViewModel[] actions)
         {
             Type dtoType = typeof(T);
@@ -81,26 +92,47 @@ namespace Definux.Emeraude.Admin.Mapping.Mappers
         }
 
         /// <summary>
-        /// Create table view item action.
+        /// Creates table view item action.
         /// </summary>
-        /// <param name="icon">https://cdn.materialdesignicons.com/4.9.95/</param>
+        /// <param name="title"></param>
+        /// <param name="icon">See https://cdn.materialdesignicons.com/4.9.95/ for more information.</param>
+        /// <param name="method"></param>
         /// <param name="urlStringFormat"></param>
         /// <param name="parameters"></param>
+        /// <returns></returns>
         public static TableRowActionViewModel CreateAction(string title, string icon, TableRowActionMethod method, string urlStringFormat, params object[] parameters)
         {
             return new TableRowActionViewModel(title, icon, urlStringFormat, parameters.Select(x => x.ToString()).ToList(), method);
         }
 
+        /// <summary>
+        /// Creates predefined details table view item action.
+        /// </summary>
+        /// <param name="urlStringFormat"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public static TableRowActionViewModel DetailsAction(string urlStringFormat, params object[] parameters)
         {
             return CreateAction("Details", MaterialDesignIcons.CardBulleted, TableRowActionMethod.Get, urlStringFormat, parameters);
         }
 
+        /// <summary>
+        /// Creates predefined edit table view item action.
+        /// </summary>
+        /// <param name="urlStringFormat"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public static TableRowActionViewModel EditAction(string urlStringFormat, params object[] parameters)
         {
             return CreateAction("Edit", MaterialDesignIcons.Pencil, TableRowActionMethod.Get, urlStringFormat, parameters);
         }
 
+        /// <summary>
+        /// Creates predefined delete table view item action.
+        /// </summary>
+        /// <param name="urlStringFormat"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public static TableRowActionViewModel DeleteAction(string urlStringFormat, params object[] parameters)
         {
             var action = CreateAction("Delete", MaterialDesignIcons.Delete, TableRowActionMethod.Post, urlStringFormat, parameters);

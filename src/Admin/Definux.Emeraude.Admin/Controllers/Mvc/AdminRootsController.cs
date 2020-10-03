@@ -1,23 +1,27 @@
-﻿using Definux.Emeraude.Admin.Controllers.Abstractions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Definux.Utilities.Extensions;
-using Definux.Emeraude.Admin.UI.ViewModels.Roots;
-using Definux.Emeraude.Admin.UI.ViewModels.Layout;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Application.Requests.Files.Commands.UploadFile;
-using Definux.Emeraude.Admin.Utilities;
-using Definux.Emeraude.Application.Common.Results.Files;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
-using Definux.Emeraude.Presentation.Extensions;
+using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Mapping.Mappers;
+using Definux.Emeraude.Admin.UI.ViewModels.Layout;
+using Definux.Emeraude.Admin.UI.ViewModels.Roots;
+using Definux.Emeraude.Admin.Utilities;
+using Definux.Emeraude.Application.Common.Interfaces.Files;
+using Definux.Emeraude.Application.Common.Results.Files;
+using Definux.Emeraude.Application.Requests.Files.Commands.UploadFile;
+using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Presentation.Extensions;
+using Definux.Utilities.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Admin.Controllers.Mvc
 {
+    /// <summary>
+    /// Admin controller for management of files in the public and private roots.
+    /// </summary>
     [Route("/admin/roots/")]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
@@ -25,57 +29,80 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     public sealed class AdminRootsController : AdminController
     {
         private readonly ISystemFilesService systemFilesService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminRootsController"/> class.
+        /// </summary>
+        /// <param name="systemFilesService"></param>
         public AdminRootsController(ISystemFilesService systemFilesService)
         {
             this.systemFilesService = systemFilesService;
         }
 
+        /// <summary>
+        /// Root action for public and private roots.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="folders"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{root:root}/{*folders}")]
         public IActionResult Root(string root, string folders = "")
         {
             try
             {
-                IEnumerable<SystemFileItem> fileSystemItems = null;
+                IEnumerable<SystemItem> fileSystemItems = null;
                 RootViewModel model = null;
                 string folderPath = folders.Replace('/', Path.DirectorySeparatorChar);
-                fileSystemItems = this.systemFilesService.ScanDirectory(Path.Combine(GetRootDirectory(root), folderPath), GetRootDirectory(root));
+                fileSystemItems = this.systemFilesService.ScanDirectory(Path.Combine(this.GetRootDirectory(root), folderPath), this.GetRootDirectory(root));
                 model = RootMapper.Map(folderPath, fileSystemItems);
 
                 model.Root = root.ToFirstUpper();
-                InitializeNavigationActions(BuildNavigationActions(folders, root));
+                this.InitializeNavigationActions(this.BuildNavigationActions(folders, root));
 
-                return View("Root", model);
+                return this.View("Root", model);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
+        /// <summary>
+        /// Root file action for access a file from the roots.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="folders"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{root:root}/file/{*folders}")]
         public async Task<IActionResult> RootFile(string root, string folders = "")
         {
             try
             {
-                IActionResult result = NotFound();
+                IActionResult result = this.NotFound();
                 if (folders != null)
                 {
                     string filePath = folders.Replace('/', Path.DirectorySeparatorChar);
-                    var fileResult = await this.systemFilesService.GetFileAsync(Path.Combine(GetRootDirectory(root), filePath));
+                    var fileResult = await this.systemFilesService.GetFileAsync(Path.Combine(this.GetRootDirectory(root), filePath));
 
-                    result = File(fileResult.Stream, fileResult.ContentType);
+                    result = this.File(fileResult.Stream, fileResult.ContentType);
                 }
 
                 return result;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
+        /// <summary>
+        /// Action for create a folder for GET request.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="folders"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{root:root}/create-folder/{*folders}")]
         public IActionResult CreateFolder(string root, string folders = "")
@@ -84,31 +111,43 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             model.ParentFolderPath = folders;
             model.Root = root.ToFirstUpper();
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Action for create a folder for POST request.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("{root:root}/create-folder")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFolder(string root, RootCreateFolderViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 model.Root = root.ToFirstUpper();
 
-                bool created = await this.systemFilesService.CreateFolderAsync(model.FolderName, Path.Combine(GetRootDirectory(root), model.ParentFolderPath));
+                bool created = await this.systemFilesService.CreateFolderAsync(model.FolderName, Path.Combine(this.GetRootDirectory(root), model.ParentFolderPath));
                 if (created)
                 {
                     string foldersRoute = string.IsNullOrEmpty(model.ParentFolderPath) ? string.Empty : "/" + model.ParentFolderPath.Replace("\\", "/");
-                    return LocalRedirect($"/admin/roots/{root}{foldersRoute}/{model.FolderName}");
+                    return this.LocalRedirect($"/admin/roots/{root}{foldersRoute}/{model.FolderName}");
                 }
 
-                ModelState.AddModelError(nameof(RootCreateFolderViewModel.FolderName), $"Folder with name '{model.FolderName}' cannot be created.");
+                this.ModelState.AddModelError(nameof(RootCreateFolderViewModel.FolderName), $"Folder with name '{model.FolderName}' cannot be created.");
             }
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Upload files action for GET request.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="folders"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{root:root}/upload-files/{*folders}")]
         public IActionResult UploadFiles(string root, string folders = "")
@@ -117,9 +156,16 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             model.ParentFolderPath = folders;
             model.Root = root.ToFirstUpper();
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Upload files action for POST request.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="formFile"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("{root:root}/upload-file/")]
         [ValidateAntiForgeryToken]
@@ -130,7 +176,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             string saveDirectory = model.ParentFolderPath.Replace('/', Path.DirectorySeparatorChar);
             bool publicRoot = root == "public";
 
-            return this.UploadFileResponse(await Mediator.Send(new UploadFileCommand(formFile, saveDirectory, publicRoot)));
+            return this.UploadFileResponse(await this.Mediator.Send(new UploadFileCommand(formFile, saveDirectory, publicRoot)));
         }
 
         private string GetRootDirectory(string root)

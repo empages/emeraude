@@ -1,21 +1,27 @@
-﻿using Definux.Emeraude.Configuration.Options;
+﻿using System.Linq;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Resources;
 using FluentValidation;
-using System.Linq;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
 {
+    /// <summary>
+    /// Validator of reset password command.
+    /// </summary>
     public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResetPasswordCommandValidator"/> class.
+        /// </summary>
         public ResetPasswordCommandValidator()
         {
-            RuleFor(x => x.Email)
+            this.RuleFor(x => x.Email)
                 .NotEmpty()
                 .WithMessage(Messages.EmailIsARequiredField)
                 .EmailAddress()
                 .WithMessage(Messages.EnteredEmailIsInTheWrongFormat);
 
-            RuleFor(x => x.Password)
+            this.RuleFor(x => x.Password)
                 .NotEmpty()
                 .WithMessage(Messages.PasswordIsARequiredField)
                 .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
@@ -25,7 +31,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
                 .Must(x => x.Any(y => char.IsDigit(y)))
                 .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit);
 
-            RuleFor(x => x.ConfirmedPassword)
+            this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.Password)
                 .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword);
         }

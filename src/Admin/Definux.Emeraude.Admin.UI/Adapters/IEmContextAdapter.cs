@@ -1,9 +1,12 @@
-﻿using Definux.Emeraude.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.UI.Adapters
 {
+    /// <summary>
+    /// Emeraude context adapter that provide access of unavailable services to administration UI assembly.
+    /// </summary>
     public interface IEmContextAdapter
     {
         /// <summary>

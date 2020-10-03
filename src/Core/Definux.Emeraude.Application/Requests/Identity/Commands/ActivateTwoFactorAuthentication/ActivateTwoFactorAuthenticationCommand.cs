@@ -1,36 +1,49 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using MediatR;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication
 {
+    /// <summary>
+    /// Command for activation two factor authentication for a user.
+    /// </summary>
     public class ActivateTwoFactorAuthenticationCommand : IRequest<ActivateTwoFactorAuthenticationResult>
     {
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActivateTwoFactorAuthenticationCommand"/> class.
+        /// </summary>
+        /// <param name="code"></param>
         public ActivateTwoFactorAuthenticationCommand(string code)
         {
-            Code = code;
+            this.Code = code;
         }
 
+        /// <summary>
+        /// Authenticator code.
+        /// </summary>
         public string Code { get; set; }
 
+        /// <summary>
+        /// Activate two factor authentication command handler.
+        /// </summary>
         public class ActivateTwoFactorAuthenticationCommandHandler : IRequestHandler<ActivateTwoFactorAuthenticationCommand, ActivateTwoFactorAuthenticationResult>
         {
             private readonly IUserManager userManager;
             private readonly ICurrentUserProvider currentUserProvider;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ActivateTwoFactorAuthenticationCommandHandler"/> class.
+            /// </summary>
+            /// <param name="userManager"></param>
+            /// <param name="currentUserProvider"></param>
             public ActivateTwoFactorAuthenticationCommandHandler(IUserManager userManager, ICurrentUserProvider currentUserProvider)
             {
                 this.userManager = userManager;
                 this.currentUserProvider = currentUserProvider;
             }
 
+            /// <inheritdoc/>
             public async Task<ActivateTwoFactorAuthenticationResult> Handle(ActivateTwoFactorAuthenticationCommand request, CancellationToken cancellationToken)
             {
                 var verificationCode = request.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
@@ -39,8 +52,8 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFac
 
                 var is2faTokenValid = await this.userManager
                     .VerifyTwoFactorTokenAsync(
-                        currentUser, 
-                        this.userManager.Options.Tokens.AuthenticatorTokenProvider, 
+                        currentUser,
+                        this.userManager.Options.Tokens.AuthenticatorTokenProvider,
                         verificationCode);
 
                 if (!is2faTokenValid)
@@ -54,5 +67,4 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFac
             }
         }
     }
-
 }

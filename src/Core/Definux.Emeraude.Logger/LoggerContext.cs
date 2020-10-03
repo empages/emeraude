@@ -1,36 +1,75 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Domain.Logging;
-using Definux.Utilities.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Domain.Logging;
+using Definux.Utilities.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Definux.Emeraude.Logger
 {
+    /// <inheritdoc/>
     public class LoggerContext : DbContext, ILoggerContext
     {
+        private readonly Guid? currentUserId;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerContext"/> class.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="httpAccessor"></param>
         public LoggerContext(DbContextOptions<LoggerContext> options, IHttpContextAccessor httpAccessor)
             : base(options)
         {
-            CurrentUserId = httpAccessor.GetCurrentUserId();
+            this.currentUserId = httpAccessor.GetCurrentUserId();
         }
 
-        public Guid? CurrentUserId { get; set; }
-
+        /// <inheritdoc/>
         public DbSet<ActivityLog> ActivityLogs { get; set; }
 
+        /// <inheritdoc/>
         public DbSet<ErrorLog> ErrorLogs { get; set; }
 
+        /// <inheritdoc/>
         public DbSet<TempFileLog> TempFileLogs { get; set; }
 
+        /// <inheritdoc/>
         public DbSet<EmailLog> EmailLogs { get; set; }
 
+        /// <inheritdoc/>
+        public override int SaveChanges()
+        {
+            this.UpdateAuditableEntities();
+            return base.SaveChanges();
+        }
+
+        /// <inheritdoc/>
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            this.UpdateAuditableEntities();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        /// <inheritdoc/>
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.UpdateAuditableEntities();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.UpdateAuditableEntities();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -43,33 +82,12 @@ namespace Definux.Emeraude.Logger
             base.OnModelCreating(builder);
         }
 
-        public override int SaveChanges()
-        {
-            UpdateAuditableEntities();
-            return base.SaveChanges();
-        }
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            UpdateAuditableEntities();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
-
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            UpdateAuditableEntities();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            UpdateAuditableEntities();
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
+        /// <summary>
+        /// Method that automatically update all dates and users of all tracked entities.
+        /// </summary>
         protected virtual void UpdateAuditableEntities()
         {
-            IEnumerable<EntityEntry> modifiedEntityEntries = ChangeTracker
+            IEnumerable<EntityEntry> modifiedEntityEntries = this.ChangeTracker
                 .Entries()
                 .Where(x => x.Entity is ILoggerEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
 
@@ -81,7 +99,7 @@ namespace Definux.Emeraude.Logger
                 if (entry.State == EntityState.Added)
                 {
                     entity.CreatedOn = now;
-                    entity.CreatedBy = CurrentUserId?.ToString();
+                    entity.CreatedBy = this.currentUserId?.ToString();
                 }
             }
         }

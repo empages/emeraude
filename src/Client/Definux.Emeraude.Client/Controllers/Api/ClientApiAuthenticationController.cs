@@ -1,20 +1,29 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
+    /// <summary>
+    /// Client API controller for authentication.
+    /// </summary>
     [Route("/api/auth/")]
-    public partial class ClientApiAuthenticationController : ApiController
+    public sealed partial class ClientApiAuthenticationController : ApiController
     {
         private readonly IUserClaimsService userClaimsService;
         private readonly IUserTokensService userTokensService;
         private readonly EmOptions emeraudeOptions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientApiAuthenticationController"/> class.
+        /// </summary>
+        /// <param name="userClaimsService"></param>
+        /// <param name="userTokensService"></param>
+        /// <param name="emeraudeOptionsAccessor"></param>
         public ClientApiAuthenticationController(
             IUserClaimsService userClaimsService,
             IUserTokensService userTokensService,
@@ -25,11 +34,12 @@ namespace Definux.Emeraude.Client.Controllers.Api
             this.emeraudeOptions = emeraudeOptionsAccessor.Value;
         }
 
+        /// <inheritdoc/>
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (!this.emeraudeOptions.Account.HasClientApiAuthentication)
             {
-                context.Result = NotFound();
+                context.Result = this.NotFound();
             }
 
             return base.OnActionExecutionAsync(context, next);

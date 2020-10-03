@@ -1,26 +1,36 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Definux.Emeraude.Application.Common.Interfaces.Localization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetTranslationsGridData
 {
+    /// <summary>
+    /// Query that returns the all translation keys and values into grid format.
+    /// </summary>
     public class GetTranslationGridDataQuery : IRequest<TranslationsGridDataResult>
     {
+        /// <inheritdoc/>
         public class GetTranslationGridDataQueryHandler : IRequestHandler<GetTranslationGridDataQuery, TranslationsGridDataResult>
         {
             private readonly ILocalizationContext context;
             private readonly IMapper mapper;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GetTranslationGridDataQueryHandler"/> class.
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="mapper"></param>
             public GetTranslationGridDataQueryHandler(ILocalizationContext context, IMapper mapper)
             {
                 this.context = context;
                 this.mapper = mapper;
             }
 
+            /// <inheritdoc/>
             public async Task<TranslationsGridDataResult> Handle(GetTranslationGridDataQuery request, CancellationToken cancellationToken)
             {
                 TranslationsGridDataResult resultData = new TranslationsGridDataResult();
@@ -31,7 +41,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetTranslationsG
                     var currentDataItem = new TranslationsGridItem
                     {
                         KeyId = key.Id,
-                        Key = key.Key
+                        Key = key.Key,
                     };
 
                     foreach (var languagesDataItem in languagesData)

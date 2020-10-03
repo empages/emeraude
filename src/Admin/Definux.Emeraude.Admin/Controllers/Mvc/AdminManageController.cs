@@ -1,4 +1,7 @@
-﻿using Definux.Emeraude.Admin.Controllers.Abstractions;
+﻿using System;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.UI.ViewModels.Manage;
 using Definux.Emeraude.Application.Common.Exceptions;
 using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
@@ -15,27 +18,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.Controllers.Mvc
 {
-    [Route("admin/manage/")]
+    /// <summary>
+    /// Admin controller for management of current signed user.
+    /// </summary>
+    [Route("/admin/manage/")]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
-    public class AdminManageController : AdminController
+    public sealed class AdminManageController : AdminController
     {
         private readonly UserManager<User> userManager;
         private readonly UrlEncoder urlEncoder;
         private readonly EmOptions options;
-
         private readonly ITwoFactorAuthenticationService twoFactorAuthenticationService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminManageController"/> class.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="urlEncoder"></param>
+        /// <param name="twoFactorAuthenticationService"></param>
+        /// <param name="optionsAccessor"></param>
         public AdminManageController(
-            UserManager<User> userManager, 
-            UrlEncoder urlEncoder, 
-            ITwoFactorAuthenticationService twoFactorAuthenticationService, 
+            UserManager<User> userManager,
+            UrlEncoder urlEncoder,
+            ITwoFactorAuthenticationService twoFactorAuthenticationService,
             IOptions<EmOptions> optionsAccessor)
         {
             this.userManager = userManager;
@@ -44,82 +53,104 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             this.options = optionsAccessor.Value;
         }
 
+        /// <summary>
+        /// Two factor authentication action for GET request.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("two-factor-authentication")]
         public async Task<IActionResult> TwoFactorAuthentication()
         {
-            var user = await CurrentUserProvider.GetCurrentUserAsync();
+            var user = await this.CurrentUserProvider.GetCurrentUserAsync();
 
             var model = new AdminTwoFactorAuthenticationViewModel
             {
                 HasAuthenticator = await this.twoFactorAuthenticationService.GetFormattedKeyAsync(user) != null,
-                Is2faEnabled = this.twoFactorAuthenticationService.IsTwoFactorEnabled(user)
+                Is2faEnabled = this.twoFactorAuthenticationService.IsTwoFactorEnabled(user),
             };
 
-            await LoadSharedKeyAndQrCodeUriAsync(user, model);
+            await this.LoadSharedKeyAndQrCodeUriAsync(user, model);
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Two factor authentication action for POST request.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("two-factor-authentication")]
         public async Task<IActionResult> TwoFactorAuthentication(AdminTwoFactorAuthenticationViewModel model)
         {
             try
             {
-                var user = await CurrentUserProvider.GetCurrentUserAsync();
+                var user = await this.CurrentUserProvider.GetCurrentUserAsync();
 
-                var requestResult = await Mediator.Send(new ActivateTwoFactorAuthenticationCommand(model.Code));
+                var requestResult = await this.Mediator.Send(new ActivateTwoFactorAuthenticationCommand(model.Code));
 
                 if (requestResult.Successed)
                 {
                     var responseModel = new AdminTwoFactorAuthenticationViewModel
                     {
                         HasAuthenticator = await this.twoFactorAuthenticationService.GetFormattedKeyAsync(user) != null,
-                        Is2faEnabled = this.twoFactorAuthenticationService.IsTwoFactorEnabled(user)
+                        Is2faEnabled = this.twoFactorAuthenticationService.IsTwoFactorEnabled(user),
                     };
 
-                    ShowSuccessNotification("Two Factor Authenticator has been enabled successfully.");
+                    this.ShowSuccessNotification("Two Factor Authenticator has been enabled successfully.");
 
-                    return View(responseModel);
+                    return this.View(responseModel);
                 }
                 else
                 {
-                    ModelState.AddModelError("Code", "Verification code is invalid.");
-                    await LoadSharedKeyAndQrCodeUriAsync(user, model);
+                    this.ModelState.AddModelError("Code", "Verification code is invalid.");
+                    await this.LoadSharedKeyAndQrCodeUriAsync(user, model);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex, true);
+                this.ModelState.ApplyValidationException(ex, true);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Two factor authentication operation has failed.");
+                this.ModelState.AddModelError(string.Empty, "Two factor authentication operation has failed.");
             }
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Reset two factor authenticator action.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("reset-authenticator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetAuthenticator()
         {
-            await Mediator.Send(new ResetTwoFactorAuthenticationCommand());
+            await this.Mediator.Send(new ResetTwoFactorAuthenticationCommand());
 
-            return RedirectToAction(nameof(TwoFactorAuthentication));
+            return this.RedirectToAction(nameof(this.TwoFactorAuthentication));
         }
 
+        /// <summary>
+        /// Change password action for GET request.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("change-password")]
         public IActionResult ChangePassword()
         {
             AdminChangePasswordViewModel model = new AdminChangePasswordViewModel();
 
-            return View(model);
+            return this.View(model);
         }
 
+        /// <summary>
+        /// Change password action for POST request.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("change-password")]
         [ValidateAntiForgeryToken]
@@ -127,35 +158,35 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         {
             try
             {
-                var requestResult = await Mediator.Send(new ChangePasswordCommand(new ChangePasswordRequest
+                var requestResult = await this.Mediator.Send(new ChangePasswordCommand(new ChangePasswordRequest
                 {
-                    UserId = HttpContext.GetCurrentUserId().Value,
+                    UserId = this.HttpContext.GetCurrentUserId().Value,
                     CurrentPassword = model.CurrentPassword,
                     NewPassword = model.NewPassword,
-                    ConfirmedPassword = model.ConfirmedPassword
+                    ConfirmedPassword = model.ConfirmedPassword,
                 }));
 
                 if (requestResult.Successed)
                 {
-                    ShowSuccessNotification("Password has been changed successfully.");
-                    return View();
+                    this.ShowSuccessNotification("Password has been changed successfully.");
+                    return this.View();
                 }
                 else
                 {
-                    ShowErrorNotification("Password has not been changed successfully.");
-                    return View(model);
+                    this.ShowErrorNotification("Password has not been changed successfully.");
+                    return this.View(model);
                 }
             }
             catch (ValidationException ex)
             {
-                ModelState.ApplyValidationException(ex, true);
+                this.ModelState.ApplyValidationException(ex, true);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Change password operation has failed.");
+                this.ModelState.AddModelError(string.Empty, "Change password operation has failed.");
             }
 
-            return View(model);
+            return this.View(model);
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(IUser user, AdminTwoFactorAuthenticationViewModel model)

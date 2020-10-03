@@ -1,4 +1,7 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence;
 using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
 using Definux.Emeraude.Configuration.Authorization;
@@ -6,12 +9,10 @@ using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Persistence.Seed
 {
+    /// <inheritdoc cref="IApplicationDatabaseInitializer"/>
     public class ApplicationDatabaseInitializer : IApplicationDatabaseInitializer
     {
         private readonly IEmContext context;
@@ -19,9 +20,16 @@ namespace Definux.Emeraude.Persistence.Seed
         private readonly IRoleManager roleManager;
         private readonly EmOptions options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApplicationDatabaseInitializer"/> class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <param name="optionsAccessor"></param>
         public ApplicationDatabaseInitializer(
-            IEmContext context, 
-            IUserManager userManager, 
+            IEmContext context,
+            IUserManager userManager,
             IRoleManager roleManager,
             IOptions<EmOptions> optionsAccessor)
         {
@@ -31,25 +39,26 @@ namespace Definux.Emeraude.Persistence.Seed
             this.options = optionsAccessor.Value;
         }
 
+        /// <inheritdoc/>
         public async Task SeedAsync()
         {
             if (!await this.context.Set<Role>().AsQueryable().AnyAsync())
             {
-                await EnsureRoleAsync(ApplicationRoles.Admin, AdminPermissions.GetAllPermissionValues());
-                await EnsureRoleAsync(ApplicationRoles.User, new string[] { });
+                await this.EnsureRoleAsync(ApplicationRoles.Admin, AdminPermissions.GetAllPermissionValues());
+                await this.EnsureRoleAsync(ApplicationRoles.User, new string[] { });
                 if (this.options.AdditonalRoles != null && this.options.AdditonalRoles.Count > 0)
                 {
                     foreach (var role in this.options.AdditonalRoles)
                     {
-                        await EnsureRoleAsync(role.Key, role.Value);
+                        await this.EnsureRoleAsync(role.Key, role.Value);
                     }
                 }
             }
 
             if (!await this.context.Set<User>().AsQueryable().AnyAsync())
             {
-                await CreateUserAsync("admin@example.com", "Admin123!", "Admin", new string[] { ApplicationRoles.Admin.ToString() });
-                await CreateUserAsync("user@example.com", "User123!", "User", new string[] { ApplicationRoles.User.ToString() });
+                await this.CreateUserAsync("admin@example.com", "Admin123!", "Admin", new string[] { ApplicationRoles.Admin.ToString() });
+                await this.CreateUserAsync("user@example.com", "User123!", "User", new string[] { ApplicationRoles.User.ToString() });
             }
         }
 
@@ -69,7 +78,7 @@ namespace Definux.Emeraude.Persistence.Seed
                 Email = email,
                 Name = name,
                 EmailConfirmed = true,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
             };
 
             var result = await this.userManager.CreateAsync(user, password);
@@ -77,6 +86,7 @@ namespace Definux.Emeraude.Persistence.Seed
             {
                 await this.userManager.AddToRolesAsync(user, roles);
             }
+
             return user;
         }
     }

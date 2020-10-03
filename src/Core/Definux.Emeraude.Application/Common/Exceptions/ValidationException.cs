@@ -1,18 +1,28 @@
-﻿using FluentValidation.Results;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
 
 namespace Definux.Emeraude.Application.Common.Exceptions
 {
+    /// <summary>
+    /// Custom exception thrown on invalid fluent validation.
+    /// </summary>
     public class ValidationException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
         public ValidationException()
             : base("One or more validation failures have occurred.")
         {
-            Failures = new Dictionary<string, string[]>();
+            this.Failures = new Dictionary<string, string[]>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
+        /// <param name="failures"></param>
         public ValidationException(IEnumerable<ValidationFailure> failures)
             : this()
         {
@@ -23,10 +33,13 @@ namespace Definux.Emeraude.Application.Common.Exceptions
                 var propertyName = failureGroup.Key;
                 var propertyFailures = failureGroup.ToArray();
 
-                Failures.Add(propertyName, propertyFailures);
+                this.Failures.Add(propertyName, propertyFailures);
             }
         }
 
+        /// <summary>
+        /// Dictionary with all failures of fluent validation.
+        /// </summary>
         public IDictionary<string, string[]> Failures { get; }
     }
 }

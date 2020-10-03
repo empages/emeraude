@@ -1,15 +1,22 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using AutoMapper;
 
 namespace Definux.Emeraude.Application.Common.Mapping
 {
+    /// <summary>
+    /// Abstract assembly mapping profile for registration of all mappings configurations.
+    /// </summary>
     public abstract class AssemblyMappingProfile : Profile
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyMappingProfile"/> class.
+        /// </summary>
+        /// <param name="assembly"></param>
         public AssemblyMappingProfile(Assembly assembly)
         {
-            ApplyMappingsFromAssembly(assembly);
+            this.ApplyMappingsFromAssembly(assembly);
         }
 
         private void ApplyMappingsFromAssembly(Assembly assembly)

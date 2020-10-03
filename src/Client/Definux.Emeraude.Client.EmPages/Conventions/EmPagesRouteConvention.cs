@@ -1,14 +1,18 @@
-﻿using Definux.Emeraude.Client.EmPages.Abstractions;
+﻿using System;
+using System.Linq;
+using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Emeraude.Locales.Attributes;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using System;
-using System.Linq;
 
 namespace Definux.Emeraude.Client.EmPages.Conventions
 {
+    /// <summary>
+    /// An implementation of <see cref="IApplicationModelConvention"/> for configure and validate EmPages routings.
+    /// </summary>
     public class EmPagesRouteConvention : IApplicationModelConvention
     {
+        /// <inheritdoc/>
         public void Apply(ApplicationModel application)
         {
             var emPages = application.Controllers.Where(x => x.ControllerType.GetInterfaces().Contains(typeof(IEmPage)));

@@ -1,18 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Definux.Emeraude.Client.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IHtmlHelper"/>.
+    /// </summary>
     public static class HtmlHelperExtensions
     {
+        /// <summary>
+        /// Check for existance of model state errors related with no specific property.
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <returns></returns>
         public static bool HasNonModelError(this IHtmlHelper htmlHelper)
         {
             return !string.IsNullOrEmpty(htmlHelper.NonModelError());
         }
 
+        /// <summary>
+        /// Gives the first model state error related with no specific property.
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <returns></returns>
         public static string NonModelError(this IHtmlHelper htmlHelper)
         {
             string error = string.Empty;
@@ -20,7 +30,7 @@ namespace Definux.Emeraude.Client.Extensions
             {
                 foreach (var modelStateValue in htmlHelper.ViewContext.ModelState)
                 {
-                    if (modelStateValue.Key == string.Empty && 
+                    if (modelStateValue.Key == string.Empty &&
                         modelStateValue.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid &&
                         modelStateValue.Value.Errors.Count > 0)
                     {

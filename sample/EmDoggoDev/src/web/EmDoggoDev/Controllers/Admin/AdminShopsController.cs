@@ -1,5 +1,6 @@
 using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Mapping.Mappers;
+using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Utilities;
 using EmDoggoDev.Application.Models.Admin.Shops;

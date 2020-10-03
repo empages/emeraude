@@ -2,34 +2,34 @@
 
 namespace Definux.Emeraude.Admin.Requests.Create
 {
-    public class CreateCommand<TEntity, TRequestModel> : ICreateCommand<TEntity, TRequestModel>
+    /// <inheritdoc cref="ICreateCommand{TEntity, TRequestModel}"/>
+    public class CreateCommand<TEntity, TRequestModel> : GenericEntityRequst, ICreateCommand<TEntity, TRequestModel>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateCommand{TEntity, TRequestModel}"/> class.
+        /// </summary>
+        /// <param name="model"></param>
         public CreateCommand(TRequestModel model)
         {
-            Model = model;
+            this.Model = model;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateCommand{TEntity, TRequestModel}"/> class.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="foreignKeyProperty"></param>
+        /// <param name="foreignKeyValue"></param>
         public CreateCommand(TRequestModel model, string foreignKeyProperty, string foreignKeyValue)
         {
-            Model = model;
-            ForeignKeyProperty = foreignKeyProperty;
-            ForeignKeyValue = foreignKeyValue;
+            this.Model = model;
+            this.ForeignKeyProperty = foreignKeyProperty;
+            this.ForeignKeyValue = foreignKeyValue;
         }
 
+        /// <inheritdoc/>
         public TRequestModel Model { get; set; }
-
-        public bool ValidateParent
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(ForeignKeyProperty) && !string.IsNullOrWhiteSpace(ForeignKeyValue);
-            }
-        }
-
-        public string ForeignKeyProperty { get; set; }
-
-        public string ForeignKeyValue { get; set; }
     }
 }

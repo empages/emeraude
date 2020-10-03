@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Definux.Emeraude.Client.EmPages.Renderer
 {
@@ -41,20 +41,21 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         /// <returns>A block of JavaScript code.</returns>
         public string CreateGlobalsAssignmentScript()
         {
-            if (Globals == null)
+            if (this.Globals == null)
             {
                 return string.Empty;
             }
 
             var stringBuilder = new StringBuilder();
 
-            foreach (var property in Globals.Properties())
+            foreach (var property in this.Globals.Properties())
             {
                 var propertyNameJavaScriptString = JavaScriptEncoder.Default.Encode(property.Name);
                 var valueJson = property.Value.ToString(Formatting.None);
                 var valueJsonJavaScriptString = JavaScriptEncoder.Default.Encode(valueJson);
 
-                stringBuilder.AppendFormat("window[\"{0}\"] = JSON.parse(\"{1}\");",
+                stringBuilder.AppendFormat(
+                    "window[\"{0}\"] = JSON.parse(\"{1}\");",
                     propertyNameJavaScriptString,
                     valueJsonJavaScriptString);
             }
