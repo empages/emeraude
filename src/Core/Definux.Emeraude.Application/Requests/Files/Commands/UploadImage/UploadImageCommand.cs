@@ -45,7 +45,7 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadImage
             public async Task<UploadResult> Handle(UploadImageCommand request, CancellationToken cancellationToken)
             {
                 var validationResult = this.validationProvider.ValidateFormImageFile(request.FormFile);
-                if (validationResult.Success)
+                if (validationResult.Successed)
                 {
                     var uploadedFile = this.systemFilesService.UploadFileAsync(request.FormFile);
                     if (uploadedFile != null)

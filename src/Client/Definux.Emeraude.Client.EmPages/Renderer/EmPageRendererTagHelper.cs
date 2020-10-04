@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Client.EmPages.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.NodeServices;
@@ -59,7 +60,7 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         /// The initial state model parameter that will be applied into the application store state.
         /// </summary>
         [HtmlAttributeName(InitialStateViewModelAttributeName)]
-        public object InitialStateViewModel { get; set; }
+        public IInitialState InitialStateViewModel { get; set; }
 
         /// <summary>
         /// The maximum duration to wait for prerendering to complete.

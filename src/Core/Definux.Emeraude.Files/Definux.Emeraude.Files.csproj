@@ -18,13 +18,13 @@
     <PackageIconUrl />
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>../../../Emeraude.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.29" />
-    <PackageReference Include="Definux.Utilities.Validation" Version="1.0.29" />
-    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.21.1" />
+    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.30" />
+    <PackageReference Include="Definux.Utilities.Validation" Version="1.0.30" />
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

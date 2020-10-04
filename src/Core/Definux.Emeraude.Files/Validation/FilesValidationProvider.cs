@@ -105,9 +105,9 @@ namespace Definux.Emeraude.Files.Validation
 
             ValidationResult validationResult = new ValidationResult();
             string resultMessage = string.Empty;
-            validationResult.Success = startupHandler.Handle(formFile, out resultMessage) != null;
+            validationResult.Successed = startupHandler.Handle(formFile, out resultMessage) != null;
             validationResult.Message = resultMessage;
-            if (validationResult.Success)
+            if (validationResult.Successed)
             {
                 validationResult.Message = "File is valid.";
             }
@@ -136,9 +136,9 @@ namespace Definux.Emeraude.Files.Validation
 
             ValidationResult validationResult = new ValidationResult();
             string resultMessage = string.Empty;
-            validationResult.Success = startupHandler.Handle(formFile, out resultMessage) != null;
+            validationResult.Successed = startupHandler.Handle(formFile, out resultMessage) != null;
             validationResult.Message = resultMessage;
-            if (validationResult.Success)
+            if (validationResult.Successed)
             {
                 validationResult.Message = "Image file is valid.";
             }
@@ -165,9 +165,9 @@ namespace Definux.Emeraude.Files.Validation
 
             ValidationResult validationResult = new ValidationResult();
             string resultMessage = string.Empty;
-            validationResult.Success = startupHandler.Handle(formFile, out resultMessage) != null;
+            validationResult.Successed = startupHandler.Handle(formFile, out resultMessage) != null;
             validationResult.Message = resultMessage;
-            if (validationResult.Success)
+            if (validationResult.Successed)
             {
                 validationResult.Message = "Video file is valid.";
             }
