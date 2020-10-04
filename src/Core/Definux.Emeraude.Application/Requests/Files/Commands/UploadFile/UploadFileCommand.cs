@@ -69,7 +69,7 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
             public async Task<UploadResult> Handle(UploadFileCommand request, CancellationToken cancellationToken)
             {
                 var validationResult = this.validationProvider.ValidateFormFile(request.FormFile);
-                if (validationResult.Success)
+                if (validationResult.Successed)
                 {
                     TempFileLog uploadedFile;
                     if (string.IsNullOrEmpty(request.SaveDirectory))

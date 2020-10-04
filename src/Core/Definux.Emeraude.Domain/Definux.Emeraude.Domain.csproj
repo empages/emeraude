@@ -17,12 +17,12 @@
     <PackageIconUrl />
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>../../../Emeraude.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.29" />
-    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.29" />
+    <PackageReference Include="Definux.Utilities.Enumerations" Version="1.0.30" />
+    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.30" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />

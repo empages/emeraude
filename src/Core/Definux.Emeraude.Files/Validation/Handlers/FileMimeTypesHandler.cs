@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Files.Validation.Handlers
             bool isFileValid = false;
             foreach (var mimeType in this.allowedMimeTypes)
             {
-                if (this.requestObject.ContentType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))
+                if (this.RequestObject.ContentType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))
                 {
                     isFileValid = true;
                     break;
@@ -42,7 +42,7 @@ namespace Definux.Emeraude.Files.Validation.Handlers
             string resultMessage = string.Empty;
             if (!isFileValid)
             {
-                this.requestObject = null;
+                this.RequestObject = null;
                 resultMessage = "File mime type is incorrect. ";
             }
 

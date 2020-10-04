@@ -18,15 +18,15 @@
     <PackageIconUrl />
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>../../../Emeraude.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Definux.HtmlBuilder" Version="1.0.14" />
-    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.29" />
-    <PackageReference Include="Definux.Utilities.Functions" Version="1.0.29" />
-    <PackageReference Include="Definux.Utilities.Objects" Version="1.0.29" />
-    <PackageReference Include="HtmlSanitizer" Version="5.0.343" />
+    <PackageReference Include="Definux.HtmlBuilder" Version="1.0.15" />
+    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.30" />
+    <PackageReference Include="Definux.Utilities.Functions" Version="1.0.30" />
+    <PackageReference Include="Definux.Utilities.Objects" Version="1.0.30" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.353" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

@@ -1,6 +1,6 @@
 @model IInitialState
 @{
-    Layout = ViewData["Layout"]?.ToString() ?? "_Layout";
+    Layout = "_Layout";
 }
 
 <div asp-emeraude-app="true" asp-server-bundle="/wwwroot/dist/bundle.server.js" asp-initial-state="Model"></div>

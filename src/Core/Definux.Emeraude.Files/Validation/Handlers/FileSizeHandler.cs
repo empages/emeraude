@@ -29,14 +29,14 @@ namespace Definux.Emeraude.Files.Validation.Handlers
         protected override string HandleProcessAction()
         {
             string resultMessage = string.Empty;
-            if (this.requestObject.Length == 0)
+            if (this.RequestObject.Length == 0)
             {
-                this.requestObject = null;
+                this.RequestObject = null;
                 resultMessage = $"File size must be greater than 0 bytes. ";
             }
-            else if (this.requestObject.Length > this.maxAllowedFileSize)
+            else if (this.RequestObject.Length > this.maxAllowedFileSize)
             {
-                this.requestObject = null;
+                this.RequestObject = null;
                 resultMessage = $"File size exceeds allowed {this.maxAllowedFileSize} bytes. ";
             }
 

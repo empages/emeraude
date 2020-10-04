@@ -45,7 +45,7 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo
             public async Task<UploadResult> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
             {
                 var validationResult = this.validationProvider.ValidateFormVideoFile(request.FormFile);
-                if (validationResult.Success)
+                if (validationResult.Successed)
                 {
                     var uploadedFile = this.systemFilesService.UploadFileAsync(request.FormFile);
                     if (uploadedFile != null)

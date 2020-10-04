@@ -1,0 +1,30 @@
+name: .NET Core
+
+env:
+  PACKAGE_VERSION: 0.0.0.0
+
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.402
+      - name: Setup .NET Core 2.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 2.1.810
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Install dotnet ef
+        run: dotnet tool install --global dotnet-ef
+      - name: Build
+        run: dotnet build --configuration Release --no-restore

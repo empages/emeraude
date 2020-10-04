@@ -16,13 +16,13 @@ namespace Definux.Emeraude.Files.Validation.Handlers
             string resultMessage = string.Empty;
             try
             {
-                using (MagickImage image = new MagickImage(this.requestObject.OpenReadStream()))
+                using (MagickImage image = new MagickImage(this.RequestObject.OpenReadStream()))
                 {
                 }
             }
             catch (Exception)
             {
-                this.requestObject = null;
+                this.RequestObject = null;
                 resultMessage = $"File content cannot be used as an image. ";
             }
 
