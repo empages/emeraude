@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
+using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Requests.Files.Commands.Shared;
 using Definux.Emeraude.Domain.Logging;
 using MediatR;

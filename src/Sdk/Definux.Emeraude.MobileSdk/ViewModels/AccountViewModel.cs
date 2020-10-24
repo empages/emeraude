@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.MobileSdk.Configuration;
 using Definux.Emeraude.MobileSdk.OAuth;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Models.Requests;

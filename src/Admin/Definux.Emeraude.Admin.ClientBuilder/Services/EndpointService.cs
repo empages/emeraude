@@ -5,7 +5,7 @@ using System.Reflection;
 using Definux.Emeraude.Admin.ClientBuilder.DataAnnotations;
 using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
     /// <inheritdoc cref="IEndpointService"/>
     public class EndpointService : IEndpointService
     {
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
         private readonly ClientBuilderOptions clientBuilderOptions;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// </summary>
         /// <param name="clientBuilderOptions"></param>
         /// <param name="logger"></param>
-        public EndpointService(IOptions<ClientBuilderOptions> clientBuilderOptions, ILogger logger)
+        public EndpointService(IOptions<ClientBuilderOptions> clientBuilderOptions, IEmLogger logger)
         {
             this.clientBuilderOptions = clientBuilderOptions.Value;
             this.logger = logger;

@@ -1,9 +1,9 @@
 ﻿using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +69,6 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
                     {
                         var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
                         string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
-
                         string passwordResetToken = this.urlEncoder.Encode(await this.userManager.GeneratePasswordResetTokenAsync(user));
                         string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/reset-password?token={passwordResetToken}&email={user.Email}");
                         await this.identityEventManager.TriggerForgotPasswordEventAsync(user.Id, resetPasswordLink);

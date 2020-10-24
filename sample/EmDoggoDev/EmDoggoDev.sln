@@ -60,6 +60,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Identity",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Interfaces", "..\..\src\Core\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj", "{40CE6F5A-B6AE-4F15-9190-131F39224C0B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client.UI", "..\..\src\Client\Definux.Emeraude.Client.UI\Definux.Emeraude.Client.UI.csproj", "{9279403A-257E-4319-A6E5-B5780E6CFC7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +180,10 @@ Global
 		{40CE6F5A-B6AE-4F15-9190-131F39224C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40CE6F5A-B6AE-4F15-9190-131F39224C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40CE6F5A-B6AE-4F15-9190-131F39224C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9279403A-257E-4319-A6E5-B5780E6CFC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9279403A-257E-4319-A6E5-B5780E6CFC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9279403A-257E-4319-A6E5-B5780E6CFC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9279403A-257E-4319-A6E5-B5780E6CFC7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +213,7 @@ Global
 		{63B0DCD6-92B1-40F9-891D-81B0A20B207F} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
 		{6E986E9C-5FE5-4DD8-95AF-1637AD96FD3B} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
 		{40CE6F5A-B6AE-4F15-9190-131F39224C0B} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
+		{9279403A-257E-4319-A6E5-B5780E6CFC7E} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8449A9E-4E9A-4A60-801E-66BDD151B420}

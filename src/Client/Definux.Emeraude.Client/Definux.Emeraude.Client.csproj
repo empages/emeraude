@@ -22,20 +22,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.0.0" />
-    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.30" />
-    <PackageReference Include="IdentityServer4" Version="4.1.0" />
-    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.32" />
+    <PackageReference Include="IdentityServer4" Version="4.1.1" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -48,6 +48,7 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Client.EmPages\Definux.Emeraude.Client.EmPages.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Client.UI\Definux.Emeraude.Client.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

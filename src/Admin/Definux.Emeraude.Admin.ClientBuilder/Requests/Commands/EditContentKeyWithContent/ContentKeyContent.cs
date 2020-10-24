@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Application.Common.Mapping;
+﻿using Definux.Emeraude.Application.Mapping;
 using Definux.Emeraude.Domain.Localization;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Requests.Commands.EditContentKeyWithContent

@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.Utilities;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
 
@@ -18,7 +18,7 @@ namespace Definux.Emeraude.Admin.Requests.Details
     {
         private readonly IEmContext context;
         private readonly IMapper mapper;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailsQueryHandler{TEntity, TRequestModel}"/> class.
@@ -26,7 +26,7 @@ namespace Definux.Emeraude.Admin.Requests.Details
         /// <param name="context"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public DetailsQueryHandler(IEmContext context, IMapper mapper, ILogger logger)
+        public DetailsQueryHandler(IEmContext context, IMapper mapper, IEmLogger logger)
         {
             this.context = context;
             this.mapper = mapper;

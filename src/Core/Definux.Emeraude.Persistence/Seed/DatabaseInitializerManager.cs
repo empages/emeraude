@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
+using Definux.Emeraude.Application.Persistence;
+using Definux.Emeraude.Interfaces.Services;
 
 namespace Definux.Emeraude.Persistence.Seed
 {
@@ -35,7 +36,7 @@ namespace Definux.Emeraude.Persistence.Seed
         {
             if (this.databaseInitializers == null || this.databaseInitializers.Count == 0)
             {
-                throw new InvalidOperationException("To seed data into database please load database initializers (IDatabaseInitializer) by LoadDatabaseInitializers.");
+                throw new InvalidOperationException("To seed data into database please load database initializers from the Emeraude options.");
             }
 
             foreach (var initializer in this.databaseInitializers)

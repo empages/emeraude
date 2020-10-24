@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Resources;
+using System.Threading.Tasks;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.MobileSdk.Stores;
 
 namespace Definux.Emeraude.MobileSdk.Services
@@ -25,10 +27,22 @@ namespace Definux.Emeraude.MobileSdk.Services
         }
 
         /// <inheritdoc/>
-        public string this[string key] => this.GetTranslation(key);
+        public string this[string key] => this.TranslateKey(key);
 
         /// <inheritdoc/>
-        public string GetTranslation(string key)
+        public string GetStaticContent(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetStaticContentAsync(string key)
+        {
+            return this.GetStaticContent(key);
+        }
+
+        /// <inheritdoc/>
+        public string TranslateKey(string key)
         {
             try
             {
@@ -44,6 +58,12 @@ namespace Definux.Emeraude.MobileSdk.Services
             {
                 return key;
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> TranslateKeyAsync(string key)
+        {
+            return this.TranslateKey(key);
         }
 
         private void SystemSettingsStoreLanguageChanged(object sender, Events.LanguageChangedEventArgs e)

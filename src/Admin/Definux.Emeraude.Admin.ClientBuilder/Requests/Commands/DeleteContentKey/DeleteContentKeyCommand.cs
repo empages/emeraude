@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

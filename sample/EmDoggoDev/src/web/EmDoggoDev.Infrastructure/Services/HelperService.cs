@@ -1,7 +1,7 @@
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Files;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Resources;
 using EmDoggoDev.Application.Common.Interfaces;
-using EmDoggoDev.Application.Common.Interfaces.Persistance;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -15,21 +15,17 @@ namespace EmDoggoDev.Infrastructure.Services
         public const string FoodsGalleryFolderName = "foods";
         private readonly string foodsGalleryFolderPath;
 
-        private readonly IHostEnvironment hostEnvironment;
-        private readonly ILogger logger;
-        private readonly IEntityContext context;
+        private readonly ISystemFilesService systemFilesService;
+        private readonly IEmLogger logger;
         public HelperService(
-            ILogger logger,
-            IHostEnvironment hostEnvironment,
-            IEntityContext context)
+            ISystemFilesService systemFilesService,
+            IEmLogger logger,
+            IHostEnvironment hostEnvironment)
         {
+            this.systemFilesService = systemFilesService;
             this.logger = logger;
-            this.hostEnvironment = hostEnvironment;
-            this.context = context;
 
-            this.foodsGalleryFolderPath = Path.Combine(
-                    this.hostEnvironment.ContentRootPath,
-                    Folders.PublicRootFolderName,
+            this.foodsGalleryFolderPath = this.systemFilesService.GetPathFromPublicRoot(
                     Folders.UploadFolderName,
                     Folders.ImagesFolderName,
                     FoodsGalleryFolderName);
@@ -56,10 +52,9 @@ namespace EmDoggoDev.Infrastructure.Services
             try
             {
                 string folderPath = GetFoodGalleryFolderPath(foodId);
-                string publicRootPath = Path.Combine(this.hostEnvironment.ContentRootPath, Folders.PublicRootFolderName);
                 List<string> resultPictures = Directory
                     .GetFiles(folderPath, "*", SearchOption.TopDirectoryOnly)
-                    .Select(x => x.Replace(publicRootPath, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
+                    .Select(x => x.Replace(this.systemFilesService.PublicRootDirectory, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
                     .ToList();
 
                 return resultPictures;

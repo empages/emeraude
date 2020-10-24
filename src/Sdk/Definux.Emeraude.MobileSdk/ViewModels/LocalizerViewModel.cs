@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.MobileSdk.Services;
+﻿using Definux.Emeraude.Interfaces.Services;
+using Definux.Emeraude.MobileSdk.Services;
 using Definux.Emeraude.MobileSdk.Stores;
 using Prism.Navigation;
 

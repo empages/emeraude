@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

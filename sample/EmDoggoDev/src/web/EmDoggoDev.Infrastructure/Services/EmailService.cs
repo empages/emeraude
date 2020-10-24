@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Common.Results.Emails;
+using Definux.Emeraude.Application.Emails;
 using EmDoggoDev.Application.Common.Interfaces;
 using System;
 using System.Threading.Tasks;

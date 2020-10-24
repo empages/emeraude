@@ -3,7 +3,7 @@ using Definux.Emeraude.Admin.UI.UIElements.DetailsCard.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Form.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Table.Implementations;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
-using Definux.Emeraude.Application.Common.Mapping;
+using Definux.Emeraude.Application.Mapping;
 using EmDoggoDev.Domain.Entities;
 
 namespace EmDoggoDev.Application.Models.Admin.Shops

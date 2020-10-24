@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using ValidationException = Definux.Emeraude.Application.Common.Exceptions.ValidationException;
+using ValidationException = Definux.Emeraude.Application.Exceptions.ValidationException;
 
 namespace Definux.Emeraude.Application.Behaviours
 {

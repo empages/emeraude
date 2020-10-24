@@ -14,7 +14,7 @@ using Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetStaticContentKey;
 using Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetStaticContentKeys;
 using Definux.Emeraude.Admin.ClientBuilder.Requests.Queries.GetTranslationsGridData;
 using Definux.Emeraude.Admin.ClientBuilder.Shared;
-using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Objects;

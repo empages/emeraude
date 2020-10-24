@@ -5,7 +5,7 @@ using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Abstractions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Routes.Templates;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Routes
 {

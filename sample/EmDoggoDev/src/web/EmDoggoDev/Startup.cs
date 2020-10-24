@@ -1,6 +1,7 @@
 using Definux.Emeraude.Admin.ClientBuilder.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Extensions;
 using EmDoggoDev.Application.Common.Interfaces.Persistance;
 using EmDoggoDev.Application.Common.Mapping;
@@ -20,12 +21,17 @@ namespace EmDoggoDev
         {
             services.AddEmeraude<IEntityContext, EntityContext>(options =>
             {
-                // Define mapping classes sources
+                options.ApplyEmeraudeBaseOptions();
+
+                options.DatabaseContextProvider = DatabaseContextProvider.PostgreSql;
+                options.MigrationsAssembly = "EmDoggoDev.Infrastructure";
+                options.ExecuteMigrations = false;
+
                 options.Mapping.AddProfile<EmDoggoDevAssemblyMappingProfile>();
                 options.AddAssembly("EmDoggoDev");
                 options.AddAssembly("EmDoggoDev.Application");
-                options.ExecuteMigrations = true;
                 options.ProjectName = "EmDoggo Dev";
+                options.MaintenanceMode = true;
             });
 
             services.AddEmeraudeClientBuilder(options =>

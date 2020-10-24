@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

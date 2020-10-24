@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

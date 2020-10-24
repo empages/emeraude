@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Persistence;
 using EmDoggoDev.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

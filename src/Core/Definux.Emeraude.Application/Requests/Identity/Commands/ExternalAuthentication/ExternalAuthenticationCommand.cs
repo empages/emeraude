@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
@@ -59,7 +59,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             /// </summary>
             public const string GoogleExternalProvider = "Google";
 
-            private readonly ILogger logger;
+            private readonly IEmLogger logger;
             private readonly IEmContext context;
             private readonly IUserManager userManager;
             private readonly IUserAvatarService userAvatarService;
@@ -74,7 +74,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             /// <param name="userAvatarService"></param>
             /// <param name="eventManager"></param>
             public ExternalAuthenticationCommandHandler(
-                ILogger logger,
+                IEmLogger logger,
                 IEmContext context,
                 IUserManager userManager,
                 IUserAvatarService userAvatarService,

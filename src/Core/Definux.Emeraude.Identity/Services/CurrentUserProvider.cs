@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Extensions;
@@ -14,7 +14,7 @@ namespace Definux.Emeraude.Identity.Services
     public class CurrentUserProvider : ICurrentUserProvider
     {
         private readonly UserManager<User> userManager;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentUserProvider"/> class.
@@ -25,7 +25,7 @@ namespace Definux.Emeraude.Identity.Services
         public CurrentUserProvider(
             IHttpContextAccessor httpAccessor,
             UserManager<User> userManager,
-            ILogger logger)
+            IEmLogger logger)
         {
             this.CurrentUserId = httpAccessor.GetCurrentUserId();
             this.userManager = userManager;

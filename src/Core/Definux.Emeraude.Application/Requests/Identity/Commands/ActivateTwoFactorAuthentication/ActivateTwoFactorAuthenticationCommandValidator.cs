@@ -1,5 +1,4 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication
 {

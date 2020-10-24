@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +15,14 @@ namespace Definux.Emeraude.Admin.Requests.GetEntityImage
         where TEntity : class, IEntityWithImage, new()
     {
         private readonly IEmContext context;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetEntityImageQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger"></param>
-        public GetEntityImageQueryHandler(IEmContext context, ILogger logger)
+        public GetEntityImageQueryHandler(IEmContext context, IEmLogger logger)
         {
             this.context = context;
             this.logger = logger;

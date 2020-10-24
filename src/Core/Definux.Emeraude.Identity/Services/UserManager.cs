@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Helpers;
@@ -29,6 +29,18 @@ namespace Definux.Emeraude.Identity.Services
 
         /// <inheritdoc/>
         public IdentityOptions Options => this.UserManager?.Options;
+
+        /// <inheritdoc/>
+        public async Task<bool> IsLockedOutAsync(string email)
+        {
+            var user = await this.FindUserByEmailAsync(email);
+            if (user != null)
+            {
+                return await this.IsLockedOutAsync(user);
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         public async Task<bool> IsEmailConfirmedAsync(string email)
@@ -74,6 +86,7 @@ namespace Definux.Emeraude.Identity.Services
                 Name = name,
                 EmailConfirmed = confirmedEmail,
                 RegistrationDate = DateTime.Now,
+                LockoutEnabled = true,
             };
         }
 

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Identity.Entities;
@@ -57,8 +56,17 @@ namespace Definux.Emeraude.Persistence.Seed
 
             if (!await this.context.Set<User>().AsQueryable().AnyAsync())
             {
-                await this.CreateUserAsync("admin@example.com", "Admin123!", "Admin", new string[] { ApplicationRoles.Admin.ToString() });
-                await this.CreateUserAsync("user@example.com", "User123!", "User", new string[] { ApplicationRoles.User.ToString() });
+                await this.CreateUserAsync(
+                    EmIdentityConstants.DefaultEmeraudeAdminEmail,
+                    EmIdentityConstants.DefaultEmeraudeAdminPassword,
+                    EmIdentityConstants.DefaultEmeraudeAdminName,
+                    new string[] { ApplicationRoles.Admin });
+
+                await this.CreateUserAsync(
+                    EmIdentityConstants.DefaultEmeraudeUserEmail,
+                    EmIdentityConstants.DefaultEmeraudeUserPassword,
+                    EmIdentityConstants.DefaultEmeraudeUserName,
+                    new string[] { ApplicationRoles.User });
             }
         }
 
@@ -79,6 +87,7 @@ namespace Definux.Emeraude.Persistence.Seed
                 Name = name,
                 EmailConfirmed = true,
                 RegistrationDate = DateTime.Now,
+                LockoutEnabled = true,
             };
 
             var result = await this.userManager.CreateAsync(user, password);

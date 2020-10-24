@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Client.EmPages.Models;
+using Definux.Emeraude.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.NodeServices;
@@ -26,14 +27,14 @@ namespace Definux.Emeraude.Client.EmPages.Renderer
         private readonly string applicationBasePath;
         private readonly CancellationToken applicationStoppingToken;
         private readonly INodeServices nodeServices;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageRendererTagHelper"/> class.
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <param name="logger"></param>
-        public EmPageRendererTagHelper(IServiceProvider serviceProvider, ILogger logger)
+        public EmPageRendererTagHelper(IServiceProvider serviceProvider, IEmLogger logger)
         {
             var hostEnvironment = (IHostEnvironment)serviceProvider.GetService(typeof(IHostEnvironment));
             this.nodeServices = (INodeServices)serviceProvider.GetService(typeof(INodeServices));

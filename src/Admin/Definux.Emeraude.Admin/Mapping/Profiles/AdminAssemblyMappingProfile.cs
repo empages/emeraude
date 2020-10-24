@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Application.Common.Mapping;
+﻿using Definux.Emeraude.Application.Mapping;
 
 namespace Definux.Emeraude.Admin.Mapping.Profiles
 {

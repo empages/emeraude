@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.MobileSdk.Events;
 using Definux.Emeraude.MobileSdk.Services;
 using Definux.Emeraude.MobileSdk.Stores;
@@ -98,7 +99,7 @@ namespace Definux.Emeraude.MobileSdk.ViewModels
         /// <returns></returns>
         protected string GetTranslation(string key)
         {
-            return this.Localizer.GetTranslation(key);
+            return this.Localizer.TranslateKey(key);
         }
     }
 }

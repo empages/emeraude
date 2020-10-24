@@ -1,5 +1,5 @@
 ﻿using Definux.Emeraude.Admin.ClientBuilder.Shared;
-using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Configuration.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 

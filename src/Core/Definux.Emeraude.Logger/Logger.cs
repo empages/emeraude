@@ -2,17 +2,16 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Definux.Emeraude.Logger
 {
-    /// <inheritdoc cref="ILogger"/>
-    public class Logger : ILogger
+    /// <inheritdoc cref="IEmLogger"/>
+    public class Logger : IEmLogger
     {
         private const string TraceIdCookieName = "trcid";
 

@@ -1,13 +1,21 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Identity.EventHandlers;
 using Definux.Emeraude.Identity.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Identity.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IServiceCollection"/>.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Registers Emeraude identity infrastructure.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection RegisterEmeraudeIdentity(this IServiceCollection services)
         {
             services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
@@ -25,7 +33,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has logged in the application via email/password form.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">Login event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToLoginEvent<TEventHandler>(this IServiceCollection services)
@@ -37,7 +45,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has logged in the application via external authentication provider.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">External login event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToExternalLoginEvent<TEventHandler>(this IServiceCollection services)
@@ -49,7 +57,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has registered in the application via email/password form.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">Event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToRegisterEvent<TEventHandler>(this IServiceCollection services)
@@ -61,7 +69,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has registered in the application via external authentication provider.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">External register event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToExternalRegisterEvent<TEventHandler>(this IServiceCollection services)
@@ -73,7 +81,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has made a request to reset his/her password.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">Forgot password event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToForgotPasswordEvent<TEventHandler>(this IServiceCollection services)
@@ -85,7 +93,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has reset his/her password.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">Reset password event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToResetPasswordEvent<TEventHandler>(this IServiceCollection services)
@@ -97,7 +105,7 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <summary>
         /// Register an event handler which will be triggered when a user has confirmed his email.
         /// </summary>
-        /// <typeparam name="TEventHandler"></typeparam>
+        /// <typeparam name="TEventHandler">Confirmed email event handler.</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection SubscribeToConfirmedEmailEvent<TEventHandler>(this IServiceCollection services)

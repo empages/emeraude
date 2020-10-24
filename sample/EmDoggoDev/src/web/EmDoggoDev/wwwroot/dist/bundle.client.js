@@ -107,7 +107,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 
 /**
- * @typedef AddDogRequest
+ * @typedef AddDogCommand
  * @property {string} name
  * @property {number} type
  * @property {number} breed
@@ -129,7 +129,7 @@ var DogsServiceAgent = /*#__PURE__*/function () {
 
     /**
      * DogsApiController/AddDog
-     * @param {AddDogRequest} request
+     * @param {AddDogCommand} request
      * @param {Object} queryParams
      * @param {Object} headers
      * @returns {Promise}
@@ -1419,6 +1419,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 //
 //
 //
+//
+//
 var _default = {
   data: function data() {
     return {};
@@ -2044,7 +2046,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-100" }, [_c("router-view")], 1)
+  return _c("div", { staticClass: "h-100 w-100" }, [_c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2286,18 +2288,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "base-page" },
-    [
-      _c("top-navbar"),
-      _vm._v(" "),
-      _c("div", { staticClass: "container" }, [_vm._t("default")], 2),
-      _vm._v(" "),
-      _c("layout-footer")
-    ],
-    1
-  )
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "p-3" },
+      [
+        _c("top-navbar"),
+        _vm._v(" "),
+        _c("div", [_vm._t("default")], 2),
+        _vm._v(" "),
+        _c("layout-footer")
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2640,9 +2644,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-4386806eKCi6xuOTE.client.js":
+/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756fHvNZCUjI7Iq.client.js":
 /*!**************************************************************************!*\
-  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-4386806eKCi6xuOTE.client.js ***!
+  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-19756fHvNZCUjI7Iq.client.js ***!
   \**************************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2680,4 +2684,4 @@ D_GitHubWorkspace_Emeraude_sample_EmDoggoDev_src_web_EmDoggoDev_ClientApp_main_j
 
 /***/ })
 
-},[["C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-4386806eKCi6xuOTE.client.js","manifest.client","vendors.client"]]]);
+},[["C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756fHvNZCUjI7Iq.client.js","manifest.client","vendors.client"]]]);

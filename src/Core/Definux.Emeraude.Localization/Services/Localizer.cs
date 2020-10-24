@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Localization.Services
 {
     /// <inheritdoc cref="ILocalizer"/>
-    public class Localizer : ILocalizer
+    public class Localizer : IEmLocalizer
     {
         private readonly ILocalizationContext context;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
         private readonly ICurrentLanguageProvider currentLanguageProvider;
 
         /// <summary>
@@ -20,11 +21,96 @@ namespace Definux.Emeraude.Localization.Services
         /// <param name="context"></param>
         /// <param name="logger"></param>
         /// <param name="currentLanguageProvider"></param>
-        public Localizer(ILocalizationContext context, ILogger logger, ICurrentLanguageProvider currentLanguageProvider)
+        public Localizer(ILocalizationContext context, IEmLogger logger, ICurrentLanguageProvider currentLanguageProvider)
         {
             this.context = context;
             this.logger = logger;
             this.currentLanguageProvider = currentLanguageProvider;
+        }
+
+        /// <inheritdoc/>
+        public string this[string key] => this.TranslateKey(key);
+
+        /// <inheritdoc/>
+        public string GetStaticContent(string key)
+        {
+            try
+            {
+                string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+                string content = this.context
+                    .StaticContent
+                    .AsQueryable()
+                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    .FirstOrDefault()?.Content;
+
+                return string.IsNullOrEmpty(content) ? key : content;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+                return key;
+            }
+        }
+
+        /// <inheritdoc/>
+        public string GetStaticContent(string key, string languageCode)
+        {
+            try
+            {
+                string content = this.context
+                    .StaticContent
+                    .AsQueryable()
+                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    .FirstOrDefault()?.Content;
+
+                return string.IsNullOrEmpty(content) ? key : content;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+                return key;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetStaticContentAsync(string key)
+        {
+            try
+            {
+                string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+                string content = (await this.context
+                    .StaticContent
+                    .AsQueryable()
+                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    .FirstOrDefaultAsync())?.Content;
+
+                return string.IsNullOrEmpty(content) ? key : content;
+            }
+            catch (Exception ex)
+            {
+                await this.logger.LogErrorAsync(ex);
+                return key;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetStaticContentAsync(string key, string languageCode)
+        {
+            try
+            {
+                string content = (await this.context
+                    .StaticContent
+                    .AsQueryable()
+                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    .FirstOrDefaultAsync())?.Content;
+
+                return string.IsNullOrEmpty(content) ? key : content;
+            }
+            catch (Exception ex)
+            {
+                await this.logger.LogErrorAsync(ex);
+                return key;
+            }
         }
 
         /// <inheritdoc/>

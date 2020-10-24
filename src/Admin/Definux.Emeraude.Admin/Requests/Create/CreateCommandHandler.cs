@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.Requests.Create
@@ -15,7 +15,7 @@ namespace Definux.Emeraude.Admin.Requests.Create
     {
         private readonly IEmContext context;
         private readonly IMapper mapper;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateCommandHandler{TEntity, TRequestModel}"/> class.
@@ -23,7 +23,7 @@ namespace Definux.Emeraude.Admin.Requests.Create
         /// <param name="context"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public CreateCommandHandler(IEmContext context, IMapper mapper, ILogger logger)
+        public CreateCommandHandler(IEmContext context, IMapper mapper, IEmLogger logger)
         {
             this.context = context;
             this.mapper = mapper;

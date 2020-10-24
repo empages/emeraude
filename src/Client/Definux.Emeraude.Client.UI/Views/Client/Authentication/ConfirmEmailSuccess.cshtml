@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "_AuthLayout";
+    ViewData.SetTitle(Localizer[Titles.ConfirmEmailSuccess]);
+    var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/Authentication/ConfirmEmailSuccess.cshtml", "https://emeraude.dev/client");
+}
+
+<partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />
+
+<div class="form-message">
+    <t element="h5" class="text-center">@Titles.ConfirmEmailSuccess</t>
+    <t element="p">@Messages.ConfirmedEmailSuccecssMessage</t>
+    <t element="a" href="@Url.LoginAction(ViewData)" class="btn btn-primary">@ActionsTexts.LogInWithYourProfile</t>
+</div>

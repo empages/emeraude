@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Seo.Models;
 
 namespace Definux.Emeraude.Client.EmPages.Abstractions

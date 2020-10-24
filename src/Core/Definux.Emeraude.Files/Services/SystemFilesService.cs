@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Models;
-using Definux.Emeraude.Application.Common.Results.Files;
+using Definux.Emeraude.Application.Files;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
@@ -20,7 +18,7 @@ namespace Definux.Emeraude.Files.Services
     /// <inheritdoc cref="ISystemFilesService"/>
     public class SystemFilesService : ISystemFilesService
     {
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILoggerContext loggerContext;
 
@@ -31,7 +29,7 @@ namespace Definux.Emeraude.Files.Services
         /// <param name="hostingEnvironment"></param>
         /// <param name="loggerContext"></param>
         public SystemFilesService(
-            ILogger logger,
+            IEmLogger logger,
             IHostingEnvironment hostingEnvironment,
             ILoggerContext loggerContext)
         {

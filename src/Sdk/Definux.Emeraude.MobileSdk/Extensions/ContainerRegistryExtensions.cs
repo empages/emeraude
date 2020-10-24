@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Resources;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.MobileSdk.ServiceAgents;
 using Definux.Emeraude.MobileSdk.ServiceAgents.Http;
 using Definux.Emeraude.MobileSdk.Services;

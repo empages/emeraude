@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
+using Definux.Emeraude.Application.EventHandlers;
 using EmDoggoDev.Application.Common.Interfaces;
 using EmDoggoDev.Application.Common.Interfaces.Persistance;
 using EmDoggoDev.Domain.Entities;

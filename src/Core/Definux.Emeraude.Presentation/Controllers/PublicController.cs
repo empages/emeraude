@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Localization.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Presentation.Controllers
 {
@@ -20,20 +24,40 @@ namespace Definux.Emeraude.Presentation.Controllers
     {
         private const string LanguageCookieName = ".Emeraude.Language";
 
-        private ILogger logger;
+        private IEmLogger logger;
         private ICurrentUserProvider currentUserProvider;
         private ICurrentLanguageProvider currentLanguageProvider;
         private IMediator mediator;
         private IUserManager userManager;
+        private EmOptions options;
 
-        /// <inheritdoc cref="ILogger"/>
-        protected ILogger Logger
+        /// <summary>
+        /// Ignore <see cref="EmOptions.MaintenanceMode"/> from the Emeraude options.
+        /// </summary>
+        public bool IgnoreMaintenanceMode { get; set; }
+
+        /// <inheritdoc cref="EmOptions"/>
+        protected EmOptions Options
+        {
+            get
+            {
+                if (this.options is null)
+                {
+                    this.options = this.HttpContext.RequestServices.GetService<IOptions<EmOptions>>()?.Value;
+                }
+
+                return this.options;
+            }
+        }
+
+        /// <inheritdoc cref="IEmLogger"/>
+        protected IEmLogger Logger
         {
             get
             {
                 if (this.logger is null)
                 {
-                    this.logger = this.HttpContext.RequestServices.GetService<ILogger>();
+                    this.logger = this.HttpContext.RequestServices.GetService<IEmLogger>();
                 }
 
                 return this.logger;
@@ -116,6 +140,21 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
 
             base.OnActionExecuting(context);
+        }
+
+        /// <inheritdoc/>
+        public async override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            if (!this.IgnoreMaintenanceMode && this.Options.MaintenanceMode)
+            {
+                var adminAuthenticationResult = await this.HttpContext.AuthenticateAsync(AuthenticationDefaults.AdminAuthenticationScheme);
+                if (!adminAuthenticationResult.Succeeded)
+                {
+                    context.Result = this.LocalRedirect("/maintenance");
+                }
+            }
+
+            await base.OnActionExecutionAsync(context, next);
         }
 
         /// <summary>

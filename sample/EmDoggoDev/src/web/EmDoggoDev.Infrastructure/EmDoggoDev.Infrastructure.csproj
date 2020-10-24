@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />

@@ -4,7 +4,7 @@ using System.Linq;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Abstractions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Implementations.TranslationsResources.Templates;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Extensions;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Implementations.TranslationsResources

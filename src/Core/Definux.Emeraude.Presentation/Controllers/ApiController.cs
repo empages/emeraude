@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Logging;
+﻿using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,17 @@ namespace Definux.Emeraude.Presentation.Controllers
     [ApiController]
     public abstract class ApiController : Controller
     {
-        private ILogger logger;
+        private IEmLogger logger;
         private IMediator mediator;
 
-        /// <inheritdoc cref="ILogger"/>
-        protected ILogger Logger
+        /// <inheritdoc cref="IEmLogger"/>
+        protected IEmLogger Logger
         {
             get
             {
                 if (this.logger is null)
                 {
-                    this.logger = this.HttpContext?.RequestServices?.GetService<ILogger>();
+                    this.logger = this.HttpContext?.RequestServices?.GetService<IEmLogger>();
                 }
 
                 return this.logger;

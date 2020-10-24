@@ -2,7 +2,7 @@
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.DetailsCard.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Table.Implementations;
-using Definux.Emeraude.Application.Common.Mapping;
+using Definux.Emeraude.Application.Mapping;
 using Definux.Emeraude.Identity.Entities;
 
 namespace Definux.Emeraude.Admin.Models

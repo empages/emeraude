@@ -3,10 +3,8 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Emails;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Models.Emails;
-using Definux.Emeraude.Application.Common.Results.Emails;
+using Definux.Emeraude.Application.Emails;
+using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +24,7 @@ namespace Definux.Emeraude.Emails.Services
         private readonly IRazorViewEngine razorViewEngine;
         private readonly ITempDataProvider tempDataProvider;
         private readonly IServiceProvider serviceProvider;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
         private readonly SmtpOptions smtpOptions;
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace Definux.Emeraude.Emails.Services
         /// <param name="serviceProvider"></param>
         /// <param name="smtpOptionsAccessor"></param>
         public EmailSender(
-            ILogger logger,
+            IEmLogger logger,
             IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
             IServiceProvider serviceProvider,

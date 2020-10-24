@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.UI.Adapters;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
 
 namespace Definux.Emeraude.Admin.Adapters
 {
@@ -10,7 +10,7 @@ namespace Definux.Emeraude.Admin.Adapters
     public class IdentityUserInfoAdapter : IIdentityUserInfoAdapter
     {
         private readonly ICurrentUserProvider currentUserProvider;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityUserInfoAdapter"/> class.
@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Admin.Adapters
         /// <param name="logger"></param>
         public IdentityUserInfoAdapter(
             ICurrentUserProvider currentUserProvider,
-            ILogger logger)
+            IEmLogger logger)
         {
             this.currentUserProvider = currentUserProvider;
             this.logger = logger;

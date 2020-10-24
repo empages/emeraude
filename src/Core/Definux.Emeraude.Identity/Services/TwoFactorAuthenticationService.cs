@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;

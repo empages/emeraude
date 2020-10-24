@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Common.Mapping;
+using Definux.Emeraude.Application.Mapping;
 using EmDoggoDev.Domain.Common;
 using EmDoggoDev.Domain.Entities;
 using System;
