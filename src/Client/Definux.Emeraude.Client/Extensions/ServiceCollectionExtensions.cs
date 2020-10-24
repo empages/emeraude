@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Client.EmPages.Conventions;
 using Definux.Emeraude.Client.EmPages.Extensions;
+using Definux.Emeraude.Client.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Locales.Constraints;
@@ -27,6 +28,7 @@ namespace Definux.Emeraude.Client.Extensions
         /// <returns></returns>
         public static IServiceCollection AddEmeraudeClient(this IServiceCollection services)
         {
+            services.ConfigureClientUI();
             services.AddRouting(options =>
             {
                 options.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));

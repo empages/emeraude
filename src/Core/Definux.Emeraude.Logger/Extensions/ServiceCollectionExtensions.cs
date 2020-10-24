@@ -1,6 +1,7 @@
 ﻿using System;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,7 @@ namespace Definux.Emeraude.Logger.Extensions
 
             services.AddScoped<ILoggerContext, LoggerContext>();
             services.AddScoped<ILogger, Logger>();
+            services.AddScoped<IEmLogger, Logger>();
 
             if (options.ExecuteMigrations)
             {

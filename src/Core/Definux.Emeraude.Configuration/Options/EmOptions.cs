@@ -10,6 +10,7 @@ namespace Definux.Emeraude.Configuration.Options
     public class EmOptions
     {
         private string adminDashboardIndexRedirectRoute = "/admin/analytics";
+        private List<Type> databaseInitializers = new List<Type>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmOptions"/> class.
@@ -26,6 +27,11 @@ namespace Definux.Emeraude.Configuration.Options
         /// General name of the project. Default value is 'Emeraude'.
         /// </summary>
         public string ProjectName { get; set; } = "Emeraude";
+
+        /// <summary>
+        /// Provider of database storage for the application.
+        /// </summary>
+        public DatabaseContextProvider DatabaseContextProvider { get; set; }
 
         /// <summary>
         /// Route used for the administration index page. The string must starts with '/admin/' and cannot be set to '/admin'. The default value is '/admin/analytics'.
@@ -99,6 +105,11 @@ namespace Definux.Emeraude.Configuration.Options
         public bool ExecuteMigrations { get; set; }
 
         /// <summary>
+        /// Flag that turn on/off the maintenance mode of the application. If it is set to 'true' all public client controllers will be available only after admin authentication.
+        /// </summary>
+        public bool MaintenanceMode { get; set; }
+
+        /// <summary>
         /// Get the current Emeraude Framework version.
         /// </summary>
         public string EmeraudeVersion
@@ -108,6 +119,16 @@ namespace Definux.Emeraude.Configuration.Options
                 return this.EmeraudeAssembly?.GetName()?.Version?.ToString();
             }
         }
+
+        /// <summary>
+        /// Contains the migrations assembly name.
+        /// </summary>
+        public string MigrationsAssembly { get; set; }
+
+        /// <summary>
+        /// Collection of all database initializers.
+        /// </summary>
+        public Type[] DatabaseInitializers => this.databaseInitializers.ToArray();
 
         /// <summary>
         /// Add additional role to the roles of the system. It is prefered to be added before first initialization of the system.
@@ -147,6 +168,15 @@ namespace Definux.Emeraude.Configuration.Options
             {
                 this.EmeraudeAssembly = assembly;
             }
+        }
+
+        /// <summary>
+        /// Register a database initializer into the database initializer manager. The order of adding is the order of calling.
+        /// </summary>
+        /// <typeparam name="TDatabaseInitializer">Interface type of the database initializer.</typeparam>
+        public void AddDatabaseInitializer<TDatabaseInitializer>()
+        {
+            this.databaseInitializers.Add(typeof(TDatabaseInitializer));
         }
     }
 }

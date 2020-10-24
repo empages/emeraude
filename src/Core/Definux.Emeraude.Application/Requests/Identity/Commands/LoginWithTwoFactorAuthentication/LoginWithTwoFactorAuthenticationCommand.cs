@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

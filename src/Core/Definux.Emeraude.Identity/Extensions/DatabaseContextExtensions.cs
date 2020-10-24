@@ -1,5 +1,5 @@
 ﻿using System;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Identity.Common;
 using Definux.Emeraude.Identity.Entities;
 

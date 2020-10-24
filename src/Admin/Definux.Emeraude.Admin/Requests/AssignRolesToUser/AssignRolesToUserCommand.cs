@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using Definux.Utilities.Objects;
 using MediatR;
 

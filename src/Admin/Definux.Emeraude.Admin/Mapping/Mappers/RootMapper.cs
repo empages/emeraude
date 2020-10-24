@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Definux.Emeraude.Admin.UI.ViewModels.Roots;
-using Definux.Emeraude.Application.Common.Models;
-using Definux.Emeraude.Application.Common.Results.Files;
+using Definux.Emeraude.Application.Files;
 
 namespace Definux.Emeraude.Admin.Mapping.Mappers
 {

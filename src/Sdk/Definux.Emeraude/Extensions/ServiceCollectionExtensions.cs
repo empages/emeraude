@@ -8,10 +8,8 @@ using Definux.Emeraude.Admin;
 using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Mapping.Profiles;
-using Definux.Emeraude.Admin.UI;
 using Definux.Emeraude.Application.Behaviours;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
@@ -76,11 +74,11 @@ namespace Definux.Emeraude.Extensions
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
 
-            options.ApplyEmeraudeDefaultOptions();
+            services.RegisterEmeraudeOptions(optionsAction);
 
-            services.RegisterEmeraudeOptions(options);
+            services.AddHttpContextAccessor();
 
-            services.ConfigureDatabases<TContextInterface, TContextImplementation>(applicationAssembly, configuration, options);
+            services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, options);
 
             services.ConfigureMapper(applicationAssembly, options.Mapping);
 
@@ -116,13 +114,28 @@ namespace Definux.Emeraude.Extensions
 
             services.AddCqrsBehaviours();
 
-            services.AddHttpContextAccessor();
+            services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
 
             services.ConfigureMvc(options);
 
-            services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
-
             return services;
+        }
+
+        /// <summary>
+        /// Apply Emeraude base options. In case you want to override the method check the documentation first.
+        /// </summary>
+        /// <param name="options"></param>
+        public static void ApplyEmeraudeBaseOptions(this EmOptions options)
+        {
+            options.AddAssembly("Definux.Emeraude.Admin");
+            options.AddAssembly("Definux.Emeraude.Admin.ClientBuilder");
+            options.AddAssembly("Definux.Emeraude.Admin.Analytics");
+            options.AddAssembly("Definux.Emeraude.Client");
+            options.AddAssembly("Definux.Emeraude.Application");
+
+            options.AddDatabaseInitializer<IApplicationDatabaseInitializer>();
+
+            options.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
         }
 
         private static IServiceCollection RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
@@ -279,6 +292,7 @@ namespace Definux.Emeraude.Extensions
                 {
                     p.ApplicationParts.Add(ApplicationAssemblyPart.AssemblyPart);
                     p.AddAdminUIApplicationParts();
+                    p.AddClientUIApplicationParts();
                     p.FeatureProviders.Add(new ViewComponentFeatureProvider());
                 })
                 .AddJsonOptions(options =>
@@ -288,33 +302,11 @@ namespace Definux.Emeraude.Extensions
             return services;
         }
 
-        private static IServiceCollection RegisterEmeraudeOptions(this IServiceCollection services, EmOptions emeraudeOptions)
+        private static IServiceCollection RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptions> emeraudeOptionsAction)
         {
-            emeraudeOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
-
-            services.Configure<EmOptions>(options =>
-            {
-                options.ProjectName = emeraudeOptions.ProjectName;
-                options.AdminDashboardIndexRedirectRoute = emeraudeOptions.AdminDashboardIndexRedirectRoute;
-                options.Mapping = emeraudeOptions.Mapping;
-                options.Account = emeraudeOptions.Account;
-                options.Assemblies = emeraudeOptions.Assemblies;
-                options.AdditonalRoles = emeraudeOptions.AdditonalRoles;
-                options.ExecuteMigrations = emeraudeOptions.ExecuteMigrations;
-
-                options.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
-            });
+            services.Configure(emeraudeOptionsAction);
 
             return services;
-        }
-
-        private static void ApplyEmeraudeDefaultOptions(this EmOptions options)
-        {
-            options.AddAssembly("Definux.Emeraude.Admin");
-            options.AddAssembly("Definux.Emeraude.Admin.ClientBuilder");
-            options.AddAssembly("Definux.Emeraude.Admin.Analytics");
-            options.AddAssembly("Definux.Emeraude.Client");
-            options.AddAssembly("Definux.Emeraude.Application");
         }
 
         private static AuthenticationBuilder AddJwtAuthentication(this AuthenticationBuilder builder, JsonWebTokenOptions jwtOptions)

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +47,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
                 var result = new LoginRequestResult
                 {
                     User = user,
-                    Result = SignInResult.Success,
+                    Result = SignInResult.Failed,
                 };
 
                 if (!await this.userManager.IsInRoleAsync(user, ApplicationRoles.Admin) && !await this.userManager.IsInRoleAsync(user, ApplicationRoles.User))
@@ -58,11 +58,24 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
                 {
                     result.Result = SignInResult.LockedOut;
                 }
-                else if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, ApplicationRoles.Admin))
+
+                if (result.Result == SignInResult.Failed && await this.userManager.CheckPasswordAsync(user, request.Password))
                 {
-                    result.Result = SignInResult.TwoFactorRequired;
+                    if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, ApplicationRoles.Admin))
+                    {
+                        result.Result = SignInResult.TwoFactorRequired;
+                    }
+                    else
+                    {
+                        result.Result = SignInResult.Success;
+                    }
                 }
-                else if (result.Result == SignInResult.Success)
+                else
+                {
+                    await this.userManager.AccessFailedAsync(user);
+                }
+
+                if (result.Result == SignInResult.Success)
                 {
                     await this.eventManager.TriggerLoginEventAsync(user.Id);
                 }

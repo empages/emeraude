@@ -1,7 +1,7 @@
 ﻿using System;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,24 +14,38 @@ namespace Definux.Emeraude.Persistence.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
+        private const string DatabaseConnectionStringKey = "DatabaseConnection";
+
         /// <summary>
         /// Configures Emeraude database.
         /// </summary>
         /// <typeparam name="TContextInterface">Interface of the application database context.</typeparam>
         /// <typeparam name="TContextImplementation">Implementation of the application database context.</typeparam>
         /// <param name="services"></param>
-        /// <param name="applicationAssembly"></param>
         /// <param name="configuration"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureDatabases<TContextInterface, TContextImplementation>(this IServiceCollection services, string applicationAssembly, IConfiguration configuration, EmOptions options)
+        public static IServiceCollection ConfigureDatabases<TContextInterface, TContextImplementation>(this IServiceCollection services, IConfiguration configuration, EmOptions options)
             where TContextInterface : class, IEmContext
             where TContextImplementation : EmContext<TContextImplementation>, TContextInterface
         {
-            services.AddDbContext<TContextImplementation>(options =>
-                options.UseSqlServer(
-                    connectionString: configuration.GetConnectionString("DatabaseConnection"),
-                    b => b.MigrationsAssembly(applicationAssembly)));
+            string connectionString = configuration.GetConnectionString(DatabaseConnectionStringKey);
+
+            switch (options.DatabaseContextProvider)
+            {
+                case DatabaseContextProvider.MicrosoftSqlServer:
+                    services.AddDbContext<TContextImplementation>(contextOptions =>
+                        contextOptions.UseSqlServer(
+                            connectionString,
+                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                    break;
+                case DatabaseContextProvider.PostgreSql:
+                    services.AddDbContext<TContextImplementation>(contextOptions =>
+                        contextOptions.UseNpgsql(
+                            connectionString,
+                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                    break;
+            }
 
             services.AddScoped<IEmContext, TContextImplementation>();
             services.AddScoped<TContextInterface, TContextImplementation>();

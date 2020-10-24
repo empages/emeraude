@@ -4,7 +4,7 @@ using System.Linq;
 using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Admin.ClientBuilder.Options;
 using Definux.Emeraude.Admin.ClientBuilder.Shared.Helpers;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
@@ -17,14 +17,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
     public class PageService : IPageService
     {
         private readonly ClientBuilderOptions clientBuilderOptions;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PageService"/> class.
         /// </summary>
         /// <param name="clientBuilderOptions"></param>
         /// <param name="logger"></param>
-        public PageService(IOptions<ClientBuilderOptions> clientBuilderOptions, ILogger logger)
+        public PageService(IOptions<ClientBuilderOptions> clientBuilderOptions, IEmLogger logger)
         {
             this.clientBuilderOptions = clientBuilderOptions.Value;
             this.logger = logger;

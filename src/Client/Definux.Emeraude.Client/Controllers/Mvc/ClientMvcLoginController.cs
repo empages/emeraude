@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Localization.Extensions;

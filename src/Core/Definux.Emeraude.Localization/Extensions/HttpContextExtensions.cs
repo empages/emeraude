@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Definux.Utilities.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
 namespace Definux.Emeraude.Localization.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="HttpContext"/>.
+    /// </summary>
     public static class HttpContextExtensions
     {
+        /// <summary>
+        /// Get language code from current instance of <see cref="HttpContext"/>.
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
         public static string GetLanguageCode(this HttpContext httpContext)
         {
-            var route = httpContext.GetRouteData();
-            object language = string.Empty;
-            string languageCode = string.Empty;
-            route.Values.TryGetValue("languageCode", out language);
-            if (language != null)
-            {
-                languageCode = language.ToString().ToLower();
-            }
-
-            return languageCode;
+            return httpContext.GetRouteValueOrDefault("languageCode", true);
         }
     }
 }

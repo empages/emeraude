@@ -16,7 +16,6 @@ namespace EmDoggoDev.Infrastructure.Persistance
             IServiceProvider serviceProvider)
                 : base(options, httpAccessor, serviceProvider)
         {
-
         }
 
         public DbSet<Dog> Dogs { get; set; }

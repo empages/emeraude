@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity;
 using Definux.Utilities.Extensions;

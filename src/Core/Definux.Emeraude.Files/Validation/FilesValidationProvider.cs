@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
+using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Files.Validation.Handlers;
 using Definux.Utilities.Enumerations;
 using Definux.Utilities.Validation;

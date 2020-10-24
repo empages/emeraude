@@ -2,8 +2,8 @@
 using System.Text.Encodings.Web;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Utilities.Extensions;
 using MediatR;
@@ -20,6 +20,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
     [Area(AdminAreaName)]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
+    [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
     public abstract class AdminController : Controller
     {
         /// <summary>
@@ -27,7 +28,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         protected const string AdminAreaName = "Admin";
 
-        private ILogger logger;
+        private IEmLogger logger;
         private UrlEncoder urlEncoder;
         private IMediator mediator;
         private ICurrentUserProvider currentUserProvider;
@@ -63,14 +64,14 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         public string ControllerRoute { get; protected set; }
 
-        /// <inheritdoc cref="ILogger"/>
-        protected ILogger Logger
+        /// <inheritdoc cref="IEmLogger"/>
+        protected IEmLogger Logger
         {
             get
             {
                 if (this.logger is null)
                 {
-                    this.logger = this.HttpContext.RequestServices.GetService<ILogger>();
+                    this.logger = this.HttpContext.RequestServices.GetService<IEmLogger>();
                 }
 
                 return this.logger;

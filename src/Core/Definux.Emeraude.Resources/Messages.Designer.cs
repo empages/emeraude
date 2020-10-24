@@ -61,6 +61,15 @@ namespace Definux.Emeraude.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CONFIRMED_EMAIL_SUCCESS_MESSAGE.
+        /// </summary>
+        public static string ConfirmedEmailSuccecssMessage {
+            get {
+                return ResourceManager.GetString("ConfirmedEmailSuccecssMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CONFIRMED_PASSWORD_DOES_NOT_MATCH_THE_PASSWORD.
         /// </summary>
         public static string ConfirmedPasswordDoesNotMatchThePassword {
@@ -93,6 +102,15 @@ namespace Definux.Emeraude.Resources {
         public static string EnteredEmailIsInTheWrongFormat {
             get {
                 return ResourceManager.GetString("EnteredEmailIsInTheWrongFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FORGOT_PASSWORD_MESSAGE.
+        /// </summary>
+        public static string ForgotPasswordMessage {
+            get {
+                return ResourceManager.GetString("ForgotPasswordMessage", resourceCulture);
             }
         }
         
@@ -156,6 +174,15 @@ namespace Definux.Emeraude.Resources {
         public static string RefreshTokenIsRequiredField {
             get {
                 return ResourceManager.GetString("RefreshTokenIsRequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REGISTRATION_SUCCESS_MESSAGE.
+        /// </summary>
+        public static string RegistrationSuccessMessage {
+            get {
+                return ResourceManager.GetString("RegistrationSuccessMessage", resourceCulture);
             }
         }
         

@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using EmDoggoDev.Application.Common.Interfaces.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

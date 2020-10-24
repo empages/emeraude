@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence.Seed;
+using Definux.Emeraude.Application.Files;
+using Definux.Emeraude.Application.Persistence;
+using Definux.Emeraude.Interfaces.Services;
 using Microsoft.Extensions.Hosting;
 
 namespace Definux.Emeraude.Persistence.Seed

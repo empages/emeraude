@@ -4,11 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
-using Definux.Emeraude.Application.Common.Results;
-using Definux.Emeraude.Application.Common.Results.Identity;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
@@ -27,7 +25,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly IEmContext context;
         private readonly IUserClaimsService userClaimsService;
         private readonly JsonWebTokenOptions jwtOptions;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserTokensService"/> class.
@@ -42,7 +40,7 @@ namespace Definux.Emeraude.Identity.Services
             IEmContext context,
             IUserClaimsService userClaimsService,
             IOptions<JsonWebTokenOptions> jsonWebTokenOptions,
-            ILogger logger)
+            IEmLogger logger)
         {
             this.userManager = userManager;
             this.context = context;

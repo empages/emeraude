@@ -82,7 +82,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-438687hqYpYjKZ7wc.server.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756piKsjJ5yKlTq.server.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -192,7 +192,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 
 /**
- * @typedef AddDogRequest
+ * @typedef AddDogCommand
  * @property {string} name
  * @property {number} type
  * @property {number} breed
@@ -214,7 +214,7 @@ var DogsServiceAgent = /*#__PURE__*/function () {
 
     /**
      * DogsApiController/AddDog
-     * @param {AddDogRequest} request
+     * @param {AddDogCommand} request
      * @param {Object} queryParams
      * @param {Object} headers
      * @returns {Promise}
@@ -1491,6 +1491,8 @@ var _Footer = _interopRequireDefault(__webpack_require__(/*! ./Footer */ "./Clie
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+//
+//
 //
 //
 //
@@ -66456,7 +66458,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! (webpack)/buildin/module.js */ "C:\\Users\\gsk567\\AppData\\Roaming\\npm\\node_modules\\@definux\\emeraude-cli\\node_modules\\webpack\\buildin\\module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! (webpack)/buildin/module.js */ "C:\\Users\\gsk567\\AppData\\Local\\Yarn\\Data\\global\\node_modules\\webpack\\buildin\\module.js")(module)))
 
 /***/ }),
 
@@ -71907,7 +71909,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-100" }, [_c("router-view")], 1)
+  return _c("div", { staticClass: "h-100 w-100" }, [_c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -72043,18 +72045,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "base-page" },
-    [
-      _c("top-navbar"),
-      _vm._ssrNode(" "),
-      _vm._ssrNode('<div class="container">', "</div>", [_vm._t("default")], 2),
-      _vm._ssrNode(" "),
-      _c("layout-footer")
-    ],
-    2
-  )
+  return _c("div", [
+    _vm._ssrNode(
+      '<div class="p-3">',
+      "</div>",
+      [
+        _c("top-navbar"),
+        _vm._ssrNode(" "),
+        _vm._ssrNode("<div>", "</div>", [_vm._t("default")], 2),
+        _vm._ssrNode(" "),
+        _c("layout-footer")
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -85272,9 +85276,9 @@ var index = {
 
 /***/ }),
 
-/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-438687hqYpYjKZ7wc.server.js":
+/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756piKsjJ5yKlTq.server.js":
 /*!**************************************************************************!*\
-  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-438687hqYpYjKZ7wc.server.js ***!
+  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-19756piKsjJ5yKlTq.server.js ***!
   \**************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -85310,7 +85314,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "C:\\Users\\gsk567\\AppData\\Roaming\\npm\\node_modules\\@definux\\emeraude-cli\\node_modules\\webpack\\buildin\\module.js":
+/***/ "C:\\Users\\gsk567\\AppData\\Local\\Yarn\\Data\\global\\node_modules\\webpack\\buildin\\module.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/

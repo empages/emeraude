@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+﻿using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Resources;
 using FluentValidation;
 
@@ -25,8 +25,6 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
                 {
                     this.RuleFor(x => x)
                         .Cascade(CascadeMode.Stop)
-                        .MustAsync(async (x, c) => await userManager.CheckPasswordAsync(x.Email, x.Password))
-                        .WithMessage(Messages.YourEmailOrPasswordIsIncorrect)
                         .MustAsync(async (x, c) => await userManager.IsEmailConfirmedAsync(x.Email))
                         .WithMessage(Messages.YourProfileEmailIsNotConfirmed)
                         .When(x => !string.IsNullOrEmpty(x.Password));

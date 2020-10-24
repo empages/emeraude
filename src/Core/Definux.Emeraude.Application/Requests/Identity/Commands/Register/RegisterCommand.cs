@@ -1,9 +1,13 @@
-﻿using System.Threading;
+﻿using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Utilities.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
 {
@@ -29,16 +33,30 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
         {
             private readonly IUserManager userManager;
             private readonly IIdentityEventManager eventManager;
+            private readonly UrlEncoder urlEncoder;
+            private readonly IHttpContextAccessor httpContextAccessor;
+            private readonly ICurrentLanguageProvider currentLanguageProvider;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RegisterCommandHandler"/> class.
             /// </summary>
             /// <param name="userManager"></param>
             /// <param name="eventManager"></param>
-            public RegisterCommandHandler(IUserManager userManager, IIdentityEventManager eventManager)
+            /// <param name="urlEncoder"></param>
+            /// <param name="httpContextAccessor"></param>
+            /// <param name="currentLanguageProvider"></param>
+            public RegisterCommandHandler(
+                IUserManager userManager,
+                IIdentityEventManager eventManager,
+                UrlEncoder urlEncoder,
+                IHttpContextAccessor httpContextAccessor,
+                ICurrentLanguageProvider currentLanguageProvider)
             {
                 this.userManager = userManager;
                 this.eventManager = eventManager;
+                this.urlEncoder = urlEncoder;
+                this.httpContextAccessor = httpContextAccessor;
+                this.currentLanguageProvider = currentLanguageProvider;
             }
 
             /// <inheritdoc/>
@@ -51,7 +69,13 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
                 if (result.Result.Succeeded)
                 {
                     await this.userManager.AddToRoleAsync(user, ApplicationRoles.User);
-                    await this.eventManager.TriggerRegisterEventAsync(user.Id);
+
+                    var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
+                    string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
+                    string confirmationToken = this.urlEncoder.Encode(await this.userManager.GenerateEmailConfirmationTokenAsync(user));
+                    string confirmationLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/confirm-email?token={confirmationToken}&email={user.Email}");
+
+                    await this.eventManager.TriggerRegisterEventAsync(user.Id, confirmationLink);
                     result.User = user;
                 }
 

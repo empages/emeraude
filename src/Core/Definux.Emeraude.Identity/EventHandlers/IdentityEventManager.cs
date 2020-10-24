@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.EventHandlers;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.EventHandlers;
+using Definux.Emeraude.Application.Logger;
 
 namespace Definux.Emeraude.Identity.EventHandlers
 {
@@ -9,14 +9,14 @@ namespace Definux.Emeraude.Identity.EventHandlers
     internal class IdentityEventManager : IIdentityEventManager
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityEventManager"/> class.
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <param name="logger"></param>
-        public IdentityEventManager(IServiceProvider serviceProvider, ILogger logger)
+        public IdentityEventManager(IServiceProvider serviceProvider, IEmLogger logger)
         {
             this.serviceProvider = serviceProvider;
             this.logger = logger;
@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Identity.EventHandlers
         public async Task TriggerExternalLoginEventAsync(Guid userId) => await this.TriggerEventAsync<IExternalLoginEventHandler>(userId);
 
         /// <inheritdoc/>
-        public async Task TriggerRegisterEventAsync(Guid userId) => await this.TriggerEventAsync<IRegisterEventHandler>(userId);
+        public async Task TriggerRegisterEventAsync(Guid userId, string confirmationLink) => await this.TriggerEventAsync<IRegisterEventHandler>(userId, confirmationLink);
 
         /// <inheritdoc/>
         public async Task TriggerExternalRegisterEventAsync(Guid userId) => await this.TriggerEventAsync<IExternalRegisterEventHandler>(userId);

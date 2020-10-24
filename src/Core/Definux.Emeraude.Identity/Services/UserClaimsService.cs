@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
@@ -18,7 +18,7 @@ namespace Definux.Emeraude.Identity.Services
     {
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserClaimsService"/> class.
@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Identity.Services
         public UserClaimsService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            ILogger logger)
+            IEmLogger logger)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;

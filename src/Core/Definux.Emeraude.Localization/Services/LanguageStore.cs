@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Localization;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +15,14 @@ namespace Definux.Emeraude.Localization.Services
     public class LanguageStore : ILanguageStore
     {
         private readonly ILocalizationContext context;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageStore"/> class.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger"></param>
-        public LanguageStore(ILocalizationContext context, ILogger logger)
+        public LanguageStore(ILocalizationContext context, IEmLogger logger)
         {
             this.context = context;
             this.logger = logger;

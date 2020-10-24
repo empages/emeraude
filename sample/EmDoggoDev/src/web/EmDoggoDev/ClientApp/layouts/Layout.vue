@@ -1,16 +1,18 @@
 <template>
-    <div class="base-page">
-        <top-navbar />
-        <div class="container">
-            <slot></slot>
+    <div>
+        <div class="p-3">
+            <top-navbar></top-navbar>
+            <div>
+                <slot></slot>
+            </div>
+            <layout-footer></layout-footer>
         </div>
-        <layout-footer />
     </div>
 </template>
 <script>
     import TopNavbar from "./Navbar";
     import LayoutFooter from "./Footer";
-    export  default {
+    export default {
         data() {
             return {}
         },

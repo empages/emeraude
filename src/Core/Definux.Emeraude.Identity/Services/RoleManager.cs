@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +16,7 @@ namespace Definux.Emeraude.Identity.Services
     /// <inheritdoc cref="IRoleManager"/>
     public class RoleManager : IRoleManager
     {
-        private readonly Application.Common.Interfaces.Logging.ILogger logger;
+        private readonly IEmLogger logger;
         private readonly RoleManager<Role> roleManager;
         private readonly UserManager<User> userManager;
         private readonly IEmContext context;
@@ -31,7 +32,7 @@ namespace Definux.Emeraude.Identity.Services
             RoleManager<Role> roleManager,
             UserManager<User> userManager,
             IEmContext context,
-            Application.Common.Interfaces.Logging.ILogger logger)
+            IEmLogger logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;

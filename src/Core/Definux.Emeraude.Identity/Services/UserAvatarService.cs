@@ -2,10 +2,10 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Files;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Resources;
@@ -22,7 +22,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly UserManager<User> userManager;
         private readonly IHostingEnvironment hostEnvironment;
         private readonly ISystemFilesService systemFilesService;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAvatarService"/> class.
@@ -37,7 +37,7 @@ namespace Definux.Emeraude.Identity.Services
             UserManager<User> userManager,
             IHostingEnvironment hostEnvironment,
             ISystemFilesService systemFilesService,
-            ILogger logger)
+            IEmLogger logger)
         {
             this.context = context;
             this.userManager = userManager;

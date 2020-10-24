@@ -2,8 +2,16 @@
 
 namespace Definux.Emeraude.Admin.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IApplicationBuilder"/>.
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Register Swagger middleware.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         public static IApplicationBuilder UseEmeraudeAdminSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();

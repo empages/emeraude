@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Http;

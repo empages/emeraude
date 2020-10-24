@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Logging;
 
 namespace Definux.Emeraude.Admin.Analytics.Extensions

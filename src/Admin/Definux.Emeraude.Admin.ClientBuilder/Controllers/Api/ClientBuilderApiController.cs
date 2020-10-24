@@ -3,7 +3,7 @@ using Definux.Emeraude.Admin.ClientBuilder.DataTransferObjects;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
 using Definux.Emeraude.Admin.ClientBuilder.Shared;
-using Definux.Emeraude.Application.Common.Exceptions;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Authorization;

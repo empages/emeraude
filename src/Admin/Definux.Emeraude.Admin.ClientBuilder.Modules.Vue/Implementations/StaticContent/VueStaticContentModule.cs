@@ -4,7 +4,7 @@ using System.Linq;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Abstractions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.StaticContent.Templates;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Domain.Localization;
 using Definux.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;

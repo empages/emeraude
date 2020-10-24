@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Resources;
 using FluentValidation;

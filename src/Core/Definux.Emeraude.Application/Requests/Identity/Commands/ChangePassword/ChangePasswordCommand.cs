@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
+using Definux.Emeraude.Application.Identity;
 using MediatR;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword

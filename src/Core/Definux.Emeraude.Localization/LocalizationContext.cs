@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Domain.Localization;
 using Microsoft.EntityFrameworkCore;
 

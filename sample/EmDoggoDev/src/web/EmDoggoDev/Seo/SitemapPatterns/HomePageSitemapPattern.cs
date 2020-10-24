@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Common.Interfaces.Localization;
+using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Seo.Models;
 

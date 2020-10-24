@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Definux.Emeraude.Admin.Utilities;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
-using Definux.Emeraude.Application.Common.Interfaces.Persistence;
+using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;
@@ -22,7 +22,7 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
     {
         private readonly IEmContext context;
         private readonly IMapper mapper;
-        private readonly ILogger logger;
+        private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetAllQueryHandler{TEntity, TRequestModel}"/> class.
@@ -30,7 +30,7 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
         /// <param name="context"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public GetAllQueryHandler(IEmContext context, IMapper mapper, ILogger logger)
+        public GetAllQueryHandler(IEmContext context, IMapper mapper, IEmLogger logger)
         {
             this.context = context;
             this.mapper = mapper;

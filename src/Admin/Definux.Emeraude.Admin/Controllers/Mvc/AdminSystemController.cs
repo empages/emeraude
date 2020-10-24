@@ -13,8 +13,6 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     /// Admin controller that contains system settings actions.
     /// </summary>
     [Route("/admin/system/")]
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
     public sealed class AdminSystemController : AdminController
     {
         /// <summary>

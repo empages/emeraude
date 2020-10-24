@@ -1,14 +1,10 @@
 using AutoMapper;
-using Definux.Emeraude.Application.Common.Interfaces.Files;
-using Definux.Emeraude.Application.Common.Interfaces.Identity.Services;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Application.Identity;
 using Definux.Utilities.Objects;
 using EmDoggoDev.Application.Common.Interfaces.Persistance;
 using EmDoggoDev.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

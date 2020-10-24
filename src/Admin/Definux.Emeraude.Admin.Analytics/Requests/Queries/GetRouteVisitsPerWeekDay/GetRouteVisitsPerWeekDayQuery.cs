@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Analytics.Extensions;
-using Definux.Emeraude.Application.Common.Interfaces.Logging;
+using Definux.Emeraude.Application.Logger;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
