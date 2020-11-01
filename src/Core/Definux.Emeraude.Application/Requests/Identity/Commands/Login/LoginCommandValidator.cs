@@ -27,7 +27,8 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
                         .Cascade(CascadeMode.Stop)
                         .MustAsync(async (x, c) => await userManager.IsEmailConfirmedAsync(x.Email))
                         .WithMessage(Messages.YourProfileEmailIsNotConfirmed)
-                        .When(x => !string.IsNullOrEmpty(x.Password));
+                        .When(x => !string.IsNullOrEmpty(x.Password))
+                        .WhenAsync(async (x, c) => await userManager.CheckPasswordAsync(x.Email, x.Password));
                 });
 
             this.RuleFor(x => x.Password)

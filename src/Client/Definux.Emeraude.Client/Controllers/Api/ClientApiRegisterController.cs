@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody]RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody]RegisterCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -28,7 +28,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
 
             try
             {
-                var requestResult = await this.Mediator.Send(new RegisterCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Result.Succeeded)
                 {

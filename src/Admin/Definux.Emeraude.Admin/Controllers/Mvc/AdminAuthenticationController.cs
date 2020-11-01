@@ -122,11 +122,11 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 {
                     try
                     {
-                        var requestResult = await this.Mediator.Send(new LoginCommand(new LoginRequest
+                        var requestResult = await this.Mediator.Send(new LoginCommand
                         {
                             Email = model.Email,
                             Password = model.Password,
-                        }));
+                        });
 
                         if (requestResult.Result.RequiresTwoFactor)
                         {

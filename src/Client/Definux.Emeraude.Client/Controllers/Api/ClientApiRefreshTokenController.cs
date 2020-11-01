@@ -23,11 +23,12 @@ namespace Definux.Emeraude.Client.Controllers.Api
         [HttpPost]
         [Route("refresh")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> RefreshAccessToken([FromBody]RefreshAccessTokenRequest request)
+        public async Task<IActionResult> RefreshAccessToken([FromBody]RefreshAccessTokenCommand request)
         {
             try
             {
-                var requestResult = await this.Mediator.Send(new RefreshAccessTokenCommand(this.HttpContext.GetJwtUserId(), request));
+                request.UserId = this.HttpContext.GetJwtUserId();
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Success)
                 {

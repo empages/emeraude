@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Interfaces.Requests;
 using MediatR;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
@@ -8,19 +10,19 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
     /// <summary>
     /// Command for changing password of a specified user.
     /// </summary>
-    public class ChangePasswordCommand : ChangePasswordRequest, IRequest<ChangePasswordRequestResult>
+    public class ChangePasswordCommand : IRequest<ChangePasswordRequestResult>, IChangePasswordRequest
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChangePasswordCommand"/> class.
-        /// </summary>
-        /// <param name="request"></param>
-        public ChangePasswordCommand(ChangePasswordRequest request)
-        {
-            this.UserId = request.UserId;
-            this.CurrentPassword = request.CurrentPassword;
-            this.NewPassword = request.NewPassword;
-            this.ConfirmedPassword = request.ConfirmedPassword;
-        }
+        /// <inheritdoc/>
+        public Guid UserId { get; set; }
+
+        /// <inheritdoc/>
+        public string CurrentPassword { get; set; }
+
+        /// <inheritdoc/>
+        public string NewPassword { get; set; }
+
+        /// <inheritdoc/>
+        public string ConfirmedPassword { get; set; }
 
         /// <inheritdoc/>
         public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordRequestResult>

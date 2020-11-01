@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody]LoginRequest request)
+        public async Task<IActionResult> Login([FromBody]LoginCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -28,7 +28,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
 
             try
             {
-                var requestResult = await this.Mediator.Send(new LoginCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Result.Succeeded)
                 {

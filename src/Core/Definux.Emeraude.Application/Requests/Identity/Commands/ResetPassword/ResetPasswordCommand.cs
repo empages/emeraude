@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Interfaces.Requests;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -13,19 +14,19 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
     /// <summary>
     /// Command for client reset password of user.
     /// </summary>
-    public class ResetPasswordCommand : ResetPasswordRequest, IRequest<ResetPasswordRequestResult>
+    public class ResetPasswordCommand : IRequest<ResetPasswordRequestResult>, IResetPasswordRequest
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResetPasswordCommand"/> class.
-        /// </summary>
-        /// <param name="request"></param>
-        public ResetPasswordCommand(ResetPasswordRequest request)
-        {
-            this.Email = request.Email;
-            this.Password = request.Password;
-            this.ConfirmedPassword = request.ConfirmedPassword;
-            this.Token = request.Token;
-        }
+        /// <inheritdoc/>
+        public string Email { get; set; }
+
+        /// <inheritdoc/>
+        public string Password { get; set; }
+
+        /// <inheritdoc/>
+        public string ConfirmedPassword { get; set; }
+
+        /// <inheritdoc/>
+        public string Token { get; set; }
 
         /// <inheritdoc/>
         public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, ResetPasswordRequestResult>

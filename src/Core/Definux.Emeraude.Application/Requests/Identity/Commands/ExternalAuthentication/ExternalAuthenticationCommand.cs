@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Logger;
-using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
@@ -60,7 +59,6 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             public const string GoogleExternalProvider = "Google";
 
             private readonly IEmLogger logger;
-            private readonly IEmContext context;
             private readonly IUserManager userManager;
             private readonly IUserAvatarService userAvatarService;
             private readonly IIdentityEventManager eventManager;
@@ -75,13 +73,11 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             /// <param name="eventManager"></param>
             public ExternalAuthenticationCommandHandler(
                 IEmLogger logger,
-                IEmContext context,
                 IUserManager userManager,
                 IUserAvatarService userAvatarService,
                 IIdentityEventManager eventManager)
             {
                 this.logger = logger;
-                this.context = context;
                 this.userManager = userManager;
                 this.userAvatarService = userAvatarService;
                 this.eventManager = eventManager;
