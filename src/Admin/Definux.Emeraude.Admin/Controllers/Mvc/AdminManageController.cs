@@ -158,13 +158,13 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         {
             try
             {
-                var requestResult = await this.Mediator.Send(new ChangePasswordCommand(new ChangePasswordRequest
+                var requestResult = await this.Mediator.Send(new ChangePasswordCommand
                 {
                     UserId = this.HttpContext.GetCurrentUserId().Value,
                     CurrentPassword = model.CurrentPassword,
                     NewPassword = model.NewPassword,
                     ConfirmedPassword = model.ConfirmedPassword,
-                }));
+                });
 
                 if (requestResult.Successed)
                 {

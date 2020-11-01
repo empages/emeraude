@@ -33,7 +33,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             string returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
 
-            var request = new LoginRequest();
+            var request = new LoginCommand();
             this.ViewData["ReturnUrl"] = returnUrl;
 
             if (!string.IsNullOrEmpty(returnUrlLanguageCode) && string.IsNullOrEmpty(this.HttpContext.GetLanguageCode()))
@@ -56,7 +56,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginRequest request, string returnUrl = "")
+        public async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -65,7 +65,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             try
             {
-                var requestResult = await this.Mediator.Send(new LoginCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Result.Succeeded)
                 {

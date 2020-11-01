@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordRequest request)
+        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -28,7 +28,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
 
             try
             {
-                var requestResult = await this.Mediator.Send(new ForgotPasswordCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Successed)
                 {

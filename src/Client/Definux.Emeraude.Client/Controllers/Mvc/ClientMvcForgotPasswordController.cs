@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 return this.RedirectToHomeIndex();
             }
 
-            ForgotPasswordRequest request = new ForgotPasswordRequest();
+            var request = new ForgotPasswordCommand();
 
             return this.ForgotPasswordView(request);
         }
@@ -43,7 +43,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -52,7 +52,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             try
             {
-                var result = await this.Mediator.Send(new ForgotPasswordCommand(request));
+                var result = await this.Mediator.Send(request);
                 if (result.Successed)
                 {
                     return this.ForgotPasswordSuccessView(request);

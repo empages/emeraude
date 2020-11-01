@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail
     /// <summary>
     /// Command for confirming email of specified user.
     /// </summary>
-    public class ConfirmEmailCommand : ConfirmEmailRequest, IRequest<ConfirmEmailRequestResult>
+    public class ConfirmEmailCommand : IRequest<ConfirmEmailRequestResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfirmEmailCommand"/> class.
@@ -21,6 +21,16 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail
             this.Email = email;
             this.Token = token;
         }
+
+        /// <summary>
+        /// Email of the user.
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Confirmation token of the user.
+        /// </summary>
+        public string Token { get; set; }
 
         /// <inheritdoc/>
         public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, ConfirmEmailRequestResult>

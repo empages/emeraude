@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Interfaces.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,17 +12,13 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
     /// <summary>
     /// Command for user login.
     /// </summary>
-    public class LoginCommand : LoginRequest, IRequest<LoginRequestResult>
+    public class LoginCommand : IRequest<LoginRequestResult>, ILoginRequest
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoginCommand"/> class.
-        /// </summary>
-        /// <param name="loginRequest"></param>
-        public LoginCommand(LoginRequest loginRequest)
-        {
-            this.Email = loginRequest.Email;
-            this.Password = loginRequest.Password;
-        }
+        /// <inheritdoc/>
+        public string Email { get; set; }
+
+        /// <inheritdoc/>
+        public string Password { get; set; }
 
         /// <inheritdoc/>
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginRequestResult>

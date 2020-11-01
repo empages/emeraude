@@ -36,7 +36,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 return this.NotFound();
             }
 
-            var request = new ResetPasswordRequest
+            var request = new ResetPasswordCommand
             {
                 Token = token,
                 Email = email,
@@ -53,7 +53,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpPost]
         [Route(ResetPasswordRoute)]
         [LanguageRoute(ResetPasswordRoute)]
-        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -62,7 +62,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             try
             {
-                var requestResult = await this.Mediator.Send(new ResetPasswordCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Successed)
                 {

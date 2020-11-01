@@ -9,18 +9,23 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RefreshAccessT
     /// <summary>
     /// Command for refresh access token of specified user.
     /// </summary>
-    public class RefreshAccessTokenCommand : RefreshAccessTokenRequest, IRequest<BearerAuthenticationResult>
+    public class RefreshAccessTokenCommand : IRequest<BearerAuthenticationResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RefreshAccessTokenCommand"/> class.
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="request"></param>
-        public RefreshAccessTokenCommand(Guid? userId, RefreshAccessTokenRequest request)
+        /// <param name="refreshToken"></param>
+        public RefreshAccessTokenCommand(Guid? userId, string refreshToken)
         {
             this.UserId = userId;
-            this.RefreshToken = request.RefreshToken;
+            this.RefreshToken = refreshToken;
         }
+
+        /// <summary>
+        /// Refresh token.
+        /// </summary>
+        public string RefreshToken { get; set; }
 
         /// <summary>
         /// Target user id.

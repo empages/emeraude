@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
@@ -34,6 +35,7 @@ using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -136,6 +138,16 @@ namespace Definux.Emeraude.Extensions
             options.AddDatabaseInitializer<IApplicationDatabaseInitializer>();
 
             options.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        /// <summary>
+        /// Configure <see cref="IDataProtectionBuilder"/> to use 'privateroot' as directory for session storage.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IDataProtectionBuilder ApplyAuthenticationSessionToPrivateRoot(this IServiceCollection services)
+        {
+            return services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("./privateroot/sessions"));
         }
 
         private static IServiceCollection RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)

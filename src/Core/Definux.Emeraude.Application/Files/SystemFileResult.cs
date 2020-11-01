@@ -10,7 +10,7 @@ namespace Definux.Emeraude.Application.Files
         /// <summary>
         /// File stream of the file.
         /// </summary>
-        public FileStream Stream { get; set; }
+        public Stream Stream { get; set; }
 
         /// <summary>
         /// Content type of the file.

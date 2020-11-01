@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Interfaces.Requests;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -13,16 +14,10 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
     /// <summary>
     /// Command for forgot password request.
     /// </summary>
-    public class ForgotPasswordCommand : ForgotPasswordRequest, IRequest<ForgotPasswordRequestResult>
+    public class ForgotPasswordCommand : IRequest<ForgotPasswordRequestResult>, IForgotPasswordRequest
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ForgotPasswordCommand"/> class.
-        /// </summary>
-        /// <param name="request"></param>
-        public ForgotPasswordCommand(ForgotPasswordRequest request)
-        {
-            this.Email = request.Email;
-        }
+        /// <inheritdoc/>
+        public string Email { get; set; }
 
         /// <inheritdoc/>
         public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordRequestResult>

@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 return this.RedirectToHomeIndex();
             }
 
-            var request = new RegisterRequest();
+            var request = new RegisterCommand();
 
             return this.RegisterView(request);
         }
@@ -43,7 +43,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -52,7 +52,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             try
             {
-                var requestResult = await this.Mediator.Send(new RegisterCommand(request));
+                var requestResult = await this.Mediator.Send(request);
 
                 if (requestResult.Result.Succeeded)
                 {

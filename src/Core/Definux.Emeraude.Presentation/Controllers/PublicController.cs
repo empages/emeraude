@@ -6,6 +6,7 @@ using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Localization.Extensions;
+using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -225,6 +226,106 @@ namespace Definux.Emeraude.Presentation.Controllers
         protected IActionResult LanguageLocalRedirect(string localUrl)
         {
             return this.LocalRedirect(this.GetLanguageRoute(localUrl));
+        }
+
+        /// <summary>
+        /// Get route parameter or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected object GetRouteParameterOrNull(string name)
+        {
+            try
+            {
+                object value = null;
+                this.RouteData.Values.TryGetValue(name, out value);
+                return value;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get route parameter as integer or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected int? GetInt32RouteParameterOrNull(string name)
+        {
+            try
+            {
+                var value = this.GetRouteParameterOrNull(name);
+                var convertedValue = Convert.ToInt32(value);
+                return convertedValue;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get route parameter as long or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected long? GetInt64RouteParameterOrNull(string name)
+        {
+            try
+            {
+                var value = this.GetRouteParameterOrNull(name);
+                var convertedValue = Convert.ToInt64(value);
+                return convertedValue;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get route parameter as boolean or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected bool? GetBooleanRouteParameterOrNull(string name)
+        {
+            try
+            {
+                var value = this.GetRouteParameterOrNull(name);
+                var convertedValue = Convert.ToBoolean(value);
+                return convertedValue;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get route parameter as string or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected string GetStringRouteParameterOrNull(string name)
+        {
+            return this.GetRouteParameterOrNull(name)?.ToString();
+        }
+
+        /// <summary>
+        /// Get route parameter as GUID or null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected Guid? GetGuidRouteParameterOrNull(string name)
+        {
+            return this.GetRouteParameterOrNull(name)?.GetGuidValueOrDefault();
         }
     }
 }
