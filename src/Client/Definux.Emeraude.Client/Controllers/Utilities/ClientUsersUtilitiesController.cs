@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Controllers;
-using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,23 +11,19 @@ namespace Definux.Emeraude.Client.Controllers.Utilities
     /// <summary>
     /// Client API user utilities controller.
     /// </summary>
-    [Route("/utils/client/user/")]
-    public sealed class ClientUserUtilitiesController : PublicController
+    [Route("/utils/client/users/")]
+    public sealed class ClientUsersUtilitiesController : PublicController
     {
         private readonly ICurrentUserProvider currentUserProvider;
-        private readonly ISystemFilesService systemFileService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientUserUtilitiesController"/> class.
+        /// Initializes a new instance of the <see cref="ClientUsersUtilitiesController"/> class.
         /// </summary>
         /// <param name="currentUserProvider"></param>
-        /// <param name="systemFileService"></param>
-        public ClientUserUtilitiesController(
-            ICurrentUserProvider currentUserProvider,
-            ISystemFilesService systemFileService)
+        public ClientUsersUtilitiesController(
+            ICurrentUserProvider currentUserProvider)
         {
             this.currentUserProvider = currentUserProvider;
-            this.systemFileService = systemFileService;
         }
 
         /// <summary>
