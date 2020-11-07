@@ -138,5 +138,28 @@ namespace Definux.Emeraude.Logger
                 await this.LogErrorAsync(ex);
             }
         }
+
+        /// <inheritdoc/>
+        public void LogErrorWithoutAnException(string source, string message, [CallerMemberName] string method = "")
+        {
+            try
+            {
+                string serviceClass = this.GetType().Name;
+                ErrorLog log = new ErrorLog
+                {
+                    StackTrace = string.Empty,
+                    Source = source,
+                    Message = message,
+                    Method = method,
+                    Class = serviceClass,
+                };
+
+                this.context.ErrorLogs.Add(log);
+                this.context.SaveChanges();
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }

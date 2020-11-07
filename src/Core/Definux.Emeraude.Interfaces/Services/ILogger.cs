@@ -23,5 +23,13 @@ namespace Definux.Emeraude.Interfaces.Services
         /// <param name="exception"></param>
         /// <param name="method"></param>
         void LogError(Exception exception, [CallerMemberName]string method = "");
+
+        /// <summary>
+        /// Save information for specific error without existing exception.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="message"></param>
+        /// <param name="method"></param>
+        void LogErrorWithoutAnException(string source, string message, [CallerMemberName]string method = "");
     }
 }
