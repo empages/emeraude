@@ -1,7 +1,9 @@
 using AutoMapper;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Mapping;
 using Definux.Utilities.Objects;
 using EmDoggoDev.Application.Common.Interfaces.Persistance;
+using EmDoggoDev.Domain.Common;
 using EmDoggoDev.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +12,14 @@ using System.Threading.Tasks;
 
 namespace EmDoggoDev.Application.Requests.Commands.AddDog
 {
-    public class AddDogCommand : AddDogRequest, IRequest<CreatedResult>
+    public class AddDogCommand : IRequest<CreatedResult>, IMapFrom<Dog>
     {
+        public string Name { get; set; }
+
+        public DogType Type { get; set; }
+
+        public DogBreed Breed { get; set; }
+
         public class AddDogCommandHandler : IRequestHandler<AddDogCommand, CreatedResult>
         {
             private readonly IEntityContext context;

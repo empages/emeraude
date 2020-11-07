@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
@@ -120,12 +121,15 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 var classProperties = workType.GetProperties();
                 foreach (var propertyInfo in classProperties)
                 {
-                    PropertyDescription propertyDescription = new PropertyDescription();
-                    propertyDescription.Name = propertyInfo.Name;
-                    propertyDescription.ReadOnly = propertyInfo.HasAttribute<EmReadOnlyAttribute>();
-                    propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
-                    propertyDescription.DefaultValue = defaultValues.ContainsKey(propertyInfo.PropertyType) ? defaultValues[propertyInfo.PropertyType] : "null";
-                    classDescription.Properties.Add(propertyDescription);
+                    if (!propertyInfo.IsPropertyStatic())
+                    {
+                        PropertyDescription propertyDescription = new PropertyDescription();
+                        propertyDescription.Name = propertyInfo.Name;
+                        propertyDescription.ReadOnly = propertyInfo.HasAttribute<EmReadOnlyAttribute>();
+                        propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
+                        propertyDescription.DefaultValue = defaultValues.ContainsKey(propertyInfo.PropertyType) ? defaultValues[propertyInfo.PropertyType] : "null";
+                        classDescription.Properties.Add(propertyDescription);
+                    }
                 }
 
                 return classDescription;
@@ -326,6 +330,11 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             }
 
             return resultEnumsTypes;
+        }
+
+        private static bool IsPropertyStatic(this PropertyInfo propertyInfo)
+        {
+            return propertyInfo.GetAccessors().Any(x => x.IsStatic);
         }
     }
 }
