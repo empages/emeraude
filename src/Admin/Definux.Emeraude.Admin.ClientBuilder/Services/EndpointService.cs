@@ -33,29 +33,37 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// <inheritdoc/>
         public List<Endpoint> GetAllEndpoints()
         {
-            List<Type> apiControllersTypes = new List<Type>();
-            foreach (var assembly in this.clientBuilderOptions.Assemblies)
+            try
             {
-                var assemblyTypes = assembly.GetTypes().Where(x => x.HasAttribute<ApiEndpointsControllerAttribute>()).ToList();
-                apiControllersTypes.AddRange(assemblyTypes);
-            }
-
-            List<Endpoint> resultEndpoints = new List<Endpoint>();
-            foreach (var controllerType in apiControllersTypes)
-            {
-                var currentControllerEndpoints = controllerType.GetMethods().Where(x => x.HasAttribute<EndpointAttribute>()).ToList();
-                foreach (var endpoint in currentControllerEndpoints)
+                List<Type> apiControllersTypes = new List<Type>();
+                foreach (var assembly in this.clientBuilderOptions.Assemblies)
                 {
-                    var currentEntpoint = this.BuildEndpoint(endpoint, controllerType);
+                    var assemblyTypes = assembly.GetTypes().Where(x => x.HasAttribute<ApiEndpointsControllerAttribute>()).ToList();
+                    apiControllersTypes.AddRange(assemblyTypes);
+                }
 
-                    if (resultEndpoints.FirstOrDefault(x => x.Id == currentEntpoint.Id) == null)
+                List<Endpoint> resultEndpoints = new List<Endpoint>();
+                foreach (var controllerType in apiControllersTypes)
+                {
+                    var currentControllerEndpoints = controllerType.GetMethods().Where(x => x.HasAttribute<EndpointAttribute>()).ToList();
+                    foreach (var endpoint in currentControllerEndpoints)
                     {
-                        resultEndpoints.Add(currentEntpoint);
+                        var currentEntpoint = this.BuildEndpoint(endpoint, controllerType);
+
+                        if (currentEntpoint != null && resultEndpoints.FirstOrDefault(x => x.Id == currentEntpoint.Id) == null)
+                        {
+                            resultEndpoints.Add(currentEntpoint);
+                        }
                     }
                 }
-            }
 
-            return resultEndpoints.OrderBy(x => x.ControllerName).ToList();
+                return resultEndpoints.OrderBy(x => x.ControllerName).ToList();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+                return new List<Endpoint>();
+            }
         }
 
         /// <inheritdoc/>
@@ -101,6 +109,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             catch (Exception ex)
             {
                 this.logger.LogError(ex);
+                this.logger.LogErrorWithoutAnException($"{endpointMethodInfo.Name} ({controllerType.FullName})", "Error on creating endpoint from controller action.");
                 return null;
             }
         }
