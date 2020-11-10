@@ -6,22 +6,6 @@
     public class UploadResult
     {
         /// <summary>
-        /// Built upload success result.
-        /// </summary>
-        public static UploadResult SuccessResult => new UploadResult
-        {
-            Success = true,
-        };
-
-        /// <summary>
-        /// Built upload error result.
-        /// </summary>
-        public static UploadResult ErrorResult => new UploadResult
-        {
-            Success = false,
-        };
-
-        /// <summary>
         /// Boolean status of the result.
         /// </summary>
         public bool Success { get; set; }
@@ -35,6 +19,33 @@
         /// Boolean status that indicates that the file is not uploaded because of validation error.
         /// </summary>
         public bool ValidationError { get; set; }
+
+        /// <summary>
+        /// Temp file result id.
+        /// </summary>
+        public int ResultFileId { get; set; }
+
+        /// <summary>
+        /// Built upload success result.
+        /// </summary>
+        /// <param name="tempFileId"></param>
+        /// <returns></returns>
+        public static UploadResult SuccessResult(int tempFileId) => new UploadResult
+        {
+            Success = true,
+            ResultFileId = tempFileId,
+        };
+
+        /// <summary>
+        /// Built upload error result.
+        /// </summary>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        public static UploadResult ErrorResult(string errorMessage) => new UploadResult
+        {
+            Success = false,
+            Message = errorMessage,
+        };
 
         /// <summary>
         /// Built upload error result with message.
