@@ -111,6 +111,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     if (newUser != null)
                     {
                         result.Result = SignInResult.Success;
+                        result.User = newUser;
                         await this.eventManager.TriggerExternalRegisterEventAsync(newUser.Id);
                     }
                 }

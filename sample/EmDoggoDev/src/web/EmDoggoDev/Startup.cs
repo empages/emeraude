@@ -32,6 +32,9 @@ namespace EmDoggoDev
                 options.AddAssembly("EmDoggoDev.Application");
                 options.ProjectName = "EmDoggo Dev";
                 options.MaintenanceMode = true;
+
+                options.Account.HasFacebookLogin = true;
+                options.Account.HasGoogleLogin = true;
             });
 
             services.AddEmeraudeClientBuilder(options =>
