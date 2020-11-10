@@ -50,11 +50,11 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo
                     var uploadedFile = this.systemFilesService.UploadFileAsync(request.FormFile);
                     if (uploadedFile != null)
                     {
-                        return UploadResult.SuccessResult;
+                        return UploadResult.SuccessResult(uploadedFile.Id);
                     }
                     else
                     {
-                        return UploadResult.ErrorResult;
+                        return UploadResult.ErrorResult("File has not been uploaded.");
                     }
                 }
 

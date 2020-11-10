@@ -83,11 +83,11 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
 
                     if (uploadedFile != null)
                     {
-                        return UploadResult.SuccessResult;
+                        return UploadResult.SuccessResult(uploadedFile.Id);
                     }
                     else
                     {
-                        return UploadResult.ErrorResult;
+                        return UploadResult.ErrorResult("File has not been uploaded.");
                     }
                 }
 
