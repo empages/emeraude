@@ -316,61 +316,13 @@ namespace Definux.Emeraude.Files.Services
         /// <inheritdoc/>
         public async Task<TempFileLog> ApplyTempFileToPrivateDirectoryAsync(int fileId, string targetDirectory)
         {
-            try
-            {
-                var file = await this.GetFileByIdAsync(fileId);
-                var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
-                if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
-                {
-                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
-                    File.Move(sourceFilePath, targetFilePath);
-
-                    file.Applied = true;
-                    this.loggerContext.TempFileLogs.Update(file);
-                    await this.loggerContext.SaveChangesAsync();
-
-                    File.Delete(sourceFilePath);
-
-                    return file;
-                }
-
-                return default;
-            }
-            catch (Exception ex)
-            {
-                await this.logger.LogErrorAsync(ex);
-                return default;
-            }
+            return await this.ApplyTempFileToDirectoryAsync(fileId, targetDirectory, Folders.PrivateRootFolderName);
         }
 
         /// <inheritdoc/>
         public async Task<TempFileLog> ApplyTempFileToPublicDirectoryAsync(int fileId, string targetDirectory)
         {
-            try
-            {
-                var file = await this.GetFileByIdAsync(fileId);
-                var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
-                if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
-                {
-                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
-                    File.Move(sourceFilePath, targetFilePath);
-
-                    file.Applied = true;
-                    this.loggerContext.TempFileLogs.Update(file);
-                    await this.loggerContext.SaveChangesAsync();
-
-                    File.Delete(sourceFilePath);
-
-                    return file;
-                }
-
-                return default;
-            }
-            catch (Exception ex)
-            {
-                await this.logger.LogErrorAsync(ex);
-                return default;
-            }
+            return await this.ApplyTempFileToDirectoryAsync(fileId, targetDirectory, Folders.PublicRootFolderName);
         }
 
         /// <inheritdoc/>
@@ -430,6 +382,37 @@ namespace Definux.Emeraude.Files.Services
             {
                 await this.logger.LogErrorAsync(ex);
                 return false;
+            }
+        }
+
+        private async Task<TempFileLog> ApplyTempFileToDirectoryAsync(int fileId, string targetDirectory, string rootFolder)
+        {
+            try
+            {
+                var file = await this.GetFileByIdAsync(fileId);
+                var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
+                if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
+                {
+                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
+                    File.Move(sourceFilePath, targetFilePath);
+
+                    file.Applied = true;
+                    file.Path = Path.Combine(rootFolder, targetFilePath);
+
+                    this.loggerContext.TempFileLogs.Update(file);
+                    await this.loggerContext.SaveChangesAsync();
+
+                    File.Delete(sourceFilePath);
+
+                    return file;
+                }
+
+                return default;
+            }
+            catch (Exception ex)
+            {
+                await this.logger.LogErrorAsync(ex);
+                return default;
             }
         }
 
