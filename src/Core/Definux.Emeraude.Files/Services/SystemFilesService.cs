@@ -239,7 +239,7 @@ namespace Definux.Emeraude.Files.Services
         {
             try
             {
-                string saveDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
+                string saveDirectory = this.GetTempUploadDirectory();
                 string resultFileName = FilesFunctions.GetUniqueFileName();
                 string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
                 string relativeSaveDirectory = Path.Combine(Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
@@ -322,8 +322,7 @@ namespace Definux.Emeraude.Files.Services
                 var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
                 if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
                 {
-                    string privateRootTempUploadDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
-                    string sourceFilePath = Path.Combine(privateRootTempUploadDirectory, file.NameWithExtension);
+                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
                     File.Move(sourceFilePath, targetFilePath);
 
                     file.Applied = true;
@@ -353,8 +352,7 @@ namespace Definux.Emeraude.Files.Services
                 var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
                 if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
                 {
-                    string publicRootTempUploadDirectory = Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PublicRootFolderName);
-                    string sourceFilePath = Path.Combine(publicRootTempUploadDirectory, file.NameWithExtension);
+                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
                     File.Move(sourceFilePath, targetFilePath);
 
                     file.Applied = true;
@@ -433,6 +431,11 @@ namespace Definux.Emeraude.Files.Services
                 await this.logger.LogErrorAsync(ex);
                 return false;
             }
+        }
+
+        private string GetTempUploadDirectory()
+        {
+            return Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
         }
     }
 }
