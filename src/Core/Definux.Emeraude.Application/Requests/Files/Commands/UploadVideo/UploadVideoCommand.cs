@@ -47,7 +47,7 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo
                 var validationResult = this.validationProvider.ValidateFormVideoFile(request.FormFile);
                 if (validationResult.Successed)
                 {
-                    var uploadedFile = this.systemFilesService.UploadFileAsync(request.FormFile);
+                    var uploadedFile = await this.systemFilesService.UploadFileAsync(request.FormFile);
                     if (uploadedFile != null)
                     {
                         return UploadResult.SuccessResult(uploadedFile.Id);
