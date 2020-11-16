@@ -65,7 +65,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules
         public InstanceType Type { get; set; }
 
         /// <summary>
-        /// Identificator of the module that allowes easy modules grouping.
+        /// Identification of the module that allows easy modules grouping.
         /// </summary>
         public string ParentModuleId { get; protected set; }
 
