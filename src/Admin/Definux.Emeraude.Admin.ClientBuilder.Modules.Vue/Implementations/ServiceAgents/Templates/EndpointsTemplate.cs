@@ -301,61 +301,60 @@ if (endpoint.MethodName.ToUpper() == "DELETE") {
             this.Write(@"        return fetch(url, {
             method: 'DELETE',
             headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(body),
             credentials: 'include'
         })
             .then(response => response.json());
 ");
             
-            #line 73 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 72 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
 }
             
             #line default
             #line hidden
             this.Write("    }\r\n");
             
-            #line 75 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 74 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("}\r\n");
             
-            #line 77 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 76 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
  } 
             
             #line default
             #line hidden
             
-            #line 78 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 77 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
  foreach (var controller in (List<string>)Session["EndpointsControllers"]) { 
             
             #line default
             #line hidden
             this.Write("\r\n/**\r\n * @type {");
             
-            #line 81 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 80 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(controller.Replace("ApiController", string.Empty)));
             
             #line default
             #line hidden
             this.Write("ServiceAgent}\r\n */\r\nexport const ");
             
-            #line 83 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 82 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(controller.Replace("ApiController", string.Empty).ToFirstLower()));
             
             #line default
             #line hidden
             this.Write("ServiceAgent = new ");
             
-            #line 83 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 82 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(controller.Replace("ApiController", string.Empty)));
             
             #line default
             #line hidden
             this.Write("ServiceAgent();\r\n");
             
-            #line 84 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            #line 83 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
  } 
             
             #line default
