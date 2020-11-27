@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
+    <ProjectReference Include="..\EmDoggo.Application\EmDoggo.Application.csproj" />
+    <ProjectReference Include="..\EmDoggo.Domain\EmDoggo.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
+

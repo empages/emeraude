@@ -21,7 +21,11 @@
                 <button v-if="valueEditedStatuses[translationIndex]" class="btn-save-in-input btn btn-primary btn-icons position-absolute" @click="editTranslation(translationIndex, $event)"><i class="mdi mdi-content-save"></i></button>
             </div>
         </td>
-        <td class="p-1"><b-button @click="deleteKey" variant="danger" class="btn btn-icons w-100 h-100"><i class="mdi mdi-delete-forever"></i></b-button></td>
+        <td class="px-2 py-0 text-center fit">
+            <b-button @click="deleteKey" variant="danger" class="btn btn-icons">
+                <i class="mdi mdi-delete-forever"></i>
+            </b-button>
+        </td>
     </tr>
 </template>
 

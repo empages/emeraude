@@ -351,7 +351,6 @@ MigrationBackup/
 
 .idea/
 
-sample/EmDoggoDev/src/web/EmDoggoDev/privateroot/log.db
-sample/EmDoggoDev/src/web/EmDoggoDev/appsettings.json
-
-sample/EmDoggoDev/src/web/EmDoggoDev/wwwroot/uploads/
+sample/EmDoggo/src/web/EmDoggo/wwwroot/uploads/
+sample/EmDoggo/src/web/EmDoggo/privateroot/log.db
+sample/EmDoggo/src/web/EmDoggo/appsettings.json

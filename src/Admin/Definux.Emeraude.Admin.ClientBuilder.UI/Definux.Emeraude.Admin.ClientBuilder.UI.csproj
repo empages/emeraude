@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\admin\" />
+    <Folder Include="wwwroot\admin\js\modules\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,4 +55,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(Configuration) == 'Debug'">
+    <Exec Command="yarn build:prod" />
+  </Target>
+  
 </Project>
