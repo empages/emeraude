@@ -169,7 +169,13 @@ if (endpoint.Arguments.Count > 0) {foreach (var argument in endpoint.Arguments) 
             
             #line default
             #line hidden
-            this.Write(", queryParams = null, headers = null) {");
+            
+            #line 34 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(string.IsNullOrEmpty(endpoint.ArgumentsListString) ? "" : ", "));
+            
+            #line default
+            #line hidden
+            this.Write("queryParams = null, headers = null) {");
             
             #line 34 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\ServiceAgents\Templates\EndpointsTemplate.tt"
  var requestUrl = "`" + endpoint.Route.Replace("{", "${") + "`";

@@ -17,6 +17,10 @@
  * @property {number} breed
  */
 /**
+ * @typedef SimpleResult
+ * @property {boolean} successed
+ */
+/**
  * @typedef EnumValueItem
  * @property {string} name
  * @property {number} value
@@ -41,6 +45,28 @@ export class DogsServiceAgent {
             method: 'POST',
             headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+}
+
+export class EmptyServiceAgent {
+
+    /**
+     * EmptyApiController/ExampleAction
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    exampleAction(queryParams = null, headers = null) { 
+        let url = new URL(`/api/empty/example`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'GET',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             credentials: 'include'
         })
             .then(response => response.json());
@@ -95,6 +121,11 @@ export class EnumServiceAgent {
  * @type {DogsServiceAgent}
  */
 export const dogsServiceAgent = new DogsServiceAgent();
+
+/**
+ * @type {EmptyServiceAgent}
+ */
+export const emptyServiceAgent = new EmptyServiceAgent();
 
 /**
  * @type {EnumServiceAgent}
