@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Definux.Emeraude.Admin.UI.UIElements.DetailsCard;
+using Definux.Utilities.Functions;
 
 namespace Definux.Emeraude.Admin.Attributes
 {
@@ -18,6 +20,19 @@ namespace Definux.Emeraude.Admin.Attributes
         {
             this.Order = order;
             this.Title = title;
+            this.UIElementType = uiElementType;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DetailsCardAttribute"/> class.
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="uiElementType"></param>
+        /// <param name="propertyName"></param>
+        public DetailsCardAttribute(int order, Type uiElementType, [CallerMemberName] string propertyName = "")
+        {
+            this.Order = order;
+            this.Title = StringFunctions.SplitWordsByCapitalLetters(propertyName);
             this.UIElementType = uiElementType;
         }
 

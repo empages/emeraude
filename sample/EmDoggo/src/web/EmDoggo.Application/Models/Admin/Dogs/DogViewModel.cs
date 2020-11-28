@@ -11,19 +11,19 @@ namespace EmDoggo.Application.Models.Admin.Dogs
 {
     public class DogViewModel : CreateEditEntityViewModel, IMapFrom<Dog>
     {
-        [DetailsCard(0, "Id", typeof(DetailsCardTextElement))]
+        [DetailsCard(0, typeof(DetailsCardTextElement))]
         public string Id { get; set; }
 
-        [TableColumn(1, "Name", typeof(TableTextElement))]
-        [DetailsCard(1, "Name", typeof(DetailsCardTextElement))]
+        [TableColumn(1, typeof(TableTextElement))]
+        [DetailsCard(1, typeof(DetailsCardTextElement))]
         public string Name { get; set; }
 
-        [TableColumn(2, "Type", typeof(TableTextElement))]
-        [DetailsCard(2, "Type", typeof(DetailsCardTextElement))]
+        [TableColumn(2, typeof(TableTextElement))]
+        [DetailsCard(2, typeof(DetailsCardTextElement))]
         public DogType Type { get; set; }
 
-        [TableColumn(3, "Breed", typeof(TableTextElement))]
-        [DetailsCard(3, "Breed", typeof(DetailsCardTextElement))]
+        [TableColumn(3, typeof(TableTextElement))]
+        [DetailsCard(3, typeof(DetailsCardTextElement))]
         public DogBreed Breed { get; set; }
     }
 }

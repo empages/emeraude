@@ -10,12 +10,12 @@ namespace EmDoggo.Application.Models.Admin.Shops
 {
     public class ShopViewModel : CreateEditEntityViewModel, IMapFrom<Shop>
     {
-        [DetailsCard(0, "Id", typeof(DetailsCardTextElement))]
+        [DetailsCard(0, typeof(DetailsCardTextElement))]
         public string Id { get; set; }
 
-        [TableColumn(1, "Name", typeof(TableTextElement))]
-        [DetailsCard(1, "Name", typeof(DetailsCardTextElement))]
-        [FormInput(1, "Name", typeof(FormTextElement))]
+        [TableColumn(1, typeof(TableTextElement))]
+        [DetailsCard(1, typeof(DetailsCardTextElement))]
+        [FormInput(1, typeof(FormTextElement))]
         public string Name { get; set; }
     }
 }

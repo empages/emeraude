@@ -18,7 +18,7 @@
                 <form method="post" asp-action="TwoFactorAuthentication">
                     <div class="form-group">
                         <label>Verification Code:</label>
-                        <input asp-for="Code" type="text" class="form-control" autocomplete="off" />
+                        <input asp-for="Code" type="text" class="form-control" autocomplete="off" placeholder="Code" />
                         <span asp-validation-for="Code" class="text-danger text-small"></span>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger text-small"></div>

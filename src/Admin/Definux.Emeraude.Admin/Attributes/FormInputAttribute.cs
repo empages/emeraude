@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Definux.Emeraude.Admin.UI.UIElements.Form;
 using Definux.Emeraude.Admin.UI.UIElements.Form.Helpers;
+using Definux.Utilities.Functions;
 
 namespace Definux.Emeraude.Admin.Attributes
 {
@@ -26,6 +28,28 @@ namespace Definux.Emeraude.Admin.Attributes
         {
             this.Order = order;
             this.Name = name;
+            this.UIElementType = uiElementType;
+            this.DataSourceType = dataSourceType;
+            this.VisualizationPropertyName = visualizationPropertyName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormInputAttribute"/> class.
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="uiElementType"></param>
+        /// <param name="dataSourceType"></param>
+        /// <param name="visualizationPropertyName"></param>
+        /// <param name="propertyName"></param>
+        public FormInputAttribute(
+            int order,
+            Type uiElementType,
+            Type dataSourceType = null,
+            string visualizationPropertyName = null,
+            [CallerMemberName] string propertyName = "")
+        {
+            this.Order = order;
+            this.Name = StringFunctions.SplitWordsByCapitalLetters(propertyName);
             this.UIElementType = uiElementType;
             this.DataSourceType = dataSourceType;
             this.VisualizationPropertyName = visualizationPropertyName;
