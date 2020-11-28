@@ -43314,7 +43314,8 @@ const initialState = {
         languageCode: null,
         languageId: 0,
         viewModel: null,
-        viewData: []
+        viewData: [],
+        metaTags: null
     },
 
     getters: {
@@ -43339,6 +43340,9 @@ const initialState = {
         viewData(state) {
             return state.viewData;
         },
+        metaTags(state) {
+            return state.metaTags;
+        }
     },
 
     mutations: {
@@ -43351,6 +43355,9 @@ const initialState = {
         SET_VIEW_DATA(state, value) {
             state.viewData = value;
         },
+        SET_META_TAGS(state, value) {
+            state.metaTags = value;
+        }
     },
 
     actions: {
@@ -43362,6 +43369,7 @@ const initialState = {
             state.languageId = rootState.data.languageId;
             state.viewModel = rootState.data.viewModel;
             state.viewData = rootState.data.viewData;
+            state.metaTags = rootState.data.metaTags;
         },
         updateStateString(context, value) {
             context.commit('SET_STATE_STRING', value);
@@ -43371,6 +43379,27 @@ const initialState = {
         },
         updateViewModel(context, value) {
             context.commit('SET_VIEW_MODEL', value);
+        },
+        updateMetaTags(context, value) {
+            context.commit('SET_META_TAGS', value);
+            try {
+                for(let key in value) {
+                    if (value[key] !== null && value[key].key !== undefined) {
+                        let existingMetaTag = document.querySelector('meta[' + value[key].keyName + '="' + value[key].key + '"]');
+                        if (existingMetaTag !== null && value[key].value !== null) {
+                            existingMetaTag.setAttribute(value[key].valueName, value[key].value);
+                        }
+                    }
+                }
+
+                document.title = value.title.value;
+                let canonicalTag = document.querySelector('link[rel="canonical"]');
+                if (canonicalTag !== null) {
+                    canonicalTag.setAttribute('href', location.origin + value.canonical);
+                }
+            }
+            catch (e) {
+            }
         },
         resetStateString(context) {
             context.commit('SET_STATE_STRING', newGuid());
@@ -43401,6 +43430,10 @@ module.exports = {
     location.href = '/login?ReturnUrl=' + encodeURIComponent(redirectUrl);
 };
 
+const notFoundResult = function() {
+    location.href = '/404';
+};
+
 module.exports = function (router, store) {
     router.beforeEach((routeTo, routeFrom, next) => {
         if (typeof(fetch) !== undefined) {
@@ -43414,11 +43447,21 @@ module.exports = function (router, store) {
                     body: null,
                     credentials: 'include'
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                    })
                     .then(responseData => {
-                        store.dispatch('updateViewData', responseData.viewData);
-                        store.dispatch('updateViewModel', responseData.viewModel);
-                        next();
+                        if (responseData === undefined) {
+                            notFoundResult();
+                        }
+                        else {
+                            store.dispatch('updateViewData', responseData.viewData);
+                            store.dispatch('updateViewModel', responseData.viewModel);
+                            store.dispatch('updateMetaTags', responseData.metaTags);
+                            next();
+                        }
                     })
                     .catch(() => {
                         redirectToLogin(routeTo.path);

@@ -35,6 +35,10 @@ namespace EmDoggo
 
                 options.Account.HasFacebookLogin = true;
                 options.Account.HasGoogleLogin = true;
+            },
+            seoOptions =>
+            {
+                seoOptions.DefaultMetaTags.TitleSuffix = " | EmDoggo";
             });
 
             services.AddEmeraudeClientBuilder(options =>

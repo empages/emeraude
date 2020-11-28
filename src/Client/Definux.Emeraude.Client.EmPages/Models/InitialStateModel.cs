@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Definux.Emeraude.Client.EmPages.Attributes;
+using Definux.Seo.Models;
 using Newtonsoft.Json;
 
 namespace Definux.Emeraude.Client.EmPages.Models
@@ -60,6 +61,10 @@ namespace Definux.Emeraude.Client.EmPages.Models
         /// <inheritdoc/>
         [JsonProperty("viewData")]
         public Dictionary<string, object> ViewData { get; }
+
+        /// <inheritdoc/>
+        [JsonProperty("metaTags")]
+        public MetaTagsModel MetaTags { get; set; }
 
         /// <inheritdoc/>
         public void AddViewDataItem(string key, object value)

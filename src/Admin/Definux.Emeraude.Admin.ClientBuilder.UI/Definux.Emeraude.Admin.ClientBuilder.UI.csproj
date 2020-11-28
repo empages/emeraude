@@ -54,9 +54,5 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(Configuration) == 'Debug'">
-    <Exec Command="yarn build:prod" />
-  </Target>
   
 </Project>

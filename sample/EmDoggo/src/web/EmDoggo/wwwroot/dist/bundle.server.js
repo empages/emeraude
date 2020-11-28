@@ -82,7 +82,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756piKsjJ5yKlTq.server.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-65321R8cFqoaSTT2.server.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -114,7 +114,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   null,
   null,
-  "3375e873"
+  "2dd746b3"
   
 )
 
@@ -364,7 +364,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   injectStyles,
   "4a89a4cb",
-  "28ddcaa8"
+  "3076f468"
   
 )
 
@@ -434,7 +434,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   null,
   null,
-  "78a6eed3"
+  "55b825da"
   
 )
 
@@ -501,7 +501,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   null,
   null,
-  "3324cd28"
+  "7c8ed32c"
   
 )
 
@@ -555,7 +555,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   null,
   null,
-  "b3c3010a"
+  "3c3fb93b"
   
 )
 
@@ -625,7 +625,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   null,
   null,
-  "f5c0853e"
+  "1b40f721"
   
 )
 
@@ -870,7 +870,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   injectStyles,
   "e5d52ca6",
-  "38f86e94"
+  "1189c6f6"
   
 )
 
@@ -943,7 +943,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   injectStyles,
   "117602ad",
-  "67e461b6"
+  "d42b4014"
   
 )
 
@@ -1016,7 +1016,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   false,
   injectStyles,
   "610a96c9",
-  "cbda63d0"
+  "5e923c58"
   
 )
 
@@ -45125,7 +45125,8 @@ const initialState = {
         languageCode: null,
         languageId: 0,
         viewModel: null,
-        viewData: []
+        viewData: [],
+        metaTags: null
     },
 
     getters: {
@@ -45150,6 +45151,9 @@ const initialState = {
         viewData(state) {
             return state.viewData;
         },
+        metaTags(state) {
+            return state.metaTags;
+        }
     },
 
     mutations: {
@@ -45162,6 +45166,9 @@ const initialState = {
         SET_VIEW_DATA(state, value) {
             state.viewData = value;
         },
+        SET_META_TAGS(state, value) {
+            state.metaTags = value;
+        }
     },
 
     actions: {
@@ -45173,6 +45180,7 @@ const initialState = {
             state.languageId = rootState.data.languageId;
             state.viewModel = rootState.data.viewModel;
             state.viewData = rootState.data.viewData;
+            state.metaTags = rootState.data.metaTags;
         },
         updateStateString(context, value) {
             context.commit('SET_STATE_STRING', value);
@@ -45182,6 +45190,27 @@ const initialState = {
         },
         updateViewModel(context, value) {
             context.commit('SET_VIEW_MODEL', value);
+        },
+        updateMetaTags(context, value) {
+            context.commit('SET_META_TAGS', value);
+            try {
+                for(let key in value) {
+                    if (value[key] !== null && value[key].key !== undefined) {
+                        let existingMetaTag = document.querySelector('meta[' + value[key].keyName + '="' + value[key].key + '"]');
+                        if (existingMetaTag !== null && value[key].value !== null) {
+                            existingMetaTag.setAttribute(value[key].valueName, value[key].value);
+                        }
+                    }
+                }
+
+                document.title = value.title.value;
+                let canonicalTag = document.querySelector('link[rel="canonical"]');
+                if (canonicalTag !== null) {
+                    canonicalTag.setAttribute('href', location.origin + value.canonical);
+                }
+            }
+            catch (e) {
+            }
         },
         resetStateString(context) {
             context.commit('SET_STATE_STRING', newGuid());
@@ -45212,6 +45241,10 @@ const redirectToLogin = function(redirectUrl) {
     location.href = '/login?ReturnUrl=' + encodeURIComponent(redirectUrl);
 };
 
+const notFoundResult = function() {
+    location.href = '/404';
+};
+
 module.exports = function (router, store) {
     router.beforeEach((routeTo, routeFrom, next) => {
         if (typeof(fetch) !== undefined) {
@@ -45225,11 +45258,21 @@ module.exports = function (router, store) {
                     body: null,
                     credentials: 'include'
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                    })
                     .then(responseData => {
-                        store.dispatch('updateViewData', responseData.viewData);
-                        store.dispatch('updateViewModel', responseData.viewModel);
-                        next();
+                        if (responseData === undefined) {
+                            notFoundResult();
+                        }
+                        else {
+                            store.dispatch('updateViewData', responseData.viewData);
+                            store.dispatch('updateViewModel', responseData.viewModel);
+                            store.dispatch('updateMetaTags', responseData.metaTags);
+                            next();
+                        }
                     })
                     .catch(() => {
                         redirectToLogin(routeTo.path);
@@ -85276,10 +85319,10 @@ var index = {
 
 /***/ }),
 
-/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-19756piKsjJ5yKlTq.server.js":
-/*!**************************************************************************!*\
-  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-19756piKsjJ5yKlTq.server.js ***!
-  \**************************************************************************/
+/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-65321R8cFqoaSTT2.server.js":
+/*!*************************************************************************!*\
+  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-65321R8cFqoaSTT2.server.js ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

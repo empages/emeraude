@@ -4,8 +4,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Client.EmPages.Models;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Seo.Extensions;
+using Definux.Seo.Models;
+using Definux.Seo.Options;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Client.EmPages.Abstractions
 {
@@ -96,6 +100,8 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
                 }
             }
 
+            model.MetaTags = await this.InitializeMetaTagsAsync(model);
+
             return model;
         }
 
@@ -118,6 +124,20 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
         protected async virtual Task<Dictionary<string, object>> InitializeViewDataAsync(InitialStateModel<TViewModel> model)
         {
             return new Dictionary<string, object>();
+        }
+
+        /// <summary>
+        /// This method initialize the meta tags properties definition for current initial state of the current page.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected async virtual Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model)
+        {
+            var seoOptions = ((IOptions<DefinuxSeoOptions>)this.HttpContext.RequestServices.GetService(typeof(IOptions<DefinuxSeoOptions>))).Value;
+            var metaTagsModel = this.ViewData.GetMetaTagsModelOrDefault();
+            metaTagsModel.ApplyStaticTags(seoOptions.DefaultMetaTags);
+
+            return metaTagsModel;
         }
     }
 }

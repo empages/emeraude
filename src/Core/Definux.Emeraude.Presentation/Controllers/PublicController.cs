@@ -30,6 +30,7 @@ namespace Definux.Emeraude.Presentation.Controllers
         private ICurrentLanguageProvider currentLanguageProvider;
         private IMediator mediator;
         private IUserManager userManager;
+        private IEmLocalizer localizer;
         private EmOptions options;
 
         /// <summary>
@@ -118,6 +119,20 @@ namespace Definux.Emeraude.Presentation.Controllers
                 }
 
                 return this.userManager;
+            }
+        }
+
+        /// <inheritdoc cref="IEmLocalizer"/>
+        protected IEmLocalizer Localizer
+        {
+            get
+            {
+                if (this.localizer is null)
+                {
+                    this.localizer = this.HttpContext.RequestServices.GetService<IEmLocalizer>();
+                }
+
+                return this.localizer;
             }
         }
 
