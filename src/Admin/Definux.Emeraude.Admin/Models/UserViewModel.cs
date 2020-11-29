@@ -39,8 +39,8 @@ namespace Definux.Emeraude.Admin.Models
         public bool TwoFactorEnabled { get; set; }
 
         /// <inheritdoc cref="User.IsLockedOut"/>
-        [TableColumn(5, typeof(TableFlagElement))]
-        [DetailsCard(5, typeof(DetailsCardFlagElement))]
+        [TableColumn(5, "Locked Out", typeof(TableFlagElement))]
+        [DetailsCard(5, "Locked Out", typeof(DetailsCardFlagElement))]
         public bool IsLockedOut { get; set; }
     }
 }
