@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Definux.Seo.Models;
 
 namespace Definux.Emeraude.Client.EmPages.Models
 {
@@ -43,6 +44,11 @@ namespace Definux.Emeraude.Client.EmPages.Models
         /// Data transfer object that contains the custom non strong-typed data for the page. For strong-typed data see <see cref="ViewModel"/>.
         /// </summary>
         Dictionary<string, object> ViewData { get; }
+
+        /// <summary>
+        /// Defines an collection of properties for HTML meta tags for better SEO.
+        /// </summary>
+        MetaTagsModel MetaTags { get; set; }
 
         /// <summary>
         /// Method that add a new key/value pair to the <see cref="ViewData"/>.

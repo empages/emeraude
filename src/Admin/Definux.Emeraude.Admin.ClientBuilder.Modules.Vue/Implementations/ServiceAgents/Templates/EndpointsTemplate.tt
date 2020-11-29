@@ -31,7 +31,7 @@ export class <#=controller.Replace("ApiController", string.Empty)#>ServiceAgent 
      * @param {Object} headers
      * @returns {Promise}
      */
-    <#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#>, queryParams = null, headers = null) {<# var requestUrl = "`" + endpoint.Route.Replace("{", "${") + "`";#> 
+    <#=endpoint.ActionName.ToFirstLower()#>(<#=endpoint.ArgumentsListString#><#=string.IsNullOrEmpty(endpoint.ArgumentsListString) ? "" : ", "#>queryParams = null, headers = null) {<# var requestUrl = "`" + endpoint.Route.Replace("{", "${") + "`";#> 
         let url = new URL(<#=requestUrl#>, window.location.origin);
         if (queryParams != null) {
             url.search = new URLSearchParams(queryParams).toString();

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios';
 
+import './assets/style.scss';
+
 import Scaffold from './pages/scaffold/Scaffold.vue';
 import Pages from './pages/pages/Pages.vue';
 import Endpoints from './pages/endpoints/Endpoints.vue';

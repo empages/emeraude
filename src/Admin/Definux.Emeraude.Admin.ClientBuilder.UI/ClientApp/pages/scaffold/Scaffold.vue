@@ -1,16 +1,15 @@
 ﻿<template>
-    <div id="scaffold-page">
-        <b-card class="bulk-card" title="Modules generation" sub-title="By click the button all modules from selected section will be generated.">
+    <div class="client-builder-page">
+        <b-card class="main-card" title="Modules generation" sub-title="By click the button all modules from selected section will be generated.">
+            <hr class="w-100" />
             <b-row>
-                <hr class="w-100"/>
-                <b-col cols="12">
+                <b-col cols="12" class="mb-4">
                     <h5>By instance type</h5>
                     <b-row no-gutters>
                         <button class="btn btn-primary cb-gen-btn" v-if="hasWebModules" @click="generateWebModules"><i class="mdi mdi-desktop-mac"></i> Web Modules</button>
                         <button class="btn btn-primary cb-gen-btn" v-if="hasMobileModules" @click="generateMobileModules"><i class="mdi mdi-cellphone"></i> Mobile Modules</button>
                     </b-row>
                 </b-col>
-                <hr class="w-100" />
                 <b-col cols="12">
                     <h5>By parent type</h5>
                     <b-row no-gutters>
@@ -24,7 +23,7 @@
             <div class="responsive-table">
                 <b-table striped hover :items="modules" :fields="fields" v-if="modules.length > 0">
                     <template v-slot:cell(icon)="data">
-                        <img class="table-row-icon" :src="'data:image/png;base64, ' + data.item.icon"/>
+                        <img class="table-row-icon" :src="'data:image/png;base64, ' + data.item.icon" />
                     </template>
                     <template v-slot:cell(name)="data">
                         <span>{{data.item.name}}</span>
@@ -214,52 +213,5 @@
 </script>
 
 <style lang="scss">
-    #scaffold-page {
-        .bulk-card {
-            -moz-box-shadow: none;
-            -webkit-box-shadow: none;
-            box-shadow: none;
-
-            .card-body {
-                padding: 15px;
-            }
-
-            .card-title {
-                margin: 0px !important;
-            }
-
-            .card-subtitle {
-                margin-top: 0px !important;
-                font-size: 12px;
-                margin-bottom: 15px !important;
-            }
-        }
-
-        .table-row-icon {
-            border-radius: 0px !important;
-        }
-
-        .cb-gen-btn {
-            margin-right: 4px;
-
-            .cb-gen-btn-img {
-                height: 16px;
-            }
-                        
-            &:hover,
-            &:active,
-            &:focus {
-                .cb-gen-btn-img {
-                    -webkit-filter: brightness(0) invert(1);
-                    filter: brightness(0) invert(1);
-                }
-            }
-
-            .cb-gen-btn-text {
-                position: relative;
-                top: 2px;
-            }
-        }
-    }
 
 </style>

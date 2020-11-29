@@ -1,35 +1,37 @@
 ﻿<template>
-    <div>
-        <hr />
-        <div class="row m-0">
-            <div class="form-group px-1 col">
-                <select class="form-control" v-model="selectedKey" @change="selectContentKey">
-                    <option :value="0">Add New Key</option>
-                    <optgroup label="Current Keys">
-                        <option :value="contentKey.id" v-for="contentKey in contentKeys" :key="'contentKey' + contentKey.id">{{contentKey.key}}</option>
-                    </optgroup>
-                </select>
+    <div class="client-builder-page">
+        <b-card class="main-card" title="Static content items list" sub-title="List of all static content items defined by key and translation content stored into the localization content. To create a new one use the form placed on the top of the page.">
+            <hr class="w-100" />
+            <div class="row m-0">
+                <div class="form-group px-1 col">
+                    <select class="form-control" v-model="selectedKey" @change="selectContentKey">
+                        <option :value="0">Add New Key</option>
+                        <optgroup label="Current Keys">
+                            <option :value="contentKey.id" v-for="contentKey in contentKeys" :key="'contentKey' + contentKey.id">{{contentKey.key}}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group px-1 col">
+                    <input class="form-control"
+                           v-model="currentContentEntity.key"
+                           @keypress="isValidKeyValue"
+                           @input="currentContentEntity.key = transformKeyInput($event)"
+                           placeholder="Key" />
+                </div>
+                <div class="form-group px-1">
+                    <button v-if="!editMode" class="btn btn-primary h-100" @click="createContentKey">Add</button>
+                    <button v-if="editMode" class="btn btn-primary h-100" @click="editContentKey">Edit</button>
+                    <button v-if="editMode" class="btn btn-danger h-100" @click="deleteContentKey">Delete</button>
+                </div>
             </div>
-            <div class="form-group px-1 col">
-                <input class="form-control"
-                       v-model="currentContentEntity.key"
-                       @keypress="isValidKeyValue"
-                       @input="currentContentEntity.key = transformKeyInput($event)"
-                       placeholder="Key" />
+            <div v-for="contentItem in currentContentEntity.staticContentList" :key="'codeEditor' + contentItem.languageId">
+                <hr />
+                <h5>{{ getLanguageById(contentItem.languageId).name }} Version</h5>
+                <div class="border">
+                    <codemirror v-model="contentItem.content" :options="codeMirrorOptions"></codemirror>
+                </div>
             </div>
-            <div class="form-group px-1">
-                <button v-if="!editMode" class="btn btn-primary h-100" @click="createContentKey">Add</button>
-                <button v-if="editMode" class="btn btn-primary h-100" @click="editContentKey">Edit</button>
-                <button v-if="editMode" class="btn btn-danger h-100" @click="deleteContentKey">Delete</button>
-            </div>
-        </div>
-        <div v-for="contentItem in currentContentEntity.staticContentList" :key="'codeEditor' + contentItem.languageId">
-            <hr />
-            <h5>{{ getLanguageById(contentItem.languageId).name }} Version</h5>
-            <div class="border">
-                <codemirror v-model="contentItem.content" :options="codeMirrorOptions"></codemirror>
-            </div>
-        </div>
+        </b-card>
     </div>
 </template>
 
@@ -50,7 +52,10 @@ export default {
         lineNumbers: true,
         line: true,
         },
-        currentContentEntity: null,
+        currentContentEntity: {
+            key: '',
+            staticContentList: []
+        },
         selectedKey: 0
     };
   },

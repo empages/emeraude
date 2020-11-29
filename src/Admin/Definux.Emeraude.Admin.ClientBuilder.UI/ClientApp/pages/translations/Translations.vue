@@ -1,55 +1,52 @@
 ﻿<template>
-    <div>
-        <hr />
-        <b-card no-body class="bg-dark">
-            <b-card-title class="p-3 m-0 text-white" title="Add key with translations" title-tag="p"></b-card-title>
-            <b-card-body class="p-2">
-                <div class="row m-0">
-                    <div class="form-group col px-1">
-                        <input class="form-control"
-                               v-model="newKey.key"
-                               @keypress="isValidKeyValue"
-                               @input="newKey.key = transformKeyInput($event)"
-                               placeholder="Key" />
-                    </div>
-                    <div class="form-group col px-1" v-for="(language, languageIndex) in languages" :key="'LanguageInput' + language.code">
-                        <input class="form-control" v-model="newKey.values[languageIndex].value" :placeholder="'Translation in ' + language.name" />
-                    </div>
-                    <div class="form-group col-1 px-1">
-                        <button class="btn btn-primary w-100 h-100" @click="createKey">Add</button>
-                    </div>
+    <div class="client-builder-page">
+        <b-card class="main-card" title="Translations list" sub-title="List of all translations defined by key and translations stored into the localization content. To create a new one use the form placed on the top of the page.">
+            <hr class="w-100" />
+            <div class="row m-0">
+                <div class="form-group col px-1">
+                    <input class="form-control"
+                           v-model="newKey.key"
+                           @keypress="isValidKeyValue"
+                           @input="newKey.key = transformKeyInput($event)"
+                           placeholder="Key" />
                 </div>
-            </b-card-body>
+                <div class="form-group col px-1" v-for="(language, languageIndex) in languages" :key="'LanguageInput' + language.code">
+                    <input class="form-control" v-model="newKey.values[languageIndex].value" :placeholder="'Translation in ' + language.name" />
+                </div>
+                <div class="form-group col-1 px-1">
+                    <button class="btn btn-primary w-100 h-100" @click="createKey">Add</button>
+                </div>
+            </div>
+            <hr />
+            <input v-model="filterString" class="form-control" placeholder="Filter by key or value" />
+            <hr />
+            <div>
+                <div v-if="gridData.length == 0" class="text-center">
+                    <i class="mdi mdi-24px mdi-spin mdi-loading"></i>
+                </div>
+                <div v-else>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr class="text-center border">
+                                <th class="p-1 pb-2">
+                                    <strong>Key</strong>
+                                </th>
+                                <th class="p-1 pb-2" v-for="language in languages" :key="'Language' + language.code">
+                                    <strong>{{language.nativeName}}</strong>
+                                </th>
+                                <th class="p-1 pb-2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <key-row v-for="(dataItem, dataItemIndex) in filteredData"
+                                     :key="'DataItem' + dataItemIndex"
+                                     :data="dataItem"
+                                     :reloadCallback="loadGridData"></key-row>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </b-card>
-        <hr />
-        <input v-model="filterString" class="form-control" placeholder="Filter by key or value" />
-        <hr />
-        <div>
-            <div v-if="gridData.length == 0" class="text-center">
-                <i class="mdi mdi-24px mdi-spin mdi-loading"></i>
-            </div>
-            <div v-else>
-                <table class="table">
-                    <thead>
-                        <tr class="text-center border">
-                            <th class="p-1 pb-2">
-                                <strong>Key</strong>
-                            </th>
-                            <th class="p-1 pb-2" v-for="language in languages" :key="'Language' + language.code">
-                                <strong>{{language.nativeName}}</strong>
-                            </th>
-                            <th class="p-1 pb-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <key-row v-for="(dataItem, dataItemIndex) in filteredData"
-                                 :key="'DataItem' + dataItemIndex"
-                                 :data="dataItem"
-                                 :reloadCallback="loadGridData"></key-row>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </template>
 

@@ -13,17 +13,17 @@ namespace Definux.Emeraude.Admin.Models
     public class UserViewModel : IMapFrom<User>
     {
         /// <inheritdoc cref="User.Id"/>
-        [DetailsCard(0, "Id", typeof(DetailsCardTextElement))]
+        [DetailsCard(0, typeof(DetailsCardTextElement))]
         public string Id { get; set; }
 
         /// <inheritdoc cref="User.Email"/>
-        [TableColumn(1, "Email", typeof(TableTextElement))]
-        [DetailsCard(1, "Email", typeof(DetailsCardTextElement))]
+        [TableColumn(1, typeof(TableTextElement))]
+        [DetailsCard(1, typeof(DetailsCardTextElement))]
         public string Email { get; set; }
 
         /// <inheritdoc cref="User.Name"/>
-        [TableColumn(2, "Name", typeof(TableTextElement))]
-        [DetailsCard(2, "Name", typeof(DetailsCardTextElement))]
+        [TableColumn(2, typeof(TableTextElement))]
+        [DetailsCard(2, typeof(DetailsCardTextElement))]
         public string Name { get; set; }
 
         /// <inheritdoc cref="User.RegistrationDate"/>
@@ -35,7 +35,7 @@ namespace Definux.Emeraude.Admin.Models
         /// Flag that indicates whether the user is activate his/her two factor authentication.
         /// </summary>
         [TableColumn(4, "2FA", typeof(TableFlagElement))]
-        [DetailsCard(4, "Two Factor Enabled", typeof(DetailsCardFlagElement))]
+        [DetailsCard(4, typeof(DetailsCardFlagElement))]
         public bool TwoFactorEnabled { get; set; }
 
         /// <inheritdoc cref="User.IsLockedOut"/>

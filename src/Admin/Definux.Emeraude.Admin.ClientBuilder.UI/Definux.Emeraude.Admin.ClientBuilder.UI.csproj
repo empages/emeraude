@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\admin\" />
+    <Folder Include="wwwroot\admin\js\modules\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,5 +54,5 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
+  
 </Project>

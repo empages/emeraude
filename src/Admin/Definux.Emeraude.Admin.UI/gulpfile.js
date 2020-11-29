@@ -36,7 +36,6 @@ gulp.task('scripts', () =>
         "./Scripts/js/shared/off-canvas.js",
         "./Scripts/js/shared/hoverable-collapse.js",
         "./Scripts/js/shared/misc.js",
-        "./Scripts/js/shared/todolist.js",
         "./Scripts/js/shared/tooltips.js",
         "./Scripts/js/shared/popover.js",
         "./Scripts/js/shared/clipboard.js",

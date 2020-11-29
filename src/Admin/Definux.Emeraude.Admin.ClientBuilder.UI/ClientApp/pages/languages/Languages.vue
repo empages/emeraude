@@ -1,53 +1,50 @@
 ﻿<template>
-    <div>
-        <hr />
-        <b-card no-body class="bg-dark">
-            <b-card-title class="p-3 m-0 text-white" title="Add language" title-tag="p"></b-card-title>
-            <b-card-body class="p-2">
-                <div class="row m-0">
-                    <div class="form-group col px-1">
-                        <input class="form-control"
-                               v-model="newLanguage.code"
-                               placeholder="Code" />
-                    </div>
-                    <div class="form-group col px-1">
-                        <input class="form-control"
-                               v-model="newLanguage.name"
-                               placeholder="Name" />
-                    </div>
-                    <div class="form-group col px-1">
-                        <input class="form-control"
-                               v-model="newLanguage.nativeName"
-                               placeholder="Native Name" />
-                    </div>
-                    <div class="form-group col-1 px-1">
-                        <button class="btn btn-primary w-100 h-100" @click="addNewLanguage">Add</button>
-                    </div>
+    <div class="client-builder-page">
+        <b-card class="main-card" title="Languages list" sub-title="List of all languages stored into the localization context. To create a new one use the form placed on the top of the page.">
+            <hr class="w-100" />
+            <div class="row m-0">
+                <div class="form-group col px-1">
+                    <input class="form-control"
+                           v-model="newLanguage.code"
+                           placeholder="Code" />
                 </div>
-            </b-card-body>
+                <div class="form-group col px-1">
+                    <input class="form-control"
+                           v-model="newLanguage.name"
+                           placeholder="Name" />
+                </div>
+                <div class="form-group col px-1">
+                    <input class="form-control"
+                           v-model="newLanguage.nativeName"
+                           placeholder="Native Name" />
+                </div>
+                <div class="form-group col-1 px-1">
+                    <button class="btn btn-primary w-100 h-100" @click="addNewLanguage">Add</button>
+                </div>
+            </div>
+            <hr />
+            <b-table striped hover :items="languages" :fields="fields">
+                <template v-slot:cell(default)="data">
+                    <button v-if="!data.item.isDefault"
+                            type="button"
+                            @click="makeLanguageDefault(data.item.id)"
+                            class="btn btn-icons action-btn btn-primary p-1"
+                            title="Make Default">
+                        <i class="mdi mdi-select"></i>
+                    </button>
+                    <button v-else
+                            disabled
+                            type="button"
+                            class="btn btn-icons action-btn btn-ForestGreen p-1"
+                            title="Default">
+                        <i class="mdi mdi-checkbox-marked-outline"></i>
+                    </button>
+                </template>
+                <template v-slot:cell(actions)="data">
+                    <b-button @click="deleteLanguage(data.item.id)" variant="danger" class="btn btn-icons"><i class="mdi mdi-delete-forever"></i></b-button>
+                </template>
+            </b-table>
         </b-card>
-        <hr />
-        <b-table striped hover :items="languages" :fields="fields">
-            <template v-slot:cell(default)="data">
-                <button v-if="!data.item.isDefault"
-                        type="button"
-                        @click="makeLanguageDefault(data.item.id)"
-                        class="btn btn-icons action-btn btn-primary p-1"
-                        title="Make Default">
-                    <i class="mdi mdi-select"></i>
-                </button>
-                <button v-else
-                        disabled
-                        type="button"
-                        class="btn btn-icons action-btn btn-ForestGreen p-1"
-                        title="Default">
-                    <i class="mdi mdi-checkbox-marked-outline"></i>
-                </button>
-            </template>
-            <template v-slot:cell(actions)="data">
-                <b-button @click="deleteLanguage(data.item.id)" variant="danger" class="btn btn-icons"><i class="mdi mdi-delete-forever"></i></b-button>
-            </template>
-        </b-table>
     </div>
 </template>
 

@@ -33,7 +33,7 @@ namespace Definux.Emeraude.Files.Validation.Handlers
             bool isFileValid = false;
             foreach (var fileExtension in this.allowedFileExtensions)
             {
-                if (this.RequestObject.FileName.EndsWith($".{fileExtension.ToString().Replace("_", string.Empty).ToLower()}"))
+                if (this.RequestObject.FileName.ToLower().EndsWith($".{fileExtension.ToString().Replace("_", string.Empty).ToLower()}"))
                 {
                     isFileValid = true;
                     break;
