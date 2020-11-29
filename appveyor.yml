@@ -3,6 +3,7 @@ branches:
   only:
   - master
   - dev
+skip_tags: true
 image: Visual Studio 2019
 clone_depth: 1
 assembly_info:
@@ -14,6 +15,7 @@ assembly_info:
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   PACKAGE_VERSION: $(appveyor_build_version)
+  DOTNET_HOST_PATH: '%ProgramFiles%\dotnet\dotnet.exe'
 before_build:
 - cmd: dotnet restore
 build:
@@ -25,5 +27,14 @@ build:
 deploy:
 - provider: Environment
   name: nuget
+  on:
+    branch: master
+- provider: GitHub
+  tag: v$(appveyor_build_version)
+  release: $(appveyor_build_version)
+  description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
+  auth_token:
+    secure: C6D3cCL0/G5S9hyReiIaq6FA/vKmtgB8UGVstzlSs20bEUJ8mHfdlo8Nu03Sgt70
+  artifact: /.*\.nupkg/
   on:
     branch: master
