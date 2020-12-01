@@ -1,5 +1,5 @@
 using Definux.Emeraude.Persistence;
-using EmDoggo.Application.Common.Interfaces.Persistance;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

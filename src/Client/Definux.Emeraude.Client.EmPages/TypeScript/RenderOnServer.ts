@@ -3,7 +3,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vueServerRenderer from 'vue-server-renderer';
-
 import * as url from 'url';
 import * as domain from 'domain';
 import { run as domainTaskRun, baseUrl as domainTaskBaseUrl } from 'domain-task';
@@ -24,7 +23,6 @@ function renderToStringImpl(callback: RenderToStringCallback, serverBundlePath: 
 function renderViewFunc(callback: RenderToStringCallback, serverBundlePath: string, applicationBasePath: string, absoluteRequestUrl: string, requestPathAndQuery: string, customDataParameter: any, overrideTimeoutMilliseconds: number, requestPathBase: string) {
     const bootFunc = (params: BootFuncParams) => {
         const fullFilePath = path.join(applicationBasePath, params.serverBundlePath);
-        const code = fs.readFileSync(fullFilePath, 'utf8');
         const vueRenderer = vueServerRenderer.createBundleRenderer(fullFilePath);
 
         return new Promise<RenderResult>((resolve, reject) => {
@@ -75,24 +73,18 @@ function createServerRenderer(bootFunc: BootFunc): RenderToStringFunc {
             domainTasks: domainTaskCompletionPromise,
             data: customDataParameter
         };
-        const absoluteBaseUrl = params.origin + params.baseUrl; // Should be same value as page's <base href>
+        const absoluteBaseUrl = params.origin + params.baseUrl;
 
-        // Open a new domain that can track all the async tasks involved in the app's execution
-        domainTaskRun(/* code to run */() => {
-            // Workaround for Node bug where native Promise continuations lose their domain context
-            // (https://github.com/nodejs/node-v0.x-archive/issues/8648)
-            // The domain.active property is set by the domain-context module
+        domainTaskRun(() => {
             bindPromiseContinuationsToDomain(domainTaskCompletionPromise, domain['active']);
-
-            // Make the base URL available to the 'domain-tasks/fetch' helper within this execution context
             domainTaskBaseUrl(absoluteBaseUrl);
-            // Begin rendering, and apply a timeout
+
             const bootFuncPromise = bootFunc(params);
             if (!bootFuncPromise || typeof bootFuncPromise.then !== 'function') {
                 callback(`Prerendering failed because the boot function did not return a promise.`, null);
                 return;
             }
-            const timeoutMilliseconds = overrideTimeoutMilliseconds || defaultTimeoutMilliseconds; // e.g., pass -1 to override as 'never time out'
+            const timeoutMilliseconds = overrideTimeoutMilliseconds || defaultTimeoutMilliseconds;
             const bootFuncPromiseWithTimeout = timeoutMilliseconds > 0
                 ? wrapWithTimeout(bootFuncPromise, timeoutMilliseconds,
                     `Prerendering timed out after ${timeoutMilliseconds}ms because the boot function `
@@ -100,26 +92,20 @@ function createServerRenderer(bootFunc: BootFunc): RenderToStringFunc {
                     + 'rejects its promise.')
                 : bootFuncPromise;
 
-            // Actually perform the rendering
             bootFuncPromiseWithTimeout.then(successResult => {
                 callback(null, successResult as RedirectResult);
             }, error => {
                 callback(error, null);
             });
-        }, /* completion callback */ errorOrNothing => {
+        }, errorOrNothing => {
             if (errorOrNothing) {
                 callback(errorOrNothing, null);
             } else {
-                // There are no more ongoing domain tasks (typically data access operations), so we can resolve
-                // the domain tasks promise which notifies the boot code that it can do its final render.
                 domainTaskCompletionPromiseResolve();
             }
         });
     };
 
-    // Indicate to the prerendering code bundled into Microsoft.AspNetCore.SpaServices that this is a serverside rendering
-    // function, so it can be invoked directly. This flag exists only so that, in its absence, we can run some different
-    // backward-compatibility logic.
     resultFunc['isServerRenderer'] = true;
 
     return resultFunc;

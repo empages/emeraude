@@ -2,7 +2,7 @@ using AutoMapper;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Mapping;
 using Definux.Utilities.Objects;
-using EmDoggo.Application.Common.Interfaces.Persistance;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Common;
 using EmDoggo.Domain.Entities;
 using MediatR;

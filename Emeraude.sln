@@ -63,13 +63,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client.UI"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2A822AA4-5E2B-4D9E-874C-325E9F62E260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Admin", "tests\Definux.Emeraude.Tests.Admin\Definux.Emeraude.Tests.Admin.csproj", "{6DFBD94A-D103-4610-ADE9-7B905C2A9DC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Tests.Admin", "tests\Definux.Emeraude.Tests.Admin\Definux.Emeraude.Tests.Admin.csproj", "{6DFBD94A-D103-4610-ADE9-7B905C2A9DC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Client", "tests\Definux.Emeraude.Tests.Client\Definux.Emeraude.Tests.Client.csproj", "{5C5B5B60-02E9-4DB1-A5B5-08E701E75E77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Tests.Client", "tests\Definux.Emeraude.Tests.Client\Definux.Emeraude.Tests.Client.csproj", "{5C5B5B60-02E9-4DB1-A5B5-08E701E75E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Core", "tests\Definux.Emeraude.Tests.Core\Definux.Emeraude.Tests.Core.csproj", "{00B1B2AB-FB31-4B5C-8F2A-CB6BD84EAD5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Tests.Core", "tests\Definux.Emeraude.Tests.Core\Definux.Emeraude.Tests.Core.csproj", "{00B1B2AB-FB31-4B5C-8F2A-CB6BD84EAD5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Sdk", "tests\Definux.Emeraude.Tests.Sdk\Definux.Emeraude.Tests.Sdk.csproj", "{280DD04D-D2FC-4698-B403-0B7C2BA95CF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Tests.Sdk", "tests\Definux.Emeraude.Tests.Sdk\Definux.Emeraude.Tests.Sdk.csproj", "{280DD04D-D2FC-4698-B403-0B7C2BA95CF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Cli", "src\Sdk\Definux.Emeraude.Cli\Definux.Emeraude.Cli.csproj", "{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,6 +195,10 @@ Global
 		{280DD04D-D2FC-4698-B403-0B7C2BA95CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280DD04D-D2FC-4698-B403-0B7C2BA95CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280DD04D-D2FC-4698-B403-0B7C2BA95CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -227,6 +233,7 @@ Global
 		{5C5B5B60-02E9-4DB1-A5B5-08E701E75E77} = {2A822AA4-5E2B-4D9E-874C-325E9F62E260}
 		{00B1B2AB-FB31-4B5C-8F2A-CB6BD84EAD5F} = {2A822AA4-5E2B-4D9E-874C-325E9F62E260}
 		{280DD04D-D2FC-4698-B403-0B7C2BA95CF5} = {2A822AA4-5E2B-4D9E-874C-325E9F62E260}
+		{6F0B8068-4B90-48D4-B54C-F5EAC9A6FFC4} = {1F93822E-0CFB-4C49-B9BB-9403B5456C1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04DB78D1-68B2-45C3-AFD5-DC467422C774}

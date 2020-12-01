@@ -2,7 +2,7 @@ using Definux.Emeraude.Application.Persistence;
 using EmDoggo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmDoggo.Application.Common.Interfaces.Persistance
+namespace EmDoggo.Application.Interfaces
 {
     public interface IEntityContext : IEmContext
     {

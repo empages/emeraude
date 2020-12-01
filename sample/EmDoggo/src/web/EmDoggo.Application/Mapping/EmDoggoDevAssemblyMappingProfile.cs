@@ -1,7 +1,7 @@
 using Definux.Emeraude.Application.Mapping;
 using System.Reflection;
 
-namespace EmDoggo.Application.Common.Mapping
+namespace EmDoggo.Application.Mapping
 {
     /// <summary>
     /// Assembly mapping profile for registration of all mappings configurations for EmPages.

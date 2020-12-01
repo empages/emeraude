@@ -1,5 +1,5 @@
 using AutoMapper;
-using EmDoggo.Application.Common.Interfaces.Persistance;
+using EmDoggo.Application.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

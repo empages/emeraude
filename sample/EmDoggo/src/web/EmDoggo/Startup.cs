@@ -3,8 +3,8 @@ using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Extensions;
-using EmDoggo.Application.Common.Interfaces.Persistance;
-using EmDoggo.Application.Common.Mapping;
+using EmDoggo.Application.Interfaces;
+using EmDoggo.Application.Mapping;
 using EmDoggo.Infrastructure.Extensions;
 using EmDoggo.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Builder;
@@ -15,8 +15,6 @@ namespace EmDoggo
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEmeraude<IEntityContext, EntityContext>(options =>
@@ -56,7 +54,6 @@ namespace EmDoggo
             services.RegisterInfrastructureServices();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseEmeraude(env);

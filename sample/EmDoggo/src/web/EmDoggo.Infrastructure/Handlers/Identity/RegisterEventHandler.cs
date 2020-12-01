@@ -1,6 +1,5 @@
 using Definux.Emeraude.Application.EventHandlers;
-using EmDoggo.Application.Common.Interfaces;
-using EmDoggo.Application.Common.Interfaces.Persistance;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Entities;
 using System;
 using System.Threading.Tasks;

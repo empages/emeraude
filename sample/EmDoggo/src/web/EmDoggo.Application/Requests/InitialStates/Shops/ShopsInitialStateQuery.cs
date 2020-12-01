@@ -1,10 +1,9 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using EmDoggo.Application.Common.Interfaces.Persistance;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

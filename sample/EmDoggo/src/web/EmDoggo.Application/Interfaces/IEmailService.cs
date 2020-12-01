@@ -2,7 +2,7 @@ using Definux.Emeraude.Application.Emails;
 using System;
 using System.Threading.Tasks;
 
-namespace EmDoggo.Application.Common.Interfaces
+namespace EmDoggo.Application.Interfaces
 {
     public interface IEmailService
     {

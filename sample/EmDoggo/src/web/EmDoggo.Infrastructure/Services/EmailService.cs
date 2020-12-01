@@ -1,5 +1,5 @@
 using Definux.Emeraude.Application.Emails;
-using EmDoggo.Application.Common.Interfaces;
+using EmDoggo.Application.Interfaces;
 using System;
 using System.Threading.Tasks;
 

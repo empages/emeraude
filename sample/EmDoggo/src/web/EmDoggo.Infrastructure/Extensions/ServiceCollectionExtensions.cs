@@ -1,5 +1,5 @@
 using Definux.Emeraude.Identity.Extensions;
-using EmDoggo.Application.Common.Interfaces;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Infrastructure.Handlers.Identity;
 using EmDoggo.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
