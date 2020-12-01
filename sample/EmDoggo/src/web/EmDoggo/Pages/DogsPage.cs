@@ -31,8 +31,8 @@ namespace EmDoggo.Pages
 
         protected override Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<DogsViewModel> model)
         {
-            ViewData["PageTitle"] = Localizer["DOGS"];
-            ViewData["PageDescription"] = Localizer["DOGS"];
+            AddTranslatedValueIntoViewData("PageTitle", "DOGS");
+            AddTranslatedValueIntoViewData("PageDescription", "DOGS");
 
             return base.InitializeMetaTagsAsync(model);
         }

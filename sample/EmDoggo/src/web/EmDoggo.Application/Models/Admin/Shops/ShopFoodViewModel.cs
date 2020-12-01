@@ -4,7 +4,6 @@ using Definux.Emeraude.Admin.UI.UIElements.Form.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Table.Implementations;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Emeraude.Application.Mapping;
-using EmDoggo.Application.Common.UIElements;
 using EmDoggo.Domain.Entities;
 using System;
 
@@ -15,7 +14,6 @@ namespace EmDoggo.Application.Models.Admin.Shops
         [DetailsCard(0, typeof(DetailsCardTextElement))]
         public string Id { get; set; }
 
-        [TableColumn(1, typeof(TableFoodNameElement))]
         [FormInput(1, typeof(FormDatabaseDropdownElement), typeof(Food), nameof(Food.Name))]
         public Guid FoodId { get; set; }
 

@@ -5,7 +5,7 @@ using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Utilities;
-using EmDoggo.Application.Common.Interfaces;
+using EmDoggo.Application.Interfaces;
 using EmDoggo.Application.Models.Admin.Foods;
 using EmDoggo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EmDoggo.Application.Common.Interfaces
+namespace EmDoggo.Application.Interfaces
 {
     public interface IHelperService
     {

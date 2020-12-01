@@ -342,5 +342,15 @@ namespace Definux.Emeraude.Presentation.Controllers
         {
             return this.GetRouteParameterOrNull(name)?.GetGuidValueOrDefault();
         }
+
+        /// <summary>
+        /// Add a value (translation key) into the ViewData.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value">Translation key.</param>
+        protected void AddTranslatedValueIntoViewData(string key, string value)
+        {
+            this.ViewData[key] = this.Localizer[value];
+        }
     }
 }

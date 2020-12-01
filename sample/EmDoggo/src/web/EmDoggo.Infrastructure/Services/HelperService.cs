@@ -1,7 +1,7 @@
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Resources;
-using EmDoggo.Application.Common.Interfaces;
+using EmDoggo.Application.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
