@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -133,11 +134,25 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
         /// <returns></returns>
         protected async virtual Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model)
         {
-            var seoOptions = ((IOptions<DefinuxSeoOptions>)this.HttpContext.RequestServices.GetService(typeof(IOptions<DefinuxSeoOptions>))).Value;
-            var metaTagsModel = this.ViewData.GetMetaTagsModelOrDefault();
-            metaTagsModel.ApplyStaticTags(seoOptions.DefaultMetaTags);
+            try
+            {
+                var seoOptionsAccessor = (IOptions<DefinuxSeoOptions>)this.HttpContext.RequestServices.GetService(typeof(IOptions<DefinuxSeoOptions>));
+                var seoOptions = seoOptionsAccessor?.Value;
+                var metaTagsModel = this.ViewData.GetMetaTagsModelOrDefault();
+                if (metaTagsModel == null)
+                {
+                    metaTagsModel = new MetaTagsModel();
+                }
 
-            return metaTagsModel;
+                metaTagsModel.ApplyStaticTags(seoOptions.DefaultMetaTags);
+
+                return metaTagsModel;
+            }
+            catch (Exception ex)
+            {
+                await this.Logger.LogErrorAsync(ex);
+                return new MetaTagsModel();
+            }
         }
     }
 }
