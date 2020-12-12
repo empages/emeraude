@@ -101,7 +101,11 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     Method = endpointMethodInfo.GetControllerActionHttpMethod(),
                     Authorized = endpointMethodInfo.HasAttribute<AuthorizeAttribute>() || controllerType.HasAttribute<AuthorizeAttribute>(),
                     Response = DescriptionExtractor.ExtractResponseDescription(endpointAttribute.ResponseType),
-                    Arguments = endpointMethodInfo.GetParameters().Select(x => DescriptionExtractor.ExtractArgumentDescription(x.Name, x.ParameterType)).ToList(),
+                    Arguments = endpointMethodInfo
+                        .GetParameters()
+                        .Where(x => x.GetCustomAttribute<IgnoreParamAttribute>() == null)
+                        .Select(x => DescriptionExtractor.ExtractArgumentDescription(x.Name, x.ParameterType))
+                        .ToList(),
                 };
 
                 return currentEntpoint;
