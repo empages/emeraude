@@ -5,6 +5,11 @@ using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Abstractions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.ServiceAgents.Templates;
 using Definux.Emeraude.Admin.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.Admin.ClientBuilder.Services;
+using Definux.Utilities.Functions;
+using Definux.Utilities.Objects;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.ServiceAgents
 {
@@ -67,10 +72,27 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Servi
             var endpointService = this.GetService<IEndpointService>();
             var classes = endpointService.GetAllEndpointsClasses();
             var enums = DescriptionExtractor.ExtractUniqueEnumsFromClasses(classes);
+            var enumValueItems = new Dictionary<string, string>();
+            DefaultContractResolver contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            };
+            foreach (var enumItem in enums)
+            {
+                string serializedEnums = JsonConvert.SerializeObject(
+                    EnumFunctions.GetEnumValueItems(enumItem.FullName),
+                    new JsonSerializerSettings
+                    {
+                        ContractResolver = contractResolver,
+                        Formatting = Formatting.Indented,
+                    });
+                enumValueItems[enumItem.FullName] = JToken.Parse(serializedEnums).ToString();
+            }
 
             return file.RenderTemplate(new Dictionary<string, object>
             {
                 { "Enums", enums },
+                { "EnumsValueItems", enumValueItems },
             });
         }
     }
