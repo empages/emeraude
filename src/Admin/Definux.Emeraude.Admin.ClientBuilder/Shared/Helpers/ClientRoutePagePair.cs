@@ -3,14 +3,14 @@
 namespace Definux.Emeraude.Admin.ClientBuilder.Shared.Helpers
 {
     /// <summary>
-    /// Helper class that contains route key and client builder page model.
+    /// Helper class that contains route and client builder page model.
     /// </summary>
-    internal class RouteKeyPagePair
+    internal class ClientRoutePagePair
     {
         /// <summary>
-        /// Route key.
+        /// Route implementation.
         /// </summary>
-        internal string Key { get; set; }
+        internal ClientRoute Route { get; set; }
 
         /// <summary>
         /// Route page.

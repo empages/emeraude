@@ -9,6 +9,7 @@ using Definux.Emeraude.Client.EmPages.Abstractions;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Services
@@ -123,56 +124,31 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         private List<Page> ReorderPagesBasedOnClientRoute(List<Page> pages)
         {
             var reorderedPages = new List<Page>();
-            var reorderingDictionary = new List<RouteKeyPagePair>();
+            var reorderingDictionary = new List<ClientRoutePagePair>();
             foreach (var page in pages)
             {
-                string orderKey = string.Empty;
-                if (page.ClientRoute == "/" || string.IsNullOrWhiteSpace(page.ClientRoute))
+                reorderingDictionary.Add(new ClientRoutePagePair
                 {
-                    orderKey = "0";
-                }
-                else
-                {
-                    orderKey = string.Join(string.Empty, page.ClientRoute.Split('/').Select(x => this.ExtractOrderKeyFromRouteSegment(x)));
-                }
-
-                reorderingDictionary.Add(new RouteKeyPagePair
-                {
-                    Key = orderKey,
+                    Route = new ClientRoute(page.ClientRoute),
                     Page = page,
                 });
             }
 
-            var keys = reorderingDictionary.Select(x => x.Key).ToList();
+            var keys = reorderingDictionary.Select(x => x.Route.OrderKey).ToList();
             keys.Sort(StringComparer.Ordinal);
+            var orderedClientRoutes = new List<ClientRoute>();
 
             foreach (var key in keys)
             {
-                reorderedPages.Add(reorderingDictionary.FirstOrDefault(x => x.Key == key).Page);
+                orderedClientRoutes.Add(reorderingDictionary.FirstOrDefault(x => x.Route.OrderKey == key)?.Route);
+            }
+
+            foreach (var route in orderedClientRoutes)
+            {
+                reorderedPages.Add(reorderingDictionary.FirstOrDefault(x => x.Route.OrderKey == route.OrderKey)?.Page);
             }
 
             return reorderedPages;
-        }
-
-        private string ExtractOrderKeyFromRouteSegment(string routeSegment)
-        {
-            if (string.IsNullOrWhiteSpace(routeSegment))
-            {
-                return string.Empty;
-            }
-
-            int startIndex = 0;
-            string segmentPrefix = string.Empty;
-            if (routeSegment.StartsWith(":"))
-            {
-                startIndex = 1;
-                segmentPrefix = "~";
-            }
-
-            int segmentLength = routeSegment.Length - startIndex;
-            string segmentText = routeSegment.Substring(startIndex);
-
-            return $"{segmentPrefix}{segmentText}{segmentLength}";
         }
     }
 }
