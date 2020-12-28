@@ -8,8 +8,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
     {
         public bool Void { get; set; }
 
-        public ClassDescription Class { get; set; }
-
-        public bool IsCollection { get; set; }
+        public TypeDescription Type { get; set; }
     }
 }

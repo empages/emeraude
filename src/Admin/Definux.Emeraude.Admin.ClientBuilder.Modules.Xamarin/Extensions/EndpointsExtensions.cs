@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
                 methodArgumentsComma = ", ";
                 if (endpoint.Arguments != null && endpoint.Arguments.Count > 0)
                 {
-                    methodGenericParameters.Add(endpoint.ComplexArgument?.Class?.Name + "Bindable");
+                    methodGenericParameters.Add(endpoint.ComplexArgument?.Type?.Name + "Bindable");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
                 methodArgumentsComma = ", ";
                 if (endpoint.Arguments != null && endpoint.Arguments.Count > 0)
                 {
-                    methodGenericParameters.Add(endpoint.ComplexArgument?.Class?.Name + "Bindable");
+                    methodGenericParameters.Add(endpoint.ComplexArgument?.Type?.Name + "Bindable");
                 }
                 else
                 {
@@ -79,8 +79,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
                     return string.Empty;
                 }
 
-                string typeName = endpoint.Response?.Class?.Name + "Bindable";
-                if (endpoint.Response.IsCollection)
+                string typeName = endpoint.Response?.Type?.Name + "Bindable";
+                if (endpoint.Response.Type.IsCollection)
                 {
                     typeName = $"ObservableCollection<{typeName}>";
                 }
@@ -103,7 +103,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
                 return string.Empty;
             }
 
-            return string.Join(", ", endpoint.Arguments.Select(x => $"{x.Class.Name}{(x.Class.IsComplex ? "Bindable" : string.Empty)} {x.Name}"));
+            return string.Join(", ", endpoint.Arguments.Select(x => $"{x.Type.Name}{(x.Type.IsComplex ? "Bindable" : string.Empty)} {x.Name}"));
         }
     }
 }

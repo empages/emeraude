@@ -19,6 +19,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// Get list of all used classes into the decorated endpoints (<see cref="EndpointAttribute"/>, <seealso cref="ApiEndpointsControllerAttribute"/>).
         /// </summary>
         /// <returns></returns>
-        List<ClassDescription> GetAllEndpointsClasses();
+        List<TypeDescription> GetAllEndpointsClasses();
     }
 }

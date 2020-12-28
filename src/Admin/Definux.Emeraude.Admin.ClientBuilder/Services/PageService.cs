@@ -80,7 +80,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     Authorized = pageType.HasAttribute<AuthorizeAttribute>(),
                     Route = routeTemplate,
                     InitialStateModelType = initialStateModelType,
-                    InitialStateModelClass = DescriptionExtractor.ExtractClassDescription(initialStateModelType),
+                    InitialStateModelClass = DescriptionExtractor.ExtractTypeDescription(initialStateModelType),
                     ClientRoute = clientRouteTemplate,
                 };
 

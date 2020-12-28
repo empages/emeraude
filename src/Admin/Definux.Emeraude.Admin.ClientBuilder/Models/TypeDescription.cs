@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Definux.Utilities.Extensions;
 
 namespace Definux.Emeraude.Admin.ClientBuilder.Models
 {
@@ -8,19 +10,32 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
     public class TypeDescription
     {
         /// <summary>
-        /// Name of the type.
+        /// Initializes a new instance of the <see cref="TypeDescription"/> class.
+        /// </summary>
+        public TypeDescription()
+        {
+            this.Properties = new List<PropertyDescription>();
+        }
+
+        /// <summary>
+        /// Name of the class.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Full name of the type.
+        /// Full name of the class.
         /// </summary>
         public string FullName { get; set; }
 
         /// <summary>
-        /// Name of the type in JavaScript format.
+        /// JavaScript name of the class.
         /// </summary>
         public string JavaScriptTypeName { get; set; }
+
+        /// <summary>
+        /// List of all properties of the class.
+        /// </summary>
+        public List<PropertyDescription> Properties { get; set; }
 
         /// <summary>
         /// Indicates that the type is collection or not.
@@ -38,15 +53,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
         public bool IsEnum { get; set; }
 
         /// <summary>
+        /// Indicates that the type is generic type or not.
+        /// </summary>
+        public bool IsGenericType { get; set; }
+
+        /// <summary>
         /// Indicates that the type is primitive type (false) or not (true).
         /// </summary>
-        public bool IsComplexType
-        {
-            get
-            {
-                return this.ComplexType != null;
-            }
-        }
+        public bool IsComplex { get; set; }
 
         /// <summary>
         /// Enumeration values in case when type is enum.
@@ -54,8 +68,41 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
         public Dictionary<string, int> EnumValues { get; set; }
 
         /// <summary>
-        /// Description of the type is not primitive.
+        /// Constructor arguments names of the class, separated with comma and join into a string.
         /// </summary>
-        public ClassDescription ComplexType { get; set; }
+        public string ConstructorArgumentsListString
+        {
+            get
+            {
+                if (this.Properties == null || this.Properties.Count == 0)
+                {
+                    return string.Empty;
+                }
+
+                return string.Join(", ", this.Properties.Select(x => x.Name.ToFirstLower()));
+            }
+        }
+
+        /// <summary>
+        /// Constructor arguments names of the endpoint, separated with comma and join into a string with their types.
+        /// </summary>
+        public string ConstructorStrongTypedArgumentsListString
+        {
+            get
+            {
+                if (this.Properties == null || this.Properties.Count == 0)
+                {
+                    return string.Empty;
+                }
+
+                return string.Join(", ", this.Properties.Select(x => $"{x.Type.Name} {x.Name.ToFirstLower()}"));
+            }
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

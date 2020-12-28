@@ -4,7 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 using AutoMapper;
-using <#=Session["ProjectName"]#>.Application.Interfaces.Persistence;
+using <#=Session["ProjectName"]#>.Application.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

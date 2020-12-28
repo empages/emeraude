@@ -21,6 +21,41 @@
  * @property {boolean} successed
  */
 /**
+ * @typedef ComplexRequestResult
+ * @property {boolean} success
+ * @property {PaginatedList} paginatedCollection
+ */
+/**
+ * @typedef PaginatedList
+ * @property {Array<SomeResultItem>} items
+ * @property {number} allItemsCount
+ * @property {number} itemsCount
+ * @property {number} pagesCount
+ * @property {number} pageSize
+ * @property {number} currentPage
+ * @property {number} startRow
+ */
+/**
+ * @typedef SomeResultItem
+ * @property {string} id
+ * @property {string} name
+ */
+/**
+ * @typedef ComplexRequestCommand
+ * @property {string} description
+ * @property {Array<NestedComplexType>} nestedCollection
+ */
+/**
+ * @typedef NestedComplexType
+ * @property {string} id
+ * @property {Array<DeepNestedComplexType>} deepCollection
+ */
+/**
+ * @typedef DeepNestedComplexType
+ * @property {string} name
+ * @property {number} complexEnum
+ */
+/**
  * @typedef EnumValueItem
  * @property {string} name
  * @property {number} value
@@ -61,6 +96,26 @@ export class EmptyServiceAgent {
      */
     exampleAction(queryParams = null, headers = null) { 
         let url = new URL(`/api/empty/example`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'GET',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * EmptyApiController/ComplexRequestTypeAction
+     * @param {ComplexRequestCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    complexRequestTypeAction(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/empty/complex`, window.location.origin);
         if (queryParams != null) {
             url.search = new URLSearchParams(queryParams).toString();
         }
