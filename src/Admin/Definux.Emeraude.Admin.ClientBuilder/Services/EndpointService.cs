@@ -67,18 +67,18 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         }
 
         /// <inheritdoc/>
-        public List<ClassDescription> GetAllEndpointsClasses()
+        public List<TypeDescription> GetAllEndpointsClasses()
         {
             var endpoints = this.GetAllEndpoints();
-            var classes = new List<ClassDescription>();
+            var classes = new List<TypeDescription>();
             foreach (var endpoint in endpoints)
             {
-                if (!endpoint.Response.Void && endpoint.Response.Class.IsComplex)
+                if (!endpoint.Response.Void && endpoint.Response.Type.IsComplex)
                 {
-                    classes.Add(endpoint.Response.Class);
+                    classes.Add(endpoint.Response.Type);
                 }
 
-                classes.AddRange(endpoint.Arguments.Where(x => x.Class.IsComplex).Select(x => x.Class).ToList());
+                classes.AddRange(endpoint.Arguments.Where(x => x.Type.IsComplex).Select(x => x.Type).ToList());
             }
 
             return DescriptionExtractor.ExtractUniqueClassesFromClasses(classes);

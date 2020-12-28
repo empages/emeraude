@@ -82,65 +82,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         };
 
         /// <summary>
-        /// Extract description from class type.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static ClassDescription ExtractClassDescription(Type type)
-        {
-            try
-            {
-                if (type == null)
-                {
-                    return new ClassDescription();
-                }
-
-                ClassDescription classDescription = new ClassDescription();
-                Type workType = type;
-                if (workType.GetInterface(nameof(IEnumerable)) != null && !primitiveTypes.ContainsKey(workType))
-                {
-                    workType = type.GetGenericArguments().FirstOrDefault();
-                    if (workType == null)
-                    {
-                        throw new NullReferenceException($"Generic parameter of {type.FullName} cannot be extracted.");
-                    }
-                }
-
-                classDescription.Name = workType.Name;
-                classDescription.FullName = workType.FullName;
-                classDescription.IsComplex = !primitiveTypes.ContainsKey(workType);
-                if (classDescription.IsComplex)
-                {
-                    classDescription.JavaScriptTypeName = classDescription.Name;
-                }
-                else
-                {
-                    classDescription.JavaScriptTypeName = javaScriptRelativeTypes[classDescription.Name];
-                }
-
-                var classProperties = workType.GetProperties();
-                foreach (var propertyInfo in classProperties)
-                {
-                    if (!propertyInfo.IsPropertyStatic())
-                    {
-                        PropertyDescription propertyDescription = new PropertyDescription();
-                        propertyDescription.Name = propertyInfo.Name;
-                        propertyDescription.ReadOnly = propertyInfo.HasAttribute<EmReadOnlyAttribute>();
-                        propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
-                        propertyDescription.DefaultValue = defaultValues.ContainsKey(propertyInfo.PropertyType) ? defaultValues[propertyInfo.PropertyType] : "null";
-                        classDescription.Properties.Add(propertyDescription);
-                    }
-                }
-
-                return classDescription;
-            }
-            catch (Exception ex)
-            {
-                throw new ArgumentException($"Invalid class extraction for class {type.FullName}. {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// Extract description from type.
         /// </summary>
         /// <param name="type"></param>
@@ -154,9 +95,10 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     return new TypeDescription();
                 }
 
-                TypeDescription typeDescription = new TypeDescription();
-                typeDescription.IsCollection = type.GetInterface(nameof(IEnumerable)) != null && type != typeof(string);
-                if (typeDescription.IsCollection)
+                TypeDescription description = new TypeDescription();
+                description.IsCollection = type.GetInterface(nameof(IEnumerable)) != null && type != typeof(string);
+                description.IsGenericType = type.GetGenericArguments()?.Any() ?? false;
+                if (description.IsCollection)
                 {
                     type = type.GetGenericArguments().FirstOrDefault() ?? type;
                 }
@@ -166,48 +108,76 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     type = type.GetElementType();
                 }
 
-                typeDescription.IsNullable = Nullable.GetUnderlyingType(type) != null;
-                typeDescription.IsEnum = type.IsEnum;
+                description.IsNullable = Nullable.GetUnderlyingType(type) != null;
+                description.IsEnum = type.IsEnum;
                 bool isPrimitiveType = false;
 
                 if (primitiveTypes.ContainsKey(type))
                 {
-                    typeDescription.Name = primitiveTypes[type];
-                    typeDescription.FullName = typeDescription.Name;
-                    typeDescription.JavaScriptTypeName = javaScriptRelativeTypes[typeDescription.Name];
+                    description.Name = primitiveTypes[type];
+                    description.FullName = description.Name;
+                    description.JavaScriptTypeName = javaScriptRelativeTypes[description.Name];
                     isPrimitiveType = true;
                 }
 
-                if (typeDescription.IsNullable && primitiveTypes.ContainsKey(Nullable.GetUnderlyingType(type)))
+                if (description.IsNullable && primitiveTypes.ContainsKey(Nullable.GetUnderlyingType(type)))
                 {
-                    typeDescription.Name = primitiveTypes[Nullable.GetUnderlyingType(type)];
-                    typeDescription.FullName = typeDescription.Name;
-                    typeDescription.JavaScriptTypeName = javaScriptRelativeTypes[typeDescription.Name];
+                    description.Name = primitiveTypes[Nullable.GetUnderlyingType(type)];
+                    description.FullName = description.Name;
+                    description.JavaScriptTypeName = javaScriptRelativeTypes[description.Name];
                     isPrimitiveType = true;
                 }
 
-                if (!isPrimitiveType && !typeDescription.IsEnum)
+                if (!isPrimitiveType && !description.IsEnum)
                 {
-                    typeDescription.ComplexType = ExtractClassDescription(type);
-                    typeDescription.Name = typeDescription.ComplexType.Name;
-                    typeDescription.FullName = type.FullName;
-                    typeDescription.JavaScriptTypeName = typeDescription.ComplexType.Name;
+                    description.IsComplex = true;
+                    description.Name = type.Name;
+                    description.FullName = type.FullName;
+                    description.JavaScriptTypeName = description.Name;
                 }
 
-                if (typeDescription.IsEnum)
+                if (description.IsGenericType && !description.IsCollection)
                 {
-                    typeDescription.Name = type.Name;
-                    typeDescription.FullName = type.FullName;
-                    typeDescription.JavaScriptTypeName = javaScriptRelativeTypes["int"];
-                    typeDescription.EnumValues = new Dictionary<string, int>();
+                    description.Name = GetGenericTypeClearName(description.Name);
+                    description.JavaScriptTypeName = description.Name;
+                }
+
+                if (description.IsCollection)
+                {
+                    description.JavaScriptTypeName = GetJavaScriptCollectionType(description.JavaScriptTypeName);
+                }
+
+                if (description.IsEnum)
+                {
+                    description.Name = type.Name;
+                    description.FullName = type.FullName;
+                    description.JavaScriptTypeName = javaScriptRelativeTypes["int"];
+                    description.EnumValues = new Dictionary<string, int>();
                     var enumValues = Enum.GetValues(type);
                     foreach (var value in enumValues)
                     {
-                        typeDescription.EnumValues[value.ToString()] = (int)Enum.Parse(type, value.ToString());
+                        description.EnumValues[value.ToString()] = (int)Enum.Parse(type, value.ToString());
                     }
                 }
 
-                return typeDescription;
+                if (description.IsComplex)
+                {
+                    var properties = type.GetProperties();
+                    foreach (var propertyInfo in properties)
+                    {
+                        if (!propertyInfo.IsPropertyStatic())
+                        {
+                            PropertyDescription propertyDescription = new PropertyDescription();
+                            propertyDescription.Name = propertyInfo.Name;
+                            propertyDescription.ReadOnly = propertyInfo.HasAttribute<EmReadOnlyAttribute>();
+                            propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
+                            propertyDescription.DefaultValue = defaultValues.ContainsKey(propertyInfo.PropertyType) ? defaultValues[propertyInfo.PropertyType] : "null";
+                            description.Properties.Add(propertyDescription);
+                        }
+                    }
+                }
+
+                return description;
             }
             catch (Exception)
             {
@@ -229,8 +199,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
 
             return new ResponseDescription
             {
-                Class = ExtractClassDescription(type),
-                IsCollection = type.GetInterface(nameof(IEnumerable)) != null,
+                Type = ExtractTypeDescription(type),
             };
         }
 
@@ -250,8 +219,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
             return new ArgumentDescription
             {
                 Name = name,
-                Class = ExtractClassDescription(type),
-                IsCollection = type.GetInterface(nameof(IEnumerable)) != null,
+                Type = ExtractTypeDescription(type),
             };
         }
 
@@ -260,16 +228,16 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// </summary>
         /// <param name="classes"></param>
         /// <returns></returns>
-        public static List<ClassDescription> ExtractUniqueClassesFromClasses(List<ClassDescription> classes)
+        public static List<TypeDescription> ExtractUniqueClassesFromClasses(List<TypeDescription> classes)
         {
-            var tempClasses = new List<ClassDescription>();
+            var tempClasses = new List<TypeDescription>();
             foreach (var classItem in classes)
             {
                 tempClasses.Add(classItem);
                 tempClasses.AddRange(ExtractInnerClassDescriptions(classItem));
             }
 
-            var resultClasses = new List<ClassDescription>();
+            var resultClasses = new List<TypeDescription>();
             foreach (var tempClass in tempClasses)
             {
                 if (!resultClasses.Any(x => x.FullName == tempClass.FullName))
@@ -286,16 +254,16 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// </summary>
         /// <param name="classDescription"></param>
         /// <returns></returns>
-        public static List<ClassDescription> ExtractInnerClassDescriptions(ClassDescription classDescription)
+        public static List<TypeDescription> ExtractInnerClassDescriptions(TypeDescription classDescription)
         {
-            var resultClasses = new List<ClassDescription>();
+            var resultClasses = new List<TypeDescription>();
             var classProperties = classDescription.Properties;
             foreach (var property in classProperties)
             {
-                if (property.Type.IsComplexType)
+                if (property.Type.IsComplex)
                 {
-                    resultClasses.Add(property.Type.ComplexType);
-                    resultClasses.AddRange(ExtractInnerClassDescriptions(property.Type.ComplexType));
+                    resultClasses.Add(property.Type);
+                    resultClasses.AddRange(ExtractInnerClassDescriptions(property.Type));
                 }
             }
 
@@ -307,9 +275,9 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         /// </summary>
         /// <param name="classes"></param>
         /// <returns></returns>
-        public static List<TypeDescription> ExtractUniqueEnumsFromClasses(List<ClassDescription> classes)
+        public static List<TypeDescription> ExtractUniqueEnumsFromClasses(List<TypeDescription> classes)
         {
-            var tempClasses = new List<ClassDescription>();
+            var tempClasses = new List<TypeDescription>();
             foreach (var classItem in classes)
             {
                 tempClasses.Add(classItem);
@@ -335,6 +303,16 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         private static bool IsPropertyStatic(this PropertyInfo propertyInfo)
         {
             return propertyInfo.GetAccessors().Any(x => x.IsStatic);
+        }
+
+        private static string GetJavaScriptCollectionType(string type)
+        {
+            return $"Array<{type}>";
+        }
+
+        private static string GetGenericTypeClearName(string name)
+        {
+            return name.Split('`').FirstOrDefault() ?? name;
         }
     }
 }

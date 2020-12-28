@@ -78,7 +78,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
         {
             get
             {
-                return this.Arguments.FirstOrDefault(x => x.Class.IsComplex);
+                return this.Arguments.FirstOrDefault(x => x.Type.IsComplex);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
                     return string.Empty;
                 }
 
-                return string.Join(", ", this.Arguments.Select(x => $"{x.Class.Name} {x.Name}"));
+                return string.Join(", ", this.Arguments.Select(x => $"{x.Type.Name} {x.Name}"));
             }
         }
     }

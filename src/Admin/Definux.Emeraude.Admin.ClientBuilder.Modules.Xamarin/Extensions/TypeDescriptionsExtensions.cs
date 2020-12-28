@@ -14,13 +14,13 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions
         /// <returns></returns>
         public static string GetBindableBuildTypeName(this TypeDescription typeDescription)
         {
-            string typeName = typeDescription.Name + (typeDescription.IsComplexType ? "Bindable" : string.Empty);
+            string typeName = typeDescription.Name + (typeDescription.IsComplex ? "Bindable" : string.Empty);
             if (typeDescription.IsEnum)
             {
                 typeName = typeDescription.Name + "Enum";
             }
 
-            typeName = $"{typeName}{((typeDescription.IsNullable && !typeDescription.IsComplexType && typeDescription.Name != "string") ? "?" : string.Empty)}";
+            typeName = $"{typeName}{((typeDescription.IsNullable && !typeDescription.IsComplex && typeDescription.Name != "string") ? "?" : string.Empty)}";
 
             if (typeDescription.IsCollection)
             {

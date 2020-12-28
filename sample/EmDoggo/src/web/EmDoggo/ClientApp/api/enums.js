@@ -204,3 +204,27 @@ export const DogBreedValueItems = [
   }
 ];
 
+export const ComplexEnum = {
+	Complex1: 1,
+	Complex2: 2,
+	Complex3: 3,
+};
+
+export const ComplexEnumValueItems = [
+  {
+    "name": "Complex1",
+    "value": 1,
+    "key": "COMPLEX_ENUM_COMPLEX1"
+  },
+  {
+    "name": "Complex2",
+    "value": 2,
+    "key": "COMPLEX_ENUM_COMPLEX2"
+  },
+  {
+    "name": "Complex3",
+    "value": 3,
+    "key": "COMPLEX_ENUM_COMPLEX3"
+  }
+];
+

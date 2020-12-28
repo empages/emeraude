@@ -52,4 +52,11 @@ namespace EmDoggo.Domain.Common
         EasyToTrain = 8,
         LowShedding = 9
     }
+
+    public enum ComplexEnum
+    {
+        Complex1 = 1,
+        Complex2 = 2,
+        Complex3 = 3,
+    }
 }

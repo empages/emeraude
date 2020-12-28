@@ -17,6 +17,6 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Models
         public Type InitialStateModelType { get; set; }
 
         [JsonIgnore]
-        public ClassDescription InitialStateModelClass { get; set; }
+        public TypeDescription InitialStateModelClass { get; set; }
     }
 }
