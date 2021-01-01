@@ -12,7 +12,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
     /// <summary>
     /// Query that returns the avatar stream of specified user.
     /// </summary>
-    public class GetUserAvatarQuery : IRequest<SystemFileResult>
+    public class GetUserAvatarQuery : IRequest<GetUserAvatarResult>
     {
         /// <summary>
         /// Id of the user.
@@ -20,7 +20,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
         public Guid UserId { get; set; }
 
         /// <inheritdoc/>
-        public class GetUserAvatarQueryHandler : IRequestHandler<GetUserAvatarQuery, SystemFileResult>
+        public class GetUserAvatarQueryHandler : IRequestHandler<GetUserAvatarQuery, GetUserAvatarResult>
         {
             private readonly ISystemFilesService systemFilesService;
             private readonly IUserManager userManager;
@@ -47,29 +47,29 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             }
 
             /// <inheritdoc/>
-            public async Task<SystemFileResult> Handle(GetUserAvatarQuery request, CancellationToken cancellationToken)
+            public async Task<GetUserAvatarResult> Handle(GetUserAvatarQuery request, CancellationToken cancellationToken)
             {
+                GetUserAvatarResult result = new GetUserAvatarResult();
                 try
                 {
                     var user = await this.userManager.FindUserByIdAsync(request.UserId);
 
-                    SystemFileResult avatarFileResult = null;
                     if (user != null && !string.IsNullOrEmpty(user.AvatarUrl))
                     {
                         string userAvatarRelativePath = this.userAvatarService.GetUserAvatarRelativePath(user);
                         string avatarPath = this.systemFilesService.GetPathFromPublicRoot(userAvatarRelativePath.Substring(1));
-                        avatarFileResult = await this.systemFilesService.GetFileAsync(avatarPath);
-                        if (avatarFileResult == null)
+                        result.Avatar = await this.systemFilesService.GetFileAsync(avatarPath);
+                        if (result.Avatar == null)
                         {
-                            avatarFileResult = this.GetDefaultAvatarResult();
+                            result = this.GetDefaultAvatarResult();
                         }
                     }
                     else
                     {
-                        avatarFileResult = this.GetDefaultAvatarResult();
+                        result = this.GetDefaultAvatarResult();
                     }
 
-                    return avatarFileResult;
+                    return result;
                 }
                 catch (Exception ex)
                 {
@@ -78,12 +78,16 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                 }
             }
 
-            private SystemFileResult GetDefaultAvatarResult()
+            private GetUserAvatarResult GetDefaultAvatarResult()
             {
-                return new SystemFileResult
+                return new GetUserAvatarResult
                 {
-                    Stream = new MemoryStream(Resources.Images.default_avatar),
-                    ContentType = "image/png",
+                    Avatar = new SystemFileResult
+                    {
+                        Stream = new MemoryStream(Resources.Images.default_avatar),
+                        ContentType = "image/png",
+                    },
+                    IsDefault = true,
                 };
             }
         }

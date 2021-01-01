@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Admin.ClientBuilder.DataAnnotations;
 
 namespace EmDoggo.Application.Requests.Commands.AddDog
 {
@@ -19,7 +20,7 @@ namespace EmDoggo.Application.Requests.Commands.AddDog
         public DogType Type { get; set; }
 
         public DogBreed Breed { get; set; }
-
+        
         public class AddDogCommandHandler : IRequestHandler<AddDogCommand, CreatedResult>
         {
             private readonly IEntityContext context;

@@ -16,6 +16,14 @@ namespace Definux.Emeraude.Application.Identity
         IdentityOptions Options { get; }
 
         /// <summary>
+        /// Changes the specified user name.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        Task ChangeUserNameAsync(IUser user, string newName);
+
+        /// <summary>
         /// Returns a flag that indicating whether the specified user is locked out or not.
         /// </summary>
         /// <param name="email"></param>

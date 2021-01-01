@@ -10,6 +10,7 @@ using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
@@ -145,14 +146,13 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     string firstName = principal.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.GivenName)?.Value;
                     string lastName = principal.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Surname)?.Value;
                     string email = principal.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
-                    string picture = string.Empty;
 
                     if (provider == FacebookExternalProvider)
                     {
                         externalUser = new FacebookExternalUser();
                         ((FacebookExternalUser)externalUser).Picture = new ProfilePicture();
                         ((FacebookExternalUser)externalUser).Picture.Data = new ProfilePictureData();
-                        ((FacebookExternalUser)externalUser).Picture.Data.Url = $"https://graph.facebook.com/{nameIdentifier}/picture?type=large";
+                        ((FacebookExternalUser)externalUser).Picture.Data.Url = principal.Claims.FirstOrDefault(x => x.Type == Definux.Emeraude.Configuration.Authorization.ClaimTypes.Picture)?.Value;
                     }
                     else if (provider == GoogleExternalProvider)
                     {
@@ -160,20 +160,24 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                         ((GoogleExternalUser)externalUser).Picture = principal.Claims.FirstOrDefault(x => x.Type == Definux.Emeraude.Configuration.Authorization.ClaimTypes.Picture)?.Value;
                     }
 
-                    externalUser.Id = nameIdentifier;
-                    externalUser.Name = name;
-                    externalUser.FirstName = firstName;
-                    externalUser.LastName = lastName;
-                    externalUser.EmailAddress = email;
-                    externalUser.Provider = provider;
+                    if (externalUser != null)
+                    {
+                        externalUser.Id = nameIdentifier;
+                        externalUser.Name = name;
+                        externalUser.FirstName = firstName;
+                        externalUser.LastName = lastName;
+                        externalUser.EmailAddress = email;
+                        externalUser.Provider = provider;
 
-                    return externalUser;
+                        return externalUser;
+                    }
                 }
                 catch (Exception ex)
                 {
                     await this.logger.LogErrorAsync(ex);
-                    return null;
                 }
+
+                return null;
             }
 
             private async Task<IExternalUser> GetExternalUserAsync(ExternalAuthenticationData externalLoginData)

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Helpers;
@@ -15,20 +16,30 @@ namespace Definux.Emeraude.Identity.Services
     public class UserManager : DefaultUserManager, IUserManager
     {
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IEmContext context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserManager"/> class.
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="httpContextAccessor"></param>
-        public UserManager(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
+        public UserManager(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IEmContext context)
             : base(userManager)
         {
             this.httpContextAccessor = httpContextAccessor;
+            this.context = context;
         }
 
         /// <inheritdoc/>
         public IdentityOptions Options => this.UserManager?.Options;
+
+        /// <inheritdoc/>
+        public async Task ChangeUserNameAsync(IUser user, string newName)
+        {
+            user.Name = newName;
+            this.context.Set<User>().Update((User)user);
+            await this.context.SaveChangesAsync();
+        }
 
         /// <inheritdoc/>
         public async Task<bool> IsLockedOutAsync(string email)

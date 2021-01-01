@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,8 +10,10 @@ using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Locales.Constraints;
 using Definux.Utilities.Options;
+using IdentityModel;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -81,6 +84,24 @@ namespace Definux.Emeraude.Client.Extensions
                 options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 options.AppId = settings.AppId;
                 options.AppSecret = settings.AppSecret;
+                options.Fields.Add("picture.type(large)");
+
+                options.Events = new OAuthEvents
+                {
+                    OnCreatingTicket = (context) =>
+                    {
+                        ClaimsIdentity identity = (ClaimsIdentity)context.Principal.Identity;
+                        string profileImage = context
+                            .User
+                            .GetProperty("picture")
+                            .GetProperty("data")
+                            .GetProperty("url")
+                            .ToString();
+
+                        identity.AddClaim(new Claim(Definux.Emeraude.Configuration.Authorization.ClaimTypes.Picture, profileImage));
+                        return Task.CompletedTask;
+                    },
+                };
             });
 
             return builder;

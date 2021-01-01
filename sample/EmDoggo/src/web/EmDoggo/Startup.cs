@@ -29,7 +29,7 @@ namespace EmDoggo
                 options.AddAssembly("EmDoggo");
                 options.AddAssembly("EmDoggo.Application");
                 options.ProjectName = "EmDoggo Dev";
-                options.MaintenanceMode = true;
+                options.MaintenanceMode = false;
 
                 options.Account.HasFacebookLogin = true;
                 options.Account.HasGoogleLogin = true;
