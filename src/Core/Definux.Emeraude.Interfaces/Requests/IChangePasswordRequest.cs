@@ -10,7 +10,7 @@ namespace Definux.Emeraude.Interfaces.Requests
         /// <summary>
         /// Id of the user.
         /// </summary>
-        Guid UserId { get; set; }
+        Guid? UserId { get; set; }
 
         /// <summary>
         /// Current password of the user.

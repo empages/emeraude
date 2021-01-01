@@ -28,6 +28,11 @@ namespace Definux.Emeraude.Identity.Services
             IEmLogger logger)
         {
             this.CurrentUserId = httpAccessor.GetCurrentUserId();
+            if (!this.CurrentUserId.HasValue)
+            {
+                this.CurrentUserId = httpAccessor.HttpContext.GetJwtUserId();
+            }
+
             this.userManager = userManager;
             this.logger = logger;
         }

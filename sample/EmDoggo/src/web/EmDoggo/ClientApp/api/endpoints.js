@@ -61,6 +61,27 @@
  * @property {number} value
  * @property {string} key
  */
+/**
+ * @typedef UserAvatarTypeResult
+ * @property {boolean} isDefault
+ */
+/**
+ * @typedef ChangeUserAvatarCommand
+ * @property {string} avatarFileBase64
+ * @property {Guid} userId
+ */
+/**
+ * @typedef ChangePasswordCommand
+ * @property {Guid} userId
+ * @property {string} currentPassword
+ * @property {string} newPassword
+ * @property {string} confirmedPassword
+ */
+/**
+ * @typedef ChangeUserNameCommand
+ * @property {Guid} userId
+ * @property {string} newName
+ */
 
 export class DogsServiceAgent {
 
@@ -128,10 +149,10 @@ export class EmptyServiceAgent {
     }
 }
 
-export class EnumServiceAgent {
+export class EnumsServiceAgent {
 
     /**
-     * EnumApiController/GetEnumValueList
+     * EnumsApiController/GetEnumValueList
      * @param {string} enumTypeName
      * @param {Object} queryParams
      * @param {Object} headers
@@ -151,7 +172,7 @@ export class EnumServiceAgent {
     }
 
     /**
-     * EnumApiController/GetEnumValue
+     * EnumsApiController/GetEnumValue
      * @param {string} enumTypeName
      * @param {number} value
      * @param {Object} queryParams
@@ -172,6 +193,91 @@ export class EnumServiceAgent {
     }
 }
 
+export class UsersServiceAgent {
+
+    /**
+     * UsersApiController/GetUserAvatarType
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    getUserAvatarType(queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/avatar/type`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'GET',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/ChangeUserAvatar
+     * @param {ChangeUserAvatarCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    changeUserAvatar(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/avatar/change`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/ChangeUserPassword
+     * @param {ChangePasswordCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    changeUserPassword(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/password/change`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'PUT',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/ChangeUserName
+     * @param {ChangeUserNameCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    changeUserName(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/name/change`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'PUT',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+}
+
 /**
  * @type {DogsServiceAgent}
  */
@@ -183,6 +289,11 @@ export const dogsServiceAgent = new DogsServiceAgent();
 export const emptyServiceAgent = new EmptyServiceAgent();
 
 /**
- * @type {EnumServiceAgent}
+ * @type {EnumsServiceAgent}
  */
-export const enumServiceAgent = new EnumServiceAgent();
+export const enumsServiceAgent = new EnumsServiceAgent();
+
+/**
+ * @type {UsersServiceAgent}
+ */
+export const usersServiceAgent = new UsersServiceAgent();

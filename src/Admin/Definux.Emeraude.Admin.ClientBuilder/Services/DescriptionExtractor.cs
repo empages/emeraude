@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Definux.Emeraude.Admin.ClientBuilder.DataAnnotations;
 using Definux.Emeraude.Admin.ClientBuilder.Models;
 using Definux.Emeraude.Client.EmPages.Attributes;
 using Definux.Utilities.Extensions;
@@ -165,7 +166,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     var properties = type.GetProperties();
                     foreach (var propertyInfo in properties)
                     {
-                        if (!propertyInfo.IsPropertyStatic())
+                        if (!propertyInfo.IsPropertyStatic() && !propertyInfo.HasAttribute<IgnorePropertyAttribute>())
                         {
                             PropertyDescription propertyDescription = new PropertyDescription();
                             propertyDescription.Name = propertyInfo.Name;
