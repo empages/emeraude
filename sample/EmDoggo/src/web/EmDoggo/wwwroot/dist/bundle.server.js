@@ -82,7 +82,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-65321R8cFqoaSTT2.server.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-15772fiy6A3mNgAdB.server.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -170,7 +170,7 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.enumServiceAgent = exports.dogsServiceAgent = exports.EnumServiceAgent = exports.DogsServiceAgent = void 0;
+exports.usersServiceAgent = exports.loggerServiceAgent = exports.enumsServiceAgent = exports.emptyServiceAgent = exports.dogsServiceAgent = exports.UsersServiceAgent = exports.LoggerServiceAgent = exports.EnumsServiceAgent = exports.EmptyServiceAgent = exports.DogsServiceAgent = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -199,10 +199,89 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 
 /**
+ * @typedef SimpleResult
+ * @property {boolean} successed
+ */
+
+/**
+ * @typedef ComplexRequestResult
+ * @property {boolean} success
+ * @property {PaginatedList} paginatedCollection
+ */
+
+/**
+ * @typedef PaginatedList
+ * @property {Array<SomeResultItem>} items
+ * @property {number} allItemsCount
+ * @property {number} itemsCount
+ * @property {number} pagesCount
+ * @property {number} pageSize
+ * @property {number} currentPage
+ * @property {number} startRow
+ */
+
+/**
+ * @typedef SomeResultItem
+ * @property {string} id
+ * @property {string} name
+ */
+
+/**
+ * @typedef ComplexRequestCommand
+ * @property {string} description
+ * @property {Array<NestedComplexType>} nestedCollection
+ */
+
+/**
+ * @typedef NestedComplexType
+ * @property {string} id
+ * @property {Array<DeepNestedComplexType>} deepCollection
+ */
+
+/**
+ * @typedef DeepNestedComplexType
+ * @property {string} name
+ * @property {number} complexEnum
+ */
+
+/**
  * @typedef EnumValueItem
  * @property {string} name
  * @property {number} value
  * @property {string} key
+ */
+
+/**
+ * @typedef LogFrontEndErrorCommand
+ * @property {string} stackTrace
+ * @property {string} source
+ * @property {string} method
+ * @property {string} message
+ */
+
+/**
+ * @typedef UserAvatarTypeResult
+ * @property {boolean} isDefault
+ */
+
+/**
+ * @typedef ChangeUserAvatarCommand
+ * @property {string} avatarFileBase64
+ * @property {Guid} userId
+ */
+
+/**
+ * @typedef ChangePasswordCommand
+ * @property {Guid} userId
+ * @property {string} currentPassword
+ * @property {string} newPassword
+ * @property {string} confirmedPassword
+ */
+
+/**
+ * @typedef ChangeUserNameCommand
+ * @property {Guid} userId
+ * @property {string} newName
  */
 var DogsServiceAgent = /*#__PURE__*/function () {
   function DogsServiceAgent() {
@@ -247,16 +326,87 @@ var DogsServiceAgent = /*#__PURE__*/function () {
 
 exports.DogsServiceAgent = DogsServiceAgent;
 
-var EnumServiceAgent = /*#__PURE__*/function () {
-  function EnumServiceAgent() {
-    _classCallCheck(this, EnumServiceAgent);
+var EmptyServiceAgent = /*#__PURE__*/function () {
+  function EmptyServiceAgent() {
+    _classCallCheck(this, EmptyServiceAgent);
   }
 
-  _createClass(EnumServiceAgent, [{
+  _createClass(EmptyServiceAgent, [{
+    key: "exampleAction",
+
+    /**
+     * EmptyApiController/ExampleAction
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    value: function exampleAction() {
+      var queryParams = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var headers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var url = new URL("/api/empty/example", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'GET',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+    /**
+     * EmptyApiController/ComplexRequestTypeAction
+     * @param {ComplexRequestCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+
+  }, {
+    key: "complexRequestTypeAction",
+    value: function complexRequestTypeAction(request) {
+      var queryParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var url = new URL("/api/empty/complex", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'GET',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+  }]);
+
+  return EmptyServiceAgent;
+}();
+
+exports.EmptyServiceAgent = EmptyServiceAgent;
+
+var EnumsServiceAgent = /*#__PURE__*/function () {
+  function EnumsServiceAgent() {
+    _classCallCheck(this, EnumsServiceAgent);
+  }
+
+  _createClass(EnumsServiceAgent, [{
     key: "getEnumValueList",
 
     /**
-     * EnumApiController/GetEnumValueList
+     * EnumsApiController/GetEnumValueList
      * @param {string} enumTypeName
      * @param {Object} queryParams
      * @param {Object} headers
@@ -283,7 +433,7 @@ var EnumServiceAgent = /*#__PURE__*/function () {
       });
     }
     /**
-     * EnumApiController/GetEnumValue
+     * EnumsApiController/GetEnumValue
      * @param {string} enumTypeName
      * @param {number} value
      * @param {Object} queryParams
@@ -315,22 +465,217 @@ var EnumServiceAgent = /*#__PURE__*/function () {
     }
   }]);
 
-  return EnumServiceAgent;
+  return EnumsServiceAgent;
+}();
+
+exports.EnumsServiceAgent = EnumsServiceAgent;
+
+var LoggerServiceAgent = /*#__PURE__*/function () {
+  function LoggerServiceAgent() {
+    _classCallCheck(this, LoggerServiceAgent);
+  }
+
+  _createClass(LoggerServiceAgent, [{
+    key: "logClientError",
+
+    /**
+     * LoggerApiController/LogClientError
+     * @param {LogFrontEndErrorCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    value: function logClientError(request) {
+      var queryParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var url = new URL("/api/logger/error", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'POST',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(request),
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+  }]);
+
+  return LoggerServiceAgent;
+}();
+
+exports.LoggerServiceAgent = LoggerServiceAgent;
+
+var UsersServiceAgent = /*#__PURE__*/function () {
+  function UsersServiceAgent() {
+    _classCallCheck(this, UsersServiceAgent);
+  }
+
+  _createClass(UsersServiceAgent, [{
+    key: "getUserAvatarType",
+
+    /**
+     * UsersApiController/GetUserAvatarType
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    value: function getUserAvatarType() {
+      var queryParams = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var headers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var url = new URL("/api/users/current/avatar/type", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'GET',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+    /**
+     * UsersApiController/ChangeUserAvatar
+     * @param {ChangeUserAvatarCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+
+  }, {
+    key: "changeUserAvatar",
+    value: function changeUserAvatar(request) {
+      var queryParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var url = new URL("/api/users/current/avatar/change", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'POST',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(request),
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+    /**
+     * UsersApiController/ChangeUserPassword
+     * @param {ChangePasswordCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+
+  }, {
+    key: "changeUserPassword",
+    value: function changeUserPassword(request) {
+      var queryParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var url = new URL("/api/users/current/password/change", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'PUT',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(request),
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+    /**
+     * UsersApiController/ChangeUserName
+     * @param {ChangeUserNameCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+
+  }, {
+    key: "changeUserName",
+    value: function changeUserName(request) {
+      var queryParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var url = new URL("/api/users/current/name/change", window.location.origin);
+
+      if (queryParams != null) {
+        url.search = new URLSearchParams(queryParams).toString();
+      }
+
+      return fetch(url, {
+        method: 'PUT',
+        headers: headers || {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(request),
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      });
+    }
+  }]);
+
+  return UsersServiceAgent;
 }();
 /**
  * @type {DogsServiceAgent}
  */
 
 
-exports.EnumServiceAgent = EnumServiceAgent;
+exports.UsersServiceAgent = UsersServiceAgent;
 var dogsServiceAgent = new DogsServiceAgent();
 /**
- * @type {EnumServiceAgent}
+ * @type {EmptyServiceAgent}
  */
 
 exports.dogsServiceAgent = dogsServiceAgent;
-var enumServiceAgent = new EnumServiceAgent();
-exports.enumServiceAgent = enumServiceAgent;
+var emptyServiceAgent = new EmptyServiceAgent();
+/**
+ * @type {EnumsServiceAgent}
+ */
+
+exports.emptyServiceAgent = emptyServiceAgent;
+var enumsServiceAgent = new EnumsServiceAgent();
+/**
+ * @type {LoggerServiceAgent}
+ */
+
+exports.enumsServiceAgent = enumsServiceAgent;
+var loggerServiceAgent = new LoggerServiceAgent();
+/**
+ * @type {UsersServiceAgent}
+ */
+
+exports.loggerServiceAgent = loggerServiceAgent;
+var usersServiceAgent = new UsersServiceAgent();
+exports.usersServiceAgent = usersServiceAgent;
 
 /***/ }),
 
@@ -672,10 +1017,10 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************!*\
   !*** ./ClientApp/locales/bg.json ***!
   \***********************************/
-/*! exports provided: LOGIN, EMAIL, PASSWORD, FORGOT_PASSWORD, DONT_HAVE_A_PROFILE, FULL_NAME, CONFIRM_PASSWORD, REGISTER, ALREADY_HAVE_A_PROFILE, YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED, CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK, SWITCH_TO, ENGLISH, BULGARIAN, HOME, DOGS, SHOPS, LOGOUT, OFFERS, DOG_TYPE_HYPOALLERGENIC, DOG_BREED_GERMAN_SPITZ, DOG_BREED_GERMAN_SHEPHERD, DOG_BREED_BULLDOG, DOG_BREED_POODLE, DOG_BREED_LABRADOR_RETRIEVER, DOG_BREED_GOLDEN_RETRIEVER, DOG_BREED_BEAGLE, DOG_BREED_YORKSHIRE_TERRIER, DOG_BREED_DACHSHUND, DOG_BREED_CHIHUAHUA, DOG_BREED_PUG, DOG_BREED_FRENCH_BULLDOG, DOG_BREED_SIBERIAN_HUSKY, DOG_BREED_BOXER, DOG_BREED_AUSTRALIAN_SHEPHERD, DOG_BREED_GREYHOUND, DOG_BREED_ROTTWEILER, DOG_BREED_POMERANIAN, DOG_BREED_DALMATIAN, DOG_BREED_SHIBA_INU, DOG_BREED_SAMOYED, DOG_BREED_DOBERMANN, DOG_TYPE, DOG_BREED, NAME, ADD, DOG_TYPE_FLUFFY, DOG_TYPE_BEST_FAMILY, DOG_TYPE_SMARTEST, DOG_TYPE_BEST_GUARD, DOG_TYPE_KID_FRIENDLY, DOG_TYPE_BEST_WATCH, DOG_TYPE_EASY_TO_TRAIN, DOG_TYPE_LOW_SHEDDING, default */
+/*! exports provided: LOGIN, EMAIL, PASSWORD, FORGOT_PASSWORD, DONT_HAVE_A_PROFILE, FULL_NAME, CONFIRM_PASSWORD, REGISTER_TITLE, ALREADY_HAVE_A_PROFILE, YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED, CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK, SWITCH_TO, ENGLISH, BULGARIAN, HOME, DOGS, SHOPS, LOGOUT, OFFERS, DOG_TYPE_HYPOALLERGENIC, DOG_BREED_GERMAN_SPITZ, DOG_BREED_GERMAN_SHEPHERD, DOG_BREED_BULLDOG, DOG_BREED_POODLE, DOG_BREED_LABRADOR_RETRIEVER, DOG_BREED_GOLDEN_RETRIEVER, DOG_BREED_BEAGLE, DOG_BREED_YORKSHIRE_TERRIER, DOG_BREED_DACHSHUND, DOG_BREED_CHIHUAHUA, DOG_BREED_PUG, DOG_BREED_FRENCH_BULLDOG, DOG_BREED_SIBERIAN_HUSKY, DOG_BREED_BOXER, DOG_BREED_AUSTRALIAN_SHEPHERD, DOG_BREED_GREYHOUND, DOG_BREED_ROTTWEILER, DOG_BREED_POMERANIAN, DOG_BREED_DALMATIAN, DOG_BREED_SHIBA_INU, DOG_BREED_SAMOYED, DOG_BREED_DOBERMANN, DOG_TYPE, DOG_BREED, NAME, ADD, DOG_TYPE_FLUFFY, DOG_TYPE_BEST_FAMILY, DOG_TYPE_SMARTEST, DOG_TYPE_BEST_GUARD, DOG_TYPE_KID_FRIENDLY, DOG_TYPE_BEST_WATCH, DOG_TYPE_EASY_TO_TRAIN, DOG_TYPE_LOW_SHEDDING, LOGIN_TITLE, LOGIN_SUBMIT, FORGOT_PASSWORD_TITLE, I_REMEMBERED_MY_PASSWORD, FORGOT_PASSWORD_SUBMIT, CONFIRMED_PASSWORD, REGISTER_SUBMIT, YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT, PASSWORD_IS_A_REQUIRED_FIELD, EMAIL_IS_A_REQUIRED_FIELD, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"LOGIN\":\"Вход\",\"EMAIL\":\"Имейл\",\"PASSWORD\":\"Парола\",\"FORGOT_PASSWORD\":\"Забравена парола\",\"DONT_HAVE_A_PROFILE\":\"Нямаш профил\",\"FULL_NAME\":\"Име и фамилия\",\"CONFIRM_PASSWORD\":\"Потвърди паролата\",\"REGISTER\":\"Регистрация\",\"ALREADY_HAVE_A_PROFILE\":\"Вече имам профил\",\"YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED\":\"Вашата регистрация завърши успешно.\",\"CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK\":\"Проверете имейл-а си за линк за потвърждение.\",\"SWITCH_TO\":\"Превключи на\",\"ENGLISH\":\"Английски\",\"BULGARIAN\":\"Български\",\"HOME\":\"Начало\",\"DOGS\":\"Кучета\",\"SHOPS\":\"Магазини\",\"LOGOUT\":\"Изход\",\"OFFERS\":\"Предлага\",\"DOG_TYPE_HYPOALLERGENIC\":\"Хипоалергенни\",\"DOG_BREED_GERMAN_SPITZ\":\"Немски Шпиц\",\"DOG_BREED_GERMAN_SHEPHERD\":\"Немска Овчарка\",\"DOG_BREED_BULLDOG\":\"Булдог\",\"DOG_BREED_POODLE\":\"Пудел\",\"DOG_BREED_LABRADOR_RETRIEVER\":\"Лабрадор Ретривър\",\"DOG_BREED_GOLDEN_RETRIEVER\":\"Голдън Ретривър\",\"DOG_BREED_BEAGLE\":\"Бийгъл\",\"DOG_BREED_YORKSHIRE_TERRIER\":\"Йоркширски Териер\",\"DOG_BREED_DACHSHUND\":\"Дакел\",\"DOG_BREED_CHIHUAHUA\":\"Чихуахуа\",\"DOG_BREED_PUG\":\"Мопс\",\"DOG_BREED_FRENCH_BULLDOG\":\"Френски Булдог\",\"DOG_BREED_SIBERIAN_HUSKY\":\"Сибирско Хъски\",\"DOG_BREED_BOXER\":\"Боксер\",\"DOG_BREED_AUSTRALIAN_SHEPHERD\":\"Австралийска Овчарка\",\"DOG_BREED_GREYHOUND\":\"Хрътка\",\"DOG_BREED_ROTTWEILER\":\"Ротвайлер\",\"DOG_BREED_POMERANIAN\":\"Померански\",\"DOG_BREED_DALMATIAN\":\"Далматинец\",\"DOG_BREED_SHIBA_INU\":\"Шиба Ину\",\"DOG_BREED_SAMOYED\":\"Самоед\",\"DOG_BREED_DOBERMANN\":\"Доберман\",\"DOG_TYPE\":\"Вид на кучето\",\"DOG_BREED\":\"Порода\",\"NAME\":\"Име\",\"ADD\":\"Добави\",\"DOG_TYPE_FLUFFY\":\"Пухкави\",\"DOG_TYPE_BEST_FAMILY\":\"Семейни\",\"DOG_TYPE_SMARTEST\":\"Умни\",\"DOG_TYPE_BEST_GUARD\":\"Добри за охрана\",\"DOG_TYPE_KID_FRIENDLY\":\"Дружелюбни към деца\",\"DOG_TYPE_BEST_WATCH\":\"Най-добри за охрана\",\"DOG_TYPE_EASY_TO_TRAIN\":\"Лесни за дресировка\",\"DOG_TYPE_LOW_SHEDDING\":\"Слабо обезкосмяващи се\"}");
+module.exports = JSON.parse("{\"LOGIN\":\"Вход\",\"EMAIL\":\"Имейл\",\"PASSWORD\":\"Парола\",\"FORGOT_PASSWORD\":\"Забравена парола\",\"DONT_HAVE_A_PROFILE\":\"Нямаш профил\",\"FULL_NAME\":\"Име и фамилия\",\"CONFIRM_PASSWORD\":\"Потвърди паролата\",\"REGISTER_TITLE\":\"Регистрация\",\"ALREADY_HAVE_A_PROFILE\":\"Вече имам профил\",\"YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED\":\"Вашата регистрация завърши успешно.\",\"CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK\":\"Проверете имейл-а си за линк за потвърждение.\",\"SWITCH_TO\":\"Превключи на\",\"ENGLISH\":\"Английски\",\"BULGARIAN\":\"Български\",\"HOME\":\"Начало\",\"DOGS\":\"Кучета\",\"SHOPS\":\"Магазини\",\"LOGOUT\":\"Изход\",\"OFFERS\":\"Предлага\",\"DOG_TYPE_HYPOALLERGENIC\":\"Хипоалергенни\",\"DOG_BREED_GERMAN_SPITZ\":\"Немски Шпиц\",\"DOG_BREED_GERMAN_SHEPHERD\":\"Немска Овчарка\",\"DOG_BREED_BULLDOG\":\"Булдог\",\"DOG_BREED_POODLE\":\"Пудел\",\"DOG_BREED_LABRADOR_RETRIEVER\":\"Лабрадор Ретривър\",\"DOG_BREED_GOLDEN_RETRIEVER\":\"Голдън Ретривър\",\"DOG_BREED_BEAGLE\":\"Бийгъл\",\"DOG_BREED_YORKSHIRE_TERRIER\":\"Йоркширски Териер\",\"DOG_BREED_DACHSHUND\":\"Дакел\",\"DOG_BREED_CHIHUAHUA\":\"Чихуахуа\",\"DOG_BREED_PUG\":\"Мопс\",\"DOG_BREED_FRENCH_BULLDOG\":\"Френски Булдог\",\"DOG_BREED_SIBERIAN_HUSKY\":\"Сибирско Хъски\",\"DOG_BREED_BOXER\":\"Боксер\",\"DOG_BREED_AUSTRALIAN_SHEPHERD\":\"Австралийска Овчарка\",\"DOG_BREED_GREYHOUND\":\"Хрътка\",\"DOG_BREED_ROTTWEILER\":\"Ротвайлер\",\"DOG_BREED_POMERANIAN\":\"Померански\",\"DOG_BREED_DALMATIAN\":\"Далматинец\",\"DOG_BREED_SHIBA_INU\":\"Шиба Ину\",\"DOG_BREED_SAMOYED\":\"Самоед\",\"DOG_BREED_DOBERMANN\":\"Доберман\",\"DOG_TYPE\":\"Вид на кучето\",\"DOG_BREED\":\"Порода\",\"NAME\":\"Име\",\"ADD\":\"Добави\",\"DOG_TYPE_FLUFFY\":\"Пухкави\",\"DOG_TYPE_BEST_FAMILY\":\"Семейни\",\"DOG_TYPE_SMARTEST\":\"Умни\",\"DOG_TYPE_BEST_GUARD\":\"Добри за охрана\",\"DOG_TYPE_KID_FRIENDLY\":\"Дружелюбни към деца\",\"DOG_TYPE_BEST_WATCH\":\"Най-добри за охрана\",\"DOG_TYPE_EASY_TO_TRAIN\":\"Лесни за дресировка\",\"DOG_TYPE_LOW_SHEDDING\":\"Слабо обезкосмяващи се\",\"LOGIN_TITLE\":\"Вход\",\"LOGIN_SUBMIT\":\"Вход\",\"FORGOT_PASSWORD_TITLE\":\"Забравена парола\",\"I_REMEMBERED_MY_PASSWORD\":\"Сетих се за паролата си\",\"FORGOT_PASSWORD_SUBMIT\":\"Изпрати заявката\",\"CONFIRMED_PASSWORD\":\"Потвърдена парола\",\"REGISTER_SUBMIT\":\"Регистрация\",\"YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT\":\"Твоят имейл или парола са грешни.\",\"PASSWORD_IS_A_REQUIRED_FIELD\":\"Паролата е задължително поле\",\"EMAIL_IS_A_REQUIRED_FIELD\":\"Имейлът е задължително поле.\"}");
 
 /***/ }),
 
@@ -683,10 +1028,10 @@ module.exports = JSON.parse("{\"LOGIN\":\"Вход\",\"EMAIL\":\"Имейл\",\"
 /*!***********************************!*\
   !*** ./ClientApp/locales/en.json ***!
   \***********************************/
-/*! exports provided: LOGIN, EMAIL, PASSWORD, FORGOT_PASSWORD, DONT_HAVE_A_PROFILE, FULL_NAME, CONFIRM_PASSWORD, REGISTER, ALREADY_HAVE_A_PROFILE, YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED, CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK, SWITCH_TO, ENGLISH, BULGARIAN, HOME, DOGS, SHOPS, LOGOUT, OFFERS, DOG_TYPE_HYPOALLERGENIC, DOG_BREED_GERMAN_SPITZ, DOG_BREED_GERMAN_SHEPHERD, DOG_BREED_BULLDOG, DOG_BREED_POODLE, DOG_BREED_LABRADOR_RETRIEVER, DOG_BREED_GOLDEN_RETRIEVER, DOG_BREED_BEAGLE, DOG_BREED_YORKSHIRE_TERRIER, DOG_BREED_DACHSHUND, DOG_BREED_CHIHUAHUA, DOG_BREED_PUG, DOG_BREED_FRENCH_BULLDOG, DOG_BREED_SIBERIAN_HUSKY, DOG_BREED_BOXER, DOG_BREED_AUSTRALIAN_SHEPHERD, DOG_BREED_GREYHOUND, DOG_BREED_ROTTWEILER, DOG_BREED_POMERANIAN, DOG_BREED_DALMATIAN, DOG_BREED_SHIBA_INU, DOG_BREED_SAMOYED, DOG_BREED_DOBERMANN, DOG_TYPE, DOG_BREED, NAME, ADD, DOG_TYPE_FLUFFY, DOG_TYPE_BEST_FAMILY, DOG_TYPE_SMARTEST, DOG_TYPE_BEST_GUARD, DOG_TYPE_KID_FRIENDLY, DOG_TYPE_BEST_WATCH, DOG_TYPE_EASY_TO_TRAIN, DOG_TYPE_LOW_SHEDDING, default */
+/*! exports provided: LOGIN, EMAIL, PASSWORD, FORGOT_PASSWORD, DONT_HAVE_A_PROFILE, FULL_NAME, CONFIRM_PASSWORD, REGISTER_TITLE, ALREADY_HAVE_A_PROFILE, YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED, CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK, SWITCH_TO, ENGLISH, BULGARIAN, HOME, DOGS, SHOPS, LOGOUT, OFFERS, DOG_TYPE_HYPOALLERGENIC, DOG_BREED_GERMAN_SPITZ, DOG_BREED_GERMAN_SHEPHERD, DOG_BREED_BULLDOG, DOG_BREED_POODLE, DOG_BREED_LABRADOR_RETRIEVER, DOG_BREED_GOLDEN_RETRIEVER, DOG_BREED_BEAGLE, DOG_BREED_YORKSHIRE_TERRIER, DOG_BREED_DACHSHUND, DOG_BREED_CHIHUAHUA, DOG_BREED_PUG, DOG_BREED_FRENCH_BULLDOG, DOG_BREED_SIBERIAN_HUSKY, DOG_BREED_BOXER, DOG_BREED_AUSTRALIAN_SHEPHERD, DOG_BREED_GREYHOUND, DOG_BREED_ROTTWEILER, DOG_BREED_POMERANIAN, DOG_BREED_DALMATIAN, DOG_BREED_SHIBA_INU, DOG_BREED_SAMOYED, DOG_BREED_DOBERMANN, DOG_TYPE, DOG_BREED, NAME, ADD, DOG_TYPE_FLUFFY, DOG_TYPE_BEST_FAMILY, DOG_TYPE_SMARTEST, DOG_TYPE_BEST_GUARD, DOG_TYPE_KID_FRIENDLY, DOG_TYPE_BEST_WATCH, DOG_TYPE_EASY_TO_TRAIN, DOG_TYPE_LOW_SHEDDING, LOGIN_TITLE, LOGIN_SUBMIT, FORGOT_PASSWORD_TITLE, I_REMEMBERED_MY_PASSWORD, FORGOT_PASSWORD_SUBMIT, CONFIRMED_PASSWORD, REGISTER_SUBMIT, YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT, PASSWORD_IS_A_REQUIRED_FIELD, EMAIL_IS_A_REQUIRED_FIELD, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"LOGIN\":\"Login\",\"EMAIL\":\"Email\",\"PASSWORD\":\"Password\",\"FORGOT_PASSWORD\":\"Forgot password\",\"DONT_HAVE_A_PROFILE\":\"Don't have a profile\",\"FULL_NAME\":\"Full name\",\"CONFIRM_PASSWORD\":\"Confirm password\",\"REGISTER\":\"Register\",\"ALREADY_HAVE_A_PROFILE\":\"Already have a profile\",\"YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED\":\"Your registration has been successfully completed.\",\"CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK\":\"Check your email for confirmation link.\",\"SWITCH_TO\":\"Switch to\",\"ENGLISH\":\"English\",\"BULGARIAN\":\"Bulgarian\",\"HOME\":\"Home\",\"DOGS\":\"Dogs\",\"SHOPS\":\"Shops\",\"LOGOUT\":\"Logout\",\"OFFERS\":\"Offers\",\"DOG_TYPE_HYPOALLERGENIC\":\"Hypoallergenic\",\"DOG_BREED_GERMAN_SPITZ\":\"German Spitz\",\"DOG_BREED_GERMAN_SHEPHERD\":\"German Shepherd\",\"DOG_BREED_BULLDOG\":\"Bulldog\",\"DOG_BREED_POODLE\":\"Poodle\",\"DOG_BREED_LABRADOR_RETRIEVER\":\"Labrador Retriever\",\"DOG_BREED_GOLDEN_RETRIEVER\":\"Golden Retriever\",\"DOG_BREED_BEAGLE\":\"Beagle\",\"DOG_BREED_YORKSHIRE_TERRIER\":\"Yorkshire Terrier\",\"DOG_BREED_DACHSHUND\":\"Dachshund\",\"DOG_BREED_CHIHUAHUA\":\"Chihuahua\",\"DOG_BREED_PUG\":\"Pug\",\"DOG_BREED_FRENCH_BULLDOG\":\"French Bulldog\",\"DOG_BREED_SIBERIAN_HUSKY\":\"Siberian Husky\",\"DOG_BREED_BOXER\":\"Boxer\",\"DOG_BREED_AUSTRALIAN_SHEPHERD\":\"Australian Shepherd\",\"DOG_BREED_GREYHOUND\":\"Greyhound\",\"DOG_BREED_ROTTWEILER\":\"Rottweiler\",\"DOG_BREED_POMERANIAN\":\"Pomeranian\",\"DOG_BREED_DALMATIAN\":\"Dalmatian\",\"DOG_BREED_SHIBA_INU\":\"Shiba Inu\",\"DOG_BREED_SAMOYED\":\"Samoyed\",\"DOG_BREED_DOBERMANN\":\"Dobermann\",\"DOG_TYPE\":\"Dog type\",\"DOG_BREED\":\"Breed\",\"NAME\":\"Name\",\"ADD\":\"Add\",\"DOG_TYPE_FLUFFY\":\"Fluffy\",\"DOG_TYPE_BEST_FAMILY\":\"Best family\",\"DOG_TYPE_SMARTEST\":\"Smartest\",\"DOG_TYPE_BEST_GUARD\":\"Best guard\",\"DOG_TYPE_KID_FRIENDLY\":\"Kid friendly\",\"DOG_TYPE_BEST_WATCH\":\"Best watch\",\"DOG_TYPE_EASY_TO_TRAIN\":\"Easy to train\",\"DOG_TYPE_LOW_SHEDDING\":\"Low shedding\"}");
+module.exports = JSON.parse("{\"LOGIN\":\"Login\",\"EMAIL\":\"Email\",\"PASSWORD\":\"Password\",\"FORGOT_PASSWORD\":\"Forgot password\",\"DONT_HAVE_A_PROFILE\":\"Don't have a profile\",\"FULL_NAME\":\"Full name\",\"CONFIRM_PASSWORD\":\"Confirm password\",\"REGISTER_TITLE\":\"Register\",\"ALREADY_HAVE_A_PROFILE\":\"Already have a profile\",\"YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED\":\"Your registration has been successfully completed.\",\"CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK\":\"Check your email for confirmation link.\",\"SWITCH_TO\":\"Switch to\",\"ENGLISH\":\"English\",\"BULGARIAN\":\"Bulgarian\",\"HOME\":\"Home\",\"DOGS\":\"Dogs\",\"SHOPS\":\"Shops\",\"LOGOUT\":\"Logout\",\"OFFERS\":\"Offers\",\"DOG_TYPE_HYPOALLERGENIC\":\"Hypoallergenic\",\"DOG_BREED_GERMAN_SPITZ\":\"German Spitz\",\"DOG_BREED_GERMAN_SHEPHERD\":\"German Shepherd\",\"DOG_BREED_BULLDOG\":\"Bulldog\",\"DOG_BREED_POODLE\":\"Poodle\",\"DOG_BREED_LABRADOR_RETRIEVER\":\"Labrador Retriever\",\"DOG_BREED_GOLDEN_RETRIEVER\":\"Golden Retriever\",\"DOG_BREED_BEAGLE\":\"Beagle\",\"DOG_BREED_YORKSHIRE_TERRIER\":\"Yorkshire Terrier\",\"DOG_BREED_DACHSHUND\":\"Dachshund\",\"DOG_BREED_CHIHUAHUA\":\"Chihuahua\",\"DOG_BREED_PUG\":\"Pug\",\"DOG_BREED_FRENCH_BULLDOG\":\"French Bulldog\",\"DOG_BREED_SIBERIAN_HUSKY\":\"Siberian Husky\",\"DOG_BREED_BOXER\":\"Boxer\",\"DOG_BREED_AUSTRALIAN_SHEPHERD\":\"Australian Shepherd\",\"DOG_BREED_GREYHOUND\":\"Greyhound\",\"DOG_BREED_ROTTWEILER\":\"Rottweiler\",\"DOG_BREED_POMERANIAN\":\"Pomeranian\",\"DOG_BREED_DALMATIAN\":\"Dalmatian\",\"DOG_BREED_SHIBA_INU\":\"Shiba Inu\",\"DOG_BREED_SAMOYED\":\"Samoyed\",\"DOG_BREED_DOBERMANN\":\"Dobermann\",\"DOG_TYPE\":\"Dog type\",\"DOG_BREED\":\"Breed\",\"NAME\":\"Name\",\"ADD\":\"Add\",\"DOG_TYPE_FLUFFY\":\"Fluffy\",\"DOG_TYPE_BEST_FAMILY\":\"Best family\",\"DOG_TYPE_SMARTEST\":\"Smartest\",\"DOG_TYPE_BEST_GUARD\":\"Best guard\",\"DOG_TYPE_KID_FRIENDLY\":\"Kid friendly\",\"DOG_TYPE_BEST_WATCH\":\"Best watch\",\"DOG_TYPE_EASY_TO_TRAIN\":\"Easy to train\",\"DOG_TYPE_LOW_SHEDDING\":\"Low shedding\",\"LOGIN_TITLE\":\"Login\",\"LOGIN_SUBMIT\":\"Login\",\"FORGOT_PASSWORD_TITLE\":\"Forgot password\",\"I_REMEMBERED_MY_PASSWORD\":\"I remembered my password\",\"FORGOT_PASSWORD_SUBMIT\":\"Send request\",\"CONFIRMED_PASSWORD\":\"Confirmed password\",\"REGISTER_SUBMIT\":\"Register\",\"YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT\":\"Your email or password is incorrect\",\"PASSWORD_IS_A_REQUIRED_FIELD\":\"Password is a required field\",\"EMAIL_IS_A_REQUIRED_FIELD\":\"Email is a required field.\"}");
 
 /***/ }),
 
@@ -809,6 +1154,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _endpoints = __webpack_require__(/*! ../../api/endpoints */ "./ClientApp/api/endpoints.js");
+
 var _default = {
   data: function data() {
     return {};
@@ -833,6 +1181,14 @@ var _default = {
     redirectToRoute: function redirectToRoute(route) {
       var clean = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       window.location.href = this.getRoute(route, clean);
+    },
+    logError: function logError(error, caller) {
+      _endpoints.loggerServiceAgent.logClientError({
+        message: error.message,
+        source: "".concat(this.$options.name, " (").concat(window.location.href, ")"),
+        method: caller,
+        stackTrace: error.stack
+      });
     }
   }
 };
@@ -1725,8 +2081,13 @@ var _HomePageStaticContent = _interopRequireDefault(__webpack_require__(/*! ../.
 
 var _generalMixin = _interopRequireDefault(__webpack_require__(/*! ../../mixins/general/generalMixin */ "./ClientApp/mixins/general/generalMixin.js"));
 
+var _endpoints = __webpack_require__(/*! ../../api/endpoints */ "./ClientApp/api/endpoints.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+//
+//
+//
 //
 //
 //
@@ -1750,7 +2111,32 @@ var _default = {
       return this.$store.getters.languageId;
     }
   },
-  methods: {},
+  methods: {
+    invokeError: function invokeError() {
+      var _this = this;
+
+      fetch('/some-not-existed-path', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+      })["catch"](function (error) {
+        return _this.logError(error, 'invokeError');
+      });
+    },
+    functionName: function functionName(fun) {
+      var ret = fun.toString();
+      ret = ret.substr('function '.length);
+      ret = ret.substr(0, ret.indexOf('('));
+      return ret;
+    }
+  },
   mounted: function mounted() {}
 };
 exports["default"] = _default;
@@ -72363,6 +72749,17 @@ var render = function() {
         })
       ],
       1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "my-2" },
+      [
+        _c("b-button", { on: { click: _vm.invokeError } }, [
+          _vm._v(_vm._s(_vm.$t("INVOKE_ERROR")))
+        ])
+      ],
+      1
     )
   ])
 }
@@ -85319,10 +85716,10 @@ var index = {
 
 /***/ }),
 
-/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-65321R8cFqoaSTT2.server.js":
-/*!*************************************************************************!*\
-  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-65321R8cFqoaSTT2.server.js ***!
-  \*************************************************************************/
+/***/ "C:\\Users\\gsk567\\AppData\\Local\\Temp\\tmp-15772fiy6A3mNgAdB.server.js":
+/*!**************************************************************************!*\
+  !*** C:/Users/gsk567/AppData/Local/Temp/tmp-15772fiy6A3mNgAdB.server.js ***!
+  \**************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

@@ -20,12 +20,21 @@ namespace Definux.Emeraude.Persistence.Seed
         /// <param name="hostingEnvironment"></param>
         /// <param name="entityContext"></param>
         /// <param name="systemFilesService"></param>
-        public DatabaseInitializer(IHostEnvironment hostingEnvironment, TContext entityContext, ISystemFilesService systemFilesService)
+        /// <param name="uploadService"></param>
+        /// <param name="rootsService"></param>
+        public DatabaseInitializer(
+            IHostEnvironment hostingEnvironment,
+            TContext entityContext,
+            ISystemFilesService systemFilesService,
+            IUploadService uploadService,
+            IRootsService rootsService)
         {
             this.HostingEnvironment = hostingEnvironment;
             this.EntityContext = entityContext;
             this.SystemFilesService = systemFilesService;
-            this.DataFolderPath = this.SystemFilesService.GetPathFromPrivateRoot("seed");
+            this.UploadService = uploadService;
+            this.RootsService = rootsService;
+            this.DataFolderPath = this.RootsService.GetPathFromPrivateRoot("seed");
 
             if (!Directory.Exists(this.DataFolderPath))
             {
@@ -46,6 +55,12 @@ namespace Definux.Emeraude.Persistence.Seed
 
         /// <inheritdoc cref="ISystemFilesService"/>
         protected ISystemFilesService SystemFilesService { get; private set; }
+
+        /// <inheritdoc cref="IUploadService"/>
+        protected IUploadService UploadService { get; private set; }
+
+        /// <inheritdoc cref="IRootsService"/>
+        protected IRootsService RootsService { get; private set; }
 
         /// <inheritdoc/>
         public abstract Task SeedAsync();

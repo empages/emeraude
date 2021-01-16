@@ -3,14 +3,16 @@ using System;
 using Definux.Emeraude.Logger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Definux.Emeraude.Logger.Migrations
 {
     [DbContext(typeof(LoggerContext))]
-    partial class LoggerContextModelSnapshot : ModelSnapshot
+    [Migration("20210115002750_RemoveLoggerClass")]
+    partial class RemoveLoggerClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

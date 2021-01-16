@@ -17,15 +17,18 @@ namespace EmDoggo.Infrastructure.Services
 
         private readonly ISystemFilesService systemFilesService;
         private readonly IEmLogger logger;
+        private readonly IRootsService rootsService;
+
         public HelperService(
             ISystemFilesService systemFilesService,
             IEmLogger logger,
-            IHostEnvironment hostEnvironment)
+            IRootsService rootsService)
         {
             this.systemFilesService = systemFilesService;
             this.logger = logger;
+            this.rootsService = rootsService;
 
-            this.foodsGalleryFolderPath = this.systemFilesService.GetPathFromPublicRoot(
+            this.foodsGalleryFolderPath = this.rootsService.GetPathFromPublicRoot(
                     Folders.UploadFolderName,
                     Folders.ImagesFolderName,
                     FoodsGalleryFolderName);
@@ -54,7 +57,7 @@ namespace EmDoggo.Infrastructure.Services
                 string folderPath = GetFoodGalleryFolderPath(foodId);
                 List<string> resultPictures = Directory
                     .GetFiles(folderPath, "*", SearchOption.TopDirectoryOnly)
-                    .Select(x => x.Replace(this.systemFilesService.PublicRootDirectory, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
+                    .Select(x => x.Replace(this.rootsService.PublicRootDirectory, string.Empty).Replace(Path.DirectorySeparatorChar, '/'))
                     .ToList();
 
                 return resultPictures;

@@ -15,6 +15,8 @@
  * @property {string} name
  * @property {number} type
  * @property {number} breed
+ * @property {string} nullableGuid
+ * @property {string} nullableTimeSpan
  */
 /**
  * @typedef SimpleResult
@@ -62,24 +64,31 @@
  * @property {string} key
  */
 /**
+ * @typedef LogFrontEndErrorCommand
+ * @property {string} stackTrace
+ * @property {string} source
+ * @property {string} method
+ * @property {string} message
+ */
+/**
  * @typedef UserAvatarTypeResult
  * @property {boolean} isDefault
  */
 /**
  * @typedef ChangeUserAvatarCommand
  * @property {string} avatarFileBase64
- * @property {Guid} userId
+ * @property {string} userId
  */
 /**
  * @typedef ChangePasswordCommand
- * @property {Guid} userId
+ * @property {string} userId
  * @property {string} currentPassword
  * @property {string} newPassword
  * @property {string} confirmedPassword
  */
 /**
  * @typedef ChangeUserNameCommand
- * @property {Guid} userId
+ * @property {string} userId
  * @property {string} newName
  */
 
@@ -193,6 +202,30 @@ export class EnumsServiceAgent {
     }
 }
 
+export class LoggerServiceAgent {
+
+    /**
+     * LoggerApiController/LogClientError
+     * @param {LogFrontEndErrorCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    logClientError(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/logger/error`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+}
+
 export class UsersServiceAgent {
 
     /**
@@ -292,6 +325,11 @@ export const emptyServiceAgent = new EmptyServiceAgent();
  * @type {EnumsServiceAgent}
  */
 export const enumsServiceAgent = new EnumsServiceAgent();
+
+/**
+ * @type {LoggerServiceAgent}
+ */
+export const loggerServiceAgent = new LoggerServiceAgent();
 
 /**
  * @type {UsersServiceAgent}

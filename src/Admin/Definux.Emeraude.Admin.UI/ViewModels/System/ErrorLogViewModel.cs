@@ -48,11 +48,6 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.System
         public string Method { get; set; }
 
         /// <summary>
-        /// Class from where comes the error log.
-        /// </summary>
-        public string Class { get; set; }
-
-        /// <summary>
         /// Helper struct for encapsulate error log user.
         /// </summary>
         public struct ErrorLogUser

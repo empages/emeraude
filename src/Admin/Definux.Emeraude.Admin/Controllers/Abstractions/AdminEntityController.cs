@@ -33,12 +33,12 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         where TEntityViewModel : class, new()
     {
         /// <summary>
-        /// Breadcrumb page title default placeholder for transfering custom page title to breadcrumbs list.
+        /// Breadcrumb page title default placeholder for transferring custom page title to breadcrumbs list.
         /// </summary>
         protected const string BreadcrumbPageTitlePlaceholder = "[PageTitle]";
 
         /// <summary>
-        /// Breadcrumb plural entity name default placeholder for transfering custom entity plural name to breadcrumbs list.
+        /// Breadcrumb plural entity name default placeholder for transferring custom entity plural name to breadcrumbs list.
         /// </summary>
         protected const string BreadcrumbEntityNamePluralPlaceholder = "[EntityNamePlural]";
 

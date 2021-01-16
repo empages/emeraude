@@ -1,3 +1,5 @@
+import {loggerServiceAgent} from "../../api/endpoints";
+
 export default {
     data() {
       return {
@@ -22,6 +24,14 @@ export default {
         },
         redirectToRoute(route, clean = false) {
             window.location.href = this.getRoute(route, clean);
+        },
+        logError(error, caller) {
+            loggerServiceAgent.logClientError({
+                message: error.message,
+                source: `${this.$options.name} (${window.location.href})`,
+                method: caller,
+                stackTrace: error.stack
+            })
         }
     }
 };

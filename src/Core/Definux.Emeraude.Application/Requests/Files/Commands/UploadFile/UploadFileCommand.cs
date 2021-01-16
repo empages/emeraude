@@ -53,16 +53,22 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
         {
             private readonly IFilesValidationProvider validationProvider;
             private readonly ISystemFilesService systemFilesService;
+            private readonly IUploadService uploadService;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="UploadFileCommandHandler"/> class.
             /// </summary>
             /// <param name="validationProvider"></param>
             /// <param name="systemFilesService"></param>
-            public UploadFileCommandHandler(IFilesValidationProvider validationProvider, ISystemFilesService systemFilesService)
+            /// <param name="uploadService"></param>
+            public UploadFileCommandHandler(
+                IFilesValidationProvider validationProvider,
+                ISystemFilesService systemFilesService,
+                IUploadService uploadService)
             {
                 this.validationProvider = validationProvider;
                 this.systemFilesService = systemFilesService;
+                this.uploadService = uploadService;
             }
 
             /// <inheritdoc/>
@@ -74,11 +80,11 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
                     TempFileLog uploadedFile;
                     if (string.IsNullOrEmpty(request.SaveDirectory))
                     {
-                        uploadedFile = await this.systemFilesService.UploadFileAsync(request.FormFile);
+                        uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile);
                     }
                     else
                     {
-                        uploadedFile = await this.systemFilesService.UploadFileAsync(request.FormFile, request.SaveDirectory, request.PublicRoot);
+                        uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile, request.SaveDirectory, request.PublicRoot);
                     }
 
                     if (uploadedFile != null)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Hosting;
@@ -26,10 +27,12 @@ namespace Definux.Emeraude
                 try
                 {
                     var databaseInitializerManager = services.GetRequiredService<IDatabaseInitializerManager>();
+                    var foldersInitializer = services.GetRequiredService<IFoldersInitializer>();
                     var options = services.GetRequiredService<IOptions<EmOptions>>().Value;
 
                     databaseInitializerManager.LoadDatabaseInitializers(options.DatabaseInitializers);
                     databaseInitializerManager.SeedAsync().Wait();
+                    foldersInitializer.InitFoldersAsync().Wait();
                 }
                 catch (Exception ex)
                 {
