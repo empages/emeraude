@@ -29,16 +29,22 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo
         {
             private readonly IFilesValidationProvider validationProvider;
             private readonly ISystemFilesService systemFilesService;
+            private readonly IUploadService uploadService;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="UploadVideoCommandHandler"/> class.
             /// </summary>
             /// <param name="validationProvider"></param>
             /// <param name="systemFilesService"></param>
-            public UploadVideoCommandHandler(IFilesValidationProvider validationProvider, ISystemFilesService systemFilesService)
+            /// <param name="uploadService"></param>
+            public UploadVideoCommandHandler(
+                IFilesValidationProvider validationProvider,
+                ISystemFilesService systemFilesService,
+                IUploadService uploadService)
             {
                 this.validationProvider = validationProvider;
                 this.systemFilesService = systemFilesService;
+                this.uploadService = uploadService;
             }
 
             /// <inheritdoc/>
@@ -47,7 +53,7 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo
                 var validationResult = this.validationProvider.ValidateFormVideoFile(request.FormFile);
                 if (validationResult.Successed)
                 {
-                    var uploadedFile = await this.systemFilesService.UploadFileAsync(request.FormFile);
+                    var uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile);
                     if (uploadedFile != null)
                     {
                         return UploadResult.SuccessResult(uploadedFile.Id);

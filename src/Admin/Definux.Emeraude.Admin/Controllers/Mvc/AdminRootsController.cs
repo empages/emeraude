@@ -28,14 +28,17 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     public sealed class AdminRootsController : AdminController
     {
         private readonly ISystemFilesService systemFilesService;
+        private readonly IRootsService rootsService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminRootsController"/> class.
         /// </summary>
         /// <param name="systemFilesService"></param>
-        public AdminRootsController(ISystemFilesService systemFilesService)
+        /// <param name="rootsService"></param>
+        public AdminRootsController(ISystemFilesService systemFilesService, IRootsService rootsService)
         {
             this.systemFilesService = systemFilesService;
+            this.rootsService = rootsService;
         }
 
         /// <summary>
@@ -183,11 +186,11 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             string directory = string.Empty;
             if (root == "public")
             {
-                directory = this.systemFilesService.PublicRootDirectory;
+                directory = this.rootsService.PublicRootDirectory;
             }
             else if (root == "private")
             {
-                directory = this.systemFilesService.PrivateRootDirectory;
+                directory = this.rootsService.PrivateRootDirectory;
             }
 
             return directory;

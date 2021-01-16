@@ -22,6 +22,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly UserManager<User> userManager;
         private readonly IHostingEnvironment hostEnvironment;
         private readonly ISystemFilesService systemFilesService;
+        private readonly IRootsService rootsService;
         private readonly IEmLogger logger;
 
         /// <summary>
@@ -31,18 +32,21 @@ namespace Definux.Emeraude.Identity.Services
         /// <param name="userManager"></param>
         /// <param name="hostEnvironment"></param>
         /// <param name="systemFilesService"></param>
+        /// <param name="rootsService"></param>
         /// <param name="logger"></param>
         public UserAvatarService(
             IEmContext context,
             UserManager<User> userManager,
             IHostingEnvironment hostEnvironment,
             ISystemFilesService systemFilesService,
+            IRootsService rootsService,
             IEmLogger logger)
         {
             this.context = context;
             this.userManager = userManager;
             this.hostEnvironment = hostEnvironment;
             this.systemFilesService = systemFilesService;
+            this.rootsService = rootsService;
             this.logger = logger;
         }
 
@@ -71,7 +75,7 @@ namespace Definux.Emeraude.Identity.Services
         {
             try
             {
-                string targetFileDirectoryPath = this.systemFilesService.GetPathFromPublicRoot(Folders.UploadFolderName, Folders.ImagesFolderName);
+                string targetFileDirectoryPath = this.rootsService.GetPathFromPublicRoot(Folders.UploadFolderName, Folders.ImagesFolderName);
                 string avatarName = FilesFunctions.GetUniqueFileName();
                 string avatarNameWithExtension = $"{avatarName}.jpg";
                 string targetFilePath = Path.Combine(targetFileDirectoryPath, avatarNameWithExtension);

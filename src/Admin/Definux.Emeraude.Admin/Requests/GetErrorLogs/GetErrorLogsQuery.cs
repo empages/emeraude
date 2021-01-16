@@ -11,6 +11,7 @@ using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Identity.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.Requests.GetErrorLogs
 {
@@ -60,8 +61,7 @@ namespace Definux.Emeraude.Admin.Requests.GetErrorLogs
 
                 result.AllItemsCount = this.loggerContext
                     .ErrorLogs
-                    .AsQueryable()
-                    .Where(searchQueryExpression.Compile())
+                    .Where(searchQueryExpression)
                     .Count();
 
                 result.CurrentPage = request.Page;
@@ -69,9 +69,8 @@ namespace Definux.Emeraude.Admin.Requests.GetErrorLogs
 
                 var errorLogs = this.loggerContext
                     .ErrorLogs
-                    .AsQueryable()
                     .OrderByDescending(x => x.CreatedOn)
-                    .Where(searchQueryExpression.Compile())
+                    .Where(searchQueryExpression)
                     .Skip(result.StartRow)
                     .Take(pageSize)
                     .AsQueryable()
@@ -86,7 +85,6 @@ namespace Definux.Emeraude.Admin.Requests.GetErrorLogs
 
                 var involvedUsers = this.entityContext
                     .Set<User>()
-                    .AsQueryable()
                     .Where(x => involvedUsersIds.Contains(x.Id.ToString()))
                     .ToList();
 
@@ -120,12 +118,12 @@ namespace Definux.Emeraude.Admin.Requests.GetErrorLogs
                     return x => true;
                 }
 
+                string normalizedSearchQuery = searchQuery.ToLower();
                 return x =>
-                    x.Source.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    x.Message.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    x.Method.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    x.StackTrace.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    x.Class.Contains(searchQuery, StringComparison.OrdinalIgnoreCase);
+                    x.Source.ToLower().Contains(normalizedSearchQuery) ||
+                    x.Message.ToLower().Contains(normalizedSearchQuery) ||
+                    x.Method.ToLower().Contains(normalizedSearchQuery) ||
+                    x.StackTrace.ToLower().Contains(normalizedSearchQuery);
             }
         }
     }

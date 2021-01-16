@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Mapping;
@@ -20,6 +21,10 @@ namespace EmDoggo.Application.Requests.Commands.AddDog
         public DogType Type { get; set; }
 
         public DogBreed Breed { get; set; }
+
+        public Guid? NullableGuid { get; set; }
+        
+        public TimeSpan? NullableTimeSpan { get; set; }
         
         public class AddDogCommandHandler : IRequestHandler<AddDogCommand, CreatedResult>
         {

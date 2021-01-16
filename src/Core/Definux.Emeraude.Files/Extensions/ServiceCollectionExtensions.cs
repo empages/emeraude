@@ -19,6 +19,9 @@ namespace Definux.Emeraude.Files.Extensions
         {
             services.AddScoped<ISystemFilesService, SystemFilesService>();
             services.AddScoped<IFilesValidationProvider, FilesValidationProvider>();
+            services.AddScoped<IFoldersInitializer, FoldersInitializer>();
+            services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<IRootsService, RootsService>();
 
             return services;
         }

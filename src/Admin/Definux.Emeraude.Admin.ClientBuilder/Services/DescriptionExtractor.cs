@@ -137,7 +137,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                     description.JavaScriptTypeName = description.Name;
                 }
 
-                if (description.IsGenericType && !description.IsCollection)
+                if (!isPrimitiveType && description.IsGenericType && !description.IsCollection)
                 {
                     description.Name = GetGenericTypeClearName(description.Name);
                     description.JavaScriptTypeName = description.Name;

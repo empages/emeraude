@@ -6,6 +6,7 @@ using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Logger;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
 {
@@ -25,6 +26,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             private readonly ISystemFilesService systemFilesService;
             private readonly IUserManager userManager;
             private readonly IUserAvatarService userAvatarService;
+            private readonly IRootsService rootsService;
             private readonly IEmLogger logger;
 
             /// <summary>
@@ -33,16 +35,19 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             /// <param name="systemFilesService"></param>
             /// <param name="userManager"></param>
             /// <param name="userAvatarService"></param>
+            /// <param name="rootsService"></param>
             /// <param name="logger"></param>
             public GetUserAvatarQueryHandler(
                 ISystemFilesService systemFilesService,
                 IUserManager userManager,
                 IUserAvatarService userAvatarService,
+                IRootsService rootsService,
                 IEmLogger logger)
             {
                 this.systemFilesService = systemFilesService;
                 this.userManager = userManager;
                 this.userAvatarService = userAvatarService;
+                this.rootsService = rootsService;
                 this.logger = logger;
             }
 
@@ -57,7 +62,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                     if (user != null && !string.IsNullOrEmpty(user.AvatarUrl))
                     {
                         string userAvatarRelativePath = this.userAvatarService.GetUserAvatarRelativePath(user);
-                        string avatarPath = this.systemFilesService.GetPathFromPublicRoot(userAvatarRelativePath.Substring(1));
+                        string avatarPath = this.rootsService.GetPathFromPublicRoot(userAvatarRelativePath.Substring(1));
                         result.Avatar = await this.systemFilesService.GetFileAsync(avatarPath);
                         if (result.Avatar == null)
                         {

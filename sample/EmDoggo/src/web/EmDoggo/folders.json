@@ -1,0 +1,31 @@
+﻿[
+  {
+    "name": "wwwroot",
+    "children": [
+      {
+        "name": "uploads",
+        "children": [
+          {
+            "name": "images",
+            "children": [
+              {
+                "name": "foods"
+              }
+            ]
+          },
+          {
+            "name": "dummy",
+            "children": [
+              {
+                "name": "folder_A"
+              },
+              {
+                "name": "folder_B"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

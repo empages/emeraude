@@ -11,35 +11,11 @@ namespace Definux.Emeraude.Application.Files
     public interface ISystemFilesService
     {
         /// <summary>
-        /// Get public root directory.
-        /// </summary>
-        string PublicRootDirectory { get; }
-
-        /// <summary>
-        /// Get private root directory.
-        /// </summary>
-        string PrivateRootDirectory { get; }
-
-        /// <summary>
         /// Get public root files with its relative paths from a path.
         /// </summary>
         /// <param name="paths"></param>
         /// <returns></returns>
         List<string> GetPublicRootFolderFilesRelativePaths(params string[] paths);
-
-        /// <summary>
-        /// Get path from public root by path.
-        /// </summary>
-        /// <param name="paths"></param>
-        /// <returns></returns>
-        string GetPathFromPublicRoot(params string[] paths);
-
-        /// <summary>
-        /// Get path from private root by path.
-        /// </summary>
-        /// <param name="paths"></param>
-        /// <returns></returns>
-        string GetPathFromPrivateRoot(params string[] paths);
 
         /// <summary>
         /// Scan directory (public or private roots) for system items.
@@ -67,22 +43,6 @@ namespace Definux.Emeraude.Application.Files
         /// <param name="filePath"></param>
         /// <returns></returns>
         Task<SystemFileResult> GetFileAsync(string filePath);
-
-        /// <summary>
-        /// Upload file as a temp file in private root.
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <returns></returns>
-        Task<TempFileLog> UploadFileAsync(IFormFile formFile);
-
-        /// <summary>
-        /// Upload file in specified directory.
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <param name="saveDirectory"></param>
-        /// <param name="publicRoot"></param>
-        /// <returns></returns>
-        Task<TempFileLog> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false);
 
         /// <summary>
         /// Get file (<see cref="TempFileLog"/>) by temp file log id (async execution).

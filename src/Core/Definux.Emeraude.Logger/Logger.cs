@@ -83,7 +83,6 @@ namespace Definux.Emeraude.Logger
                     Source = exception.Source,
                     Message = exception.Message,
                     Method = method,
-                    Class = serviceClass,
                 };
 
                 this.context.ErrorLogs.Add(log);
@@ -106,7 +105,6 @@ namespace Definux.Emeraude.Logger
                     Source = exception.Source,
                     Message = exception.Message,
                     Method = method,
-                    Class = serviceClass,
                 };
 
                 this.context.ErrorLogs.Add(log);
@@ -151,7 +149,6 @@ namespace Definux.Emeraude.Logger
                     Source = source,
                     Message = message,
                     Method = method,
-                    Class = serviceClass,
                 };
 
                 this.context.ErrorLogs.Add(log);

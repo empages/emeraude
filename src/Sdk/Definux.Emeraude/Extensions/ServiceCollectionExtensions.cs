@@ -10,6 +10,7 @@ using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Mapping.Profiles;
 using Definux.Emeraude.Application.Behaviours;
+using Definux.Emeraude.Application.Mapping;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
@@ -226,6 +227,7 @@ namespace Definux.Emeraude.Extensions
                 configuration.AddProfile<AdminViewModelsProfile>();
                 configuration.AddProfile<AdminAssemblyMappingProfile>();
                 configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();
+                configuration.AddProfile<ApplicationMappingProfile>();
                 configuration.AddMaps(applicationAssembly);
                 configuration.AddAdminMapperConfiguration();
                 configuration.AddClientMapperConfiguration();

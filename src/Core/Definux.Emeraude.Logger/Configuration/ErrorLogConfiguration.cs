@@ -27,10 +27,6 @@ namespace Definux.Emeraude.Logger.Configuration
             builder
                 .Property(x => x.Method)
                 .HasColumnName("method");
-
-            builder
-                .Property(x => x.Class)
-                .HasColumnName("class");
         }
     }
 }

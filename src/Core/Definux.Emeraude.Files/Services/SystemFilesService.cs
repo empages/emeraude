@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Logging;
+using Definux.Emeraude.Files.Extensions;
 using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,7 @@ namespace Definux.Emeraude.Files.Services
         private readonly IEmLogger logger;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILoggerContext loggerContext;
+        private readonly IRootsService rootsService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemFilesService"/> class.
@@ -28,38 +30,17 @@ namespace Definux.Emeraude.Files.Services
         /// <param name="logger"></param>
         /// <param name="hostingEnvironment"></param>
         /// <param name="loggerContext"></param>
+        /// <param name="rootsService"></param>
         public SystemFilesService(
             IEmLogger logger,
             IHostingEnvironment hostingEnvironment,
-            ILoggerContext loggerContext)
+            ILoggerContext loggerContext,
+            IRootsService rootsService)
         {
             this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
             this.loggerContext = loggerContext;
-        }
-
-        /// <inheritdoc/>
-        public string PublicRootDirectory => this.hostingEnvironment.WebRootPath;
-
-        /// <inheritdoc/>
-        public string PrivateRootDirectory => Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName);
-
-        /// <inheritdoc/>
-        public string GetPathFromPublicRoot(params string[] paths)
-        {
-            var resultPaths = paths.ToList();
-            resultPaths.Insert(0, this.PublicRootDirectory);
-
-            return Path.Combine(resultPaths.ToArray());
-        }
-
-        /// <inheritdoc/>
-        public string GetPathFromPrivateRoot(params string[] paths)
-        {
-            var resultPaths = paths.ToList();
-            resultPaths.Insert(0, this.PrivateRootDirectory);
-
-            return Path.Combine(resultPaths.ToArray());
+            this.rootsService = rootsService;
         }
 
         /// <inheritdoc/>
@@ -67,7 +48,7 @@ namespace Definux.Emeraude.Files.Services
         {
             try
             {
-                if (!(folderPath.StartsWith(this.PublicRootDirectory) || folderPath.StartsWith(this.PrivateRootDirectory)))
+                if (!(folderPath.StartsWith(this.rootsService.PublicRootDirectory) || folderPath.StartsWith(this.rootsService.PrivateRootDirectory)))
                 {
                     return false;
                 }
@@ -175,7 +156,7 @@ namespace Definux.Emeraude.Files.Services
         /// <inheritdoc/>
         public IEnumerable<SystemItem> ScanDirectory(string directory, string baseDirectory = "")
         {
-            if (!(directory.StartsWith(this.PublicRootDirectory) || directory.StartsWith(this.PrivateRootDirectory)))
+            if (!(directory.StartsWith(this.rootsService.PublicRootDirectory) || directory.StartsWith(this.rootsService.PrivateRootDirectory)))
             {
                 return null;
             }
@@ -225,92 +206,13 @@ namespace Definux.Emeraude.Files.Services
         /// <inheritdoc/>
         public IEnumerable<SystemItem> ScanPrivateDirectory()
         {
-            return this.ScanDirectory(this.PrivateRootDirectory, this.PrivateRootDirectory);
+            return this.ScanDirectory(this.rootsService.PrivateRootDirectory, this.rootsService.PrivateRootDirectory);
         }
 
         /// <inheritdoc/>
         public IEnumerable<SystemItem> ScanPublicDirectory()
         {
-            return this.ScanDirectory(this.PublicRootDirectory, this.PublicRootDirectory);
-        }
-
-        /// <inheritdoc/>
-        public async Task<TempFileLog> UploadFileAsync(IFormFile formFile)
-        {
-            try
-            {
-                string saveDirectory = this.GetTempUploadDirectory();
-                string resultFileName = FilesFunctions.GetUniqueFileName();
-                string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                string relativeSaveDirectory = Path.Combine(Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
-                string fileFullPath = Path.Combine(saveDirectory, $"{resultFileName}.{resultFileExtension}");
-                string fileRelativePath = Path.Combine(relativeSaveDirectory, $"{resultFileName}.{resultFileExtension}");
-
-                using (FileStream stream = System.IO.File.Create(fileFullPath))
-                {
-                    formFile.CopyTo(stream);
-                    stream.Flush();
-                }
-
-                TempFileLog fileEntity = new TempFileLog
-                {
-                    Name = resultFileName,
-                    Path = fileRelativePath,
-                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
-                };
-                fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
-
-                this.loggerContext.TempFileLogs.Add(fileEntity);
-                await this.loggerContext.SaveChangesAsync();
-
-                return fileEntity;
-            }
-            catch (Exception ex)
-            {
-                await this.logger.LogErrorAsync(ex);
-                return default;
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<TempFileLog> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
-        {
-            try
-            {
-                string rootDirectory = publicRoot ? this.PublicRootDirectory : this.PrivateRootDirectory;
-                string fullSaveDirectory = Path.Combine(rootDirectory, saveDirectory);
-                string rootFolderName = publicRoot ? Folders.PublicRootFolderName : Folders.PrivateRootFolderName;
-                string resultFileName = FilesFunctions.GetUniqueFileName();
-                string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                string relativeSaveDirectory = Path.Combine(rootFolderName, saveDirectory);
-                string fileFullPath = Path.Combine(fullSaveDirectory, $"{resultFileName}.{resultFileExtension}");
-                string fileRelativePath = Path.Combine(relativeSaveDirectory, $"{resultFileName}.{resultFileExtension}");
-
-                using (FileStream stream = System.IO.File.Create(fileFullPath))
-                {
-                    formFile.CopyTo(stream);
-                    stream.Flush();
-                }
-
-                TempFileLog fileEntity = new TempFileLog
-                {
-                    Name = resultFileName,
-                    Path = fileRelativePath,
-                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
-                    Applied = true,
-                };
-                fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
-
-                this.loggerContext.TempFileLogs.Add(fileEntity);
-                await this.loggerContext.SaveChangesAsync();
-
-                return fileEntity;
-            }
-            catch (Exception ex)
-            {
-                await this.logger.LogErrorAsync(ex);
-                return default;
-            }
+            return this.ScanDirectory(this.rootsService.PublicRootDirectory, this.rootsService.PublicRootDirectory);
         }
 
         /// <inheritdoc/>
@@ -331,7 +233,7 @@ namespace Definux.Emeraude.Files.Services
             try
             {
                 var targetPaths = paths.ToList();
-                string publicRootPath = this.PublicRootDirectory;
+                string publicRootPath = this.rootsService.PublicRootDirectory;
                 targetPaths.Insert(0, publicRootPath);
                 string folderPath = Path.Combine(targetPaths.ToArray());
                 List<string> resultFiles = Directory
@@ -393,7 +295,7 @@ namespace Definux.Emeraude.Files.Services
                 var targetFilePath = Path.Combine(targetDirectory, file.NameWithExtension);
                 if (file != null && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
                 {
-                    string sourceFilePath = Path.Combine(this.GetTempUploadDirectory(), file.NameWithExtension);
+                    string sourceFilePath = Path.Combine(this.hostingEnvironment.GetTempUploadDirectory(), file.NameWithExtension);
                     File.Move(sourceFilePath, targetFilePath);
 
                     file.Applied = true;
@@ -414,11 +316,6 @@ namespace Definux.Emeraude.Files.Services
                 await this.logger.LogErrorAsync(ex);
                 return default;
             }
-        }
-
-        private string GetTempUploadDirectory()
-        {
-            return Path.Combine(this.hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
         }
     }
 }

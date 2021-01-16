@@ -5,9 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Client.EmPages.Models;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Seo.Attributes;
 using Definux.Seo.Extensions;
 using Definux.Seo.Models;
 using Definux.Seo.Options;
+using Definux.Utilities.Functions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -132,7 +134,7 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected async virtual Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model)
+        protected virtual async Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model)
         {
             try
             {
