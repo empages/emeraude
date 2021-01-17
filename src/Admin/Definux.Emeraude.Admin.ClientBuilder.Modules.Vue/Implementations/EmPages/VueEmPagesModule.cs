@@ -32,15 +32,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.EmPag
 
             foreach (var page in pages)
             {
-                string currentPageFileName = page.Name.Replace(" ", string.Empty);
-                string currentPageFolderName = page.Name.SplitWordsByCapitalLetters().Replace(" ", "-").ToLower();
+                string currentPageFolderName = page.Name;
 
                 this.AddFile(new ModuleFile
                 {
-                    Name = $"{currentPageFileName}.vue",
+                    Name = "index.vue",
                     RelativePath = Path.Combine(relativePath, currentPageFolderName),
                     TemplateType = typeof(ComponentTemplate),
-                    ReferenceId = page.Name,
+                    ReferenceId = page.FullName,
                     RenderFunction = this.RenderPageComponent,
                 });
             }
@@ -57,7 +56,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.EmPag
             {
                 this.AddFolder(new ModuleFolder
                 {
-                    Name = page.Name.SplitWordsByCapitalLetters().Replace(" ", "-").ToLower(),
+                    Name = page.Name,
                     RelativePath = relativePath,
                 });
             }

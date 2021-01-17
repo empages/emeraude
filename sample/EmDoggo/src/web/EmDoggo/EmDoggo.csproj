@@ -30,7 +30,6 @@
   <ItemGroup>
     <Folder Include="ClientApp\api\" />
     <Folder Include="ClientApp\components\" />
-    <Folder Include="ClientApp\pages\" />
     <Folder Include="ClientApp\router\" />
     <Folder Include="Controllers\Client\" />
     <Folder Include="privateroot\uploads\temp\" />

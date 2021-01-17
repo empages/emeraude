@@ -6,14 +6,14 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-const Home = () => import('../pages/home/Home');
-const Dogs = () => import('../pages/dogs/Dogs');
-const Shops = () => import('../pages/shops/Shops');
+const HomePage = () => import('../pages/Home');
+const DogsPage = () => import('../pages/Dogs');
+const ShopsPage = () => import('../pages/Shops');
 
 const languageRoutePrefix = '/:lang(bg)?';
 
 export const routes = [
-    { name: 'Home', path: `${languageRoutePrefix}/`, component: Home },
-    { name: 'Dogs', path: `${languageRoutePrefix}/dogs`, component: Dogs },
-    { name: 'Shops', path: `${languageRoutePrefix}/shops`, component: Shops },
+    { name: 'Home', path: `${languageRoutePrefix}/`, component: HomePage },
+    { name: 'Dogs', path: `${languageRoutePrefix}/dogs`, component: DogsPage },
+    { name: 'Shops', path: `${languageRoutePrefix}/shops`, component: ShopsPage },
 ];
