@@ -59,7 +59,8 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
         {
             try
             {
-                string pageName = pageType.Name;
+                string fullPageName = pageType.Name;
+                string pageName = fullPageName;
                 if (pageName.EndsWith("Page", StringComparison.OrdinalIgnoreCase))
                 {
                     pageName = pageName.Substring(0, pageName.Length - 4);
@@ -77,6 +78,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Services
                 {
                     Id = $"{pageType.FullName.ToString().ToLower().Replace('.', '-')}",
                     Name = pageName,
+                    FullName = fullPageName,
                     Authorized = pageType.HasAttribute<AuthorizeAttribute>(),
                     Route = routeTemplate,
                     InitialStateModelType = initialStateModelType,
