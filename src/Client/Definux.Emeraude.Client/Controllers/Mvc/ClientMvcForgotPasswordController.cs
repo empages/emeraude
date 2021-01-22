@@ -6,6 +6,8 @@ using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
+using Definux.Seo.Attributes;
+using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -14,6 +16,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientMvcAuthenticationController : PublicController
     {
         private const string ForgotPasswordRoute = "/forgot-password";
+        private const string ForgotPasswordTitle = "FORGOT_PASSWORD_PAGE_TITLE";
+        private const string ForgotPasswordDescription = "FORGOT_PASSWORD_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Forgot password action for GET request.
@@ -22,6 +26,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
+        [MetaTag(MainMetaTags.Title, ForgotPasswordTitle, true)]
+        [MetaTag(MainMetaTags.Description, ForgotPasswordDescription, true)]
         public IActionResult ForgotPassword()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -43,6 +49,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
         [ValidateAntiForgeryToken]
+        [MetaTag(MainMetaTags.Title, ForgotPasswordTitle, true)]
+        [MetaTag(MainMetaTags.Description, ForgotPasswordDescription, true)]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)

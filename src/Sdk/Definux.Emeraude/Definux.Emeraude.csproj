@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Definux.Seo" Version="1.0.19" />
+    <PackageReference Include="Definux.Seo" Version="1.0.20" />
     <PackageReference Include="Definux.Utilities.DataAnnotations" Version="1.0.37" />
     <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.37" />
     <PackageReference Include="Definux.Utilities.Functions" Version="1.0.37" />

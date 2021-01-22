@@ -6,6 +6,8 @@ using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
+using Definux.Seo.Attributes;
+using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -14,6 +16,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientMvcAuthenticationController : PublicController
     {
         private const string ResetPasswordRoute = "/reset-password";
+        private const string ResetPasswordTitle = "RESET_PASSWORD_PAGE_TITLE";
+        private const string ResetPasswordDescription = "RESET_PASSWORD_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Reset password action for GET request.
@@ -24,6 +28,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(ResetPasswordRoute)]
         [LanguageRoute(ResetPasswordRoute)]
+        [MetaTag(MainMetaTags.Title, ResetPasswordTitle, true)]
+        [MetaTag(MainMetaTags.Description, ResetPasswordDescription, true)]
         public IActionResult ResetPassword([FromQuery]string token, [FromQuery]string email)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -53,6 +59,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpPost]
         [Route(ResetPasswordRoute)]
         [LanguageRoute(ResetPasswordRoute)]
+        [MetaTag(MainMetaTags.Title, ResetPasswordTitle, true)]
+        [MetaTag(MainMetaTags.Description, ResetPasswordDescription, true)]
         public async Task<IActionResult> ResetPassword(ResetPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)

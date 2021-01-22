@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Seo.Attributes;
+using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -11,6 +13,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientMvcAuthenticationController : PublicController
     {
         private const string ConfirmEmailRoute = "/confirm-email";
+        private const string ConfirmEmailTitle = "CONFIRM_EMAIL_PAGE_TITLE";
+        private const string ConfirmEmailDescription = "CONFIRM_EMAIL_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Confirm email action.
@@ -21,6 +25,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(ConfirmEmailRoute)]
         [LanguageRoute(ConfirmEmailRoute)]
+        [MetaTag(MainMetaTags.Title, ConfirmEmailTitle, true)]
+        [MetaTag(MainMetaTags.Description, ConfirmEmailDescription, true)]
         public async Task<IActionResult> ConfirmEmail([FromQuery]string email, [FromQuery]string token)
         {
             if (this.User.Identity.IsAuthenticated)

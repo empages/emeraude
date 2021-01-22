@@ -18,7 +18,6 @@ namespace EmDoggo.Pages
     [MetaTag(MainMetaTags.Title, "PageTitle", true)]
     [MetaTag(MainMetaTags.Description, "PageDescription", true)]
     [MetaTag(MainMetaTags.Image, "https://definux.io/assets/images/meta_image.jpg")]
-    [Canonical("/dogs")]
     public class DogsPage : EmPage<DogsViewModel, DogsInitialStateQuery>
     {
         protected async override Task<Dictionary<string, object>> InitializeViewDataAsync(InitialStateModel<DogsViewModel> model)

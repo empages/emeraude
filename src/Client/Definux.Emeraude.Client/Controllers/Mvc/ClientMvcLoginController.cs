@@ -7,6 +7,8 @@ using Definux.Emeraude.Localization.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
+using Definux.Seo.Attributes;
+using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -15,6 +17,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientMvcAuthenticationController : PublicController
     {
         private const string LoginRoute = "/login";
+        private const string LoginTitle = "LOGIN_PAGE_TITLE";
+        private const string LoginDescription = "LOGIN_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Login action for GET request.
@@ -24,6 +28,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
+        [MetaTag(MainMetaTags.Title, LoginTitle, true)]
+        [MetaTag(MainMetaTags.Description, LoginDescription, true)]
         public IActionResult Login(string returnUrl = null)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -32,10 +38,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
 
             string returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
-
             var request = new LoginCommand();
             this.ViewData["ReturnUrl"] = returnUrl;
-
             if (!string.IsNullOrEmpty(returnUrlLanguageCode) && string.IsNullOrEmpty(this.HttpContext.GetLanguageCode()))
             {
                 return this.LocalRedirect($"/{returnUrlLanguageCode}{LoginRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
@@ -56,6 +60,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
         [ValidateAntiForgeryToken]
+        [MetaTag(MainMetaTags.Title, LoginTitle, true)]
+        [MetaTag(MainMetaTags.Description, LoginDescription, true)]
         public async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
         {
             if (this.User.Identity.IsAuthenticated)

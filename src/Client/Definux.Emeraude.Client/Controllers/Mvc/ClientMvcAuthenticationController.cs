@@ -95,6 +95,17 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 context.Result = this.NotFound();
             }
 
+            this.AddTranslatedValueIntoViewData(LoginTitle, LoginTitle);
+            this.AddTranslatedValueIntoViewData(LoginDescription, LoginDescription);
+            this.AddTranslatedValueIntoViewData(RegisterTitle, RegisterTitle);
+            this.AddTranslatedValueIntoViewData(RegisterDescription, RegisterDescription);
+            this.AddTranslatedValueIntoViewData(ForgotPasswordTitle, ForgotPasswordTitle);
+            this.AddTranslatedValueIntoViewData(ForgotPasswordDescription, ForgotPasswordDescription);
+            this.AddTranslatedValueIntoViewData(ResetPasswordTitle, ResetPasswordTitle);
+            this.AddTranslatedValueIntoViewData(ResetPasswordDescription, ResetPasswordDescription);
+            this.AddTranslatedValueIntoViewData(ConfirmEmailTitle, ConfirmEmailTitle);
+            this.AddTranslatedValueIntoViewData(ConfirmEmailDescription, ConfirmEmailDescription);
+
             return base.OnActionExecutionAsync(context, next);
         }
 
