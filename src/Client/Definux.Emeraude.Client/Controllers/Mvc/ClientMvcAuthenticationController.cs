@@ -95,16 +95,16 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 context.Result = this.NotFound();
             }
 
-            this.AddTranslatedValueIntoViewData(LoginTitle, this.Localizer.TranslateKey(LoginTitle));
-            this.AddTranslatedValueIntoViewData(LoginDescription, this.Localizer.TranslateKey(LoginDescription));
-            this.AddTranslatedValueIntoViewData(RegisterTitle, this.Localizer.TranslateKey(RegisterTitle));
-            this.AddTranslatedValueIntoViewData(RegisterDescription, this.Localizer.TranslateKey(RegisterDescription));
-            this.AddTranslatedValueIntoViewData(ForgotPasswordTitle, this.Localizer.TranslateKey(ForgotPasswordTitle));
-            this.AddTranslatedValueIntoViewData(ForgotPasswordDescription, this.Localizer.TranslateKey(ForgotPasswordDescription));
-            this.AddTranslatedValueIntoViewData(ResetPasswordTitle, this.Localizer.TranslateKey(ResetPasswordTitle));
-            this.AddTranslatedValueIntoViewData(ResetPasswordDescription, this.Localizer.TranslateKey(ResetPasswordDescription));
-            this.AddTranslatedValueIntoViewData(ConfirmEmailTitle, this.Localizer.TranslateKey(ConfirmEmailTitle));
-            this.AddTranslatedValueIntoViewData(ConfirmEmailDescription, this.Localizer.TranslateKey(ConfirmEmailDescription));
+            this.AddTranslatedValueIntoViewData(LoginTitle, LoginTitle);
+            this.AddTranslatedValueIntoViewData(LoginDescription, LoginDescription);
+            this.AddTranslatedValueIntoViewData(RegisterTitle, RegisterTitle);
+            this.AddTranslatedValueIntoViewData(RegisterDescription, RegisterDescription);
+            this.AddTranslatedValueIntoViewData(ForgotPasswordTitle, ForgotPasswordTitle);
+            this.AddTranslatedValueIntoViewData(ForgotPasswordDescription, ForgotPasswordDescription);
+            this.AddTranslatedValueIntoViewData(ResetPasswordTitle, ResetPasswordTitle);
+            this.AddTranslatedValueIntoViewData(ResetPasswordDescription, ResetPasswordDescription);
+            this.AddTranslatedValueIntoViewData(ConfirmEmailTitle, ConfirmEmailTitle);
+            this.AddTranslatedValueIntoViewData(ConfirmEmailDescription, ConfirmEmailDescription);
 
             return base.OnActionExecutionAsync(context, next);
         }
