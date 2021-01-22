@@ -6,6 +6,8 @@ using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
+using Definux.Seo.Attributes;
+using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -14,6 +16,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientMvcAuthenticationController : PublicController
     {
         private const string RegisterRoute = "/register";
+        private const string RegisterTitle = "REGISTER_PAGE_TITLE";
+        private const string RegisterDescription = "REGISTER_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Register action for GET request.
@@ -22,6 +26,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
+        [MetaTag(MainMetaTags.Title, RegisterTitle, true)]
+        [MetaTag(MainMetaTags.Description, RegisterDescription, true)]
         public IActionResult Register()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -43,6 +49,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
         [ValidateAntiForgeryToken]
+        [MetaTag(MainMetaTags.Title, RegisterTitle, true)]
+        [MetaTag(MainMetaTags.Description, RegisterDescription, true)]
         public async Task<IActionResult> Register(RegisterCommand request)
         {
             if (this.User.Identity.IsAuthenticated)

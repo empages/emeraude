@@ -11,7 +11,6 @@ namespace EmDoggo.Pages
     [MetaTag(MainMetaTags.Title, "Home")]
     [MetaTag(MainMetaTags.Description, "PageDescription")]
     [MetaTag(MainMetaTags.Image, "https://definux.io/assets/images/meta_image.jpg")]
-    [Canonical("/")]
     public class HomePage : EmPage<HomeViewModel, HomeInitialStateQuery>
     {
     }
