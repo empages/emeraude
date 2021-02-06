@@ -3,22 +3,27 @@
         <b-card class="main-card" title="Translations list" sub-title="List of all translations defined by key and translations stored into the localization content. To create a new one use the form placed on the top of the page.">
             <hr class="w-100" />
             <div class="row m-0">
-                <div class="form-group col px-1">
-                    <input class="form-control"
+                <div class="form-group col px-1 d-flex">
+                    <input class="form-control m-auto"
                            v-model="newKey.key"
                            @keypress="isValidKeyValue"
                            @input="newKey.key = transformKeyInput($event)"
                            placeholder="Key" />
                 </div>
                 <div class="form-group col px-1" v-for="(language, languageIndex) in languages" :key="'LanguageInput' + language.code">
-                    <input class="form-control" v-model="newKey.values[languageIndex].value" :placeholder="'Translation in ' + language.name" />
+                    <textarea 
+                        rows="3" 
+                        class="form-control" 
+                        v-model="newKey.values[languageIndex].value" 
+                        :placeholder="'Translation in ' + language.name">
+                    </textarea>
                 </div>
-                <div class="form-group col-1 px-1">
-                    <button class="btn btn-primary w-100 h-100" @click="createKey">Add</button>
+                <div class="form-group col-1 px-1 d-flex">
+                    <button class="btn btn-primary w-100 h-auto m-auto" @click="createKey">Add</button>
                 </div>
             </div>
-            <hr />
-            <input v-model="filterString" class="form-control" placeholder="Filter by key or value" />
+            <hr />  
+            <b-input v-model="filterString" placeholder="Filter by key or value" debounce="500"/>
             <hr />
             <div>
                 <div v-if="gridData.length == 0" class="text-center">

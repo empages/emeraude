@@ -1,5 +1,5 @@
 using Definux.Emeraude.Admin.Attributes;
-using Definux.Emeraude.Admin.UI.UIElements.DetailsCard.Implementations;
+using Definux.Emeraude.Admin.UI.UIElements.Details.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Form.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Table.Implementations;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
@@ -9,21 +9,21 @@ using EmDoggo.Domain.Entities;
 
 namespace EmDoggo.Application.Models.Admin.Dogs
 {
-    public class DogViewModel : CreateEditEntityViewModel, IMapFrom<Dog>
+    public class DogViewModel : EntityFormViewModel, IMapFrom<Dog>
     {
-        [DetailsCard(0, typeof(DetailsCardTextElement))]
+        [DetailsField(0, typeof(DetailsFieldTextElement))]
         public string Id { get; set; }
 
         [TableColumn(1, typeof(TableTextElement))]
-        [DetailsCard(1, typeof(DetailsCardTextElement))]
+        [DetailsField(1, typeof(DetailsFieldTextElement))]
         public string Name { get; set; }
 
         [TableColumn(2, typeof(TableTextElement))]
-        [DetailsCard(2, typeof(DetailsCardTextElement))]
+        [DetailsField(2, typeof(DetailsFieldTextElement))]
         public DogType Type { get; set; }
 
         [TableColumn(3, typeof(TableTextElement))]
-        [DetailsCard(3, typeof(DetailsCardTextElement))]
+        [DetailsField(3, typeof(DetailsFieldTextElement))]
         public DogBreed Breed { get; set; }
     }
 }

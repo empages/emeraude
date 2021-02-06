@@ -5,13 +5,15 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="Definux.Emeraude.Domain.Localization" #>
 <#@ import namespace="Definux.Utilities.Extensions" #>
+<#@ import namespace="WebMarkupMin.Core" #>
+<# var htmlMinifier = new HtmlMinifier(); #>
 <# var contentKey = (ContentKey)Session["Key"]; #>
 <# var defaultLanguage = (Language)Session["DefaultLanguage"]; #>
 <template>
     <div id="static-content-<#=contentKey.Key.ToLower().Replace("_", "-")#>">
 <# foreach (var content in contentKey.StaticContentList) { #>
         <div v-if="languageId === <#=content.LanguageId#>">
-            <#=content.Content#>
+            <#=htmlMinifier.Minify(content.Content).MinifiedContent#>
         </div>
 <# } #>
     </div>

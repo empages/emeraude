@@ -131,7 +131,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
 
             EntityDetailsViewModel model = new EntityDetailsViewModel();
-            model.Details = EntityDetailsCardMapper.Map(entity);
+            model.Details = EntityDetailsMapper.Map(entity);
             string singleEntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
             this.ViewData[BreadcrumbEntityNamePluralPlaceholder] = singleEntityName.ToPluralString();
 
@@ -153,7 +153,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
                 return this.NotFound();
             }
 
-            ICreateEditEntityViewModel model = this.CastModel(new TEntityViewModel());
+            IEntityFormViewModel model = this.CastModel(new TEntityViewModel());
 
             return this.CreateEditView(model);
         }
@@ -175,7 +175,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
                 return this.NotFound();
             }
 
-            ICreateEditEntityViewModel castedModel = this.CastModel(model);
+            IEntityFormViewModel castedModel = this.CastModel(model);
 
             if (this.ModelState.IsValid)
             {
@@ -206,7 +206,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
                 return this.NotFound();
             }
 
-            ICreateEditEntityViewModel model = this.CastModel(await this.GetEntityAsync(id));
+            IEntityFormViewModel model = this.CastModel(await this.GetEntityAsync(id));
             if (model == null)
             {
                 return this.NotFound();
@@ -233,7 +233,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
                 return this.NotFound();
             }
 
-            ICreateEditEntityViewModel castedModel = this.CastModel(model);
+            IEntityFormViewModel castedModel = this.CastModel(model);
 
             if (this.ModelState.IsValid)
             {
@@ -550,7 +550,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected virtual IActionResult CreateEditView(ICreateEditEntityViewModel model)
+        protected virtual IActionResult CreateEditView(IEntityFormViewModel model)
         {
             return this.View("EntityViews/CreateEdit", model);
         }
@@ -602,9 +602,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             this.ViewData["TableBelowPartial"] = partialName;
         }
 
-        private ICreateEditEntityViewModel CastModel(TEntityViewModel model)
+        private IEntityFormViewModel CastModel(TEntityViewModel model)
         {
-            ICreateEditEntityViewModel castedModel = (ICreateEditEntityViewModel)model;
+            IEntityFormViewModel castedModel = (IEntityFormViewModel)model;
             if (castedModel != null)
             {
                 castedModel.Inputs = EntityFormMapper.BuildInputs(castedModel);

@@ -102,3 +102,19 @@ function showConfirmationMessage(e, title, message) {
         }
     });
 }
+
+function encodeHtml(htmlString) {
+    let buf = [];
+
+    for (let i=htmlString.length-1;i>=0;i--) {
+        buf.unshift(['&#', htmlString[i].charCodeAt(), ';'].join(''));
+    }
+
+    return buf.join('');
+}
+
+function decodeHtml(htmlString) {
+    return htmlString.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+    });
+}

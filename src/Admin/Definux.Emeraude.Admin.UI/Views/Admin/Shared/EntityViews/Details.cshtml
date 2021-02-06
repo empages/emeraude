@@ -18,7 +18,7 @@
                     <tbody>
                         @foreach (var property in Model.Details.Properties)
                         {
-                            property.DetailsCardElement.LoadServiceProvider(serviceProvider);
+                            property.DetailsFieldElement.LoadServiceProvider(serviceProvider);
                             string propertyId = $"property-{property.KebapCaseName}-id";
                             <tr>
                                 <td>
@@ -28,7 +28,7 @@
                                     <span id="@propertyId">@property.RenderHtmlContent()</span>
                                 </td>
                                 <td class="w-auto text-right">
-                                    @if (property.DetailsCardElement.HasClipboardCopyButton)
+                                    @if (property.DetailsFieldElement.HasClipboardCopyButton)
                                     {
                                         <span>
                                             <button type="button" 

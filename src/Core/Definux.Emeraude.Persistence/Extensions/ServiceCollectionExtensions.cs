@@ -45,6 +45,10 @@ namespace Definux.Emeraude.Persistence.Extensions
                             connectionString,
                             b => b.MigrationsAssembly(options.MigrationsAssembly)));
                     break;
+                case DatabaseContextProvider.InMemoryDatabase:
+                    services.AddDbContext<TContextImplementation>(contextOptions =>
+                        contextOptions.UseInMemoryDatabase(databaseName: "EmeraudeTestDatabase"));
+                    break;
             }
 
             services.AddScoped<IEmContext, TContextImplementation>();

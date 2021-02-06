@@ -1,3 +1,4 @@
+using Definux.Utilities.Extensions;
 using EmDoggo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,6 +18,10 @@ namespace EmDoggo.Infrastructure.Persistance.Configuration
             builder
                 .Property(x => x.Name)
                 .HasMaxLength(128);
+            
+            builder
+                .Property(x => x.Description)
+                .HasColumnType("text");
         }
     }
 }

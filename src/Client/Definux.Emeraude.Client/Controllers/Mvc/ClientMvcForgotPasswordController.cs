@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string ForgotPasswordRoute = "/forgot-password";
         private const string ForgotPasswordTitle = "FORGOT_PASSWORD_PAGE_TITLE";
@@ -61,15 +61,15 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             try
             {
                 var result = await this.Mediator.Send(request);
-                if (result.Successed)
-                {
-                    return this.ForgotPasswordSuccessView(request);
-                }
-                else
+                if (!result.Successed)
                 {
                     await this.Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
-                    return this.ForgotPasswordSuccessView(request);
                 }
+
+                return await this.RedirectToSucceededExecutionResultAsync(
+                    Titles.ForgotPasswordSuccess,
+                    Messages.ForgotPasswordSuccessMessage,
+                    "forgot-password");
             }
             catch (ValidationException ex)
             {
@@ -86,11 +86,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         private ViewResult ForgotPasswordView(object model)
         {
             return this.View("ForgotPassword", model);
-        }
-
-        private ViewResult ForgotPasswordSuccessView(object model)
-        {
-            return this.View("ForgotPasswordSuccess", model);
         }
     }
 }

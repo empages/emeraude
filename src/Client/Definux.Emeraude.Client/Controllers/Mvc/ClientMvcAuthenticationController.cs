@@ -20,7 +20,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     /// <summary>
     /// Client controller for MVC authentication.
     /// </summary>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string LogoutRoute = "/logout";
 

@@ -14,7 +14,9 @@ namespace EmDoggo.Infrastructure.Extensions
             services.AddScoped<IHelperService, HelperService>();
 
             services.SubscribeToRegisterEvent<RegisterEventHandler>();
-
+            services.SubscribeToForgotPasswordEvent<ForgotPasswordEventHandler>();
+            services.SubscribeToRequestChangeEmailEvent<RequestChangeEmailEventHandler>();
+            
             return services;
         }
     }

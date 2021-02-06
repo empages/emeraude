@@ -126,6 +126,11 @@ namespace Definux.Emeraude.Configuration.Options
         public string MigrationsAssembly { get; set; }
 
         /// <summary>
+        /// Provides the availability to be used custom logger with the base logger definitions.
+        /// </summary>
+        public bool UseExternalLoggerImplementation { get; set; }
+
+        /// <summary>
         /// Collection of all database initializers.
         /// </summary>
         public Type[] DatabaseInitializers => this.databaseInitializers.ToArray();

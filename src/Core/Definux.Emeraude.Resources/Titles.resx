@@ -150,4 +150,13 @@
   <data name="ResetPasswordSuccess" xml:space="preserve">
     <value>RESET_PASSWORD_SUCCESS_TITLE</value>
   </data>
+  <data name="ChangeEmailSuccess" xml:space="preserve">
+    <value>CHANGE_EMAIL_SUCCESS_TITLE</value>
+  </data>
+  <data name="ChangeEmailFailed" xml:space="preserve">
+    <value>CHANGE_EMAIL_FAILED_TITLE</value>
+  </data>
+  <data name="ConfirmEmailFailed" xml:space="preserve">
+    <value>CONFIRM_EMAIL_FAILED_TITLE</value>
+  </data>
 </root>

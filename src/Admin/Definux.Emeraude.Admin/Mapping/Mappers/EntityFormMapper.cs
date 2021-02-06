@@ -15,13 +15,13 @@ namespace Definux.Emeraude.Admin.Mapping.Mappers
     public static class EntityFormMapper
     {
         /// <summary>
-        /// Converts specified ViewModel (<see cref="ICreateEditEntityViewModel"/>) to collection of <see cref="CreateEditInputViewModel"/> by using the decorated properties of the view model entity implementation by <seealso cref="FormInputAttribute"/>.
+        /// Converts specified ViewModel (<see cref="IEntityFormViewModel"/>) to collection of <see cref="EntityFormViewModel"/> by using the decorated properties of the view model entity implementation by <seealso cref="FormInputAttribute"/>.
         /// </summary>
         /// <param name="entityViewModel"></param>
         /// <returns></returns>
-        public static List<CreateEditInputViewModel> BuildInputs(ICreateEditEntityViewModel entityViewModel)
+        public static List<FormInputViewModel> BuildInputs(IEntityFormViewModel entityViewModel)
         {
-            var resultList = new List<CreateEditInputViewModel>();
+            var resultList = new List<FormInputViewModel>();
             Type modelType = entityViewModel.GetType();
             var modelProperties = modelType.GetProperties();
             foreach (var property in modelProperties)
@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Admin.Mapping.Mappers
                 if (property.HasAttribute<FormInputAttribute>())
                 {
                     FormInputAttribute propertyAttribute = property.GetAttribute<FormInputAttribute>();
-                    var inputViewModel = new CreateEditInputViewModel
+                    var inputViewModel = new FormInputViewModel
                     {
                         Label = propertyAttribute.Name,
                         Name = property.Name,

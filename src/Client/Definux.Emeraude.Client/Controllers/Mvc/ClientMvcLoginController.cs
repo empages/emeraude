@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string LoginRoute = "/login";
         private const string LoginTitle = "LOGIN_PAGE_TITLE";

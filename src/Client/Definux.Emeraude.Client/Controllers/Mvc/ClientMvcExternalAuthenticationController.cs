@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string ExternalLoginRoute = "/external-login";
         private const string ExternalLoginCallbackRoute = "/external-login/callback";

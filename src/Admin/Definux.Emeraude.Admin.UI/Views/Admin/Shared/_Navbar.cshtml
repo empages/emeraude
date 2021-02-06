@@ -49,6 +49,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown py-2" aria-labelledby="UserDropdown">
                     <a title="Two Factor Authentication" href="@Url.Action("TwoFactorAuthentication", "AdminManage", new { Area = "Admin"})" class="dropdown-item">Two Factor Authentication</a>
+                    <a title="Change Email" href="@Url.Action("ChangeEmailRequest", "AdminManage", new { Area = "Admin"})" class="dropdown-item">Change Email</a>
                     <a title="Change Password" href="@Url.Action("ChangePassword", "AdminManage", new { Area = "Admin"})" class="dropdown-item">Change Password</a>
                     <form class="m-0 p-0" asp-action="Logout" asp-controller="AdminAuthentication">
                         <input type="submit" class="dropdown-item text-left bg-transparent shadow-none border-0 w-100" value="Sign Out" />

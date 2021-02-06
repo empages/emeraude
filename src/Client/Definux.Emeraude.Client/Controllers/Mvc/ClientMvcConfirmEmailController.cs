@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
+using Definux.Emeraude.Resources;
 using Definux.Seo.Attributes;
 using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string ConfirmEmailRoute = "/confirm-email";
         private const string ConfirmEmailTitle = "CONFIRM_EMAIL_PAGE_TITLE";
@@ -50,12 +51,13 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 await this.Logger.LogErrorAsync(ex);
             }
 
-            return this.ConfirmEmailView(requestResult);
-        }
-
-        private ViewResult ConfirmEmailView(object model)
-        {
-            return this.View("ConfirmEmailSuccess", model);
+            return await this.RedirectToExecutionResultAsync(
+                requestResult.Successed,
+                Titles.ConfirmEmailSuccess,
+                Messages.ConfirmedEmailSuccecssMessage,
+                Titles.ConfirmEmailFailed,
+                Messages.ConfirmedEmailFailedMessage,
+                "confirm-email");
         }
     }
 }

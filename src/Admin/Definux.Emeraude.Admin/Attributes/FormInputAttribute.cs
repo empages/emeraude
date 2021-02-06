@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Definux.Emeraude.Admin.UI.UIElements;
 using Definux.Emeraude.Admin.UI.UIElements.Form;
-using Definux.Emeraude.Admin.UI.UIElements.Form.Helpers;
 using Definux.Utilities.Functions;
 
 namespace Definux.Emeraude.Admin.Attributes
@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Admin.Attributes
         public Type UIElementType { get; }
 
         /// <summary>
-        /// The existance of this property defines external data source for the current property. In case you use database source or additional database view extraction <see cref="IFormElementDatabaseView"/>.
+        /// The existence of this property defines external data source for the current property. In case you use database source or additional data source map <see cref="IDataSourceMap"/>.
         /// </summary>
         public Type DataSourceType { get; set; }
 

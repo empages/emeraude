@@ -54,6 +54,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="WebMarkupMin.AspNetCore3" Version="2.9.2" />
   </ItemGroup>
 
   <ItemGroup>

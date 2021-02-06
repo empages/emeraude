@@ -43,6 +43,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using WebMarkupMin.AspNetCore3;
 
 namespace Definux.Emeraude.Extensions
 {
@@ -118,6 +119,8 @@ namespace Definux.Emeraude.Extensions
             services.AddCqrsBehaviours();
 
             services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
+
+            services.RegisterHtmlOptimizationServices();
 
             services.ConfigureMvc(options);
 
@@ -358,6 +361,26 @@ namespace Definux.Emeraude.Extensions
                         JwtBearerDefaults.AuthenticationScheme);
                 });
             });
+
+            return services;
+        }
+
+        private static IServiceCollection RegisterHtmlOptimizationServices(this IServiceCollection services)
+        {
+            services.AddWebMarkupMin(
+                    options =>
+                    {
+                        options.AllowMinificationInDevelopmentEnvironment = true;
+                        options.AllowCompressionInDevelopmentEnvironment = true;
+                    })
+                .AddHtmlMinification(
+                    options =>
+                    {
+                        options.MinificationSettings.RemoveRedundantAttributes = true;
+                        options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
+                        options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
+                    })
+                .AddHttpCompression();
 
             return services;
         }

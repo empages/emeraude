@@ -132,8 +132,8 @@
   <data name="EnteredEmailIsInTheWrongFormat" xml:space="preserve">
     <value>ENTERED_EMAIL_IS_IN_THE_WRONG_FORMAT</value>
   </data>
-  <data name="ForgotPasswordMessage" xml:space="preserve">
-    <value>FORGOT_PASSWORD_MESSAGE</value>
+  <data name="ForgotPasswordSuccessMessage" xml:space="preserve">
+    <value>FORGOT_PASSWORD_SUCCESS_MESSAGE</value>
   </data>
   <data name="NameIsARequiedField" xml:space="preserve">
     <value>NAME_IS_A_REQUIRED_FIELD</value>
@@ -179,5 +179,29 @@
   </data>
   <data name="YourRequestCannotBeExecuted" xml:space="preserve">
     <value>YOUR_REQUEST_CANNOT_BE_EXECUTED</value>
+  </data>
+  <data name="PasswordIsNotCorrect" xml:space="preserve">
+    <value>PASSWORD_IS_NOT_CORRECT</value>
+  </data>
+  <data name="UserDoesNotHaveThatExternalLoginProvider" xml:space="preserve">
+    <value>USER_DOES_NOT_HAVE_THAT_EXTERNAL_LOGIN_PROVIDER</value>
+  </data>
+  <data name="ExternalLoginProviderIsRequired" xml:space="preserve">
+    <value>EXTERNAL_LOGIN_PROVIDER_IS_REQUIRED</value>
+  </data>
+  <data name="UserWithThatEmailExists" xml:space="preserve">
+    <value>USER_WITH_THAT_EMAIL_EXISTS</value>
+  </data>
+  <data name="ChangedEmailSuccessMessage" xml:space="preserve">
+    <value>CHANGED_EMAIL_SUCCECSS_MESSAGE</value>
+  </data>
+  <data name="ChangedEmailFailedMessage" xml:space="preserve">
+    <value>CHANGEE_EMAIL_FAILED_MESSAGE</value>
+  </data>
+  <data name="ConfirmedEmailFailedMessage" xml:space="preserve">
+    <value>CONFIRMED_EMAIL_FAILED_MESSAGE</value>
+  </data>
+  <data name="ResetPasswordSuccessMessage" xml:space="preserve">
+    <value>RESET_PASSWORD_SUCCESS_MESSAGE</value>
   </data>
 </root>

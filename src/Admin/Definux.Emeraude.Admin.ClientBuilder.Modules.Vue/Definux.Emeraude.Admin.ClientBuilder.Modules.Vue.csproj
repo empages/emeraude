@@ -111,6 +111,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="WebMarkupMin.Core" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup>

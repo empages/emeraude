@@ -3,6 +3,7 @@ using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Extensions;
+using EmDoggo.Application.DataSourceMaps;
 using EmDoggo.Application.Interfaces;
 using EmDoggo.Application.Mapping;
 using EmDoggo.Infrastructure.Extensions;
@@ -52,6 +53,8 @@ namespace EmDoggo
             });
 
             services.RegisterInfrastructureServices();
+
+            services.AddScoped<FoodDataSourceMap>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

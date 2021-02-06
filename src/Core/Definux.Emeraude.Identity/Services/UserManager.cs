@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
@@ -9,6 +11,7 @@ using Definux.Emeraude.Identity.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Identity.Services
 {
@@ -23,7 +26,10 @@ namespace Definux.Emeraude.Identity.Services
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="httpContextAccessor"></param>
-        public UserManager(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IEmContext context)
+        public UserManager(
+            UserManager<User> userManager,
+            IHttpContextAccessor httpContextAccessor,
+            IEmContext context)
             : base(userManager)
         {
             this.httpContextAccessor = httpContextAccessor;

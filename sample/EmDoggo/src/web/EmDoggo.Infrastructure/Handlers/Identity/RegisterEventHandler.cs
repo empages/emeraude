@@ -3,6 +3,7 @@ using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Entities;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace EmDoggo.Infrastructure.Handlers.Identity
 {
@@ -19,7 +20,7 @@ namespace EmDoggo.Infrastructure.Handlers.Identity
             this.emailService = emailService;
         }
 
-        public async Task HandleAsync(Guid userId, params string[] args)
+        public async Task HandleAsync(Guid userId, HttpContext httpContext, params string[] args)
         {
             this.context.Owners.Add(new Owner(userId));
             await this.context.SaveChangesAsync();
