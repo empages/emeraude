@@ -64,6 +64,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client.UI"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Cli", "..\..\src\Sdk\Definux.Emeraude.Cli\Definux.Emeraude.Cli.csproj", "{C41EBDC6-261C-4720-A0A7-DF1B2C0E0D64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Admin", "..\..\tests\Definux.Emeraude.Tests.Admin\Definux.Emeraude.Tests.Admin.csproj", "{76080CED-B162-4AC4-B6E7-CBB1AAE63706}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FC911452-37F0-4C05-9B1C-9B150E716072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Client", "..\..\tests\Definux.Emeraude.Tests.Client\Definux.Emeraude.Tests.Client.csproj", "{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Core", "..\..\tests\Definux.Emeraude.Tests.Core\Definux.Emeraude.Tests.Core.csproj", "{13CB6F1E-C48F-4E4C-B826-9A82664DC06C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definux.Emeraude.Tests.Sdk", "..\..\tests\Definux.Emeraude.Tests.Sdk\Definux.Emeraude.Tests.Sdk.csproj", "{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +200,22 @@ Global
 		{C41EBDC6-261C-4720-A0A7-DF1B2C0E0D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C41EBDC6-261C-4720-A0A7-DF1B2C0E0D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C41EBDC6-261C-4720-A0A7-DF1B2C0E0D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76080CED-B162-4AC4-B6E7-CBB1AAE63706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76080CED-B162-4AC4-B6E7-CBB1AAE63706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76080CED-B162-4AC4-B6E7-CBB1AAE63706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76080CED-B162-4AC4-B6E7-CBB1AAE63706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13CB6F1E-C48F-4E4C-B826-9A82664DC06C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13CB6F1E-C48F-4E4C-B826-9A82664DC06C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13CB6F1E-C48F-4E4C-B826-9A82664DC06C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13CB6F1E-C48F-4E4C-B826-9A82664DC06C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,6 +247,11 @@ Global
 		{40CE6F5A-B6AE-4F15-9190-131F39224C0B} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
 		{9279403A-257E-4319-A6E5-B5780E6CFC7E} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
 		{C41EBDC6-261C-4720-A0A7-DF1B2C0E0D64} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
+		{FC911452-37F0-4C05-9B1C-9B150E716072} = {A8BDB9A4-C9E0-4DD0-A9A7-5AAF16C9D987}
+		{76080CED-B162-4AC4-B6E7-CBB1AAE63706} = {FC911452-37F0-4C05-9B1C-9B150E716072}
+		{4094AFAE-88F7-4CF8-88FE-585EEFE37A4D} = {FC911452-37F0-4C05-9B1C-9B150E716072}
+		{13CB6F1E-C48F-4E4C-B826-9A82664DC06C} = {FC911452-37F0-4C05-9B1C-9B150E716072}
+		{DB1190E8-B7E0-4E49-8B81-FD09F2B5DFBD} = {FC911452-37F0-4C05-9B1C-9B150E716072}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8449A9E-4E9A-4A60-801E-66BDD151B420}

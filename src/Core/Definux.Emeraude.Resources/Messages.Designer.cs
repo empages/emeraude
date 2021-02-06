@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Messages {
@@ -57,6 +57,33 @@ namespace Definux.Emeraude.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CHANGEE_EMAIL_FAILED_MESSAGE.
+        /// </summary>
+        public static string ChangedEmailFailedMessage {
+            get {
+                return ResourceManager.GetString("ChangedEmailFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CHANGED_EMAIL_SUCCECSS_MESSAGE.
+        /// </summary>
+        public static string ChangedEmailSuccessMessage {
+            get {
+                return ResourceManager.GetString("ChangedEmailSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CONFIRMED_EMAIL_FAILED_MESSAGE.
+        /// </summary>
+        public static string ConfirmedEmailFailedMessage {
+            get {
+                return ResourceManager.GetString("ConfirmedEmailFailedMessage", resourceCulture);
             }
         }
         
@@ -106,11 +133,20 @@ namespace Definux.Emeraude.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FORGOT_PASSWORD_MESSAGE.
+        ///   Looks up a localized string similar to EXTERNAL_LOGIN_PROVIDER_IS_REQUIRED.
         /// </summary>
-        public static string ForgotPasswordMessage {
+        public static string ExternalLoginProviderIsRequired {
             get {
-                return ResourceManager.GetString("ForgotPasswordMessage", resourceCulture);
+                return ResourceManager.GetString("ExternalLoginProviderIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FORGOT_PASSWORD_SUCCESS_MESSAGE.
+        /// </summary>
+        public static string ForgotPasswordSuccessMessage {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSuccessMessage", resourceCulture);
             }
         }
         
@@ -160,6 +196,15 @@ namespace Definux.Emeraude.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PASSWORD_IS_NOT_CORRECT.
+        /// </summary>
+        public static string PasswordIsNotCorrect {
+            get {
+                return ResourceManager.GetString("PasswordIsNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PASSWORD_MUST_BE_AT_LEAST_{0}_SYMBOLS.
         /// </summary>
         public static string PasswordMustBeAtLeastSymbols {
@@ -187,11 +232,38 @@ namespace Definux.Emeraude.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RESET_PASSWORD_SUCCESS_MESSAGE.
+        /// </summary>
+        public static string ResetPasswordSuccessMessage {
+            get {
+                return ResourceManager.GetString("ResetPasswordSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to USER_CANNOT_BE_REGISTERED.
         /// </summary>
         public static string UserCannotBeRegistered {
             get {
                 return ResourceManager.GetString("UserCannotBeRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USER_DOES_NOT_HAVE_THAT_EXTERNAL_LOGIN_PROVIDER.
+        /// </summary>
+        public static string UserDoesNotHaveThatExternalLoginProvider {
+            get {
+                return ResourceManager.GetString("UserDoesNotHaveThatExternalLoginProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USER_WITH_THAT_EMAIL_EXISTS.
+        /// </summary>
+        public static string UserWithThatEmailExists {
+            get {
+                return ResourceManager.GetString("UserWithThatEmailExists", resourceCulture);
             }
         }
         

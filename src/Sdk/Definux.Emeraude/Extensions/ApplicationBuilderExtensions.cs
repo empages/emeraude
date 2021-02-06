@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using WebMarkupMin.AspNetCore3;
 
 namespace Definux.Emeraude.Extensions
 {
@@ -41,6 +42,8 @@ namespace Definux.Emeraude.Extensions
             app.UseHttpsRedirection();
 
             app.UseEmeraudeStaticFiles();
+
+            app.UseWebMarkupMin();
 
             app.UseRouting();
 

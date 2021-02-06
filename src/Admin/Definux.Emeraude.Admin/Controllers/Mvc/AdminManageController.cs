@@ -6,7 +6,9 @@ using Definux.Emeraude.Admin.UI.ViewModels.Manage;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication;
+using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword;
+using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ResetTwoFactorAuthentication;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
@@ -14,6 +16,7 @@ using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Utilities.Extensions;
+using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -187,6 +190,100 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             }
 
             return this.View(model);
+        }
+
+        /// <summary>
+        /// Change email action for GET request.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("change-email-request")]
+        public async Task<IActionResult> ChangeEmailRequest()
+        {
+            AdminChangeEmailViewModel model = new AdminChangeEmailViewModel();
+            var currentUser = await this.CurrentUserProvider.GetCurrentUserAsync();
+            model.NewEmail = currentUser.Email;
+            return this.View(model);
+        }
+
+        /// <summary>
+        /// Change email action for POST request.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("change-email-request")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeEmailRequest(AdminChangeEmailViewModel model)
+        {
+            try
+            {
+                var currentUser = await this.CurrentUserProvider.GetCurrentUserAsync();
+                var request = new RequestChangeEmailCommand()
+                {
+                    UserId = currentUser.Id,
+                    NewEmail = model.NewEmail,
+                };
+
+                request.ConfigureCallbackOptions("admin/manage/change-email", false);
+                var requestResult = await this.Mediator.Send(request);
+
+                if (requestResult.Successed)
+                {
+                    this.ShowSuccessNotification("Email request has been sent successfully. Check your email for confirmation.");
+                    return this.View();
+                }
+                else
+                {
+                    this.ShowErrorNotification("Email request has not been sent successfully.");
+                    return this.View(model);
+                }
+            }
+            catch (ValidationException ex)
+            {
+                this.ModelState.ApplyValidationException(ex, true);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, "Change email request operation has failed.");
+            }
+
+            return this.View(model);
+        }
+
+        /// <summary>
+        /// Change email execution action.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [Route("change-email")]
+        public async Task<IActionResult> ChangeEmail(
+            [FromQuery] string email,
+            [FromQuery] string token)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrEmpty(token))
+            {
+                return this.NotFound();
+            }
+
+            var requestResult = SimpleResult.UnsuccessfulResult;
+
+            try
+            {
+                requestResult = await this.Mediator.Send(new ChangeEmailCommand(email, token));
+            }
+            catch (Exception ex)
+            {
+                await this.Logger.LogErrorAsync(ex);
+            }
+
+            this.ShowComputationNotification(
+                requestResult.Successed,
+                "Your email has been changed successfully.",
+                "Your email has not been changed successfully.");
+
+            return this.RedirectToAction(nameof(this.ChangeEmailRequest));
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(IUser user, AdminTwoFactorAuthenticationViewModel model)

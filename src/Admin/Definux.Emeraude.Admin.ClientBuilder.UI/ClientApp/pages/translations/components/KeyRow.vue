@@ -13,11 +13,13 @@
         </td>
         <td class="p-1" v-for="(translation, translationIndex) in data.languageValues" :key="data.key + 'Translation' + translationIndex">
             <div class="position-relative">
-                <input @input="translationInput(translationIndex)"
-                       @keyup.enter="editTranslation(translationIndex, $event)"
-                       class="form-control"
-                       :class="{ 'pr-5': valueEditedStatuses[translationIndex] }"
-                       v-model="translation.value" />
+                <textarea @input="translationInput(translationIndex)"
+                          @keyup.enter="editTranslation(translationIndex, $event)"
+                          rows="3"
+                          class="form-control"
+                          :class="{ 'pr-5': valueEditedStatuses[translationIndex] }"
+                          v-model="translation.value">
+                </textarea>
                 <button v-if="valueEditedStatuses[translationIndex]" class="btn-save-in-input btn btn-primary btn-icons position-absolute" @click="editTranslation(translationIndex, $event)"><i class="mdi mdi-content-save"></i></button>
             </div>
         </td>

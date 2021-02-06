@@ -114,6 +114,18 @@ namespace Definux.Emeraude.Identity.Extensions
             return services.SubscribeToIdentityEvent<IConfirmedEmailEventHandler, TEventHandler>();
         }
 
+        /// <summary>
+        /// Register an event handler which will be triggered when a user has made a request for change its email.
+        /// </summary>
+        /// <typeparam name="TEventHandler">Request change email event handler.</typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection SubscribeToRequestChangeEmailEvent<TEventHandler>(this IServiceCollection services)
+            where TEventHandler : class, IRequestChangeEmailEventHandler
+        {
+            return services.SubscribeToIdentityEvent<IRequestChangeEmailEventHandler, TEventHandler>();
+        }
+
         private static IServiceCollection SubscribeToIdentityEvent<TEventHandlerService, TEventHandlerImplementation>(this IServiceCollection services)
             where TEventHandlerService : class, IIdentityEventHandler
             where TEventHandlerImplementation : class, TEventHandlerService

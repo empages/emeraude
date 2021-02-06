@@ -58,5 +58,13 @@ namespace Definux.Emeraude.Application.EventHandlers
         /// <param name="userId"></param>
         /// <returns></returns>
         Task TriggerConfirmedEmailEventAsync(Guid userId);
+
+        /// <summary>
+        /// Trigger <see cref="IRequestChangeEmailEventHandler"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="changeEmailConfirmationLink"></param>
+        /// <returns></returns>
+        Task TriggerRequestChangeEmailEventAsync(Guid userId, string changeEmailConfirmationLink);
     }
 }

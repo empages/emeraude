@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string RegisterRoute = "/register";
         private const string RegisterTitle = "REGISTER_PAGE_TITLE";
@@ -64,7 +64,10 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
                 if (requestResult.Result.Succeeded)
                 {
-                    return this.View("RegisterSuccess");
+                    return await this.RedirectToSucceededExecutionResultAsync(
+                        Titles.RegisterSuccess,
+                        Messages.RegistrationSuccessMessage,
+                        "register");
                 }
                 else
                 {

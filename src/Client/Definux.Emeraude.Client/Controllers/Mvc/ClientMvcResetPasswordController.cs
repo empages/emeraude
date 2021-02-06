@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
     /// <inheritdoc/>
-    public sealed partial class ClientMvcAuthenticationController : PublicController
+    public sealed partial class ClientMvcAuthenticationController : ClientController
     {
         private const string ResetPasswordRoute = "/reset-password";
         private const string ResetPasswordTitle = "RESET_PASSWORD_PAGE_TITLE";
@@ -74,7 +74,10 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
                 if (requestResult.Successed)
                 {
-                    return this.ResetPasswordSuccessView(request);
+                    return await this.RedirectToSucceededExecutionResultAsync(
+                        Titles.ResetPasswordSuccess,
+                        Messages.ResetPasswordSuccessMessage,
+                        "reset-password");
                 }
                 else
                 {
@@ -96,11 +99,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         private ViewResult ResetPasswordView(object model)
         {
             return this.View("ResetPassword", model);
-        }
-
-        private ViewResult ResetPasswordSuccessView(object model)
-        {
-            return this.View("ResetPasswordSuccess", model);
         }
     }
 }

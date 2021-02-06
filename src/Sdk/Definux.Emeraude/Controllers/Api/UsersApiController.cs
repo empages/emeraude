@@ -4,7 +4,10 @@ using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvatar;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserName;
+using Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternalLoginProvider;
+using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar;
+using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternalLoginProviders;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Objects;
@@ -126,6 +129,71 @@ namespace Definux.Emeraude.Controllers.Api
             {
                 var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
                 request.UserId = currentUser.Id;
+            }
+            else
+            {
+                return this.BadRequest();
+            }
+
+            return this.Ok(await this.Mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Gets collection of external login providers for the current user.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("current/external-login-providers")]
+        [Endpoint(typeof(GetUserExternalLoginProvidersResult))]
+        public async Task<IActionResult> GetCurrentUserExternalLoginProviders()
+        {
+            var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
+            var externalLoginProvidersResult = await this.Mediator.Send(new GetUserExternalLoginProvidersQuery
+            {
+                UserId = currentUser.Id,
+            });
+
+            return this.Ok(externalLoginProvidersResult);
+        }
+
+        /// <summary>
+        /// Remove specified external login provider for the current user.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("current/remove-external-login-provider")]
+        [Endpoint(typeof(SimpleResult))]
+        public async Task<IActionResult> RemoveCurrentUserExternalLoginProvider([FromBody]RemoveExternalLoginProviderCommand request)
+        {
+            if (request != null)
+            {
+                var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
+                request.UserId = currentUser.Id;
+            }
+            else
+            {
+                return this.BadRequest();
+            }
+
+            return this.Ok(await this.Mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Make a request for change the email for the current user.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("current/request-change-email")]
+        [Endpoint(typeof(SimpleResult))]
+        public async Task<IActionResult> RequestChangeEmailForTheCurrentUser([FromBody]RequestChangeEmailCommand request)
+        {
+            if (request != null)
+            {
+                var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
+                request.UserId = currentUser.Id;
+                request.ConfigureCallbackOptions("confirm-change-email", true);
             }
             else
             {

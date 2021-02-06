@@ -35,11 +35,6 @@ namespace Definux.Emeraude.Persistence.Seed
             this.UploadService = uploadService;
             this.RootsService = rootsService;
             this.DataFolderPath = this.RootsService.GetPathFromPrivateRoot("seed");
-
-            if (!Directory.Exists(this.DataFolderPath))
-            {
-                throw new DirectoryNotFoundException($"Directory '{this.DataFolderPath}' not found.");
-            }
         }
 
         /// <summary>

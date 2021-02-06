@@ -26,7 +26,8 @@
     "simplemde": "^1.11.2",
     "summernote": "^0.8.8",
     "sweetalert": "^2.1.0",
-    "dropzone": "^5.7.0"
+    "dropzone": "^5.7.0",
+    "trumbowyg": "^2.23.0"
   },
   "devDependencies": {
     "del": "^2.2.2",

@@ -55,10 +55,13 @@ namespace Definux.Emeraude.Admin.Mapping.Mappers
                         if (property.HasAttribute<TableColumnAttribute>())
                         {
                             TableColumnAttribute propertyAttribute = (TableColumnAttribute)property.GetCustomAttributes(typeof(TableColumnAttribute), false).FirstOrDefault();
+
+                            ITableElement tableElementInstance = (ITableElement)Activator.CreateInstance(propertyAttribute.UIElementType);
+
                             tableRow.AddCell(
                                 propertyAttribute.Order,
                                 property.GetValue(entity),
-                                (ITableElement)Activator.CreateInstance(propertyAttribute.UIElementType));
+                                tableElementInstance);
                         }
                     }
 

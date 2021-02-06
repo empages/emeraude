@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Logger;
+using Microsoft.AspNetCore.Http;
 
 namespace Definux.Emeraude.Identity.EventHandlers
 {
@@ -9,16 +10,19 @@ namespace Definux.Emeraude.Identity.EventHandlers
     internal class IdentityEventManager : IIdentityEventManager
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IEmLogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityEventManager"/> class.
         /// </summary>
         /// <param name="serviceProvider"></param>
+        /// <param name="httpContextAccessor"></param>
         /// <param name="logger"></param>
-        public IdentityEventManager(IServiceProvider serviceProvider, IEmLogger logger)
+        public IdentityEventManager(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IEmLogger logger)
         {
             this.serviceProvider = serviceProvider;
+            this.httpContextAccessor = httpContextAccessor;
             this.logger = logger;
         }
 
@@ -43,6 +47,9 @@ namespace Definux.Emeraude.Identity.EventHandlers
         /// <inheritdoc/>
         public async Task TriggerConfirmedEmailEventAsync(Guid userId) => await this.TriggerEventAsync<IConfirmedEmailEventHandler>(userId);
 
+        /// <inheritdoc/>
+        public Task TriggerRequestChangeEmailEventAsync(Guid userId, string changeEmailConfirmationLink) => this.TriggerEventAsync<IRequestChangeEmailEventHandler>(userId, changeEmailConfirmationLink);
+
         private async Task TriggerEventAsync<THandler>(Guid userId, params string[] args)
             where THandler : IIdentityEventHandler
         {
@@ -50,7 +57,7 @@ namespace Definux.Emeraude.Identity.EventHandlers
             {
                 if (this.TryGetEventHandler<THandler>(out IIdentityEventHandler handler))
                 {
-                    await handler.HandleAsync(userId, args);
+                    await handler.HandleAsync(userId, this.httpContextAccessor.HttpContext, args);
                 }
             }
             catch (Exception ex)

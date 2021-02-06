@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Definux.Emeraude.Application.EventHandlers
 {
@@ -12,8 +13,9 @@ namespace Definux.Emeraude.Application.EventHandlers
         /// Handle method that handle succeeded authentication request.
         /// </summary>
         /// <param name="userId"></param>
+        /// <param name="httpContext"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        Task HandleAsync(Guid userId, params string[] args);
+        Task HandleAsync(Guid userId, HttpContext httpContext, params string[] args);
     }
 }

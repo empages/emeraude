@@ -14,6 +14,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Stati
     using System.Collections.Generic;
     using Definux.Emeraude.Domain.Localization;
     using Definux.Utilities.Extensions;
+    using WebMarkupMin.Core;
     using System;
     
     /// <summary>
@@ -31,63 +32,68 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Stati
         public virtual string TransformText()
         {
             
-            #line 8 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 9 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+ var htmlMinifier = new HtmlMinifier(); 
+            
+            #line default
+            #line hidden
+            
+            #line 10 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
  var contentKey = (ContentKey)Session["Key"]; 
             
             #line default
             #line hidden
             
-            #line 9 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 11 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
  var defaultLanguage = (Language)Session["DefaultLanguage"]; 
             
             #line default
             #line hidden
             this.Write("<template>\r\n    <div id=\"static-content-");
             
-            #line 11 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 13 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(contentKey.Key.ToLower().Replace("_", "-")));
             
             #line default
             #line hidden
             this.Write("\">\r\n");
             
-            #line 12 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 14 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
  foreach (var content in contentKey.StaticContentList) { 
             
             #line default
             #line hidden
             this.Write("        <div v-if=\"languageId === ");
             
-            #line 13 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 15 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(content.LanguageId));
             
             #line default
             #line hidden
             this.Write("\">\r\n            ");
             
-            #line 14 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(content.Content));
+            #line 16 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(htmlMinifier.Minify(content.Content).MinifiedContent));
             
             #line default
             #line hidden
             this.Write("\r\n        </div>\r\n");
             
-            #line 16 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 18 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    </div>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: \"");
             
-            #line 22 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 24 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(string.Empty, contentKey.Key.Split("_").Select(x => x.ToLower().ToFirstUpper()))));
             
             #line default
             #line hidden
-            this.Write("StaticContent\",\r\n        props: {\r\n            languageId: {\r\n                typ" +
-                    "e: Number,\r\n                default: ");
+            this.Write("StaticContent\",\r\n        props: {\r\n            languageId: {\r\n                type: Number,\r\n                default: ");
             
-            #line 26 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
+            #line 28 "D:\GitHubWorkspace\Emeraude\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Implementations\StaticContent\Templates\StaticContentComponentTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(defaultLanguage.Id));
             
             #line default

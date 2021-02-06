@@ -49,7 +49,19 @@ namespace Definux.Emeraude.Identity.Services
         public async Task<IdentityResult> AddToRolesAsync(IUser user, IEnumerable<string> roles) => await this.UserManager.AddToRolesAsync((User)user, roles);
 
         /// <inheritdoc cref="UserManager{TUser}.ChangeEmailAsync"/>
-        public async Task<IdentityResult> ChangeEmailAsync(IUser user, string newEmail, string token) => await this.UserManager.ChangeEmailAsync((User)user, newEmail, token);
+        public async Task<IdentityResult> ChangeEmailAsync(IUser user, string newEmail, string token)
+        {
+            var identityUser = (User)user;
+            var result = await this.UserManager.ChangeEmailAsync(identityUser, newEmail, token);
+            if (result.Succeeded)
+            {
+                identityUser.UserName = identityUser.Email;
+                identityUser.NormalizedUserName = identityUser.NormalizedEmail;
+                result = await this.UserManager.UpdateAsync(identityUser);
+            }
+
+            return result;
+        }
 
         /// <inheritdoc cref="UserManager{TUser}.ChangePasswordAsync"/>
         public async Task<IdentityResult> ChangePasswordAsync(IUser user, string currentPassword, string newPassword) => await this.UserManager.ChangePasswordAsync((User)user, currentPassword, newPassword);

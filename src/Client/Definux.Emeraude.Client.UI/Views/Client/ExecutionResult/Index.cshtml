@@ -1,0 +1,15 @@
+﻿@model IndexViewModel
+@{
+    Layout = "_BaseLayout";
+    var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/ExecutionResult/Index.cshtml", "https://emeraude.dev/client");
+}
+<partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />
+
+<div class="w-100">
+    <div class="text-center">
+        <div class="alert alert-@(Model.Succeeded ? "success" : "danger")">
+            <h1 class="m-0">@Model.Title</h1>
+            <p class="m-0">@Model.Message</p>
+        </div>
+    </div>
+</div>

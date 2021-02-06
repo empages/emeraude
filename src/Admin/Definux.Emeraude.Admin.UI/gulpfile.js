@@ -24,7 +24,8 @@ gulp.task('styles:vendors', () =>
             './node_modules/bootstrap-vue/dist/bootstrap-vue.min.css',
             './node_modules/dropzone/dist/dropzone.css',
             './node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
-            './node_modules/jquery-timepicker/jquery.timepicker.css'
+            './node_modules/jquery-timepicker/jquery.timepicker.css',
+            './node_modules/trumbowyg/dist/ui/trumbowyg.min.css'
         ])
         .pipe(cssmin({ keepSpecialComments: 0 }))
         .pipe(concat('style.vendors.min.css'))
@@ -42,7 +43,8 @@ gulp.task('scripts', () =>
         "./Scripts/js/shared/form-addons.js",
         "./Scripts/js/shared/formpickers.js",
         "./Scripts/js/shared/upload-file-input.js",
-        "./Scripts/js/shared/selectable-gallery.js"
+        "./Scripts/js/shared/selectable-gallery.js",
+        "./Scripts/js/shared/trumbowyg.js"
     ])
         .pipe(uglify())
         .pipe(concat("scripts.min.js"))
@@ -61,7 +63,8 @@ gulp.task('scripts:vendors', function () {
         './node_modules/moment/min/moment.min.js',
         './node_modules/dropzone/dist/dropzone.js',
         './node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-        './node_modules/jquery-timepicker/jquery.timepicker.js'
+        './node_modules/jquery-timepicker/jquery.timepicker.js',
+        './node_modules/trumbowyg/dist/trumbowyg.min.js'
     ])
         .pipe(uglify())
         .pipe(concat("scripts.vendors.min.js"))
