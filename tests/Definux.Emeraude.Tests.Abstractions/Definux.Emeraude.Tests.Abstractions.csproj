@@ -7,27 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.10" />
         <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.10" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
         <PackageReference Include="xunit" Version="2.4.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
         <PackageReference Include="coverlet.collector" Version="1.2.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="HtmlAgilityPack, Version=1.11.30.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-        <HintPath>C:\Users\gsk567\.nuget\packages\htmlagilitypack\1.11.30\lib\netstandard2.0\HtmlAgilityPack.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.Hosting, Version=3.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.8\ref\netcoreapp3.1\Microsoft.AspNetCore.Hosting.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.Mvc.Testing, Version=3.1.10.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>C:\Users\gsk567\.nuget\packages\microsoft.aspnetcore.mvc.testing\3.1.10\lib\netcoreapp3.1\Microsoft.AspNetCore.Mvc.Testing.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.TestHost, Version=3.1.11.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>C:\Users\gsk567\.nuget\packages\microsoft.aspnetcore.testhost\3.1.11\lib\netcoreapp3.1\Microsoft.AspNetCore.TestHost.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
     <ItemGroup>
