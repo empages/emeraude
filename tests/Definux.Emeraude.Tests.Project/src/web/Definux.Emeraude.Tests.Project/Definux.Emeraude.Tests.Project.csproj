@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Client\Definux.Emeraude.Client.EmPages\Definux.Emeraude.Client.EmPages.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Application\Definux.Emeraude.Tests.Project.Application.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Infrastructure\Definux.Emeraude.Tests.Project.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="privateroot\uploads\temp\" />
+    <Folder Include="wwwroot\assets\css\" />
+    <Folder Include="wwwroot\dist\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\**" />
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Common\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Domain\Definux.Emeraude.Tests.Project.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
