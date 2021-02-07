@@ -6,9 +6,9 @@ using Xunit;
 
 namespace Definux.Emeraude.Tests.Admin.Integration.Tests
 {
-    public class AdminAuthenticationTests : AdminIntegrationTest
+    public class AuthenticationTests : AdminIntegrationTest
     {
-        public AdminAuthenticationTests(EmeraudeWebApplicationFactory factrory)
+        public AuthenticationTests(EmeraudeWebApplicationFactory factrory)
             : base(factrory)
         {
             
