@@ -105,9 +105,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [Route("/admin/login")]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(VisibleReCaptchaValidateAttribute))]
+        [Route("/admin/login")]
         [HttpPost]
         public async Task<IActionResult> Login(AdminLoginViewModel model)
         {

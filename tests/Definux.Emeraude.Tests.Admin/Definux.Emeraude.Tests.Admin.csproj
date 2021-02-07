@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.11" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
@@ -15,13 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Unit" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.csproj" />
     <ProjectReference Include="..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.csproj" />
     <ProjectReference Include="..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Tests.Abstractions\Definux.Emeraude.Tests.Abstractions.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\web\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
   </ItemGroup>
 
 </Project>

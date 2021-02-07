@@ -6,6 +6,6 @@
 
 ---
 
-### The Sparkling ASP.NET Application Framework
+### The technological excellence.
 
 <br/>
