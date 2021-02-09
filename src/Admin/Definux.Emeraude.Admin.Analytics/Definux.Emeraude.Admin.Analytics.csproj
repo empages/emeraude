@@ -10,7 +10,7 @@
     <Product>Emeraude</Product>
     <PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
-    <Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
+    <Description>[This package has been deprecated] Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
     <PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, xamarinforms, xamarin, android, ios, mvc, mvvm, ssr, prism</PackageTags>
     <Version>$(PACKAGE_VERSION)</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
