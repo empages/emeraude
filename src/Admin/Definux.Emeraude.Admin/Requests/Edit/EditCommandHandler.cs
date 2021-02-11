@@ -39,9 +39,8 @@ namespace Definux.Emeraude.Admin.Requests.Edit
             try
             {
                 var dbSet = this.context.Set<TEntity>();
-                var requestExpression = request.ValidateParent ? ExpressionBuilders.BuildQueryExpressionByParentForeignKey<TEntity>(request.ForeignKeyProperty, request.ForeignKeyValue) : x => true;
+                var requestExpression = request.ParentExpression ?? (x => true);
                 var currentEntity = dbSet
-                    .AsQueryable()
                     .Where(ExpressionFunctions.AndAlso(requestExpression, x => x.Id == request.EntityId).Compile())
                     .FirstOrDefault();
 
@@ -51,7 +50,7 @@ namespace Definux.Emeraude.Admin.Requests.Edit
 
                     currentEntity.Id = request.EntityId;
                     dbSet.Update(currentEntity);
-                    await this.context.SaveChangesAsync();
+                    await this.context.SaveChangesAsync(cancellationToken);
 
                     return request.EntityId;
                 }

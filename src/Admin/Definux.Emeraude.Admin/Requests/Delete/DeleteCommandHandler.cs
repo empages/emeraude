@@ -38,16 +38,15 @@ namespace Definux.Emeraude.Admin.Requests.Delete
             try
             {
                 var dbSet = this.context.Set<TEntity>();
-                var requestExpression = request.ValidateParent ? ExpressionBuilders.BuildQueryExpressionByParentForeignKey<TEntity>(request.ForeignKeyProperty, request.ForeignKeyValue) : x => true;
+                var requestExpression = request.ParentExpression ?? (x => true);
                 var currentEntity = dbSet
-                    .AsQueryable()
                     .Where(ExpressionFunctions.AndAlso(requestExpression, x => x.Id == request.EntityId).Compile())
                     .FirstOrDefault();
 
                 if (currentEntity != null)
                 {
                     dbSet.Remove(currentEntity);
-                    await this.context.SaveChangesAsync();
+                    await this.context.SaveChangesAsync(cancellationToken);
 
                     return true;
                 }

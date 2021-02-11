@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.Versioning;
+using Definux.Emeraude.Admin.UI.HtmlBuilders;
 using Definux.Emeraude.Resources;
 using Definux.HtmlBuilder;
+using Definux.Utilities.Functions;
 
 namespace Definux.Emeraude.Admin.UI.UIElements.Form.Implementations
 {
@@ -19,21 +22,10 @@ namespace Definux.Emeraude.Admin.UI.UIElements.Form.Implementations
                 dateValue = Convert.ToDateTime(this.Value);
             }
 
-            this.HtmlBuilder.StartElement(HtmlTags.Div)
-                .WithId($"datepicker-popup-{Guid.NewGuid()}")
-                .WithClasses("input-group date datepicker datepicker-popup")
-                .Append(x => x
-                    .OpenElement(HtmlTags.Input)
-                    .WithAttribute("type", "text")
-                    .WithAttribute("name", $"{this.TargetProperty}")
-                    .WithAttributeIf("value", dateValue?.ToString(SystemFormats.ShortDateFormat), dateValue.HasValue)
-                    .WithClasses("form-control"))
-                .Append(x => x
-                    .OpenElement(HtmlTags.Span)
-                    .WithClasses("input-group-addon input-group-append border-left")
-                    .Append(xx => xx
-                        .OpenElement(HtmlTags.Span)
-                        .WithClasses("mdi mdi-calendar input-group-text")));
+            this.HtmlBuilder = new DatePickerHtmlBuilder(
+                this.TargetProperty,
+                dateValue,
+                StringFunctions.SplitWordsByCapitalLetters(this.TargetProperty));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Definux.Emeraude.Admin.Requests.Delete
     /// Generic command that delete an entity.
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
-    public interface IDeleteCommand<TEntity> : IRequest<bool>, IGenericEntityRequest
+    public interface IDeleteCommand<TEntity> : IRequest<bool>, IGenericEntityRequest<TEntity>
         where TEntity : class, IEntity, new()
     {
         /// <summary>

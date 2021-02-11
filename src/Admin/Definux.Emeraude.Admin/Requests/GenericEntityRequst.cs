@@ -1,23 +1,17 @@
-﻿namespace Definux.Emeraude.Admin.Requests
+﻿using System;
+using System.Linq.Expressions;
+using Definux.Emeraude.Domain.Entities;
+
+namespace Definux.Emeraude.Admin.Requests
 {
     /// <summary>
     /// Implementation of generic entity request.
     /// </summary>
-    public abstract class GenericEntityRequst : IGenericEntityRequest
+    /// <typeparam name="TEntity">Target entity.</typeparam>
+    public abstract class GenericEntityRequst<TEntity> : IGenericEntityRequest<TEntity>
+        where TEntity : class, IEntity, new()
     {
         /// <inheritdoc/>
-        public bool ValidateParent
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.ForeignKeyProperty) && !string.IsNullOrWhiteSpace(this.ForeignKeyValue);
-            }
-        }
-
-        /// <inheritdoc/>
-        public string ForeignKeyProperty { get; set; }
-
-        /// <inheritdoc/>
-        public string ForeignKeyValue { get; set; }
+        public Expression<Func<TEntity, bool>> ParentExpression { get; set; }
     }
 }

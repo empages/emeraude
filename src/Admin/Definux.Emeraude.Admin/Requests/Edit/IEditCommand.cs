@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Admin.Requests.Edit
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
     /// <typeparam name="TRequestModel">Data transfer object of the target entity.</typeparam>
-    public interface IEditCommand<TEntity, TRequestModel> : IRequest<Guid?>, IGenericEntityRequest
+    public interface IEditCommand<TEntity, TRequestModel> : IRequest<Guid?>, IGenericEntityRequest<TEntity>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
     {

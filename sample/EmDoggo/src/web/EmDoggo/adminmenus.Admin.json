@@ -15,8 +15,7 @@
         {
           "title": "Index",
           "routes": [
-            "/admin",
-            "/admin/analytics"
+            "/admin"
           ]
         }
       ]
@@ -94,14 +93,32 @@
       ]
     },
     {
-      "title": "System",
-      "icon": "mdi mdi-settings",
+      "title": "Logging",
+      "icon": "mdi mdi-file-document-box-multiple",
       "dropdown": true,
       "children": [
         {
-          "title": "Error Logs",
+          "title": "Activity",
           "routes": [
-            "/admin/system/error-logs"
+            "/admin/logging/activity"
+          ]
+        },
+        {
+          "title": "Errors",
+          "routes": [
+            "/admin/logging/errors"
+          ]
+        },
+        {
+          "title": "Emails",
+          "routes": [
+            "/admin/logging/emails"
+          ]
+        },
+        {
+          "title": "Temp Files",
+          "routes": [
+            "/admin/logging/temp-files"
           ]
         }
       ]

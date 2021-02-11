@@ -1,0 +1,63 @@
+﻿@using Microsoft.Extensions.Primitives
+@{
+    Layout = "_AdminLayout";
+    var tablePagination = (TablePaginationViewModel)ViewData["LoggerTablePagination"];
+
+    StringValues searchQuery;
+    this.Context.Request.Query.TryGetValue("searchQuery", out searchQuery);
+    
+    StringValues fromDate;
+    this.Context.Request.Query.TryGetValue("fromDate", out fromDate);
+    
+    StringValues toDate;
+    this.Context.Request.Query.TryGetValue("toDate", out toDate);
+
+    StringValues user;
+    this.Context.Request.Query.TryGetValue("user", out user);
+    
+    tablePagination.AdditionalQueryParams = new Dictionary<string, object>()
+    {
+        { "searchQuery", searchQuery },
+        { "fromDate", fromDate },
+        { "toDate", toDate },
+        { "user", user },
+    };
+}
+
+<div class="w-100 p-3 float-left">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-3">@ViewData["Title"]</h5>
+            <form class="row no-gutters mb-3">
+                <div class="ml-0 mr-2">
+                    <datepicker name="fromDate" placeholder="From" value="@ViewData.GetDateValueOrNull("FromDate")"></datepicker>
+                </div>
+                <div class="ml-0 mr-2">
+                    <datepicker name="toDate" placeholder="To" value="@ViewData.GetDateValueOrNull("ToDate")"></datepicker>
+                </div>
+                <div class="ml-0 mr-2">
+                    <select class="form-control user-select-2 width-200px" name="user">
+                        @if (user.Count > 0 && ViewData.ContainsKey("QueriedUserName"))
+                        {
+                            <option value="@user">@ViewData["QueriedUserName"]</option>
+                        }
+                    </select>
+                </div>
+                <div class="ml-0 mr-2 d-flex col">
+                    <input type="text" name="searchQuery" class="form-control mr-2" value="@ViewData.GetSearchQuery()" placeholder="Search..">
+                    <button class="btn btn-primary w-auto" type="submit">Filter</button>
+                </div>
+                <div class="mx-0">
+                    <a href="@Context.Request.Path" class="btn btn-primary w-auto h-100 line-height-22px">Reset</a>
+                </div>
+            </form>
+            <hr class="mt-0"/>
+            <div class="fluid-container">
+                @RenderBody()
+            </div>
+            <div>
+                <partial name="Partials/_TablePagination" model="@ViewData["LoggerTablePagination"]" />
+            </div>
+        </div>
+    </div>
+</div>

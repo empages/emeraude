@@ -16,17 +16,17 @@ namespace Definux.Emeraude.Logger
     /// <inheritdoc/>
     public class LoggerContext : DbContext, ILoggerContext
     {
-        private readonly Guid? currentUserId;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerContext"/> class.
         /// </summary>
         /// <param name="options"></param>
-        /// <param name="httpAccessor"></param>
-        public LoggerContext(DbContextOptions<LoggerContext> options, IHttpContextAccessor httpAccessor)
+        /// <param name="httpContextAccessor"></param>
+        public LoggerContext(DbContextOptions<LoggerContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
-            this.currentUserId = httpAccessor.GetCurrentUserId();
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         /// <inheritdoc/>
@@ -99,9 +99,20 @@ namespace Definux.Emeraude.Logger
                 if (entry.State == EntityState.Added)
                 {
                     entity.CreatedOn = now;
-                    entity.CreatedBy = this.currentUserId?.ToString();
+                    entity.CreatedBy = this.GetCurrentUserId()?.ToString();
                 }
             }
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            var currentUserId = this.httpContextAccessor.GetCurrentUserId();
+            if (!currentUserId.HasValue)
+            {
+                currentUserId = this.httpContextAccessor.HttpContext.GetJwtUserId();
+            }
+
+            return currentUserId;
         }
     }
 }

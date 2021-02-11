@@ -43,8 +43,6 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.Analytics.UI\Definux.Emeraude.Admin.Analytics.UI.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Admin.Analytics\Definux.Emeraude.Admin.Analytics.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.ClientBuilder.UI\Definux.Emeraude.Admin.ClientBuilder.UI.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />

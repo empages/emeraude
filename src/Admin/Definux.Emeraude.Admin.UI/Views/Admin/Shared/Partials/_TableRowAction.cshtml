@@ -6,7 +6,7 @@
 }
 else if (Model.Method == TableRowActionMethod.Post)
 {
-    <form class="d-inline-block" method="post" action="@Model.Url" onsubmit="@(Model.HasConfirmation ? $"showConfirmationMessage(event, '{Model.ConfirmationTitle}', '{Model.ConfirmationMessage}')" : string.Empty)">
+    <form class="ml-1 d-inline-block" method="post" action="@Model.Url" onsubmit="@(Model.HasConfirmation ? $"showConfirmationMessage(event, '{Model.ConfirmationTitle}', '{Model.ConfirmationMessage}')" : string.Empty)">
         @Html.AntiForgeryToken()
         <button type="submit" title="@Model.Title" class="btn btn-icons action-btn btn-primary"><i class="mdi @Model.Icon"></i></button>
     </form>

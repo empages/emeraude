@@ -49,6 +49,12 @@ namespace Definux.Emeraude.Logger
                     traceId = context.HttpContext.Request.Cookies[TraceIdCookieName];
                 }
 
+                var sensitiveHeaderKeys = new string[]
+                {
+                    "Cookie",
+                    "Authorization",
+                };
+
                 ActivityLog activityLog = new ActivityLog
                 {
                     Area = context.RouteData.Values.ContainsKey("area") ? context.RouteData.Values["area"].ToString() : null,
@@ -59,7 +65,13 @@ namespace Definux.Emeraude.Logger
                     Method = context.HttpContext.Request.Method,
                     UserAgent = context.HttpContext.Request.Headers["User-Agent"],
                     Parameters = !hideParameters ? JsonConvert.SerializeObject(context.ActionArguments.ToDictionary(k => k.Key, v => v.Value)) : null,
-                    Headers = JsonConvert.SerializeObject(context.HttpContext.Request.Headers.ToDictionary(k => k.Key, v => v.Value)),
+                    Headers = JsonConvert
+                        .SerializeObject(context
+                            .HttpContext
+                            .Request
+                            .Headers
+                            .Where(x => !sensitiveHeaderKeys.Contains(x.Key))
+                            .ToDictionary(k => k.Key, v => v.Value)),
                 };
 
                 this.context.ActivityLogs.Add(activityLog);

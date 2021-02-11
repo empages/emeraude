@@ -4,6 +4,7 @@ using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvatar;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserName;
+using Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword;
 using Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternalLoginProvider;
 using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar;
@@ -35,6 +36,7 @@ namespace Definux.Emeraude.Controllers.Api
             ICurrentUserProvider currentUserProvider)
         {
             this.currentUserProvider = currentUserProvider;
+            this.HideActivityLogParameters = true;
         }
 
         /// <summary>
@@ -199,6 +201,24 @@ namespace Definux.Emeraude.Controllers.Api
             {
                 return this.BadRequest();
             }
+
+            return this.Ok(await this.Mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Make a request for reset password for the current user.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("current/reset-password")]
+        [Endpoint(typeof(SimpleResult))]
+        public async Task<IActionResult> RequestResetPasswordForTheCurrentUser()
+        {
+            var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
+            var request = new ForgotPasswordCommand
+            {
+                Email = currentUser.Email,
+            };
 
             return this.Ok(await this.Mediator.Send(request));
         }

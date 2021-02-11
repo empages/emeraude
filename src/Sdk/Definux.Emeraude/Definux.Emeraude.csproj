@@ -62,7 +62,6 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Emails\Definux.Emeraude.Emails.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Files\Definux.Emeraude.Files.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
-    <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin.Analytics\Definux.Emeraude.Admin.Analytics.csproj" />
     <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj" />
     <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
     <ProjectReference Include="..\..\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />

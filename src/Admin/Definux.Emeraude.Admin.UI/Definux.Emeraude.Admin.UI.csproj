@@ -41,7 +41,6 @@
     <Folder Include="wwwroot\admin\fonts\" />
     <Folder Include="wwwroot\admin\css\" />
     <Folder Include="wwwroot\admin\icons\" />
-    <Folder Include="wwwroot\admin\js\vue\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +70,12 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Admin\AdminClientBuilder\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\admin\js\vue\manifest.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\admin\js\vue\vue.vendors.js" />
   </ItemGroup>
 
 </Project>

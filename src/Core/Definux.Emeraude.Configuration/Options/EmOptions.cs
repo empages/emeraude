@@ -9,7 +9,6 @@ namespace Definux.Emeraude.Configuration.Options
     /// </summary>
     public class EmOptions
     {
-        private string adminDashboardIndexRedirectRoute = "/admin/analytics";
         private List<Type> databaseInitializers = new List<Type>();
 
         /// <summary>
@@ -29,50 +28,19 @@ namespace Definux.Emeraude.Configuration.Options
         public string ProjectName { get; set; } = "Emeraude";
 
         /// <summary>
+        /// Activate test mode for the application. Recommended for unit and integration tests.
+        /// </summary>
+        public bool TestMode { get; set; }
+
+        /// <summary>
         /// Provider of database storage for the application.
         /// </summary>
         public DatabaseContextProvider DatabaseContextProvider { get; set; }
 
         /// <summary>
-        /// Route used for the administration index page. The string must starts with '/admin/' and cannot be set to '/admin'. The default value is '/admin/analytics'.
+        /// Admin dashboard request type.
         /// </summary>
-        public string AdminDashboardIndexRedirectRoute
-        {
-            get
-            {
-                return this.adminDashboardIndexRedirectRoute;
-            }
-
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Admin dashboard redirection route cannot be set to empty");
-                }
-
-                if (!value.StartsWith("/admin/", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new ArgumentException("Admin dashboard redirection route must starts with '/admin/'");
-                }
-
-                string tempUrl = "https://emeraude.dev";
-                Uri url = new Uri($"{tempUrl}{value}");
-                string path = url.GetLeftPart(UriPartial.Path);
-                if (path.EndsWith("/"))
-                {
-                    path = path.Substring(0, path.Length - 1);
-                }
-
-                path = path.Replace(tempUrl, string.Empty);
-
-                if (path == "/admin")
-                {
-                    throw new ArgumentException("Admin dashboard redirection route cannot be set to '/admin'");
-                }
-
-                this.adminDashboardIndexRedirectRoute = value;
-            }
-        }
+        public Type AdminDashboardRequestType { get; set; }
 
         /// <summary>
         /// AutoMapper configuration options. For more information see <see cref="MappingOptions"/>.

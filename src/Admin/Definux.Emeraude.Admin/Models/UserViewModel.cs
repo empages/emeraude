@@ -42,5 +42,10 @@ namespace Definux.Emeraude.Admin.Models
         [TableColumn(5, "Locked Out", typeof(TableFlagElement))]
         [DetailsField(5, "Locked Out", typeof(DetailsFieldFlagElement))]
         public bool IsLockedOut { get; set; }
+
+        /// <inheritdoc cref="User.EmailConfirmed"/>
+        [TableColumn(6, "Email Confirmed", typeof(TableFlagElement))]
+        [DetailsField(6, "Email Confirmed", typeof(DetailsFieldFlagElement))]
+        public bool EmailConfirmed { get; set; }
     }
 }

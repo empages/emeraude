@@ -4,22 +4,25 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Definux.Emeraude.Admin.Adapters;
-using Definux.Emeraude.Admin.Analytics.UI.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
 using Definux.Emeraude.Admin.Requests.Create;
 using Definux.Emeraude.Admin.Requests.Delete;
 using Definux.Emeraude.Admin.Requests.Details;
 using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.Exists;
+using Definux.Emeraude.Admin.Requests.FetchLogs;
 using Definux.Emeraude.Admin.Requests.GetAll;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
 using Definux.Emeraude.Admin.RouteConstraints;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Admin.UI.ViewModels.Logging;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -44,7 +47,6 @@ namespace Definux.Emeraude.Admin.Extensions
         {
             services.ConfigureAdminUI();
             services.ConfigureAdminClientBuilderUI();
-            services.ConfigureAdminAnalyticsUI();
 
             services.AddRouting(options =>
             {
@@ -136,6 +138,18 @@ namespace Definux.Emeraude.Admin.Extensions
                     services.RegisterEntityImageGenericRequests(entityType, viewModelType);
                 }
             }
+
+            return services;
+        }
+
+        /// <summary>
+        /// Register additional requests used from built-in features.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection RegisterAdditionalAdminGenericCustomRequests(this IServiceCollection services)
+        {
+            services.RegisterGetAllGenericQueries(typeof(User), typeof(EntitySelectModel));
 
             return services;
         }

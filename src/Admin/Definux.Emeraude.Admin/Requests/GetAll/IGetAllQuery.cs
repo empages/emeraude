@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using Definux.Emeraude.Admin.Utilities;
+using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Objects;
 using MediatR;
 
@@ -22,5 +23,15 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
         /// Search query string.
         /// </summary>
         string SearchQuery { get; set; }
+
+        /// <summary>
+        /// Order property.
+        /// </summary>
+        public string OrderBy { get; set; }
+
+        /// <summary>
+        /// Order type.
+        /// </summary>
+        public string OrderType { get; set; }
     }
 }

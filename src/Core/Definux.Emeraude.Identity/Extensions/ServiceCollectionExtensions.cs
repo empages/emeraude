@@ -39,7 +39,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToLoginEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, ILoginEventHandler
         {
-            return services.SubscribeToIdentityEvent<ILoginEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<ILoginEventHandler, TEventHandler, LoginEventArgs>();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToExternalLoginEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IExternalLoginEventHandler
         {
-            return services.SubscribeToIdentityEvent<IExternalLoginEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IExternalLoginEventHandler, TEventHandler, ExternalLoginEventArgs>();
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToRegisterEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IRegisterEventHandler
         {
-            return services.SubscribeToIdentityEvent<IRegisterEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IRegisterEventHandler, TEventHandler, RegisterEventArgs>();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToExternalRegisterEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IExternalRegisterEventHandler
         {
-            return services.SubscribeToIdentityEvent<IExternalRegisterEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IExternalRegisterEventHandler, TEventHandler, ExternalRegisterEventArgs>();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToForgotPasswordEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IForgotPasswordEventHandler
         {
-            return services.SubscribeToIdentityEvent<IForgotPasswordEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IForgotPasswordEventHandler, TEventHandler, ForgotPasswordEventArgs>();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToResetPasswordEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IResetPasswordEventHandler
         {
-            return services.SubscribeToIdentityEvent<IResetPasswordEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IResetPasswordEventHandler, TEventHandler, ResetPasswordEventArgs>();
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToConfirmedEmailEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IConfirmedEmailEventHandler
         {
-            return services.SubscribeToIdentityEvent<IConfirmedEmailEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IConfirmedEmailEventHandler, TEventHandler, ConfirmedEmailEventArgs>();
         }
 
         /// <summary>
@@ -123,12 +123,13 @@ namespace Definux.Emeraude.Identity.Extensions
         public static IServiceCollection SubscribeToRequestChangeEmailEvent<TEventHandler>(this IServiceCollection services)
             where TEventHandler : class, IRequestChangeEmailEventHandler
         {
-            return services.SubscribeToIdentityEvent<IRequestChangeEmailEventHandler, TEventHandler>();
+            return services.SubscribeToIdentityEvent<IRequestChangeEmailEventHandler, TEventHandler, RequestChangeEmailEventArgs>();
         }
 
-        private static IServiceCollection SubscribeToIdentityEvent<TEventHandlerService, TEventHandlerImplementation>(this IServiceCollection services)
-            where TEventHandlerService : class, IIdentityEventHandler
+        private static IServiceCollection SubscribeToIdentityEvent<TEventHandlerService, TEventHandlerImplementation, TEventHandlerEventArgs>(this IServiceCollection services)
+            where TEventHandlerService : class, IIdentityEventHandler<TEventHandlerEventArgs>
             where TEventHandlerImplementation : class, TEventHandlerService
+            where TEventHandlerEventArgs : IdentityEventArgs
         {
             services.AddTransient<TEventHandlerService, TEventHandlerImplementation>();
 

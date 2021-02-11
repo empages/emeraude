@@ -221,4 +221,9 @@
 			border: none;
 		}
 	}
+	
+	.mdi.input-group-text {
+		border: none;
+		border-left: 1px solid $border-color;
+	}
 }

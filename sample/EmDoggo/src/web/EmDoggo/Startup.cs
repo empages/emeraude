@@ -6,6 +6,7 @@ using Definux.Emeraude.Extensions;
 using EmDoggo.Application.DataSourceMaps;
 using EmDoggo.Application.Interfaces;
 using EmDoggo.Application.Mapping;
+using EmDoggo.Application.Requests.Queries.AdminDashboard;
 using EmDoggo.Infrastructure.Extensions;
 using EmDoggo.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,8 @@ namespace EmDoggo
 
                 options.Account.HasFacebookLogin = true;
                 options.Account.HasGoogleLogin = true;
+
+                options.AdminDashboardRequestType = typeof(AdminDashboardQuery);
             },
             seoOptions =>
             {

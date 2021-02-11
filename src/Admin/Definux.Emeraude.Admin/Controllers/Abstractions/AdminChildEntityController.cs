@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.Requests.Create;
@@ -39,19 +40,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         protected const string ParentRouteKeyPropertyName = "ParentRouteKey";
 
         /// <summary>
-        /// Breadcrumb parent title placeholder for transfering custom parent title to breadcrumbs list.
+        /// Breadcrumb parent title placeholder for transferring custom parent title to breadcrumbs list.
         /// </summary>
         protected const string BreadcrumbParentTitlePlaceholder = "[ParentBreadcrumbTitle]";
-
-        /// <summary>
-        /// Route key that defines the parent identification into the URL.
-        /// </summary>
-        public abstract string ParentRouteKey { get; }
-
-        /// <summary>
-        /// Name of the property from the child entity that referenced the parent entity.
-        /// </summary>
-        public abstract string ForeignKey { get; }
 
         /// <summary>
         /// Name of the parent controller.
@@ -59,32 +50,59 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         public string ParentController => typeof(TParentController).Name;
 
         /// <summary>
+        /// Route key that defines the parent identification into the URL.
+        /// </summary>
+        protected abstract string ParentRouteKey { get; }
+
+        /// <summary>
+        /// Parent property from the target entity.
+        /// </summary>
+        protected abstract string ParentProperty { get; }
+
+        /// <summary>
+        /// Expression of the property from the child entity that referenced the parent entity. Comparison has to be made with <see cref="ParentIdentifier"/>
+        /// </summary>
+        protected abstract Expression<Func<TEntity, bool>> ParentExpression { get; }
+
+        /// <summary>
         /// Identification of the parent entity which will be extracted by the <see cref="ParentRouteKey"/> from the route values.
         /// </summary>
-        public string ForeignKeyValue => this.HttpContext.Request.RouteValues[this.ParentRouteKey]?.ToString();
+        protected Guid ParentIdentifier
+        {
+            get
+            {
+                string parentIdentifierString = this.HttpContext.Request.RouteValues[this.ParentRouteKey]?.ToString() ?? string.Empty;
+                Guid.TryParse(parentIdentifierString, out Guid parentIdentifier);
+                return parentIdentifier;
+            }
+        }
 
         /// <inheritdoc/>
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbPageTitlePlaceholder, false, 1)]
-        public async override Task<IActionResult> GetAll([FromQuery(Name = "p")] int page = 1, [FromQuery(Name = "q")] string query = null)
+        public override async Task<IActionResult> GetAll(
+            [FromQuery] int page = 1,
+            [FromQuery] string searchQuery = null,
+            [FromQuery] string orderBy = null,
+            [FromQuery] string orderType = null)
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
 
             this.ApplyParentBreadcrumbTitle();
 
-            return await base.GetAll(page, query);
+            return await base.GetAll(page, searchQuery, orderBy, orderType);
         }
 
         /// <inheritdoc/>
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbEntityNamePluralPlaceholder, true, 1, nameof(GetAll), ParentRouteKey = ParentRouteKeyPropertyName)]
         [Breadcrumb("Details", false, 2)]
-        public async override Task<IActionResult> Details(Guid id)
+        public override async Task<IActionResult> Details(Guid id)
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
@@ -98,9 +116,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbEntityNamePluralPlaceholder, true, 1, nameof(GetAll), ParentRouteKey = ParentRouteKeyPropertyName)]
         [Breadcrumb("Create", false, 2)]
-        public async override Task<IActionResult> Create()
+        public override async Task<IActionResult> Create()
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
@@ -114,9 +132,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbEntityNamePluralPlaceholder, true, 1, nameof(GetAll), ParentRouteKey = ParentRouteKeyPropertyName)]
         [Breadcrumb("Create", false, 2)]
-        public async override Task<IActionResult> Create(TEntityViewModel model)
+        public override async Task<IActionResult> Create(TEntityViewModel model)
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
@@ -130,9 +148,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbEntityNamePluralPlaceholder, true, 1, nameof(GetAll), ParentRouteKey = ParentRouteKeyPropertyName)]
         [Breadcrumb("Edit", false, 2)]
-        public async override Task<IActionResult> Edit(Guid id)
+        public override async Task<IActionResult> Edit(Guid id)
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
@@ -146,9 +164,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         [Breadcrumb(BreadcrumbParentTitlePlaceholder, true, 0, nameof(GetAll), UseParentController = true)]
         [Breadcrumb(BreadcrumbEntityNamePluralPlaceholder, true, 1, nameof(GetAll), ParentRouteKey = ParentRouteKeyPropertyName)]
         [Breadcrumb("Edit", false, 2)]
-        public async override Task<IActionResult> Edit(Guid id, TEntityViewModel model)
+        public override async Task<IActionResult> Edit(Guid id, TEntityViewModel model)
         {
-            if (!(await this.ValidateExistanceAsync()))
+            if (!(await this.ValidateExistenceAsync()))
             {
                 return this.NotFound();
             }
@@ -159,33 +177,41 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         }
 
         /// <inheritdoc/>
-        protected override IGetAllQuery<TEntity, TEntityViewModel> GetGetAllQuery(int page, string searchQuery)
+        protected override IGetAllQuery<TEntity, TEntityViewModel> GetGetAllQuery(
+            int page,
+            string searchQuery,
+            string orderBy,
+            string orderType)
         {
-            return new GetAllQuery<TEntity, TEntityViewModel>(page, searchQuery, this.ForeignKey, this.ForeignKeyValue);
+            return new GetAllQuery<TEntity, TEntityViewModel>(page, searchQuery, this.ParentExpression)
+            {
+                OrderBy = orderBy,
+                OrderType = orderType,
+            };
         }
 
         /// <inheritdoc/>
         protected override IDetailsQuery<TEntity, TEntityViewModel> GetDetailsQuery(Guid entityId)
         {
-            return new DetailsQuery<TEntity, TEntityViewModel>(entityId, this.ForeignKey, this.ForeignKeyValue);
+            return new DetailsQuery<TEntity, TEntityViewModel>(entityId, this.ParentExpression);
         }
 
         /// <inheritdoc/>
         protected override ICreateCommand<TEntity, TEntityViewModel> GetCreateCommand(TEntityViewModel model)
         {
-            return new CreateCommand<TEntity, TEntityViewModel>(model, this.ForeignKey, this.ForeignKeyValue);
+            return new CreateCommand<TEntity, TEntityViewModel>(model, this.ParentProperty, this.ParentIdentifier);
         }
 
         /// <inheritdoc/>
         protected override IEditCommand<TEntity, TEntityViewModel> GetEditCommand(Guid entityId, TEntityViewModel model)
         {
-            return new EditCommand<TEntity, TEntityViewModel>(entityId, model, this.ForeignKey, this.ForeignKeyValue);
+            return new EditCommand<TEntity, TEntityViewModel>(entityId, model, this.ParentExpression);
         }
 
         /// <inheritdoc/>
         protected override IDeleteCommand<TEntity> GetDeleteCommand(Guid entityId)
         {
-            return new DeleteCommand<TEntity>(entityId, this.ForeignKey, this.ForeignKeyValue);
+            return new DeleteCommand<TEntity>(entityId, this.ParentExpression);
         }
 
         /// <inheritdoc/>
@@ -193,7 +219,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         {
             var routeValues = new RouteValueDictionary
             {
-                { this.ParentRouteKey, this.ForeignKeyValue },
+                { this.ParentRouteKey, this.ParentIdentifier },
             };
 
             return this.RedirectToAction(nameof(this.GetAll), routeValues);
@@ -205,7 +231,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             var routeValues = new RouteValueDictionary
             {
                 { "id", entityId },
-                { this.ParentRouteKey, this.ForeignKeyValue },
+                { this.ParentRouteKey, this.ParentIdentifier },
             };
 
             return this.RedirectToAction(nameof(this.Details), this.ControllerName, routeValues);
@@ -216,7 +242,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         protected void UpdateControllerRoute()
         {
-            this.ControllerRoute = this.ControllerRoute.Replace("{" + this.ParentRouteKey + "}", this.ForeignKeyValue);
+            this.ControllerRoute = this.ControllerRoute.Replace($"{{{this.ParentRouteKey}}}", this.ParentIdentifier.ToString());
         }
 
         /// <inheritdoc/>
@@ -246,14 +272,14 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         }
 
         /// <summary>
-        /// Check the existance of the parent entity of the controller.
+        /// Check the existence of the parent entity of the controller.
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task<bool> ValidateExistanceAsync()
+        protected virtual async Task<bool> ValidateExistenceAsync()
         {
             try
             {
-                return await this.Mediator.Send(new ExistsQuery<TParentEntity>(Guid.Parse(this.ForeignKeyValue)));
+                return await this.Mediator.Send(new ExistsQuery<TParentEntity>(this.ParentIdentifier));
             }
             catch (Exception)
             {

@@ -1,9 +1,12 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using System;
+using System.Linq.Expressions;
+using Definux.Emeraude.Admin.Utilities;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.Requests.GetAll
 {
     /// <inheritdoc cref="IGetAllQuery{TEntity, TRequestModel}"/>
-    public class GetAllQuery<TEntity, TRequestModel> : GenericEntityRequst, IGetAllQuery<TEntity, TRequestModel>
+    public class GetAllQuery<TEntity, TRequestModel> : GenericEntityRequst<TEntity>, IGetAllQuery<TEntity, TRequestModel>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
     {
@@ -23,14 +26,12 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
         /// </summary>
         /// <param name="page"></param>
         /// <param name="searchQuery"></param>
-        /// <param name="foreignKeyProperty"></param>
-        /// <param name="foreignKeyValue"></param>
-        public GetAllQuery(int page, string searchQuery, string foreignKeyProperty, string foreignKeyValue)
+        /// <param name="parentExpression"></param>
+        public GetAllQuery(int page, string searchQuery, Expression<Func<TEntity, bool>> parentExpression)
         {
             this.Page = page;
             this.SearchQuery = searchQuery;
-            this.ForeignKeyProperty = foreignKeyProperty;
-            this.ForeignKeyValue = foreignKeyValue;
+            this.ParentExpression = parentExpression;
         }
 
         /// <inheritdoc/>
@@ -43,5 +44,11 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
 
         /// <inheritdoc/>
         public string SearchQuery { get; set; }
+
+        /// <inheritdoc/>
+        public string OrderBy { get; set; }
+
+        /// <inheritdoc/>
+        public string OrderType { get; set; }
     }
 }

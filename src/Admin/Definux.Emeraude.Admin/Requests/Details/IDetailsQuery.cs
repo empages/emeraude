@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Admin.Requests.Details
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
     /// <typeparam name="TRequestModel">Data transfer object of the target entity.</typeparam>
-    public interface IDetailsQuery<TEntity, TRequestModel> : IRequest<TRequestModel>, IGenericEntityRequest
+    public interface IDetailsQuery<TEntity, TRequestModel> : IRequest<TRequestModel>, IGenericEntityRequest<TEntity>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
     {

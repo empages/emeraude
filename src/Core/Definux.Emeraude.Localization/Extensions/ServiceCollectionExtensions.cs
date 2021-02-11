@@ -23,10 +23,18 @@ namespace Definux.Emeraude.Localization.Extensions
         /// <returns></returns>
         public static IServiceCollection RegisterEmeraudeLocalization(this IServiceCollection services, EmOptions options)
         {
-            services.AddDbContext<LocalizationContext>(options =>
-                options.UseSqlite(
-                    connectionString: LocalesDatabaseSqlLiteConnectionString,
-                    sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
+            if (!options.TestMode)
+            {
+                services.AddDbContext<LocalizationContext>(options =>
+                    options.UseSqlite(
+                        connectionString: LocalesDatabaseSqlLiteConnectionString,
+                        sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
+            }
+            else
+            {
+                services.AddDbContext<LocalizationContext>(opt =>
+                    opt.UseInMemoryDatabase(databaseName: "test_localization_database"));
+            }
 
             services.AddScoped<ICurrentLanguageProvider, CurrentLanguageProvider>();
             services.AddScoped<ILocalizationContext, LocalizationContext>();

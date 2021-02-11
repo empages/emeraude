@@ -32,7 +32,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [MetaTag(MainMetaTags.Description, ResetPasswordDescription, true)]
         public IActionResult ResetPassword([FromQuery]string token, [FromQuery]string email)
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated &&
+                this.User.Identity.Name?.Trim().ToLower() != email?.Trim().ToLower())
             {
                 return this.RedirectToHomeIndex();
             }
@@ -63,7 +64,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [MetaTag(MainMetaTags.Description, ResetPasswordDescription, true)]
         public async Task<IActionResult> ResetPassword(ResetPasswordCommand request)
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated &&
+                this.User.Identity.Name?.Trim().ToLower() != request.Email?.Trim().ToLower())
             {
                 return this.RedirectToHomeIndex();
             }

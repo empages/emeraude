@@ -1,15 +1,39 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Emails;
 using Definux.Emeraude.Application.EventHandlers;
-using Microsoft.AspNetCore.Http;
+using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Localization;
+using EmDoggo.Application.Emails;
 
 namespace EmDoggo.Infrastructure.Handlers.Identity
 {
-    public class ForgotPasswordEventHandler: IForgotPasswordEventHandler
+    public class ForgotPasswordEventHandler : IForgotPasswordEventHandler
     {
-        public async Task HandleAsync(Guid userId, HttpContext httpContext, params string[] args)
+        private readonly IEmailSender emailSender;
+        private readonly ICurrentLanguageProvider currentLanguageProvider;
+        private readonly IUserManager userManager;
+
+        public ForgotPasswordEventHandler(IEmailSender emailSender, ICurrentLanguageProvider currentLanguageProvider, IUserManager  userManager)
         {
-            Console.WriteLine($"-->> {args[0]}");
+            this.emailSender = emailSender;
+            this.currentLanguageProvider = currentLanguageProvider;
+            this.userManager = userManager;
+        }
+        
+        public async Task HandleAsync(ForgotPasswordEventArgs args)
+        {
+            var targetUser = await this.userManager.FindUserByIdAsync(args.UserId);
+            var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
+            await this.emailSender.SendEmailAsync($"ResetPassword.{currentLanguage.Code}", new ResetPasswordEmailModel
+            {
+                Name = targetUser.Name,
+                Email = targetUser.Email,
+                Subject = "Reset Password",
+                ResetPasswordLink = args.ResetPasswordLink,
+            });
+            
+            Console.WriteLine($"-->> {args.ResetPasswordLink}");
         }
     }
 }
