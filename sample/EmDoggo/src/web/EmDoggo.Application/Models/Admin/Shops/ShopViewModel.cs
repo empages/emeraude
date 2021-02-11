@@ -1,3 +1,4 @@
+using System;
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.UI.UIElements.Details.Implementations;
 using Definux.Emeraude.Admin.UI.UIElements.Form.Implementations;
@@ -22,5 +23,11 @@ namespace EmDoggo.Application.Models.Admin.Shops
         [DetailsField(2, typeof(DetailsFieldHtmlContentElement))]
         [FormInput(2, typeof(FormHtmlEditorElement))]
         public string Description { get; set; }
+
+        [FormInput(3, typeof(FormDateElement))]
+        public DateTime? DummyDateNullable { get; set; }
+        
+        [FormInput(4, typeof(FormDateElement))]
+        public DateTime DummyDate { get; set; }
     }
 }

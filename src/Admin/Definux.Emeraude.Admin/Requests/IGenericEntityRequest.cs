@@ -1,23 +1,19 @@
-﻿namespace Definux.Emeraude.Admin.Requests
+﻿using System;
+using System.Linq.Expressions;
+using Definux.Emeraude.Domain.Entities;
+
+namespace Definux.Emeraude.Admin.Requests
 {
     /// <summary>
     /// Definition of generic entity request.
     /// </summary>
-    public interface IGenericEntityRequest
+    /// <typeparam name="TEntity">Target entity.</typeparam>
+    public interface IGenericEntityRequest<TEntity>
+        where TEntity : class, IEntity, new()
     {
         /// <summary>
-        /// Flag that indicates whether the entity has valid parent reference or not.
+        /// Referenced property expression of the parent entity for current entity.
         /// </summary>
-        bool ValidateParent { get; }
-
-        /// <summary>
-        /// Referenced property name of the parent entity for current entity.
-        /// </summary>
-        string ForeignKeyProperty { get; set; }
-
-        /// <summary>
-        /// Referenced property value of the parent entity for current entity.
-        /// </summary>
-        string ForeignKeyValue { get; set; }
+        Expression<Func<TEntity, bool>> ParentExpression { get; set; }
     }
 }

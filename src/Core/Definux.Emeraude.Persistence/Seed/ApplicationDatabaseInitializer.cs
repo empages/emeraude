@@ -93,7 +93,7 @@ namespace Definux.Emeraude.Persistence.Seed
             var result = await this.userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
-                await this.userManager.AddToRolesAsync(user, roles);
+                var addToRoleResult = await this.userManager.AddToRolesAsync(user, roles);
             }
 
             return user;

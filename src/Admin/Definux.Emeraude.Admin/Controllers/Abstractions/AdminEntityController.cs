@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.Mapping.Mappers;
@@ -10,6 +11,7 @@ using Definux.Emeraude.Admin.Requests.Details;
 using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.GetAll;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
+using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
@@ -87,13 +89,23 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         /// <param name="page"></param>
         /// <param name="searchQuery"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="orderType"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("")]
         [Breadcrumb(BreadcrumbPageTitlePlaceholder, false, 0)]
-        public virtual async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] string searchQuery = null)
+        public virtual async Task<IActionResult> GetAll(
+            [FromQuery] int page = 1,
+            [FromQuery] string searchQuery = null,
+            [FromQuery] string orderBy = null,
+            [FromQuery] string orderType = null)
         {
-            PaginatedList<TEntityViewModel> entitiesResult = await this.GetAllEntitiesPaginatedAsync(page, searchQuery);
+            PaginatedList<TEntityViewModel> entitiesResult = await this.GetAllEntitiesPaginatedAsync(
+                page,
+                searchQuery,
+                this.InterceptOrderProperty(orderBy),
+                orderType);
             TableViewViewModel model = new TableViewViewModel();
             model.SingleEntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
             model.Title = model.SingleEntityName.ToPluralString();
@@ -102,6 +114,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             model.Table = EntityTableMapper.Map(entitiesResult, this.BuildTableViewActions()?.ToArray());
             model.Table.SetPaginationRedirection(this.AreaName, this.ControllerName, this.ActionName);
             this.ViewData.Add("SearchQuery", searchQuery);
+            this.ViewData.Add("OrderProperties", this.GetOrderProperties());
+            this.ViewData.Add("OrderBy", orderBy);
+            this.ViewData.Add("OrderType", orderType);
 
             this.InitializeNavigationActions(this.BuildTableViewNavigationActions());
 
@@ -286,10 +301,20 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         /// <param name="page"></param>
         /// <param name="searchQuery"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="orderType"></param>
         /// <returns></returns>
-        protected virtual IGetAllQuery<TEntity, TEntityViewModel> GetGetAllQuery(int page, string searchQuery)
+        protected virtual IGetAllQuery<TEntity, TEntityViewModel> GetGetAllQuery(
+            int page,
+            string searchQuery,
+            string orderBy,
+            string orderType)
         {
-            return new GetAllQuery<TEntity, TEntityViewModel>(page, searchQuery);
+            return new GetAllQuery<TEntity, TEntityViewModel>(page, searchQuery)
+            {
+                OrderBy = orderBy,
+                OrderType = orderType,
+            };
         }
 
         /// <summary>
@@ -297,10 +322,16 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         /// <param name="page"></param>
         /// <param name="query"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="orderType"></param>
         /// <returns></returns>
-        protected async virtual Task<PaginatedList<TEntityViewModel>> GetAllEntitiesPaginatedAsync(int page, string query)
+        protected virtual async Task<PaginatedList<TEntityViewModel>> GetAllEntitiesPaginatedAsync(
+            int page,
+            string query,
+            string orderBy,
+            string orderType)
         {
-            return await this.Mediator.Send(this.GetGetAllQuery(page, query));
+            return await this.Mediator.Send(this.GetGetAllQuery(page, query, orderBy, orderType));
         }
 
         /// <summary>
@@ -380,7 +411,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         /// <param name="entityId"></param>
         /// <returns></returns>
-        protected async virtual Task<bool> DeleteEntityAsync(Guid entityId)
+        protected virtual async Task<bool> DeleteEntityAsync(Guid entityId)
         {
             return await this.Mediator.Send(this.GetDeleteCommand(entityId));
         }
@@ -465,8 +496,8 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         protected int GetHttpContextPageNumber()
         {
             int pageNumber = 1;
-            int tempPageNumber = 0;
-            if (this.HttpContext.Request.Query.ContainsKey("p") && int.TryParse(this.HttpContext.Request.Query["p"].ToString(), out tempPageNumber))
+            if (this.HttpContext.Request.Query.ContainsKey("page") &&
+                int.TryParse(this.HttpContext.Request.Query["page"].ToString(), out var tempPageNumber))
             {
                 pageNumber = tempPageNumber;
             }
@@ -481,9 +512,9 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         protected virtual string GetHttpContextSearchQuery()
         {
             string searchQuery = string.Empty;
-            if (this.HttpContext.Request.Query.ContainsKey("q"))
+            if (this.HttpContext.Request.Query.ContainsKey("searchQuery"))
             {
-                searchQuery = this.HttpContext.Request.Query["q"].ToString();
+                searchQuery = this.HttpContext.Request.Query["searchQuery"].ToString();
             }
 
             return searchQuery;
@@ -600,6 +631,25 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         protected void SetPartialBelowTheTable(string partialName)
         {
             this.ViewData["TableBelowPartial"] = partialName;
+        }
+
+        /// <summary>
+        /// Return list of all order properties for current entity.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual List<string> GetOrderProperties()
+        {
+            return typeof(TEntity)
+                .GetProperties()
+                .Where(x => (DefaultValues.OrderTypes.Contains(x.PropertyType) || x.PropertyType.IsEnum) && x.GetSetMethod() != null)
+                .Select(x => x.Name)
+                .ToList();
+        }
+
+        private string InterceptOrderProperty(string property)
+        {
+            var allowedProperties = this.GetOrderProperties();
+            return allowedProperties.Contains(property) ? property : null;
         }
 
         private IEntityFormViewModel CastModel(TEntityViewModel model)

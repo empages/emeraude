@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Definux.Emeraude.Admin.UI.Adapters
 {
     /// <summary>
-    /// Adapted for transfering data to Admin UI assembly.
+    /// Adapted for transferring data to Admin UI assembly.
     /// </summary>
     public interface IIdentityUserInfoAdapter
     {

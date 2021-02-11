@@ -38,10 +38,9 @@ namespace Definux.Emeraude.Admin.Requests.Details
         {
             try
             {
-                var requestExpression = request.ValidateParent ? ExpressionBuilders.BuildQueryExpressionByParentForeignKey<TEntity>(request.ForeignKeyProperty, request.ForeignKeyValue) : x => true;
+                var requestExpression = request.ParentExpression ?? (x => true);
                 var entity = this.context
                     .Set<TEntity>()
-                    .AsQueryable()
                     .Where(ExpressionFunctions.AndAlso(requestExpression, x => x.Id == request.EntityId).Compile())
                     .FirstOrDefault();
 

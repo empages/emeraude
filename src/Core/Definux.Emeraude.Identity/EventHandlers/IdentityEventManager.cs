@@ -27,37 +27,97 @@ namespace Definux.Emeraude.Identity.EventHandlers
         }
 
         /// <inheritdoc/>
-        public async Task TriggerLoginEventAsync(Guid userId) => await this.TriggerEventAsync<ILoginEventHandler>(userId);
+        public async Task TriggerLoginEventAsync(Guid userId)
+        {
+            await this.TriggerEventAsync<ILoginEventHandler, LoginEventArgs>(new LoginEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerExternalLoginEventAsync(Guid userId) => await this.TriggerEventAsync<IExternalLoginEventHandler>(userId);
+        public async Task TriggerExternalLoginEventAsync(Guid userId)
+        {
+            await this.TriggerEventAsync<IExternalLoginEventHandler, ExternalLoginEventArgs>(new ExternalLoginEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerRegisterEventAsync(Guid userId, string confirmationLink) => await this.TriggerEventAsync<IRegisterEventHandler>(userId, confirmationLink);
+        public async Task TriggerRegisterEventAsync(Guid userId, string confirmationLink)
+        {
+            await this.TriggerEventAsync<IRegisterEventHandler, RegisterEventArgs>(new RegisterEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+                EmailConfirmationLink = confirmationLink,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerExternalRegisterEventAsync(Guid userId) => await this.TriggerEventAsync<IExternalRegisterEventHandler>(userId);
+        public async Task TriggerExternalRegisterEventAsync(Guid userId)
+        {
+            await this.TriggerEventAsync<IExternalRegisterEventHandler, ExternalRegisterEventArgs>(new ExternalRegisterEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerForgotPasswordEventAsync(Guid userId, string resetPasswordLink) => await this.TriggerEventAsync<IForgotPasswordEventHandler>(userId, resetPasswordLink);
+        public async Task TriggerForgotPasswordEventAsync(Guid userId, string resetPasswordLink)
+        {
+            await this.TriggerEventAsync<IForgotPasswordEventHandler, ForgotPasswordEventArgs>(new ForgotPasswordEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+                ResetPasswordLink = resetPasswordLink,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerResetPasswordEventAsync(Guid userId) => await this.TriggerEventAsync<IResetPasswordEventHandler>(userId);
+        public async Task TriggerResetPasswordEventAsync(Guid userId)
+        {
+            await this.TriggerEventAsync<IResetPasswordEventHandler, ResetPasswordEventArgs>(new ResetPasswordEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+            });
+        }
 
         /// <inheritdoc/>
-        public async Task TriggerConfirmedEmailEventAsync(Guid userId) => await this.TriggerEventAsync<IConfirmedEmailEventHandler>(userId);
+        public async Task TriggerConfirmedEmailEventAsync(Guid userId)
+        {
+            await this.TriggerEventAsync<IConfirmedEmailEventHandler, ConfirmedEmailEventArgs>(new ConfirmedEmailEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+            });
+        }
 
         /// <inheritdoc/>
-        public Task TriggerRequestChangeEmailEventAsync(Guid userId, string changeEmailConfirmationLink) => this.TriggerEventAsync<IRequestChangeEmailEventHandler>(userId, changeEmailConfirmationLink);
+        public Task TriggerRequestChangeEmailEventAsync(Guid userId, string changeEmailConfirmationLink)
+        {
+            return this.TriggerEventAsync<IRequestChangeEmailEventHandler, RequestChangeEmailEventArgs>(new RequestChangeEmailEventArgs
+            {
+                UserId = userId,
+                HttpContext = this.httpContextAccessor.HttpContext,
+                EmailConfirmationLink = changeEmailConfirmationLink,
+            });
+        }
 
-        private async Task TriggerEventAsync<THandler>(Guid userId, params string[] args)
-            where THandler : IIdentityEventHandler
+        private async Task TriggerEventAsync<THandler, TEventArgs>(TEventArgs args)
+            where THandler : class, IIdentityEventHandler<TEventArgs>
+            where TEventArgs : IdentityEventArgs
         {
             try
             {
-                if (this.TryGetEventHandler<THandler>(out IIdentityEventHandler handler))
+                if (this.TryGetEventHandler<THandler, TEventArgs>(out THandler handler))
                 {
-                    await handler.HandleAsync(userId, this.httpContextAccessor.HttpContext, args);
+                    await handler.HandleAsync(args);
                 }
             }
             catch (Exception ex)
@@ -66,12 +126,13 @@ namespace Definux.Emeraude.Identity.EventHandlers
             }
         }
 
-        private bool TryGetEventHandler<THandler>(out IIdentityEventHandler handler)
-            where THandler : IIdentityEventHandler
+        private bool TryGetEventHandler<THandler, TEventArgs>(out THandler handler)
+            where THandler : class, IIdentityEventHandler<TEventArgs>
+            where TEventArgs : IdentityEventArgs
         {
             try
             {
-                handler = (IIdentityEventHandler)this.serviceProvider.GetService(typeof(THandler));
+                handler = (THandler)this.serviceProvider.GetService(typeof(THandler));
                 return handler != null;
             }
             catch (Exception)

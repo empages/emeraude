@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -68,6 +69,56 @@ namespace Definux.Emeraude.Admin.UI.Extensions
         public static void SetSearchQuery(this ViewDataDictionary viewData, string value)
         {
             viewData["SearchQuery"] = value;
+        }
+
+        /// <summary>
+        /// Get order properties for current entity page.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <returns></returns>
+        public static List<string> GetOrderProperties(this ViewDataDictionary viewData)
+        {
+            return (List<string>)viewData["OrderProperties"];
+        }
+
+        /// <summary>
+        /// Get order property from key 'OrderBy'.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <returns></returns>
+        public static string GetOrderProperty(this ViewDataDictionary viewData)
+        {
+            return viewData.GetStringValueOrDefault("OrderBy");
+        }
+
+        /// <summary>
+        /// Save order property into ViewData.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <param name="value"></param>
+        public static void SetOrderProperty(this ViewDataDictionary viewData, string value)
+        {
+            viewData["OrderBy"] = value;
+        }
+
+        /// <summary>
+        /// Save order type into ViewData.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <param name="value"></param>
+        public static void SetOrderType(this ViewDataDictionary viewData, string value)
+        {
+            viewData["OrderType"] = value;
+        }
+
+        /// <summary>
+        /// Get order type from key 'OrderType.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <returns></returns>
+        public static string GetOrderType(this ViewDataDictionary viewData)
+        {
+            return viewData.GetStringValueOrDefault("OrderType");
         }
 
         /// <summary>
@@ -183,6 +234,22 @@ namespace Definux.Emeraude.Admin.UI.Extensions
             }
 
             return new List<NavigationActionViewModel>();
+        }
+
+        /// <summary>
+        /// Get a date value from the ViewData.
+        /// </summary>
+        /// <param name="viewData"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static DateTime? GetDateValueOrNull(this ViewDataDictionary viewData, string key)
+        {
+            if (viewData.ContainsKey(key) && DateTime.TryParse(viewData[key]?.ToString() ?? string.Empty, out DateTime parsedDate))
+            {
+                return parsedDate;
+            }
+
+            return null;
         }
 
         private static string GetStringValueOrDefault(this ViewDataDictionary viewData, string key)

@@ -10,7 +10,7 @@ namespace Definux.Emeraude.Application.Logger
     public interface IEmLogger : ILogger
     {
         /// <summary>
-        /// Save information about current request.
+        /// Register information about current request without saving.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="hideParameters"></param>

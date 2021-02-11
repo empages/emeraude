@@ -27,7 +27,9 @@
     "summernote": "^0.8.8",
     "sweetalert": "^2.1.0",
     "dropzone": "^5.7.0",
-    "trumbowyg": "^2.23.0"
+    "trumbowyg": "^2.23.0",
+    "pretty-print-json": "^0.4.5",
+    "select2": "^4.1.0-rc.0"
   },
   "devDependencies": {
     "del": "^2.2.2",

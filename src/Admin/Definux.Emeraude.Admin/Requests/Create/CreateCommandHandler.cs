@@ -36,16 +36,16 @@ namespace Definux.Emeraude.Admin.Requests.Create
             try
             {
                 var mappedEntity = this.mapper.Map<TEntity>(request.Model);
-                if (request.ValidateParent)
+                if (request.ParentId.HasValue)
                 {
                     mappedEntity
                         .GetType()
-                        .GetProperty(request.ForeignKeyProperty)
-                        .SetValue(mappedEntity, Guid.Parse(request.ForeignKeyValue));
+                        .GetProperty(request.ParentProperty)
+                        ?.SetValue(mappedEntity, request.ParentId.Value);
                 }
 
                 this.context.Set<TEntity>().Add(mappedEntity);
-                await this.context.SaveChangesAsync();
+                await this.context.SaveChangesAsync(cancellationToken);
 
                 return mappedEntity.Id;
             }

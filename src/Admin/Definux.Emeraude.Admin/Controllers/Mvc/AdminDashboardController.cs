@@ -1,4 +1,9 @@
-﻿using Definux.Emeraude.Admin.Controllers.Abstractions;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.Requests;
 using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -28,9 +33,26 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         /// <returns></returns>
         [Route("")]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return this.LocalRedirect(this.options.AdminDashboardIndexRedirectRoute);
+            object viewModel = null;
+            if (this.options.AdminDashboardRequestType != null)
+            {
+                var dashboardRequestType = this.options.AdminDashboardRequestType;
+                var dashboardRequestTypeInterfaces = dashboardRequestType.GetInterfaces();
+                if (dashboardRequestTypeInterfaces.All(x => x.Name != "IDashboardRequest`1"))
+                {
+                    throw new InvalidCastException("AdminDashboardRequestType must be implementation of IDashboardRequest<TResponse>");
+                }
+
+                var request = Activator.CreateInstance(this.options.AdminDashboardRequestType);
+                if (request != null)
+                {
+                    viewModel = await this.Mediator.Send(request);
+                }
+            }
+
+            return this.View(viewModel);
         }
     }
 }

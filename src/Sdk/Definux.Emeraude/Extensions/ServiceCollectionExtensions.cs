@@ -135,7 +135,6 @@ namespace Definux.Emeraude.Extensions
         {
             options.AddAssembly("Definux.Emeraude.Admin");
             options.AddAssembly("Definux.Emeraude.Admin.ClientBuilder");
-            options.AddAssembly("Definux.Emeraude.Admin.Analytics");
             options.AddAssembly("Definux.Emeraude.Client");
             options.AddAssembly("Definux.Emeraude.Application");
 
@@ -164,6 +163,7 @@ namespace Definux.Emeraude.Extensions
 
             services.AddMediatR(assembliesList.ToArray());
             services.RegisterAdminEntityControllersRequests(assembliesList.ToArray());
+            services.RegisterAdditionalAdminGenericCustomRequests();
 
             return services;
         }
@@ -227,7 +227,7 @@ namespace Definux.Emeraude.Extensions
         {
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
             {
-                configuration.AddProfile<AdminViewModelsProfile>();
+                configuration.AddProfile<AdminModelsProfile>();
                 configuration.AddProfile<AdminAssemblyMappingProfile>();
                 configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();
                 configuration.AddProfile<ApplicationMappingProfile>();

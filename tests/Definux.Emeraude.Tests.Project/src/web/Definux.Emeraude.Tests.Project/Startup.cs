@@ -27,6 +27,8 @@ namespace Definux.Emeraude.Tests.Project
                 options.AddAssembly("Definux.Emeraude.Tests.Project");
                 options.AddAssembly("Definux.Emeraude.Tests.Project.Application");
                 options.ProjectName = "Definux.Emeraude.Tests.Project";
+
+                options.TestMode = true;
             });
 
             services.AddEmeraudeClientBuilder(options =>

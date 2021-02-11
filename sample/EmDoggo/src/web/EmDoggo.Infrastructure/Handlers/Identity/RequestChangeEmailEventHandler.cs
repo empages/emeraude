@@ -7,9 +7,9 @@ namespace EmDoggo.Infrastructure.Handlers.Identity
 {
     public class RequestChangeEmailEventHandler : IRequestChangeEmailEventHandler
     {
-        public async Task HandleAsync(Guid userId, HttpContext httpContext, params string[] args)
+        public async Task HandleAsync(RequestChangeEmailEventArgs args)
         {
-            Console.WriteLine($"-->> {args[0]}");
+            Console.WriteLine($"-->> {args.EmailConfirmationLink}");
         }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// Event handler that handle succeeded external login request.
     /// </summary>
-    public interface IExternalLoginEventHandler : IIdentityEventHandler
+    public interface IExternalLoginEventHandler : IIdentityEventHandler<ExternalLoginEventArgs>
     {
     }
 }

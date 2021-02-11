@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Admin.Requests.Create
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
     /// <typeparam name="TRequestModel">Data transfer object of the target entity.</typeparam>
-    public interface ICreateCommand<TEntity, TRequestModel> : IRequest<Guid?>, IGenericEntityRequest
+    public interface ICreateCommand<TEntity, TRequestModel> : IRequest<Guid?>, IGenericNewEntityRequest<TEntity>
         where TEntity : class, IEntity, new()
         where TRequestModel : class, new()
     {

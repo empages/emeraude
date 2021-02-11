@@ -3,7 +3,7 @@
     /// <summary>
     /// Event handler that handle succeeded reset password request.
     /// </summary>
-    public interface IResetPasswordEventHandler : IIdentityEventHandler
+    public interface IResetPasswordEventHandler : IIdentityEventHandler<ResetPasswordEventArgs>
     {
     }
 }

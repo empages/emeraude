@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,6 +13,7 @@ using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.Requests.GetAll
 {
@@ -48,20 +50,19 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
 
                 result.AllItemsCount = this.context
                         .Set<TEntity>()
-                        .AsQueryable()
-                        .Where(requestExpression.Compile())
+                        .Where(requestExpression)
                         .Count();
 
                 result.CurrentPage = request.Page;
                 result.PageSize = request.PageSize;
 
+                var orderType = this.GetOrderTypeByString(request.OrderType);
                 IEnumerable<TRequestModel> entities = this.context
                         .Set<TEntity>()
-                        .AsQueryable()
-                        .Where(requestExpression.Compile())
+                        .Where(requestExpression)
+                        .OrderByProperty(request.OrderBy, orderType)
                         .Skip(result.StartRow)
                         .Take(request.PageSize)
-                        .AsQueryable()
                         .ProjectTo<TRequestModel>(this.mapper.ConfigurationProvider)
                         .ToList();
 
@@ -75,6 +76,24 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
             return result;
         }
 
+        private OrderType GetOrderTypeByString(string orderTypeString)
+        {
+            var orderType = OrderType.Unspecified;
+            if (!string.IsNullOrEmpty(orderTypeString))
+            {
+                if (orderTypeString.ToLower() == "asc")
+                {
+                    orderType = OrderType.Ascending;
+                }
+                else if (orderTypeString.ToLower() == "desc")
+                {
+                    orderType = OrderType.Descending;
+                }
+            }
+
+            return orderType;
+        }
+
         private Expression<Func<TEntity, bool>> BuildRequestExpression(GetAllQuery<TEntity, TRequestModel> request)
         {
             var expressionList = new List<Expression<Func<TEntity, bool>>>();
@@ -85,10 +104,9 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
                 expressionList.Add(queryExpressionBySearchQuery);
             }
 
-            var queryExpressionByParentForeignKey = request.ValidateParent ? ExpressionBuilders.BuildQueryExpressionByParentForeignKey<TEntity>(request.ForeignKeyProperty, request.ForeignKeyValue) : null;
-            if (queryExpressionByParentForeignKey != null)
+            if (request.ParentExpression != null)
             {
-                expressionList.Add(queryExpressionByParentForeignKey);
+                expressionList.Add(request.ParentExpression);
             }
 
             Expression<Func<TEntity, bool>> requestExpression = x => true;

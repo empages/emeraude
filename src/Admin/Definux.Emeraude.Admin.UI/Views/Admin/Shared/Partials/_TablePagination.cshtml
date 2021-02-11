@@ -43,6 +43,22 @@
 @functions {
     string GetPaginationHref(int? page)
     {
-        return Url.Action(ViewData.GetAction(), ViewData.GetController(), new { Area = ViewData.GetArea(), page = page, searchQuery = ViewData.GetSearchQuery() });
+        if (Model.AdditionalQueryParams == null)
+        {
+            return Url.Action(ViewData.GetAction(), ViewData.GetController(), new
+            {
+                Area = ViewData.GetArea(), 
+                page = page, 
+                searchQuery = ViewData.GetSearchQuery(),
+                orderBy = ViewData.GetOrderProperty(),
+                orderType = ViewData.GetOrderType()
+            });
+        }
+        else
+        {
+            Model.AdditionalQueryParams["page"] = page;
+            Model.AdditionalQueryParams["Area"] = ViewData.GetArea();
+            return Url.Action(ViewData.GetAction(), ViewData.GetController(), Model.AdditionalQueryParams);
+        }
     }
 }

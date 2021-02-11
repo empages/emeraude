@@ -32,6 +32,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             this.userClaimsService = userClaimsService;
             this.userTokensService = userTokensService;
             this.emeraudeOptions = emeraudeOptionsAccessor.Value;
+            this.HideActivityLogParameters = true;
         }
 
         /// <inheritdoc/>

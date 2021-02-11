@@ -10,17 +10,17 @@ namespace Definux.Emeraude.Configuration.Authorization
     public static class AdminPermissions
     {
         /// <summary>
-        /// Access administration policty name.
+        /// Access administration policy name.
         /// </summary>
         public const string AccessAdministrationPolicy = "Access Administration";
 
         /// <summary>
-        /// Access error logs policty name.
+        /// Access logs policy name.
         /// </summary>
-        public const string AccessErrorLogsPolicy = "Access Error Logs";
+        public const string AccessLogsPolicy = "Access Logs";
 
         /// <summary>
-        /// Users management policty name.
+        /// Users management policy name.
         /// </summary>
         public const string UsersManagementPolicy = "Users Management";
 
@@ -34,7 +34,7 @@ namespace Definux.Emeraude.Configuration.Authorization
             List<ApplicationPermission> allPermissions = new List<ApplicationPermission>()
             {
                 AccessAdministration,
-                AccessErrorLogs,
+                AccessLogs,
                 UsersManagement,
                 RootAccess,
             };
@@ -55,7 +55,7 @@ namespace Definux.Emeraude.Configuration.Authorization
         /// <summary>
         /// Access error logs application permission.
         /// </summary>
-        public static ApplicationPermission AccessErrorLogs { get; } = new ApplicationPermission(AccessErrorLogsPolicy);
+        public static ApplicationPermission AccessLogs { get; } = new ApplicationPermission(AccessLogsPolicy);
 
         /// <summary>
         /// Users management application permission.
@@ -84,7 +84,7 @@ namespace Definux.Emeraude.Configuration.Authorization
         /// <returns></returns>
         public static ApplicationPermission GetPermissionByValue(string permissionValue)
         {
-            return AllPermissions.Where(p => p.Value == permissionValue).FirstOrDefault();
+            return AllPermissions.FirstOrDefault(p => p.Value == permissionValue);
         }
 
         /// <summary>

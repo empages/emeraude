@@ -15,8 +15,7 @@
         {
           "title": "Index",
           "routes": [
-            "/admin",
-            "/admin/analytics"
+            "/admin"
           ]
         }
       ]

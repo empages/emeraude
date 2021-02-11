@@ -1,6 +1,6 @@
-﻿<form method="get" class="mb-4" action="@Url.GetDefaultUrl(ViewData)">
+﻿<form method="get" class="mb-3" action="@Url.GetDefaultUrl(ViewData)">
     <div class="d-flex m-0">
-        <input type="text" name="searchQuery" class="form-control" value="@ViewData.GetSearchQuery()" placeholder="Search..">
-        <button class="btn btn-primary ml-3" type="submit">Search</button>
+        <input type="text" name="searchQuery" class="form-control w-auto mr-0 ml-auto" value="@ViewData.GetSearchQuery()" placeholder="Search..">
+        <button class="btn btn-primary ml-2 mr-0" type="submit">Search</button>
     </div>
 </form>

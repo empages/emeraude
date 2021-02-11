@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
 {
     /// <summary>
@@ -62,5 +64,10 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
         /// Amount of all pages before the current.
         /// </summary>
         public int PreviousPagesCount { get; private set; }
+
+        /// <summary>
+        /// Additional query string parameters.
+        /// </summary>
+        public Dictionary<string, object> AdditionalQueryParams { get; set; }
     }
 }

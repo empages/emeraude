@@ -16,6 +16,10 @@
           enableOnReadonly: true,
           todayHighlight: true,
           format: 'dd/mm/yyyy'
+      }).on('changeDate', function(e){
+          let value = Math.round(e.date.getTime() / 1000).toString();
+          let targetElementId = e.target.id;
+          $("#" + targetElementId + "-hidden").val(value);
       });
   }
 

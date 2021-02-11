@@ -22,10 +22,18 @@ namespace Definux.Emeraude.Logger.Extensions
         /// <returns></returns>
         public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services, EmOptions options)
         {
-            services.AddDbContext<LoggerContext>(opt =>
-                opt.UseSqlite(
-                    connectionString: LoggerDatabaseSqlLiteConnectionString,
-                    sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
+            if (!options.TestMode)
+            {
+                services.AddDbContext<LoggerContext>(opt =>
+                    opt.UseSqlite(
+                        connectionString: LoggerDatabaseSqlLiteConnectionString,
+                        sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
+            }
+            else
+            {
+                services.AddDbContext<LoggerContext>(opt =>
+                    opt.UseInMemoryDatabase(databaseName: "test_logger_database"));
+            }
 
             services.AddScoped<ILoggerContext, LoggerContext>();
             if (!options.UseExternalLoggerImplementation)

@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Application.Persistence;
+﻿using System;
+using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Tests.Project;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -25,15 +26,22 @@ namespace Definux.Emeraude.Tests.Abstractions
 
             builder.ConfigureServices(services =>
             {
-                using (var serviceProvider = services.BuildServiceProvider())
+                try
                 {
-                    var databaseInitializerManager = serviceProvider.GetService<IDatabaseInitializerManager>();
-                    databaseInitializerManager.LoadDatabaseInitializers(new []
+                    using (var serviceProvider = services.BuildServiceProvider())
                     {
-                        typeof(IApplicationDatabaseInitializer)
-                    });
+                        var databaseInitializerManager = serviceProvider.GetService<IDatabaseInitializerManager>();
+                        databaseInitializerManager.LoadDatabaseInitializers(new []
+                        {
+                            typeof(IApplicationDatabaseInitializer)
+                        });
 
-                    databaseInitializerManager.SeedAsync().Wait();
+                        databaseInitializerManager.SeedAsync().Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             });
         }

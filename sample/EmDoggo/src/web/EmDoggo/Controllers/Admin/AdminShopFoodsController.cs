@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
 using EmDoggo.Application.Models.Admin.Shops;
 using EmDoggo.Domain.Entities;
@@ -13,8 +16,21 @@ namespace EmDoggo.Controllers.Admin
             HasEdit = false;
         }
 
-        public override string ParentRouteKey => "shopId";
+        protected override string ParentRouteKey => "shopId";
 
-        public override string ForeignKey => "ShopId";
+        protected override string ParentProperty => nameof(ShopFood.ShopId);
+
+        protected override Expression<Func<ShopFood, bool>> ParentExpression => x => x.ShopId == ParentIdentifier;
+
+        protected override List<string> GetOrderProperties()
+        {
+            return new List<string>
+            {
+                nameof(ShopFood.Id),
+                nameof(ShopFood.Amount),
+                nameof(ShopFood.CreatedOn),
+                nameof(ShopFood.UpdatedOn)
+            };
+        }
     }
 }

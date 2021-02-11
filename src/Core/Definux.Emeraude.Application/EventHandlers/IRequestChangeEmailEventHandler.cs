@@ -3,7 +3,7 @@
     /// <summary>
     /// Event handler that handle request for change user email.
     /// </summary>
-    public interface IRequestChangeEmailEventHandler : IIdentityEventHandler
+    public interface IRequestChangeEmailEventHandler : IIdentityEventHandler<RequestChangeEmailEventArgs>
     {
     }
 }

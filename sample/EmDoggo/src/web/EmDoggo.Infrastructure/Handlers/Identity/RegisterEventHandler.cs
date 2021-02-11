@@ -1,9 +1,7 @@
 using Definux.Emeraude.Application.EventHandlers;
 using EmDoggo.Application.Interfaces;
 using EmDoggo.Domain.Entities;
-using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace EmDoggo.Infrastructure.Handlers.Identity
 {
@@ -19,13 +17,13 @@ namespace EmDoggo.Infrastructure.Handlers.Identity
             this.context = context;
             this.emailService = emailService;
         }
-
-        public async Task HandleAsync(Guid userId, HttpContext httpContext, params string[] args)
+        
+        public async Task HandleAsync(RegisterEventArgs args)
         {
-            this.context.Owners.Add(new Owner(userId));
+            this.context.Owners.Add(new Owner(args.UserId));
             await this.context.SaveChangesAsync();
             
-            await this.emailService.SendEmailConfirmationEmailAsync(userId);
+            await this.emailService.SendEmailConfirmationEmailAsync(args.UserId);
         }
     }
 }
