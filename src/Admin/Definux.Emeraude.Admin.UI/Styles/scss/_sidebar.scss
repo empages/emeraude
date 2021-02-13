@@ -248,6 +248,15 @@
             }
         }
     }
+    
+    .nav-profile {
+        .dropdown-header {
+            @extend .text-muted;
+            font-size: 12px;
+            padding-left: 6px;
+            padding-bottom: 6px;
+        }
+    }
 }
 
 /* style for off-canvas menu*/
@@ -269,3 +278,4 @@
         }
     }
 }
+

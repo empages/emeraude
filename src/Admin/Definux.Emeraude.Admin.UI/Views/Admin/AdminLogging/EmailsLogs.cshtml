@@ -5,6 +5,7 @@
     ViewData.SetTitle("Email Logs");
     var tablePagination = new TablePaginationViewModel(Model.CurrentPage, Model.PagesCount);
     ViewData["LoggerTablePagination"] = tablePagination;
+    var modalsViewModels = new List<ModalViewModel>();
 }
 
 <default-table column-1="Id"
@@ -25,11 +26,13 @@
             ModalHeaderClasses = "pb-0",
             ModalBodyClasses = "py-0",
             Content = $"<div>{emailLog.Body}</div>",
-            ContentClass = "p-2 border",
+            ContentClass = "p-2 border overflow-wrap-anywhere",
             IsContentHtml = true,
             Title = "Body",
             HasCloseButton = true
         };
+        
+        modalsViewModels.Add(bodyModal);
         
         <tr>
             <td default-table-cell="true">
@@ -65,6 +68,10 @@
                 <partial name="_DeleteLoggerEntityForm" model="deleteLoggerEntityFormModel"/>
             </td>
         </tr>
-        <partial name="_Modal" model="bodyModal"/>
     }
 </default-table>
+
+@foreach (var modalViewModel in modalsViewModels)
+{
+    <partial name="_Modal" model="@modalViewModel"/>
+}

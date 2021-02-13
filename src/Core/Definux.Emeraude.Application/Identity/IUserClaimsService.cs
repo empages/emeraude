@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Application.Identity
 {
@@ -30,5 +31,12 @@ namespace Definux.Emeraude.Application.Identity
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<List<Claim>> GetUserClaimsForJwtTokenAsync(Guid userId);
+
+        /// <summary>
+        /// Gets all user claims.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<List<Claim>> GetAllUserClaimsAsync(IUser user);
     }
 }

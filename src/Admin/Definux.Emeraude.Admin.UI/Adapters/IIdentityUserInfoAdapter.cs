@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Definux.Emeraude.Admin.UI.Adapters
@@ -13,6 +15,12 @@ namespace Definux.Emeraude.Admin.UI.Adapters
         /// </summary>
         /// <returns></returns>
         Task<UserInfoResult?> GetCurrentUserInfoAsync();
+
+        /// <summary>
+        /// Get current user claims.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Claim>> GetCurrentUserClaimsAsync();
     }
 
     /// <summary>

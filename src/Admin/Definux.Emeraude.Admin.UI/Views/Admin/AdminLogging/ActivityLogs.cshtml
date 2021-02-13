@@ -5,6 +5,7 @@
     ViewData.SetTitle("Activity Logs");
     var tablePagination = new TablePaginationViewModel(Model.CurrentPage, Model.PagesCount);
     ViewData["LoggerTablePagination"] = tablePagination;
+    var modalsViewModels = new List<ModalViewModel>();
 }
 
 <default-table column-1="Id"
@@ -56,12 +57,16 @@
             ModalHeaderClasses = "pb-0",
             ModalBodyClasses = "py-0",
             Content = $"<div>{activityLog.UserAgent}</div>",
-            ContentClass = "p-2 border",
+            ContentClass = "p-2 border overflow-wrap-anywhere",
             IsContentHtml = true,
             Title = "User Agent",
             HasCloseButton = true
         };
-                    
+                  
+        modalsViewModels.Add(parametersModal);
+        modalsViewModels.Add(headersModal);
+        modalsViewModels.Add(userAgentModal);
+        
         <tr>
             <td default-table-cell="true">
                 @activityLog.Id
@@ -101,8 +106,10 @@
                 <partial name="_DeleteLoggerEntityForm" model="deleteLoggerEntityFormModel"/>
             </td>
         </tr>
-        <partial name="_Modal" model="parametersModal"/>
-        <partial name="_Modal" model="headersModal"/>
-        <partial name="_Modal" model="userAgentModal"/>
     }
 </default-table>
+
+@foreach (var modalViewModel in modalsViewModels)
+{
+    <partial name="_Modal" model="@modalViewModel"/>
+}

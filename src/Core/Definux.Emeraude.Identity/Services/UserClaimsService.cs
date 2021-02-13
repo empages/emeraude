@@ -94,7 +94,8 @@ namespace Definux.Emeraude.Identity.Services
             }
         }
 
-        private async Task<List<Claim>> GetAllUserClaimsAsync(IUser user)
+        /// <inheritdoc/>
+        public async Task<List<Claim>> GetAllUserClaimsAsync(IUser user)
         {
             if (user == null)
             {
