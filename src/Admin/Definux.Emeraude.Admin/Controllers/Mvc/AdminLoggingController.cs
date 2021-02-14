@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Requests.DeleteLog;
 using Definux.Emeraude.Admin.Requests.FetchLogs;
+using Definux.Emeraude.Admin.Requests.GetEmailBody;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Authorization;
@@ -101,6 +103,25 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 TempFilesLogsRouteParam => await this.LogsActionAsync<FetchTempFileLogsQuery>("TempFilesLogs", page, searchQuery, fromDate, toDate, user),
                 _ => this.NotFound()
             };
+        }
+
+        /// <summary>
+        /// Returns email body from specified email log.
+        /// </summary>
+        /// <param name="emailLogId"></param>
+        /// <returns></returns>
+        [Route("emails/{emailLogId}/body")]
+        [HttpGet]
+        public async Task<IActionResult> EmailBody([FromRoute] int emailLogId)
+        {
+            try
+            {
+                return this.View(nameof(this.EmailBody), await this.Mediator.Send(new GetEmailBodyQuery(emailLogId)));
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         private async Task<IActionResult> LogsActionAsync<TFetchQuery>(

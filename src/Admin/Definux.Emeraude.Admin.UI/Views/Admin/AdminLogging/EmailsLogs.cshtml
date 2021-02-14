@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Extensions
-@model Definux.Emeraude.Admin.UI.ViewModels.Logging.EmailsLogsViewModel
+﻿@model Definux.Emeraude.Admin.UI.ViewModels.Logging.EmailsLogsViewModel
 @{ 
     Layout = "_LoggerSubLayout";
     ViewData.SetTitle("Email Logs");
@@ -25,8 +24,8 @@
             Type = ModalType.Large,
             ModalHeaderClasses = "pb-0",
             ModalBodyClasses = "py-0",
-            Content = $"<div>{emailLog.Body}</div>",
-            ContentClass = "p-2 border overflow-wrap-anywhere",
+            Content = $"<iframe src=\"/admin/logging/emails/{emailLog.Id}/body\" class=\"border-0 w-100 height-400px\" title=\"{emailLog.Subject}\"></iframe>",
+            ContentClass = "border overflow-wrap-anywhere",
             IsContentHtml = true,
             Title = "Body",
             HasCloseButton = true

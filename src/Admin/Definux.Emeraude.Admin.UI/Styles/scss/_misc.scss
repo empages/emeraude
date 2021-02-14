@@ -314,6 +314,12 @@ pre {
     }
 }
 
+@each $height in (50px, 100px, 150px, 200px, 250px, 300px, 350px, 400px, 450px, 500px) {
+    .height-#{$height} {
+        height: $height !important;
+    }
+}
+
 @each $height in (10px, 12px, 14px, 16px, 18px, 20px, 22px, 24px, 26px, 28px, 30px) {
     .line-height-#{$height} {
         line-height: $height !important;

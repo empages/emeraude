@@ -20,6 +20,16 @@ namespace Definux.Emeraude.Application.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityNotFoundException"/> class.
         /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="identifier"></param>
+        public EntityNotFoundException(string entity, int identifier)
+            : base($"{entity} with id {identifier} have not been found.")
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityNotFoundException"/> class.
+        /// </summary>
         /// <param name="message"></param>
         public EntityNotFoundException(string message)
             : base(message)

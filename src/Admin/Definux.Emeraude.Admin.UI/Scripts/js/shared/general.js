@@ -1,6 +1,9 @@
 ﻿$(document).ready(function () {
     $('.prettify-json').each(function(index) {
-        let jsonContent = JSON.parse(decodeHtml($(this).html()));
-        $(this).html(prettyPrintJson.toHtml(jsonContent))
+        let currentHtml = $(this).html();
+        if (currentHtml !== undefined && currentHtml !== null && currentHtml !== '') {
+            let jsonContent = JSON.parse(decodeHtml($(this).html()));
+            $(this).html(prettyPrintJson.toHtml(jsonContent))
+        }
     });
 });
