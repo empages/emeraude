@@ -3,6 +3,7 @@ using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Logger.Extensions
@@ -12,27 +13,37 @@ namespace Definux.Emeraude.Logger.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        private const string LoggerDatabaseSqlLiteConnectionString = "Data Source=./privateroot/log.db;";
+        private const string LoggerConnectionStringKey = "LoggerContext";
 
         /// <summary>
         /// Register Emeraude logger feature elements and services.
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="configuration"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services, EmOptions options)
+        public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services, IConfiguration configuration, EmOptions options)
         {
-            if (!options.TestMode)
+            string connectionString = configuration.GetConnectionString(LoggerConnectionStringKey);
+
+            switch (options.LoggerContextProvider)
             {
-                services.AddDbContext<LoggerContext>(opt =>
-                    opt.UseSqlite(
-                        connectionString: LoggerDatabaseSqlLiteConnectionString,
-                        sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
-            }
-            else
-            {
-                services.AddDbContext<LoggerContext>(opt =>
-                    opt.UseInMemoryDatabase(databaseName: "test_logger_database"));
+                case DatabaseContextProvider.MicrosoftSqlServer:
+                    services.AddDbContext<LoggerContext>(contextOptions =>
+                        contextOptions.UseSqlServer(
+                            connectionString,
+                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                    break;
+                case DatabaseContextProvider.PostgreSql:
+                    services.AddDbContext<LoggerContext>(contextOptions =>
+                        contextOptions.UseNpgsql(
+                            connectionString,
+                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                    break;
+                case DatabaseContextProvider.InMemoryDatabase:
+                    services.AddDbContext<LoggerContext>(contextOptions =>
+                        contextOptions.UseInMemoryDatabase(databaseName: "InMemoryLoggerContextDatabase"));
+                    break;
             }
 
             services.AddScoped<ILoggerContext, LoggerContext>();

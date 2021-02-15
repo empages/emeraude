@@ -24,8 +24,9 @@ namespace EmDoggo
                 options.ApplyEmeraudeBaseOptions();
 
                 options.DatabaseContextProvider = DatabaseContextProvider.PostgreSql;
+                options.LoggerContextProvider = DatabaseContextProvider.PostgreSql;
                 options.MigrationsAssembly = "EmDoggo.Infrastructure";
-                options.ExecuteMigrations = false;
+                options.ExecuteMigrations = true;
 
                 options.Mapping.AddProfile<EmDoggoAssemblyMappingProfile>();
                 options.AddAssembly("EmDoggo");

@@ -101,7 +101,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeE
 
                         var changeEmailToken = this.urlEncoder.Encode(await this.userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail));
                         string changeEmailLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.LocalCallbackUrl}?token={changeEmailToken}&email={request.NewEmail}");
-                        await this.identityEventManager.TriggerRequestChangeEmailEventAsync(user.Id, changeEmailLink);
+                        await this.identityEventManager.TriggerRequestChangeEmailEventAsync(user.Id, request.NewEmail, changeEmailLink);
 
                         return SimpleResult.SuccessfulResult;
                     }

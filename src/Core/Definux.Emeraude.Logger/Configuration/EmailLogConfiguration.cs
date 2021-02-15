@@ -11,22 +11,6 @@ namespace Definux.Emeraude.Logger.Configuration
         public void Configure(EntityTypeBuilder<EmailLog> builder)
         {
             builder.ConfigureLoggerEntity();
-
-            builder
-                .Property(x => x.Receiver)
-                .HasColumnName("receiver");
-
-            builder
-                .Property(x => x.Subject)
-                .HasColumnName("subject");
-
-            builder
-                .Property(x => x.Body)
-                .HasColumnName("body");
-
-            builder
-                .Property(x => x.Sent)
-                .HasColumnName("sent");
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Requests.DeleteLog;
@@ -8,6 +7,7 @@ using Definux.Emeraude.Admin.Requests.GetEmailBody;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -142,10 +142,15 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 User = user,
             });
 
+            if (model == null)
+            {
+                this.NotFound();
+            }
+
             this.ViewData.SetSearchQuery(searchQuery);
             this.ViewData["FromDate"] = fromDate;
             this.ViewData["ToDate"] = toDate;
-            if (!string.IsNullOrWhiteSpace(user) && Guid.TryParse(user, out var queriedUserId))
+            if (!string.IsNullOrWhiteSpace(user) && Guid.TryParse(user, out var queriedUserId) && queriedUserId != Guid.Empty)
             {
                 var queriedUser = await this.userManager.FindUserByIdAsync(queriedUserId);
                 if (queriedUser != null)

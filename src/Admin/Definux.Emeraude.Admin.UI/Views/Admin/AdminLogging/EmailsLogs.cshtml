@@ -10,10 +10,11 @@
 <default-table column-1="Id"
                column-2="Subject"
                column-3="Receiver"
-               column-4="Sent"
-               column-5="Involved User"
-               column-6="Created On"
-               column-7="">
+               column-4="Email"
+               column-5="Sent"
+               column-6="Involved User"
+               column-7="Created On"
+               column-8="">
     @foreach (var emailLog in Model.Items)
     {
         var bodyModal = new ModalViewModel
@@ -42,6 +43,9 @@
             </td>
             <td default-table-cell="true">
                 @emailLog.Receiver
+            </td>
+            <td default-table-cell="true">
+                @emailLog.EmailAddress
             </td>
             <td default-table-cell="true">
                 <flag value="@emailLog.Sent"/>

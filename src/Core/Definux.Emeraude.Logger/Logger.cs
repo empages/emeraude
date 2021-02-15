@@ -128,12 +128,13 @@ namespace Definux.Emeraude.Logger
         }
 
         /// <inheritdoc/>
-        public async Task LogEmailAsync(string receiver, string subject, string body, bool sent)
+        public async Task LogEmailAsync(string emailAddress, string receiver, string subject, string body, bool sent)
         {
             try
             {
                 var emailEntity = new EmailLog
                 {
+                    EmailAddress = emailAddress,
                     Receiver = receiver,
                     Subject = subject,
                     Body = body,

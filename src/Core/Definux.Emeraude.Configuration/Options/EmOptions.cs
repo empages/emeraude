@@ -38,6 +38,11 @@ namespace Definux.Emeraude.Configuration.Options
         public DatabaseContextProvider DatabaseContextProvider { get; set; }
 
         /// <summary>
+        /// Provider of logger storage for the application.
+        /// </summary>
+        public DatabaseContextProvider LoggerContextProvider { get; set; }
+
+        /// <summary>
         /// Admin dashboard request type.
         /// </summary>
         public Type AdminDashboardRequestType { get; set; }

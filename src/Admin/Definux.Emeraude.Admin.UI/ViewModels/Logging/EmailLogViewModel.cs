@@ -16,6 +16,11 @@
         public string Subject { get; set; }
 
         /// <summary>
+        /// Email address.
+        /// </summary>
+        public string EmailAddress { get; set; }
+
+        /// <summary>
         /// Body of the email.
         /// </summary>
         public string Body { get; set; }

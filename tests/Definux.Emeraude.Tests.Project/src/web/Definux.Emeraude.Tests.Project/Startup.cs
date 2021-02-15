@@ -21,6 +21,7 @@ namespace Definux.Emeraude.Tests.Project
                 options.ApplyEmeraudeBaseOptions();
 
                 options.DatabaseContextProvider = DatabaseContextProvider.InMemoryDatabase;
+                options.LoggerContextProvider = DatabaseContextProvider.InMemoryDatabase;
                 options.MigrationsAssembly = "Definux.Emeraude.Tests.Project.Infrastructure";
                 
                 options.Mapping.AddProfile<MainAssemblyMappingProfile>();

@@ -82,7 +82,7 @@ namespace Definux.Emeraude.Emails.Services
                 await this.logger.LogErrorAsync(ex);
             }
 
-            await this.logger.LogEmailAsync(model.Name, model.Subject, message, sent);
+            await this.logger.LogEmailAsync(model.Email, model.Name, model.Subject, message, sent);
             return emailResult;
         }
 

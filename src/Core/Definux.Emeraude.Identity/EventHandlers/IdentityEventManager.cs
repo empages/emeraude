@@ -99,13 +99,14 @@ namespace Definux.Emeraude.Identity.EventHandlers
         }
 
         /// <inheritdoc/>
-        public Task TriggerRequestChangeEmailEventAsync(Guid userId, string changeEmailConfirmationLink)
+        public Task TriggerRequestChangeEmailEventAsync(Guid userId, string newEmail, string changeEmailConfirmationLink)
         {
             return this.TriggerEventAsync<IRequestChangeEmailEventHandler, RequestChangeEmailEventArgs>(new RequestChangeEmailEventArgs
             {
                 UserId = userId,
                 HttpContext = this.httpContextAccessor.HttpContext,
                 EmailConfirmationLink = changeEmailConfirmationLink,
+                NewEmail = newEmail,
             });
         }
 

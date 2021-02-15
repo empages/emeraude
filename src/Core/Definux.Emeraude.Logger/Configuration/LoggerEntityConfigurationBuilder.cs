@@ -23,16 +23,7 @@ namespace Definux.Emeraude.Logger.Configuration
 
             builder
                 .Property(x => x.Id)
-                .HasColumnName("id")
                 .ValueGeneratedOnAdd();
-
-            builder
-                .Property(x => x.CreatedBy)
-                .HasColumnName("created_by");
-
-            builder
-                .Property(x => x.CreatedOn)
-                .HasColumnName("created_on");
 
             return builder;
         }

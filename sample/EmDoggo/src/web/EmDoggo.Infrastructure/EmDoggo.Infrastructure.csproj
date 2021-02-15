@@ -17,5 +17,9 @@
     <ProjectReference Include="..\EmDoggo.Domain\EmDoggo.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logger\Migrations" />
+  </ItemGroup>
+
 </Project>
 

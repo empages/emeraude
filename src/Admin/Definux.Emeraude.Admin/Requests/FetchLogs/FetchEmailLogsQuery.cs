@@ -42,6 +42,7 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
                 int.TryParse(normalizedSearchQuery, out int parsedId);
                 return x =>
                     x.Id == parsedId ||
+                    x.EmailAddress.ToLower().Contains(normalizedSearchQuery) ||
                     x.Subject.ToLower().Contains(normalizedSearchQuery) ||
                     x.Receiver.ToLower().Contains(normalizedSearchQuery) ||
                     x.Body.ToLower().Contains(normalizedSearchQuery);

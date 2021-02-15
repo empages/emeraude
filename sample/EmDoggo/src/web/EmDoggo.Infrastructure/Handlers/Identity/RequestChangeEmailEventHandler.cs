@@ -9,7 +9,7 @@ namespace EmDoggo.Infrastructure.Handlers.Identity
     {
         public async Task HandleAsync(RequestChangeEmailEventArgs args)
         {
-            Console.WriteLine($"-->> {args.EmailConfirmationLink}");
+            Console.WriteLine($"-->> {args.EmailConfirmationLink} ++++ {args.NewEmail}");
         }
     }
 }

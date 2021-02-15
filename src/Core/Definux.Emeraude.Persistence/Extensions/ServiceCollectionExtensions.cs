@@ -14,7 +14,7 @@ namespace Definux.Emeraude.Persistence.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        private const string DatabaseConnectionStringKey = "DatabaseConnection";
+        private const string DatabaseConnectionStringKey = "EntityContext";
 
         /// <summary>
         /// Configures Emeraude database.

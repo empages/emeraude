@@ -5,11 +5,13 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Logger
 {
@@ -17,16 +19,22 @@ namespace Definux.Emeraude.Logger
     public class LoggerContext : DbContext, ILoggerContext
     {
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly EmOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerContext"/> class.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="httpContextAccessor"></param>
-        public LoggerContext(DbContextOptions<LoggerContext> options, IHttpContextAccessor httpContextAccessor)
+        /// <param name="optionsAccessor"></param>
+        public LoggerContext(
+            DbContextOptions<LoggerContext> options,
+            IHttpContextAccessor httpContextAccessor,
+            IOptions<EmOptions> optionsAccessor)
             : base(options)
         {
             this.httpContextAccessor = httpContextAccessor;
+            this.options = optionsAccessor.Value;
         }
 
         /// <inheritdoc/>
@@ -72,12 +80,36 @@ namespace Definux.Emeraude.Logger
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            string textType;
+            switch (this.options.LoggerContextProvider)
+            {
+                case DatabaseContextProvider.MicrosoftSqlServer:
+                    textType = "nvarchar(max)";
+                    break;
+                case DatabaseContextProvider.PostgreSql:
+                    textType = "text";
+                    break;
+                default:
+                    textType = "text";
+                    break;
+            }
 
-            builder.Entity<ActivityLog>().ToTable("activity_logs");
-            builder.Entity<ErrorLog>().ToTable("error_logs");
-            builder.Entity<TempFileLog>().ToTable("temp_file_logs");
-            builder.Entity<EmailLog>().ToTable("email_logs");
+            builder
+                .Entity<ActivityLog>()
+                .Property(x => x.Headers)
+                .HasColumnType(textType);
+
+            builder
+                .Entity<ErrorLog>()
+                .Property(x => x.StackTrace)
+                .HasColumnType(textType);
+
+            builder
+                .Entity<EmailLog>()
+                .Property(x => x.Body)
+                .HasColumnType(textType);
+
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
         }

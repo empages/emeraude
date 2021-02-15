@@ -98,7 +98,7 @@ namespace Definux.Emeraude.Extensions
 
             services.RegisterEmeraudeIdentity();
 
-            services.RegisterEmeraudeLogger(options);
+            services.RegisterEmeraudeLogger(configuration, options);
 
             services.RegisterEmeraudeLocalization(options);
 

@@ -24,10 +24,5 @@
         /// Name of the from where the error comes.
         /// </summary>
         public string Method { get; set; }
-
-        /// <summary>
-        /// Name of the class from where the error comes.
-        /// </summary>
-        public string Class { get; set; }
     }
 }

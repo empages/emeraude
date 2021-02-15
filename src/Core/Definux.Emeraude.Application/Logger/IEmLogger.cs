@@ -19,11 +19,12 @@ namespace Definux.Emeraude.Application.Logger
         /// <summary>
         /// Save information about sent/unsent email.
         /// </summary>
+        /// <param name="emailAddress"></param>
         /// <param name="receiver"></param>
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <param name="sent"></param>
         /// <returns></returns>
-        Task LogEmailAsync(string receiver, string subject, string body, bool sent);
+        Task LogEmailAsync(string emailAddress, string receiver, string subject, string body, bool sent);
     }
 }
