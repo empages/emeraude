@@ -163,7 +163,7 @@ namespace Definux.Emeraude.Controllers.Api
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpPost]
         [Route("current/remove-external-login-provider")]
         [Endpoint(typeof(SimpleResult))]
         public async Task<IActionResult> RemoveCurrentUserExternalLoginProvider([FromBody]RemoveExternalLoginProviderCommand request)
