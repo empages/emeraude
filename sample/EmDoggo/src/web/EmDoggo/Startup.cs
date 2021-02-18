@@ -42,6 +42,7 @@ namespace EmDoggo
             seoOptions =>
             {
                 seoOptions.DefaultMetaTags.TitleSuffix = " | EmDoggo";
+                seoOptions.DefaultMetaTags.SetImage("https://scontent.definux.net/emeraude/EmeraudeFramework.jpg");
             });
 
             services.AddEmeraudeClientBuilder(options =>

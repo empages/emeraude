@@ -8,9 +8,6 @@ namespace EmDoggo.Pages
 {
     [EmRoute]
     [EmLanguageRoute]
-    [MetaTag(MainMetaTags.Title, "Home")]
-    [MetaTag(MainMetaTags.Description, "PageDescription")]
-    [MetaTag(MainMetaTags.Image, "https://definux.io/assets/images/meta_image.jpg")]
     public class HomePage : EmPage<HomeViewModel, HomeInitialStateQuery>
     {
     }

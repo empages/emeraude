@@ -11,9 +11,6 @@ namespace EmDoggo.Pages
     [EmRoute("/shops")]
     [EmLanguageRoute]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
-    [MetaTag(MainMetaTags.Title, "Shops")]
-    [MetaTag(MainMetaTags.Description, "PageDescription")]
-    [MetaTag(MainMetaTags.Image, "https://definux.io/assets/images/meta_image.jpg")]
     public class ShopsPage : EmPage<ShopsViewModel, ShopsInitialStateQuery>
     {
     }

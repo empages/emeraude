@@ -91,6 +91,28 @@
  * @property {string} userId
  * @property {string} newName
  */
+/**
+ * @typedef GetUserExternalLoginProvidersResult
+ * @property {Array<UserExternalLoginProvider>} providers
+ */
+/**
+ * @typedef UserExternalLoginProvider
+ * @property {string} provider
+ * @property {string} providerDisplayName
+ */
+/**
+ * @typedef RemoveExternalLoginProviderCommand
+ * @property {string} userId
+ * @property {string} provider
+ * @property {string} password
+ */
+/**
+ * @typedef RequestChangeEmailCommand
+ * @property {string} userId
+ * @property {string} newEmail
+ * @property {string} localCallbackUrl
+ * @property {boolean} useLocalization
+ */
 
 export class DogsServiceAgent {
 
@@ -305,6 +327,87 @@ export class UsersServiceAgent {
             method: 'PUT',
             headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/GetCurrentUserExternalLoginProviders
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    getCurrentUserExternalLoginProviders(queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/external-login-providers`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'GET',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/RemoveCurrentUserExternalLoginProvider
+     * @param {RemoveExternalLoginProviderCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    removeCurrentUserExternalLoginProvider(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/remove-external-login-provider`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/RequestChangeEmailForTheCurrentUser
+     * @param {RequestChangeEmailCommand} request
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    requestChangeEmailForTheCurrentUser(request, queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/request-change-email`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(request),
+            credentials: 'include'
+        })
+            .then(response => response.json());
+    }
+
+    /**
+     * UsersApiController/RequestResetPasswordForTheCurrentUser
+     * @param {Object} queryParams
+     * @param {Object} headers
+     * @returns {Promise}
+     */
+    requestResetPasswordForTheCurrentUser(queryParams = null, headers = null) { 
+        let url = new URL(`/api/users/current/reset-password`, window.location.origin);
+        if (queryParams != null) {
+            url.search = new URLSearchParams(queryParams).toString();
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers || { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: null,
             credentials: 'include'
         })
             .then(response => response.json());

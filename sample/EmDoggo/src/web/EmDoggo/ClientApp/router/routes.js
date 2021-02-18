@@ -6,9 +6,9 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-const HomePage = () => import('../pages/Home');
-const DogsPage = () => import('../pages/Dogs');
-const ShopsPage = () => import('../pages/Shops');
+const HomePage = () => import('../pages/Home/index.vue');
+const DogsPage = () => import('../pages/Dogs/index.vue');
+const ShopsPage = () => import('../pages/Shops/index.vue');
 
 const languageRoutePrefix = '/:lang(bg)?';
 

@@ -21,6 +21,8 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
     /// </summary>
     /// <typeparam name="TViewModel">Type of the returning data transfer object (ViewModel).</typeparam>
     /// <typeparam name="TRequest">Request that compute and return the ViewModel.</typeparam>
+    [MetaTag(MainMetaTags.Title, EmPagesConstants.PageMetaTagTitleKey, true)]
+    [MetaTag(MainMetaTags.Description, EmPagesConstants.PageMetaTagDescriptionKey, true)]
     public abstract class EmPage<TViewModel, TRequest> : PublicController, IEmPage
         where TViewModel : class, IEmViewModel, new()
         where TRequest : class, IRequest<TViewModel>, new()
@@ -133,8 +135,9 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
         /// This method initialize the meta tags properties definition for current initial state of the current page.
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="disableDefaultDecoratedTags">Disable default decorated meta tags for the parent controller.</param>
         /// <returns></returns>
-        protected virtual async Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model)
+        protected virtual async Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<TViewModel> model, bool disableDefaultDecoratedTags = false)
         {
             try
             {
@@ -147,6 +150,15 @@ namespace Definux.Emeraude.Client.EmPages.Abstractions
                 }
 
                 metaTagsModel.ApplyStaticTags(seoOptions.DefaultMetaTags);
+                metaTagsModel.OpenGraphImage.Value = seoOptions.DefaultMetaTags.OpenGraphImage.Value;
+                metaTagsModel.TwitterImage.Value = seoOptions.DefaultMetaTags.TwitterImage.Value;
+
+                if (!disableDefaultDecoratedTags)
+                {
+                    string pageKey = StringFunctions.ConvertToKey(this.GetType().Name);
+                    this.AddTranslatedValueIntoViewData(EmPagesConstants.PageMetaTagTitleKey, $"{pageKey}_META_TITLE");
+                    this.AddTranslatedValueIntoViewData(EmPagesConstants.PageMetaTagDescriptionKey, $"{pageKey}_META_DESCRIPTION");
+                }
 
                 return metaTagsModel;
             }

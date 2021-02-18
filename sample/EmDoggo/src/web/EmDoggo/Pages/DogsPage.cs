@@ -9,15 +9,15 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Definux.Emeraude.Client.EmPages;
 
 namespace EmDoggo.Pages
 {
     [EmRoute("/dogs")]
     [EmLanguageRoute]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
-    [MetaTag(MainMetaTags.Title, "PageTitle", true)]
-    [MetaTag(MainMetaTags.Description, "PageDescription", true)]
-    [MetaTag(MainMetaTags.Image, "https://definux.io/assets/images/meta_image.jpg")]
+    [MetaTag(MainMetaTags.Title, EmPagesConstants.PageMetaTagTitleKey, true)]
+    [MetaTag(MainMetaTags.Description, EmPagesConstants.PageMetaTagDescriptionKey, true)]
     public class DogsPage : EmPage<DogsViewModel, DogsInitialStateQuery>
     {
         protected async override Task<Dictionary<string, object>> InitializeViewDataAsync(InitialStateModel<DogsViewModel> model)
@@ -28,12 +28,12 @@ namespace EmDoggo.Pages
             };
         }
 
-        protected override Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<DogsViewModel> model)
+        protected override Task<MetaTagsModel> InitializeMetaTagsAsync(InitialStateModel<DogsViewModel> model, bool disableDefaultDecoratedTags = false)
         {
-            AddTranslatedValueIntoViewData("PageTitle", "DOGS");
-            AddTranslatedValueIntoViewData("PageDescription", "DOGS");
-
-            return base.InitializeMetaTagsAsync(model);
+            AddTranslatedValueIntoViewData(EmPagesConstants.PageMetaTagTitleKey, "DOGS");
+            AddTranslatedValueIntoViewData(EmPagesConstants.PageMetaTagDescriptionKey, "DOGS");
+        
+            return base.InitializeMetaTagsAsync(model, disableDefaultDecoratedTags);
         }
     }
 }
