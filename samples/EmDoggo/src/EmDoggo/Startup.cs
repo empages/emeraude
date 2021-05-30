@@ -62,6 +62,8 @@ namespace EmDoggo
                 options.AddAssembly("EmDoggo");
 
                 options.ConstantsTypes.Add(typeof(SomeConstants));
+                options.Constants.Add("SomeKey1", "SomeValue1");
+                options.Constants.Add("SomeKey2", "SomeValue2");
                 
                 options.AddDefaultVueModules();
                 options.AddDefaultXamarinModules();
