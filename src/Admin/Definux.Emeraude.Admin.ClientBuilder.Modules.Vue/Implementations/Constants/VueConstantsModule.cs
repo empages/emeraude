@@ -60,6 +60,14 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Implementations.Const
                             k => StringFunctions.ConvertToKey(k.Name),
                             v => this.ConvertToJavaScriptValue(v.GetRawConstantValue())));
 
+            if (this.Options.Constants.Count > 0)
+            {
+                constantDictionaries["ConstantsExposedByTheApplication"] = this.Options.Constants
+                    .ToDictionary(
+                        x => StringFunctions.ConvertToKey(x.Key),
+                        x => this.ConvertToJavaScriptValue(x.Value));
+            }
+
             return file.RenderTemplate(new Dictionary<string, object>
             {
                 { "Constants", constantDictionaries },

@@ -19,6 +19,7 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Options
             this.Assemblies = new List<Assembly>();
             this.ModulesTypes = new List<Type>();
             this.ConstantsTypes = new List<Type>();
+            this.Constants = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -35,6 +36,11 @@ namespace Definux.Emeraude.Admin.ClientBuilder.Options
         /// List of all classes types which will be scanned for constants.
         /// </summary>
         public List<Type> ConstantsTypes { get; private set; }
+
+        /// <summary>
+        /// Dictionary of all constants which will be exposed by the Client Builder.
+        /// </summary>
+        public Dictionary<string, object> Constants { get; private set; }
 
         /// <summary>
         /// Path of the web application used of the client builder.
