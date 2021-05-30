@@ -1,0 +1,16 @@
+﻿<div id="resolution-message-container">
+    <div class="resolution-card">
+        <div class="card">
+            <div class="card-header">
+                <p><img src="~/admin/images/warning-icon.png" /> Unsupported Screen Resolution</p>
+            </div>
+            <div class="card-body">
+                <p>Emeraude Admin Panel requires your screen resolution must be at least 1024 px. If your desktop machine does not support the required resolution please access the administration from another machine. For security reasons log out from the system is recommended.</p>
+                <form action="@Url.Action("Logout", "AdminAuthentication")" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="float-right btn btn-primary-inverse dropdown-item w-auto">Log out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

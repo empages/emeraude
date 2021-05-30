@@ -1,0 +1,23 @@
+﻿@using Definux.Utilities.Functions
+@{
+    var orderProperties = this.ViewData.GetOrderProperties();
+    var orderBy = this.ViewData.GetOrderProperty();
+    var orderType = this.ViewData.GetOrderType();
+}
+
+<form method="get" class="mb-3" action="@Url.GetDefaultUrl(ViewData)">
+    <div class="d-flex">
+        <select class="form-control w-auto" name="orderBy">
+            @foreach (var orderProperty in orderProperties)
+            {
+                <option value="@orderProperty" selected="@(orderProperty == orderBy)">@StringFunctions.SplitWordsByCapitalLetters(orderProperty)</option>
+            }
+        </select>
+        <select class="form-control ml-2 w-auto" name="orderType">
+            <option value="asc" selected="@(orderType == "asc")">Ascending</option>
+            <option value="desc" selected="@(orderType == "desc")">Descending</option>
+        </select>
+        <input type="hidden" name="searchQuery" value="@ViewData.GetSearchQuery()"/>
+        <button type="submit" class="btn btn-primary mx-2">Order</button>
+    </div>
+</form>

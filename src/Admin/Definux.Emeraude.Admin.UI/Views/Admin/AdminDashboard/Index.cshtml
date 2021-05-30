@@ -1,0 +1,23 @@
+﻿@model object
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="col-12 grid-margin stretch-card mt-3">
+    <div class="d-block w-100">
+        <div class="card">
+            <div class="card-body">
+                <div class="w-100">
+                    <div class="alert alert-warning my-4">
+                        <p class="m-0">
+                            This view is predefined by the <strong>Definux.Emeraude.Admin.UI</strong>. 
+                            To modify it you must create a new view in file <strong>~/Views/Admin/AdminDashboard/Index.cshtml</strong>.
+                            In addition you must define a request that implements <strong>IDashboardRequest</strong> to build 
+                            the view model (<strong>IDashboardViewModel</strong>) of the target view.
+                            You can specify the type of your dashboard request in the Emeraude options (<strong>AdminDashboardRequestType</strong>).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

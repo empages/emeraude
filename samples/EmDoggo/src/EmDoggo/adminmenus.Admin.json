@@ -1,0 +1,96 @@
+{
+  "insights": [
+    {
+      "title": "Client Login",
+      "route": "/login",
+      "icon": "mdi mdi-account",
+      "blank": true
+    }
+  ],
+  "navigation": [
+    {
+      "title": "Dashboard",
+      "icon": "mdi mdi-television",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Dogs",
+      "icon": "mdi mdi-dog-side",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/dogs",
+            "/admin/dogs/{*}"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Foods",
+      "icon": "mdi mdi-food-apple",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/foods",
+            "/admin/foods/{*}"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Shops",
+      "icon": "mdi mdi-store",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/shops",
+            "/admin/shops/{*}"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Roots",
+      "icon": "mdi mdi-folder-open",
+      "children": [
+        {
+          "title": "Public Root",
+          "routes": [
+            "/admin/roots/public",
+            "/admin/roots/public/{*}"
+          ]
+        },
+        {
+          "title": "Private Root",
+          "routes": [
+            "/admin/roots/private",
+            "/admin/roots/private/{*}"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "icon": "mdi mdi-account",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin/users",
+            "/admin/users/{*}"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+﻿@model TableViewModel
+
+<tbody>
+    @foreach (TableRowViewModel row in Model.Rows)
+    {
+        <tr>
+            @foreach (TableCellViewModel cell in row.Cells)
+            {
+                cell.TableElement.LoadServiceProvider(serviceProvider);
+                <td class="px-2 py-0 text-left">@cell.RenderHtmlContent()</td>
+            }
+            @if (Model.HasActions)
+            {
+                <td class="px-2 py-1 text-left fit">
+                    @foreach (TableRowActionViewModel action in row.Actions)
+                    {
+                        <partial name="Partials/_TableRowAction" model="action" />
+                    }
+                </td>
+            }
+        </tr>
+    }
+</tbody>

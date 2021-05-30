@@ -1,0 +1,18 @@
+﻿@using Definux.Emeraude.Admin.UI.Extensions
+@model EmDoggo.Application.Requests.Queries.AdminDashboard.AdminDashboardViewModel
+
+@{
+    ViewData.SetTitle("Test Custom Dashboard");
+}
+
+<div class="col-12 grid-margin stretch-card mt-3">
+    <div class="d-block w-100">
+        <div class="card">
+            <div class="card-body">
+                <div class="w-100">
+                    <p class="m-0">@Model.Message</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

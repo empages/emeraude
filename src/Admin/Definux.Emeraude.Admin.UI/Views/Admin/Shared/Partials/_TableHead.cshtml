@@ -1,0 +1,14 @@
+﻿@model TableViewModel
+
+<thead class="text-left">
+    <tr>
+        @foreach (TableHeaderCellViewModel cell in Model.Header.Cells)
+        {
+            <th class="p-2 h-auto">@cell.Name</th>
+        }
+        @if (Model.HasActions)
+        {
+            <th class="p-2 h-auto">Actions</th>
+        }
+    </tr>
+</thead>

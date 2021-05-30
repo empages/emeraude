@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LOGIN" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="EMAIL" xml:space="preserve">
+    <value>Имейл</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="FORGOT_PASSWORD" xml:space="preserve">
+    <value>Забравена парола</value>
+  </data>
+  <data name="DONT_HAVE_A_PROFILE" xml:space="preserve">
+    <value>Нямаш профил</value>
+  </data>
+  <data name="FULL_NAME" xml:space="preserve">
+    <value>Име и фамилия</value>
+  </data>
+  <data name="CONFIRM_PASSWORD" xml:space="preserve">
+    <value>Потвърди паролата</value>
+  </data>
+  <data name="REGISTER_TITLE" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="ALREADY_HAVE_A_PROFILE" xml:space="preserve">
+    <value>Вече имам профил</value>
+  </data>
+  <data name="YOUR_REGISTRATION_HAS_BEEN_SUCCESSFULLY_COMPLETED" xml:space="preserve">
+    <value>Вашата регистрация завърши успешно.</value>
+  </data>
+  <data name="CHECK_YOUR_EMAIL_FOR_CONFIRMATION_LINK" xml:space="preserve">
+    <value>Проверете имейл-а си за линк за потвърждение.</value>
+  </data>
+  <data name="SWITCH_TO" xml:space="preserve">
+    <value>Превключи на</value>
+  </data>
+  <data name="ENGLISH" xml:space="preserve">
+    <value>Английски</value>
+  </data>
+  <data name="BULGARIAN" xml:space="preserve">
+    <value>Български</value>
+  </data>
+  <data name="HOME" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="DOGS" xml:space="preserve">
+    <value>Кучета</value>
+  </data>
+  <data name="SHOPS" xml:space="preserve">
+    <value>Магазини</value>
+  </data>
+  <data name="LOGOUT" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="OFFERS" xml:space="preserve">
+    <value>Предлага</value>
+  </data>
+  <data name="DOG_TYPE_HYPOALLERGENIC" xml:space="preserve">
+    <value>Хипоалергенни</value>
+  </data>
+  <data name="DOG_BREED_GERMAN_SPITZ" xml:space="preserve">
+    <value>Немски Шпиц</value>
+  </data>
+  <data name="DOG_BREED_GERMAN_SHEPHERD" xml:space="preserve">
+    <value>Немска Овчарка</value>
+  </data>
+  <data name="DOG_BREED_BULLDOG" xml:space="preserve">
+    <value>Булдог</value>
+  </data>
+  <data name="DOG_BREED_POODLE" xml:space="preserve">
+    <value>Пудел</value>
+  </data>
+  <data name="DOG_BREED_LABRADOR_RETRIEVER" xml:space="preserve">
+    <value>Лабрадор Ретривър</value>
+  </data>
+  <data name="DOG_BREED_GOLDEN_RETRIEVER" xml:space="preserve">
+    <value>Голдън Ретривър</value>
+  </data>
+  <data name="DOG_BREED_BEAGLE" xml:space="preserve">
+    <value>Бийгъл</value>
+  </data>
+  <data name="DOG_BREED_YORKSHIRE_TERRIER" xml:space="preserve">
+    <value>Йоркширски Териер</value>
+  </data>
+  <data name="DOG_BREED_DACHSHUND" xml:space="preserve">
+    <value>Дакел</value>
+  </data>
+  <data name="DOG_BREED_CHIHUAHUA" xml:space="preserve">
+    <value>Чихуахуа</value>
+  </data>
+  <data name="DOG_BREED_PUG" xml:space="preserve">
+    <value>Мопс</value>
+  </data>
+  <data name="DOG_BREED_FRENCH_BULLDOG" xml:space="preserve">
+    <value>Френски Булдог</value>
+  </data>
+  <data name="DOG_BREED_SIBERIAN_HUSKY" xml:space="preserve">
+    <value>Сибирско Хъски</value>
+  </data>
+  <data name="DOG_BREED_BOXER" xml:space="preserve">
+    <value>Боксер</value>
+  </data>
+  <data name="DOG_BREED_AUSTRALIAN_SHEPHERD" xml:space="preserve">
+    <value>Австралийска Овчарка</value>
+  </data>
+  <data name="DOG_BREED_GREYHOUND" xml:space="preserve">
+    <value>Хрътка</value>
+  </data>
+  <data name="DOG_BREED_ROTTWEILER" xml:space="preserve">
+    <value>Ротвайлер</value>
+  </data>
+  <data name="DOG_BREED_POMERANIAN" xml:space="preserve">
+    <value>Померански</value>
+  </data>
+  <data name="DOG_BREED_DALMATIAN" xml:space="preserve">
+    <value>Далматинец</value>
+  </data>
+  <data name="DOG_BREED_SHIBA_INU" xml:space="preserve">
+    <value>Шиба Ину</value>
+  </data>
+  <data name="DOG_BREED_SAMOYED" xml:space="preserve">
+    <value>Самоед</value>
+  </data>
+  <data name="DOG_BREED_DOBERMANN" xml:space="preserve">
+    <value>Доберман</value>
+  </data>
+  <data name="DOG_TYPE" xml:space="preserve">
+    <value>Вид на кучето</value>
+  </data>
+  <data name="DOG_BREED" xml:space="preserve">
+    <value>Порода</value>
+  </data>
+  <data name="NAME" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="ADD" xml:space="preserve">
+    <value>Добави</value>
+  </data>
+  <data name="DOG_TYPE_FLUFFY" xml:space="preserve">
+    <value>Пухкави</value>
+  </data>
+  <data name="DOG_TYPE_BEST_FAMILY" xml:space="preserve">
+    <value>Семейни</value>
+  </data>
+  <data name="DOG_TYPE_SMARTEST" xml:space="preserve">
+    <value>Умни</value>
+  </data>
+  <data name="DOG_TYPE_BEST_GUARD" xml:space="preserve">
+    <value>Добри за охрана</value>
+  </data>
+  <data name="DOG_TYPE_KID_FRIENDLY" xml:space="preserve">
+    <value>Дружелюбни към деца</value>
+  </data>
+  <data name="DOG_TYPE_BEST_WATCH" xml:space="preserve">
+    <value>Най-добри за охрана</value>
+  </data>
+  <data name="DOG_TYPE_EASY_TO_TRAIN" xml:space="preserve">
+    <value>Лесни за дресировка</value>
+  </data>
+  <data name="DOG_TYPE_LOW_SHEDDING" xml:space="preserve">
+    <value>Слабо обезкосмяващи се</value>
+  </data>
+  <data name="LOGIN_TITLE" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="LOGIN_SUBMIT" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="FORGOT_PASSWORD_TITLE" xml:space="preserve">
+    <value>Забравена парола</value>
+  </data>
+  <data name="I_REMEMBERED_MY_PASSWORD" xml:space="preserve">
+    <value>Сетих се за паролата си</value>
+  </data>
+  <data name="FORGOT_PASSWORD_SUBMIT" xml:space="preserve">
+    <value>Изпрати заявката</value>
+  </data>
+  <data name="CONFIRMED_PASSWORD" xml:space="preserve">
+    <value>Потвърдена парола</value>
+  </data>
+  <data name="REGISTER_SUBMIT" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT" xml:space="preserve">
+    <value>Твоят имейл или парола са грешни.</value>
+  </data>
+  <data name="PASSWORD_IS_A_REQUIRED_FIELD" xml:space="preserve">
+    <value>Паролата е задължително поле</value>
+  </data>
+  <data name="EMAIL_IS_A_REQUIRED_FIELD" xml:space="preserve">
+    <value>Имейлът е задължително поле.</value>
+  </data>
+  <data name="LOGIN_PAGE_TITLE" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="LOGIN_PAGE_DESCRIPTION" xml:space="preserve">
+    <value>Описание на страница за вход</value>
+  </data>
+  <data name="HOME_PAGE_META_TITLE" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+</root>

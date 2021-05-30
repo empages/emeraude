@@ -1,0 +1,50 @@
+﻿@model EntityDetailsViewModel
+
+@{
+    string title = $"{ViewData.GetEntityName()} Details";
+    ViewData.SetTitle(title);
+}
+
+<div class="w-100 grid-margin stretch-card">
+    <div class="w-100 p-3">
+        @if (TempData["ShowAlertOnDetailsPage"] != null && Convert.ToBoolean(TempData["ShowAlertOnDetailsPage"]))
+        {
+            <div class="alert alert-@TempData["DetailsPageAlertType"]" role="alert">@TempData["DetailsPageAlertText"]</div>
+        }
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">@title</h4>
+                <table class="table table-striped">
+                    <tbody>
+                        @foreach (var property in Model.Details.Properties)
+                        {
+                            property.DetailsFieldElement.LoadServiceProvider(serviceProvider);
+                            string propertyId = $"property-{property.KebapCaseName}-id";
+                            <tr>
+                                <td>
+                                    <strong>@property.Name:</strong>
+                                </td>
+                                <td class="white-space-normal">
+                                    <span id="@propertyId">@property.RenderHtmlContent()</span>
+                                </td>
+                                <td class="w-auto text-right">
+                                    @if (property.DetailsFieldElement.HasClipboardCopyButton)
+                                    {
+                                        <span>
+                                            <button type="button" 
+                                                    class="btn btn-clipboard p-1" 
+                                                    data-clipboard-action="copy" 
+                                                    data-clipboard-target="#@propertyId">
+                                                <i class="m-0 mdi mdi-clipboard-text"></i>
+                                            </button>
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

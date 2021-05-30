@@ -1,0 +1,331 @@
+/* Miscellanoeous */
+
+body,
+html {
+    overflow-x: hidden;
+    padding-right: 0 !important; // resets padding right added by Bootstrap modal
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+::selection {
+    background: $base-dark;
+    color: #fff;
+}
+
+::-moz-selection {
+    background: $base-dark;
+    color: #fff;
+}
+
+*:-moz-full-screen,
+*:-webkit-full-screen,
+*:fullscreen *:-ms-fullscreen {
+  overflow: auto !important;
+}
+
+a {
+    color: $base;
+}
+
+a:hover,
+a:active,
+a:focus {
+    color: $base-dark;
+}
+
+.scroll-container {
+  position: relative;
+
+  &.horizontally {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  &.vertically {
+    overflow-y: hidden;
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
+pre {
+  background: color(gray-lighter);
+  padding: 15px;
+  font-size: 14px;
+}
+
+.responsive-table {
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.font-size-12 {
+    font-size: 12px !important;
+}
+
+.action-btn {
+    padding: 5px !important;
+    font-size: 20px !important;
+}
+
+.nowrap {
+    white-space: nowrap !important;
+}
+
+.white-space-normal {
+    white-space: normal !important;
+}
+
+.datepicker {
+    &.datepicker-dropdown {
+        padding: 10px !important;
+
+        .datepicker-months {
+            padding: 0px !important;
+
+            .table-condensed {
+                width: 100%;
+
+                .month {
+                    &.active {
+                        background: $primary !important;
+                    }
+                }
+            }
+        }
+
+        .datepicker-years {
+            padding: 0px !important;
+
+            .table-condensed {
+                width: 100%;
+
+                .year {
+                    &.active {
+                        background: $primary !important;
+                    }
+                }
+            }
+        }
+
+        .datepicker-decades {
+            padding: 0px !important;
+
+            .table-condensed {
+                width: 100%;
+
+                .decade {
+                    &.active {
+                        background: $primary !important;
+                    }
+                }
+            }
+        }
+
+        .datepicker-days {
+            padding: 0px !important;
+
+            table {
+                &.table-condensed {
+                    thead {
+                        th {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                            text-align: center !important;
+                        }
+                    }
+
+                    tbody {
+                        td {
+                            &.day {
+                                font-size: 12px !important;
+                                padding: 5px 0px !important;
+
+                                &.active {
+                                    &:before {
+                                        background: $secondary !important;
+                                    }
+                                }
+
+                                &::before {
+                                    width: 20px !important;
+                                    height: 20px !important;
+                                    background: $primary !important;
+                                    top: 4px !important;
+                                }
+
+                                &:first-child {
+                                    text-align: center !important;
+
+                                    &:before {
+                                        left: 0px !important;
+                                    }
+                                }
+
+                                &:last-child {
+                                    text-align: center !important;
+
+                                    &:before {
+                                        left: 0px !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.brand-form-container {
+    width: 230px;
+    margin: 20px auto;
+
+    .brand-logo-form {
+        width: 100%;
+    }
+}
+
+#resolution-message-container {
+    display: none;
+}
+
+@media(max-width: 1024px) {
+    html, body {
+        height: 100%;
+    }
+
+    #main-body-container {
+        display: none;
+    }
+
+    #resolution-message-container {
+        display: flex;
+        height: 100%;
+        background: $primary;
+
+        .resolution-card {
+            padding: 10px;
+            max-width: 480px;
+            margin: auto;
+
+            .card {
+                .card-header {
+                    font-size: 24px;
+                    font-weight: bold;
+                    padding: 10px;
+
+                    img {
+                        margin-right: 5px;
+                        width: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.page-body-wrapper {
+    min-height: calc(100vh - #{$navbar-height});
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    padding-right: 0;
+
+    &.full-page-wrapper {
+        width: 100%;
+        min-height: 100vh;
+    }
+}
+
+.main-panel {
+    transition: width $action-transition-duration $action-transition-timing-function, margin $action-transition-duration $action-transition-timing-function;
+    width: calc(100% - #{$sidebar-width-lg});
+    min-height: calc(100vh - #{$navbar-height});
+    display: flex;
+    flex-direction: column;
+    background: $content-bg-main;
+
+    @media (max-width: 991px) {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+.root-items-container {
+    a {
+        color: $black;
+    }
+
+    .root-item-icon {
+        a {
+            .mdi-folder-open {
+                color: $folder-color;
+                font-size: 20px;
+            }
+
+            &:hover {
+                .mdi-folder-open {
+                    color: $sidebar-color-1;
+                }
+            }
+        }
+
+        a {
+            .mdi-file {
+                color: $file-color;
+                font-size: 20px;
+            }
+
+            &:hover {
+                .mdi-file {
+                    color: $sidebar-color-1;
+                }
+            }
+        }
+    }
+}
+
+.btn-save-in-input {
+    top: 3px;
+    right: 3px;
+}
+
+.text-transform-none {
+    text-transform: none !important;
+}
+
+.error-log-stack-trace-container {
+    background: $csharp-warning-bg;
+
+    code {
+        color: $black;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+    }
+}
+
+@each $width in (50px, 100px, 150px, 200px, 250px, 300px, 350px, 400px, 450px, 500px) {
+    .width-#{$width} {
+        width: $width !important;
+    }
+}
+
+@each $height in (50px, 100px, 150px, 200px, 250px, 300px, 350px, 400px, 450px, 500px) {
+    .height-#{$height} {
+        height: $height !important;
+    }
+}
+
+@each $height in (10px, 12px, 14px, 16px, 18px, 20px, 22px, 24px, 26px, 28px, 30px) {
+    .line-height-#{$height} {
+        line-height: $height !important;
+    }
+}
+
+.overflow-wrap-anywhere {
+    overflow-wrap: anywhere !important;
+}

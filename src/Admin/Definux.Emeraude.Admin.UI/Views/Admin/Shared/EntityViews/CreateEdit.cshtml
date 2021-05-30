@@ -1,0 +1,37 @@
+@model IEntityFormViewModel
+
+@{
+    string title = $"{ViewData.GetAction()} {ViewData.GetEntityName()}";
+    ViewData.SetTitle(title);
+}
+
+<div class="col-12 grid-margin stretch-card mx-auto">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@title</h4>
+            <form asp-area="@ViewData.GetArea()" asp-controller="@ViewData.GetController()" asp-action="@ViewData.GetAction()">
+                @foreach (var inputItem in Model.Inputs)
+                {
+                    inputItem.FormElement.LoadServiceProvider(serviceProvider);
+                <div class="form-group">
+                    @if (!(inputItem.IsFlag || inputItem.Hidden))
+                    {
+                        <label>@inputItem.Label</label>
+                    }
+                    @inputItem.RenderHtmlContent()
+                    <span class="text-danger text-small">
+                        @Html.ValidationMessage(inputItem.Name)
+                    </span>
+                </div>
+                }
+                <div class="text-danger text-small">
+                    @Html.ValidationSummary(true)
+                </div>
+                <hr />
+                <div class="form-group mb-0">
+                    <button type="submit" class="d-flex btn btn-primary mt-2 ml-auto mr-0">@ViewData.GetAction()</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

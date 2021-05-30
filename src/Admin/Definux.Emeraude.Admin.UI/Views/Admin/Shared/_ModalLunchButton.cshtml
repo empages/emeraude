@@ -1,0 +1,5 @@
+﻿@model ModalViewModel
+
+<button type="button" class="@Model.LunchButtonClasses" data-toggle="modal" data-target="#@(Model.ModalId)">
+    @Html.Raw(Model.LunchButtonIcon) @Model.LunchButtonTitle
+</button>

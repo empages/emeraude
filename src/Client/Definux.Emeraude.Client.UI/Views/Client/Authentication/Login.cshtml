@@ -1,0 +1,37 @@
+@model ILoginRequest
+@{
+    Layout = "_AuthLayout";
+    ViewData.SetTitle(Localizer[Titles.Login]);
+    var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/Authentication/Login.cshtml", "https://emeraude.dev/client");
+}
+
+<partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />
+
+<partial name="_ExternalLoginForm" />
+<form action="@Url.LoginAction(ViewData)" method="post" class="auth-form">
+    <t element="h5" class="text-center">@Titles.Login</t>
+    @if (Html.HasNonModelError())
+    {
+        <div class="alert alert-danger mb-2">
+            <t>@Html.NonModelError()</t>
+        </div>
+    }
+    @Html.AntiForgeryToken()
+    <div class="form-group mb-1">
+        <t element="label">@Properties.Email</t>
+        <input type="email" class="form-control" asp-for="Email" placeholder="@Localizer[Properties.Email]" />
+        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Email))</t>
+    </div>
+    <div class="form-group mb-1">
+        <t element="label">@Properties.Password</t>
+        <input type="password" class="form-control" asp-for="Password" placeholder="@Localizer[Properties.Password]" />
+        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Password))</t>
+    </div>
+    <a class="link" href="@Url.ForgotPasswordAction()"><t>@ActionsTexts.ForgotPassword</t>?</a>
+    <div class="d-block w-100 my-3">
+        <t element="button" class="btn btn-primary w-100" type="submit">@ActionsTexts.LoginSubmit</t>
+    </div>
+    <div class="d-block w-100 text-center">
+        <a class="link" href="@Url.RegisterAction()"><t>@ActionsTexts.DontHaveAProfile</t>?</a>
+    </div>
+</form>

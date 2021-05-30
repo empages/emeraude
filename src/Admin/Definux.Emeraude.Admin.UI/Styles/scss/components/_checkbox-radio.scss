@@ -1,0 +1,12 @@
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: darken($base, 5%) !important;
+    background-color: $base !important;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+    @include box-shadow(none);
+}
+
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+    border-color: darken($base, 5%) !important;
+}

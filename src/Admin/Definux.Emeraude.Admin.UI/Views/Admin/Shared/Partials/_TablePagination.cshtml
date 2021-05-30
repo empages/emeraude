@@ -1,0 +1,64 @@
+﻿@model TablePaginationViewModel
+@if (Model.NextPagesCount != 0 || Model.PreviousPagesCount != 0)
+{
+    <nav class="d-flex mt-4">
+        <ul class="pagination m-auto">
+            @if (Model.PreviousPage != null && Model.PreviousPagesCount > 0)
+            {
+                <li class="page-item mx-0">
+                    <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.PreviousPage)">⯇</a>
+                </li>
+            }
+            @if (Model.PreviousPagesCount > 0)
+            {
+                for (int i = Model.PreviousPagesCount; i >= 1; i--)
+                {
+                    <li class="page-item ml-1 mr-0">
+                        <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.CurrentPage - i)">@(Model.CurrentPage - i)</a>
+                    </li>
+                }
+            }
+            <li class="page-item active mx-1 mb-0">
+                <p class="btn btn-primary p-2">@Model.CurrentPage</p>
+            </li>
+            @if (Model.NextPagesCount > 0)
+            {
+                for (int i = 1; i <= Model.NextPagesCount; i++)
+                {
+                    <li class="page-item mr-1 ml-0">
+                        <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.CurrentPage + i)">@(Model.CurrentPage + i)</a>
+                    </li>
+                }
+            }
+            @if (Model.NextPage != null && Model.NextPagesCount > 0)
+            {
+                <li class="page-item mx-0">
+                    <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.NextPage)">⯈</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@functions {
+    string GetPaginationHref(int? page)
+    {
+        if (Model.AdditionalQueryParams == null)
+        {
+            return Url.Action(ViewData.GetAction(), ViewData.GetController(), new
+            {
+                Area = ViewData.GetArea(), 
+                page = page, 
+                searchQuery = ViewData.GetSearchQuery(),
+                orderBy = ViewData.GetOrderProperty(),
+                orderType = ViewData.GetOrderType()
+            });
+        }
+        else
+        {
+            Model.AdditionalQueryParams["page"] = page;
+            Model.AdditionalQueryParams["Area"] = ViewData.GetArea();
+            return Url.Action(ViewData.GetAction(), ViewData.GetController(), Model.AdditionalQueryParams);
+        }
+    }
+}

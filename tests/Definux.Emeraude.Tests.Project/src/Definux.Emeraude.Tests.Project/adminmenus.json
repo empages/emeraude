@@ -1,0 +1,16 @@
+{
+  "navigation": [
+    {
+      "title": "Dashboard",
+      "icon": "mdi mdi-television",
+      "children": [
+        {
+          "title": "Index",
+          "routes": [
+            "/admin"
+          ]
+        }
+      ]
+    }
+  ]
+}

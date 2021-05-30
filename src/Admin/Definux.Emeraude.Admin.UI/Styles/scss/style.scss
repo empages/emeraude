@@ -1,0 +1,56 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+@import "variables";
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import "mixins/animation";
+@import "mixins/background";
+@import "mixins/badges";
+@import "mixins/blockqoute";
+@import "mixins/breadcrumbs";
+@import "mixins/buttons";
+@import "mixins/cards";
+@import "mixins/misc";
+@import "mixins/pagination";
+@import "mixins/text";
+@import "mixins/popovers";
+@import "mixins/tabs";
+@import "mixins/tooltips";
+
+@import "reset";
+@import "fonts";
+@import "functions";
+@import "typography";
+@import "misc";
+@import "utilities";
+@import "sidebar";
+@import "navbar";
+@import "layouts";
+@import "footer";
+
+@import "components/badges";
+@import "components/bootstrap-alerts";
+@import "components/buttons";
+@import "components/breadcrumbs";
+@import "components/borders";
+@import "components/cards";
+@import "components/checkbox-radio";
+@import "components/dropdown";
+@import "components/forms";
+@import "components/lists";
+@import "components/modals";
+@import "components/nav";
+@import "components/pagination";
+@import "components/popovers";
+@import "components/tables";
+@import "components/tabs";
+@import "components/tooltips";
+@import "components/dropzone";
+@import "components/codemirror";
+@import "components/datepicker";
+@import "components/sweet-alert";
+@import "components/select2";
+
+@import "screens/auth";

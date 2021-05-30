@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>2020 Definux</Copyright>
+    <Company>Definux</Company>
+    <Authors>Definux</Authors>
+    <Product>Emeraude</Product>
+    <PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
+    <Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
+    <PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, xamarinforms, xamarin, android, ios, mvc, mvvm, ssr, prism</PackageTags>
+    <Version>$(PACKAGE_VERSION)</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>logo_128.jpg</PackageIcon>
+    <PackageIconUrl />
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\art\logo_128.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocs>False</GenerateDocs>
+  </PropertyGroup>
+  <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
+  
+</Project>

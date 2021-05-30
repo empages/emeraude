@@ -1,0 +1,34 @@
+﻿@model RootUploadFilesViewModel
+
+@{
+    string rootPath = $"{Model.Root} Root{(string.IsNullOrWhiteSpace(Model.ParentFolderPath) ? "" : "\\")}{Model.ParentFolderPath}".Replace("/", "\\");
+    string backUrl = $"/admin/roots/{Model.Root.ToLower()}{(string.IsNullOrWhiteSpace(Model.ParentFolderPath) ? "" : "/")}{Model.ParentFolderPath}";
+    ViewData["Title"] = "Upload Files |" + rootPath;
+
+    string[] rootPathFolders = rootPath.Split('\\');
+    string returnUrl = ViewContext.HttpContext.Request.Query.ContainsKey("returnUrl") ? ViewContext.HttpContext.Request.Query["returnUrl"].ToString() : string.Empty;
+    string returnTitle = rootPath;
+    if (!string.IsNullOrEmpty(returnUrl) && ViewContext.HttpContext.Request.Query.ContainsKey("returnTitle"))
+    {
+        returnTitle = ViewContext.HttpContext.Request.Query["returnTitle"].ToString();
+        backUrl = returnUrl;
+    }
+}
+
+<div class="col-12 grid-margin stretch-card mt-3">
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-transform-none">
+                <a class="btn btn-primary btn-sm py-1 px-2" href="@backUrl">Back to @returnTitle</a>
+            </h4>
+            <form class="dropzone" action="/admin/roots/@Model.Root.ToLower()/upload-file" method="post">
+                @Html.AntiForgeryToken()
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+                <input type="hidden" asp-for="ParentFolderPath" />
+            </form>
+        </div>
+    </div>
+</div>

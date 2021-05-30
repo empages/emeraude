@@ -1,0 +1,81 @@
+/* Forms */
+
+.input-group-append,
+.input-group-prepend {
+  background: color(white);
+  color: $input-placeholder-color;
+  width: auto;
+  border: none;
+  .input-group-text {
+    background: transparent;
+    border-color: $border-color;
+  }
+}
+
+.form-control {
+    border: 1px solid $border-color;
+    font-family: $type-1;
+    font-size: $input-font-size;
+    padding: 0.4375rem 0.75rem;
+    line-height: 14px;
+    font-weight: 300;
+
+    &.form-control-lg {
+        padding: $input-btn-padding-y-lg .75rem;
+    }
+
+    &.form-control-sm {
+        padding: $input-btn-padding-y-sm .75rem;
+    }
+
+    &:focus {
+        border-color: lighten($base, 20%) !important;
+        box-shadow: 0 0 0 0.2rem lighten($base, 50%) !important;
+    }
+}
+
+select {
+  &.form-control {
+    padding: 0.4375rem 0.75rem;
+  }
+}
+
+.form-group {
+  label {
+    font-size: $default-font-size;
+    line-height: 1.7;
+    vertical-align: top;
+  }
+  &.has-danger {
+    .form-control {
+      border-color: theme-color(danger);
+    }
+  }
+  .file-upload-default {
+    visibility: hidden;
+    position: absolute;
+  }
+  .file-upload-info {
+    background: transparent;
+  }
+}
+
+#selectable-gallery {
+    .image-radio {
+        cursor: pointer;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 3px solid transparent;
+        margin-bottom: 0;
+        outline: 0;
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        &.image-radio-checked {
+            border-color: $base;
+        }
+    }
+}

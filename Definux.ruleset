@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rule set" Description="Definux rule set" ToolsVersion="14.0">
+    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+        <Rule Id="AD0001" Action="None" />
+        <Rule Id="CS0436" Action="None" />
+        <Rule Id="CS1998" Action="None" />
+		<Rule Id="CS8034" Action="None" />
+        <Rule Id="SA0001" Action="None" />
+		<Rule Id="SA1005" Action="None" />
+        <Rule Id="SA1200" Action="None" />
+        <Rule Id="SA1300" Action="None" />
+		<Rule Id="SA1512" Action="None" />
+		<Rule Id="SA1602" Action="None" />
+		<Rule Id="SA1614" Action="None" />
+		<Rule Id="SA1616" Action="None" />
+		<Rule Id="SA1623" Action="None" />
+        <Rule Id="SA1633" Action="None" />
+        <Rule Id="SA1652" Action="None" />
+    </Rules>
+</RuleSet>
