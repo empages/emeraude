@@ -1,6 +1,5 @@
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
-using Definux.Emeraude.Admin.Mapping.Mappers;
 using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
@@ -53,19 +52,23 @@ namespace EmDoggo.Controllers.Admin
             string returnUrl = UrlEncoder.Encode($"/admin/foods?p={pageNumber}&q={searchQuery}");
             string returnTitle = UrlEncoder.Encode("Foods");
 
-            actions.Insert(1, EntityTableMapper.CreateAction(
-                "Upload Images",
-                MaterialDesignIcons.ImagePlus,
-                TableRowActionMethod.Get,
-                $"/admin/roots/public/upload-files/uploads/images/foods/{{0}}?returnUrl={returnUrl}&returnTitle={returnTitle}",
-                "[Id]"));
+            actions.Insert(1, new TableRowActionViewModel
+            {
+                Title = "Upload Images",
+                Icon = MaterialDesignIcons.ImagePlus,
+                Method = TableRowActionMethod.Get,
+                UrlStringFormat = $"/admin/roots/public/upload-files/uploads/images/foods/{{0}}?returnUrl={returnUrl}&returnTitle={returnTitle}",
+                RawParameters = new List<string> { "[Id]" },
+            });
 
-            actions.Insert(2, EntityTableMapper.CreateAction(
-                "Select From Gallery",
-                MaterialDesignIcons.ImageMove,
-                TableRowActionMethod.Get,
-                $"{this.ControllerRoute}{{0}}/gallery",
-                "[Id]"));
+            actions.Insert(2, new TableRowActionViewModel
+            {
+                Title = "Select From Gallery",
+                Icon = MaterialDesignIcons.ImageMove,
+                Method = TableRowActionMethod.Get,
+                UrlStringFormat = $"{this.ControllerRoute}{{0}}/gallery",
+                RawParameters = new List<string> { "[Id]" },
+            });
 
             return actions;
         }

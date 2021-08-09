@@ -51,7 +51,7 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
         /// <returns></returns>
         public bool HasOrder(int order)
         {
-            return this.cells.Where(x => x.Order == order).Any();
+            return this.cells.Any(x => x.Order == order);
         }
 
         /// <summary>

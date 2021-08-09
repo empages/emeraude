@@ -39,6 +39,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -123,6 +124,8 @@ namespace Definux.Emeraude.Extensions
             services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
 
             services.RegisterHtmlOptimizationServices();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.ConfigureMvc(options);
 

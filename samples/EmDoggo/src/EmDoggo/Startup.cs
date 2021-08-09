@@ -1,6 +1,5 @@
 using Definux.Emeraude.Admin.ClientBuilder.Extensions;
 using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Extensions;
 using Definux.Emeraude.Identity.ExternalProviders.Facebook;
@@ -66,7 +65,6 @@ namespace EmDoggo
                 options.Constants.Add("SomeKey2", "SomeValue2");
                 
                 options.AddDefaultVueModules();
-                options.AddDefaultXamarinModules();
             });
 
             services.RegisterInfrastructureServices();

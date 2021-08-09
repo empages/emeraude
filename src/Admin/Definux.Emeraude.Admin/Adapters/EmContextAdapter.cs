@@ -24,13 +24,8 @@ namespace Definux.Emeraude.Admin.Adapters
         /// <inheritdoc/>
         public IEnumerable<IEntity> GetAllEntitiesByPropertyName(string name)
         {
-            var entities = this.context.GetContextType().GetProperty(name).GetValue(this.context);
-            if (entities != null)
-            {
-                return ((IEnumerable<IEntity>)entities).ToList();
-            }
-
-            return new List<IEntity>();
+            var entities = this.context.GetContextType().GetProperty(name)?.GetValue(this.context);
+            return ((IEnumerable<IEntity>)entities)?.ToList() ?? new List<IEntity>();
         }
 
         /// <inheritdoc/>
@@ -39,8 +34,7 @@ namespace Definux.Emeraude.Admin.Adapters
             var entities = this.context
                 .GetContextType()
                 .GetProperties()
-                .Where(x => x.PropertyType.GenericTypeArguments.Contains(entityType))
-                .FirstOrDefault()?
+                .FirstOrDefault(x => x.PropertyType.GenericTypeArguments.Contains(entityType))?
                 .GetValue(this.context);
             IEnumerable<IEntity> resultEntities = null;
             if (entities != null)

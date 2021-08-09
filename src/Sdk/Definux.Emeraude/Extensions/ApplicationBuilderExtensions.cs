@@ -25,7 +25,7 @@ namespace Definux.Emeraude.Extensions
             if (environment.IsDevelopment() && !forseProduction)
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
 
                 app.UseEmeraudeAdminSwagger();
             }

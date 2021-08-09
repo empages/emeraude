@@ -6,6 +6,7 @@ using AutoMapper;
 using Definux.Emeraude.Admin.Adapters;
 using Definux.Emeraude.Admin.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.Mapping;
 using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
 using Definux.Emeraude.Admin.Requests.Create;
@@ -65,6 +66,8 @@ namespace Definux.Emeraude.Admin.Extensions
             }
 
             services.RegisterAdapters();
+
+            services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
 
             return services;
         }

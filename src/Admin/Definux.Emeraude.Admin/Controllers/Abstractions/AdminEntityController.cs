@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Attributes;
-using Definux.Emeraude.Admin.Mapping.Mappers;
+using Definux.Emeraude.Admin.Mapping;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
 using Definux.Emeraude.Admin.Requests.Create;
 using Definux.Emeraude.Admin.Requests.Delete;
@@ -11,7 +11,7 @@ using Definux.Emeraude.Admin.Requests.Details;
 using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.GetAll;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
-using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Form;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
@@ -22,6 +22,8 @@ using Definux.Utilities.Extensions;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Admin.Controllers.Abstractions
 {
@@ -43,6 +45,8 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// Breadcrumb plural entity name default placeholder for transferring custom entity plural name to breadcrumbs list.
         /// </summary>
         protected const string BreadcrumbEntityNamePluralPlaceholder = "[EntityNamePlural]";
+
+        private IAdminEntityMapper entityMapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminEntityController{TEntity, TEntityViewModel}"/> class.
@@ -79,6 +83,20 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         /// </summary>
         protected bool HasDelete { get; set; } = true;
 
+        /// <inheritdoc cref="IAdminEntityMapper"/>
+        protected IAdminEntityMapper EntityMapper
+        {
+            get
+            {
+                if (this.entityMapper is null)
+                {
+                    this.entityMapper = this.HttpContext.RequestServices.GetService<IAdminEntityMapper>();
+                }
+
+                return this.entityMapper;
+            }
+        }
+
         /// <summary>
         /// Deletion callback on success deletion of the entity.
         /// </summary>
@@ -111,7 +129,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             model.Title = model.SingleEntityName.ToPluralString();
             this.ViewData[BreadcrumbPageTitlePlaceholder] = model.Title;
 
-            model.Table = EntityTableMapper.Map(entitiesResult, this.BuildTableViewActions()?.ToArray());
+            model.Table = this.EntityMapper.MapToTableViewModel(entitiesResult, this.BuildTableViewActions()?.ToArray());
             model.Table.SetPaginationRedirection(this.AreaName, this.ControllerName, this.ActionName);
             this.ViewData.Add("SearchQuery", searchQuery);
             this.ViewData.Add("OrderProperties", this.GetOrderProperties());
@@ -146,7 +164,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             }
 
             EntityDetailsViewModel model = new EntityDetailsViewModel();
-            model.Details = EntityDetailsMapper.Map(entity);
+            model.Details = this.EntityMapper.MapToDetailsViewModel(entity);
             string singleEntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
             this.ViewData[BreadcrumbEntityNamePluralPlaceholder] = singleEntityName.ToPluralString();
 
@@ -446,17 +464,41 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             var actions = new List<TableRowActionViewModel>();
             if (this.HasDetails)
             {
-                actions.Add(EntityTableMapper.DetailsAction($"{this.ControllerRoute}{{0}}", "[Id]"));
+                actions.Add(new TableRowActionViewModel
+                {
+                    Title = "Details",
+                    Icon = MaterialDesignIcons.CardBulleted,
+                    Method = TableRowActionMethod.Get,
+                    UrlStringFormat = $"{this.ControllerRoute}{{0}}",
+                    RawParameters = new List<string> { "[Id]" },
+                });
             }
 
             if (this.HasEdit)
             {
-                actions.Add(EntityTableMapper.EditAction($"{this.ControllerRoute}{{0}}/edit", "[Id]"));
+                actions.Add(new TableRowActionViewModel
+                {
+                    Title = "Edit",
+                    Icon = MaterialDesignIcons.Pencil,
+                    Method = TableRowActionMethod.Get,
+                    UrlStringFormat = $"{this.ControllerRoute}{{0}}/edit",
+                    RawParameters = new List<string> { "[Id]" },
+                });
             }
 
             if (this.HasDelete)
             {
-                actions.Add(EntityTableMapper.DeleteAction($"{this.ControllerRoute}{{0}}/delete", "[Id]"));
+                actions.Add(new TableRowActionViewModel
+                {
+                    Title = "Delete",
+                    Icon = MaterialDesignIcons.Delete,
+                    Method = TableRowActionMethod.Post,
+                    UrlStringFormat = $"{this.ControllerRoute}{{0}}/delete",
+                    RawParameters = new List<string> { "[Id]" },
+                    HasConfirmation = true,
+                    ConfirmationTitle = "Delete Entity",
+                    ConfirmationMessage = "Are you sure you want to delete this entity?",
+                });
             }
 
             return actions;
@@ -657,7 +699,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             IEntityFormViewModel castedModel = (IEntityFormViewModel)model;
             if (castedModel != null)
             {
-                castedModel.Inputs = EntityFormMapper.BuildInputs(castedModel);
+                castedModel.Inputs = this.EntityMapper.MapToFormInputViewModels(castedModel);
                 this.ViewData[BreadcrumbEntityNamePluralPlaceholder] = this.EntityName.ToPluralString();
             }
 

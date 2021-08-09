@@ -17,12 +17,22 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
         /// <param name="rawParameters"></param>
         /// <param name="method"></param>
         public TableRowActionViewModel(string title, string icon, string urlStringFormat, List<string> rawParameters, TableRowActionMethod method = TableRowActionMethod.Get)
+            : this()
         {
             this.Title = title;
             this.Icon = icon;
             this.UrlStringFormat = urlStringFormat;
-            this.RawParameters = rawParameters;
+            this.RawParameters.AddRange(rawParameters);
             this.Method = method;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableRowActionViewModel"/> class.
+        /// </summary>
+        public TableRowActionViewModel()
+        {
+            this.RawParameters = new List<string>();
+            this.Parameters = new List<string>();
         }
 
         /// <summary>
@@ -58,13 +68,7 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Entity.Table
         /// <summary>
         /// URL of the action.
         /// </summary>
-        public string Url
-        {
-            get
-            {
-                return string.Format(this.UrlStringFormat, this.Parameters.ToArray());
-            }
-        }
+        public string Url => string.Format(this.UrlStringFormat, this.Parameters.ToArray());
 
         /// <summary>
         /// URL template with placeholders.

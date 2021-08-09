@@ -1,24 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Copyright>2020 Definux</Copyright>
-    <Company>Definux</Company>
-    <Authors>Definux</Authors>
-    <Product>Emeraude</Product>
-    <PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
-    <Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
-    <PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, xamarinforms, xamarin, android, ios, mvc, mvvm, ssr, prism</PackageTags>
-    <Version>$(PACKAGE_VERSION)</Version>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageIcon>logo_128.jpg</PackageIcon>
-    <PackageIconUrl />
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -27,16 +11,16 @@
     <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.40" />
     <PackageReference Include="Definux.Utilities.Objects" Version="1.0.40" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.13" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.13" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.6.21352.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.6.21352.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0-preview.6.21352.12" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.CodeDom" Version="4.7.0" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0-preview.6.21352.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,17 +34,6 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\art\logo_128.jpg">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +54,9 @@
   <PropertyGroup>
     <GenerateDocs>False</GenerateDocs>
   </PropertyGroup>
+
+  <Import Project="..\..\..\Emeraude.targets" />
+  
   <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
   
 </Project>

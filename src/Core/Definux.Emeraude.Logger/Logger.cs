@@ -110,7 +110,6 @@ namespace Definux.Emeraude.Logger
         {
             try
             {
-                string serviceClass = this.GetType().Name;
                 ErrorLog log = new ErrorLog
                 {
                     StackTrace = exception.StackTrace,
@@ -122,8 +121,9 @@ namespace Definux.Emeraude.Logger
                 this.context.ErrorLogs.Add(log);
                 this.context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -155,7 +155,6 @@ namespace Definux.Emeraude.Logger
         {
             try
             {
-                string serviceClass = this.GetType().Name;
                 ErrorLog log = new ErrorLog
                 {
                     StackTrace = string.Empty,
@@ -167,8 +166,9 @@ namespace Definux.Emeraude.Logger
                 this.context.ErrorLogs.Add(log);
                 this.context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
         }
     }

@@ -1,6 +1,4 @@
-using System;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
-using Definux.Emeraude.Admin.Mapping.Mappers;
 using Definux.Emeraude.Admin.UI.Utilities;
 using Definux.Emeraude.Admin.UI.ViewModels.Entity.Table;
 using Definux.Emeraude.Admin.Utilities;
@@ -17,13 +15,15 @@ namespace EmDoggo.Controllers.Admin
         protected override List<TableRowActionViewModel> BuildTableViewActions()
         {
             var actions = base.BuildTableViewActions();
-
-            actions.Insert(1, EntityTableMapper.CreateAction(
-                "Foods",
-                MaterialDesignIcons.FoodApple,
-                TableRowActionMethod.Get,
-                $"{this.ControllerRoute}{{0}}/foods",
-                "[Id]"));
+            
+            actions.Insert(1, new TableRowActionViewModel
+            {
+                Title = "Foods",
+                Icon = MaterialDesignIcons.FoodApple,
+                Method = TableRowActionMethod.Get,
+                UrlStringFormat = $"{this.ControllerRoute}{{0}}/foods",
+                RawParameters = new List<string> { "[Id]" },
+            });
 
             return actions;
         }

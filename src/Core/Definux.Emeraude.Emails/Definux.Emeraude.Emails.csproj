@@ -1,24 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Copyright>2020 Definux</Copyright>
-    <Company>Definux</Company>
-    <Authors>Definux</Authors>
-    <Product>Emeraude</Product>
-    <PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
-    <Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js and mobile applications based on Xamarin Forms.</Description>
-    <PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, xamarinforms, xamarin, android, ios, mvc, mvvm, ssr, prism</PackageTags>
-    <Version>$(PACKAGE_VERSION)</Version>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageIcon>logo_128.jpg</PackageIcon>
-    <PackageIconUrl />
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -47,6 +31,9 @@
   <PropertyGroup>
     <GenerateDocs>False</GenerateDocs>
   </PropertyGroup>
+
+  <Import Project="..\..\..\Emeraude.targets" />
+  
   <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
   
 </Project>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Copyright>2020 Definux</Copyright>
+		<Company>Definux</Company>
+		<Authors>Definux</Authors>
+		<Product>Emeraude</Product>
+		<PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
+		<Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js.</Description>
+		<PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, mvc, mvvm, ssr</PackageTags>
+		<Version>$(PACKAGE_VERSION)</Version>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>logo_128.jpg</PackageIcon>
+		<PackageIconUrl />
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="..\..\..\art\logo_128.jpg">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+  </ItemGroup>
+</Project>

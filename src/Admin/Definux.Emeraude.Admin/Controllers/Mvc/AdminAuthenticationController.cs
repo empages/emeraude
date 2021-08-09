@@ -48,21 +48,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             this.HideActivityLogParameters = true;
         }
 
-        private IActionResult AdminDashboardActionResult
-        {
-            get
-            {
-                return this.RedirectToAction("Index", "AdminDashboard");
-            }
-        }
+        private IActionResult AdminDashboardActionResult => this.RedirectToAction("Index", "AdminDashboard");
 
-        private IActionResult Lockout
-        {
-            get
-            {
-                return this.View("Lockout");
-            }
-        }
+        private IActionResult Lockout => this.View("Lockout");
 
         private AuthenticationProperties AuthenticationProperties
         {

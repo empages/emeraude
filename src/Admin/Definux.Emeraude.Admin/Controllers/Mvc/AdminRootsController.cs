@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
-using Definux.Emeraude.Admin.Mapping.Mappers;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
 using Definux.Emeraude.Admin.UI.ViewModels.Roots;
 using Definux.Emeraude.Admin.Utilities;
@@ -55,9 +54,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             {
                 IEnumerable<SystemItem> fileSystemItems = null;
                 RootViewModel model = null;
-                string folderPath = folders.Replace('/', Path.DirectorySeparatorChar);
+                string folderPath = folders?.Replace('/', Path.DirectorySeparatorChar) ?? string.Empty;
                 fileSystemItems = this.systemFilesService.ScanDirectory(Path.Combine(this.GetRootDirectory(root), folderPath), this.GetRootDirectory(root));
-                model = RootMapper.Map(folderPath, fileSystemItems);
+                model = this.BuildRootViewModel(folderPath, fileSystemItems);
 
                 model.Root = root.ToFirstUpper();
                 this.InitializeNavigationActions(this.BuildNavigationActions(folders, root));
@@ -224,6 +223,28 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             });
 
             return actions;
+        }
+
+        private RootViewModel BuildRootViewModel(string folderName, IEnumerable<SystemItem> fileSystemItems)
+        {
+            RootViewModel model = new RootViewModel
+            {
+                FolderName = folderName,
+            };
+
+            foreach (var item in fileSystemItems)
+            {
+                if (item.Type == FileSystemItemType.File)
+                {
+                    model.AddFile(item.Name, item.RelativePath, item.FileSize, item.CreatedOn, item.LastModifiedOn);
+                }
+                else if (item.Type == FileSystemItemType.Folder)
+                {
+                    model.AddFolder(item.Name, item.RelativePath, item.CreatedOn, item.LastModifiedOn);
+                }
+            }
+
+            return model;
         }
     }
 }
