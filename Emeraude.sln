@@ -39,17 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{D9B132
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Admin", "src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj", "{0C22ABB9-E20A-4524-8DFE-209C87330621}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Admin.ClientBuilder", "src\Admin\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj", "{55C4758B-9CF3-4577-A951-DC402093FBAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.ClientBuilder", "src\Sdk\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj", "{55C4758B-9CF3-4577-A951-DC402093FBAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Admin.ClientBuilder.Modules.Vue", "src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.csproj", "{C771DCE4-0241-44EC-A76C-645BDDB9AA35}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Admin.ClientBuilder.UI", "src\Admin\Definux.Emeraude.Admin.ClientBuilder.UI\Definux.Emeraude.Admin.ClientBuilder.UI.csproj", "{3EC9B68F-7322-4E1A-AC99-3CF6E0353FBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.ClientBuilder.UI", "src\Sdk\Definux.Emeraude.ClientBuilder.UI\Definux.Emeraude.ClientBuilder.UI.csproj", "{3EC9B68F-7322-4E1A-AC99-3CF6E0353FBC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Admin.UI", "src\Admin\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj", "{7E5F48BC-430B-481E-B3B5-AA072BB7BA30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client", "src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj", "{AFB92693-3DB0-4364-BE26-FD78363E4579}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client.EmPages", "src\Client\Definux.Emeraude.Client.EmPages\Definux.Emeraude.Client.EmPages.csproj", "{A7763454-C79B-43CF-824B-5863AAA0CC8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definux.Emeraude.Client.UI", "src\Client\Definux.Emeraude.Client.UI\Definux.Emeraude.Client.UI.csproj", "{A9EF3494-3AC5-4A6E-A13E-99B214080E17}"
 EndProject

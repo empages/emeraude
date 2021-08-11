@@ -1,5 +1,4 @@
-using Definux.Emeraude.Admin.ClientBuilder.Extensions;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Extensions;
 using Definux.Emeraude.Identity.ExternalProviders.Facebook;
@@ -9,6 +8,10 @@ using EmDoggo.Application.Interfaces;
 using EmDoggo.Application.Mapping;
 using EmDoggo.Application.Requests.Queries.AdminDashboard;
 using EmDoggo.Application.Shared;
+using EmDoggo.ClientBuilder.Modules.Constants;
+using EmDoggo.ClientBuilder.Modules.StaticContent;
+using EmDoggo.ClientBuilder.Modules.TranslationsResources;
+using EmDoggo.ClientBuilder.Modules.WebApi;
 using EmDoggo.Infrastructure.Extensions;
 using EmDoggo.Infrastructure.Persistance;
 using EmDoggo.Seo;
@@ -54,17 +57,19 @@ namespace EmDoggo
 
             services.AddEmeraudeClientBuilder(options =>
             {
-                options.SetWebAppPath("src", "EmDoggo", "ClientApp");
-                options.SetMobileAppPath("..", "EmDoggo.Mobile");
+                options.SetClientApplicationPath("VueClientApp", "src", "EmDoggo", "ClientApp");
 
                 options.AddAssembly("Definux.Emeraude");
                 options.AddAssembly("EmDoggo");
 
+                options.AddModule<VueConstantsModule>();
+                options.AddModule<VueStaticContentModule>();
+                options.AddModule<VueTranslationsResourcesModule>();
+                options.AddModule<VueWebApiModule>();
+                
                 options.ConstantsTypes.Add(typeof(SomeConstants));
                 options.Constants.Add("SomeKey1", "SomeValue1");
                 options.Constants.Add("SomeKey2", "SomeValue2");
-                
-                options.AddDefaultVueModules();
             });
 
             services.RegisterInfrastructureServices();

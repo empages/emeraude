@@ -1,6 +1,6 @@
 ﻿using System;
+using Definux.Emeraude.Client.Seo.Options;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Seo.Options;
 
 namespace Definux.Emeraude.Extensions
 {
@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Extensions
         /// <param name="seoOptionsAction"></param>
         public static void ConfigureSeo(
             this EmOptions options,
-            Action<DefinuxSeoOptions> seoOptionsAction)
+            Action<SeoOptions> seoOptionsAction)
         {
             options.AddExternalOptions(seoOptionsAction);
         }

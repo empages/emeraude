@@ -1,5 +1,5 @@
-﻿using Definux.Emeraude.Admin.ClientBuilder.UI;
-using Definux.Emeraude.Admin.UI;
+﻿using Definux.Emeraude.Admin.UI;
+using Definux.Emeraude.ClientBuilder.UI;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace Definux.Emeraude.Admin.Extensions

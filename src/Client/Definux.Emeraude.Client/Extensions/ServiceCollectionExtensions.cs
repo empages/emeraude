@@ -1,14 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using Definux.Emeraude.Client.Adapters;
-using Definux.Emeraude.Client.EmPages.Conventions;
-using Definux.Emeraude.Client.EmPages.Extensions;
 using Definux.Emeraude.Client.UI.Adapters;
 using Definux.Emeraude.Client.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Locales.Constraints;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Client.Extensions
@@ -19,7 +16,7 @@ namespace Definux.Emeraude.Client.Extensions
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Register client features (EmPages, language based routes).
+        /// Register client features.
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
@@ -30,8 +27,6 @@ namespace Definux.Emeraude.Client.Extensions
             {
                 options.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
             });
-
-            services.RegisterEmPages();
 
             services.AddScoped<IExternalAuthenticationProvidersCollection, ExternalAuthenticationProvidersCollection>();
 
@@ -65,15 +60,6 @@ namespace Definux.Emeraude.Client.Extensions
         public static IMapperConfigurationExpression AddClientMapperConfiguration(this IMapperConfigurationExpression configuration)
         {
             return configuration;
-        }
-
-        /// <summary>
-        /// Configure EmPages routes.
-        /// </summary>
-        /// <param name="options"></param>
-        public static void UseCentralEmPagesRoutePrefix(this MvcOptions options)
-        {
-            options.Conventions.Insert(0, new EmPagesRouteConvention());
         }
     }
 }

@@ -4,10 +4,9 @@ using EmDoggo.Application.Requests.Commands.AddDog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.ClientBuilder.Attributes;
+using Definux.Emeraude.ClientBuilder.Attributes;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Utilities.Objects;
-using Microsoft.Extensions.Options;
 
 namespace EmDoggo.Controllers.Api
 {

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Domain\Definux.Emeraude.Tests.Project.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Requests" />
+  </ItemGroup>
+
 </Project>

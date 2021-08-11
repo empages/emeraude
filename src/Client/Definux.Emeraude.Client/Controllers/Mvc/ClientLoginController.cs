@@ -2,13 +2,12 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
+using Definux.Emeraude.Client.Seo.Attributes;
+using Definux.Emeraude.Client.Seo.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Localization.Extensions;
-using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
-using Definux.Seo.Attributes;
-using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc

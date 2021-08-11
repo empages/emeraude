@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Definux.Emeraude.Client.Seo.Attributes;
+using Definux.Emeraude.Client.Seo.Models;
 using Definux.Emeraude.Client.UI.ViewModels.ExecutionResult;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
-using Definux.Seo.Attributes;
-using Definux.Seo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc

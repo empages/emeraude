@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Client.EmPages.Abstractions;
-using Definux.Seo;
-using Definux.Seo.Models;
+using Definux.Emeraude.Client.Seo;
+using Definux.Emeraude.Client.Seo.Models;
 using EmDoggo.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,13 +24,13 @@ namespace EmDoggo.Seo
         {
             var sitemapPatterns = new List<PageSitemapPattern>();
 
-            sitemapPatterns.Add(new EmPageSitemapPattern("/", this.languageStore)
+            sitemapPatterns.Add(new PageSitemapPattern("/", this.languageStore)
             {
                 SinglePage = true,
                 ChangeFrequency = SeoChangeFrequencyTypes.Monthly
             });
             
-            sitemapPatterns.Add(new EmPageSitemapPattern("/shops/{0}", this.languageStore)
+            sitemapPatterns.Add(new PageSitemapPattern("/shops/{0}", this.languageStore)
             {
                 SinglePage = false,
                 ChangeFrequency = SeoChangeFrequencyTypes.Monthly,

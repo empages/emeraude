@@ -5,13 +5,15 @@ using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Definux.Emeraude.Admin;
-using Definux.Emeraude.Admin.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Mapping.Profiles;
 using Definux.Emeraude.Application.Behaviours;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Client.Mapping;
+using Definux.Emeraude.Client.Seo.Extensions;
+using Definux.Emeraude.Client.Seo.Options;
+using Definux.Emeraude.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Emails;
@@ -28,8 +30,6 @@ using Definux.Emeraude.Persistence.Seed;
 using Definux.Emeraude.Presentation.ActionFilters;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
-using Definux.Seo.Extensions;
-using Definux.Seo.Options;
 using Definux.Utilities.DataAnnotations;
 using Definux.Utilities.Extensions;
 using Definux.Utilities.Options;
@@ -39,7 +39,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -115,7 +114,7 @@ namespace Definux.Emeraude.Extensions
 
             services.AddEmeraudeClient();
 
-            services.AddDefinuxSeo(options.GetExternalOption<Action<DefinuxSeoOptions>>());
+            services.AddSeo(options.GetExternalOption<Action<SeoOptions>>());
 
             services.RegisterMediatR(options.Assemblies);
 
@@ -139,7 +138,7 @@ namespace Definux.Emeraude.Extensions
         public static void ApplyEmeraudeBaseOptions(this EmOptions options)
         {
             options.AddAssembly("Definux.Emeraude.Admin");
-            options.AddAssembly("Definux.Emeraude.Admin.ClientBuilder");
+            options.AddAssembly("Definux.Emeraude.ClientBuilder");
             options.AddAssembly("Definux.Emeraude.Client");
             options.AddAssembly("Definux.Emeraude.Application");
 
@@ -302,7 +301,6 @@ namespace Definux.Emeraude.Extensions
             services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestExceptionFilter());
-                options.UseCentralEmPagesRoutePrefix();
                 options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
             })
                 .AddFluentValidation(options =>

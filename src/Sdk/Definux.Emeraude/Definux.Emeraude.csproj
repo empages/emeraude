@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Definux.Seo" Version="1.0.27" />
+    <PackageReference Include="Definux.Emeraude.Client.Seo" Version="1.0.27" />
     <PackageReference Include="Definux.Utilities.DataAnnotations" Version="1.0.40" />
     <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.40" />
     <PackageReference Include="Definux.Utilities.Functions" Version="1.0.40" />
@@ -42,11 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Admin\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
+    <ProjectReference Include="..\..\Client\Definux.Emeraude.Client.Seo\Definux.Emeraude.Client.Seo.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Emails\Definux.Emeraude.Emails.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Files\Definux.Emeraude.Files.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
-    <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin.ClientBuilder\Definux.Emeraude.Admin.ClientBuilder.csproj" />
     <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
     <ProjectReference Include="..\..\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
   </ItemGroup>

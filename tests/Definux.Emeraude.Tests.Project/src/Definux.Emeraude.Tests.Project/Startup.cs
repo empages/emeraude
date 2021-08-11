@@ -1,7 +1,5 @@
-using Definux.Emeraude.Admin.ClientBuilder.Extensions;
-using Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.Extensions;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Emails;
 using Definux.Emeraude.Emails.Extensions;
 using Definux.Emeraude.Extensions;
 using Definux.Emeraude.Tests.Project.Application.Interfaces.Persistence;
@@ -51,13 +49,8 @@ namespace Definux.Emeraude.Tests.Project
 
             services.AddEmeraudeClientBuilder(options =>
             {
-                options.SetWebAppPath("src", "Definux.Emeraude.Tests.Project", "ClientApp");
-                options.SetMobileAppPath("..", "Definux.Emeraude.Tests.Project.Mobile");
-
                 options.AddAssembly("Definux.Emeraude");
                 options.AddAssembly("Definux.Emeraude.Tests.Project");
-
-                options.AddDefaultVueModules();
             });
 
             services.RegisterInfrastructureServices();

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Definux.Seo;
-using Definux.Seo.Models;
+using Definux.Emeraude.Client.Seo;
+using Definux.Emeraude.Client.Seo.Models;
 
 namespace Definux.Emeraude.Tests.Project.Seo
 {

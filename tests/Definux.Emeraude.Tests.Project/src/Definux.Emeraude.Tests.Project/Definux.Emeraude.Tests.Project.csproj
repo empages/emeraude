@@ -10,7 +10,7 @@
     <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.csproj" />
     <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.csproj" />
     <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client.EmPages\Definux.Emeraude.Client.EmPages.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client.Seo\Definux.Emeraude.Client.Seo.csproj" />
     <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
     <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
     <ProjectReference Include="..\..\..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Definux.Seo" Version="1.0.27" />
+    <PackageReference Include="Definux.Emeraude.Client.Seo" Version="1.0.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.6.21352.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,6 +34,10 @@
     <Folder Include="privateroot\uploads\temp\" />
     <Folder Include="wwwroot\assets\css\" />
     <Folder Include="wwwroot\dist\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="ClientApp\locales\en.json" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Reflection;
 namespace EmDoggo.Application.Mapping
 {
     /// <summary>
-    /// Assembly mapping profile for registration of all mappings configurations for EmPages.
+    /// Assembly mapping profile for registration of all mappings configurations.
     /// </summary>
     public class EmDoggoAssemblyMappingProfile : AssemblyMappingProfile
     {

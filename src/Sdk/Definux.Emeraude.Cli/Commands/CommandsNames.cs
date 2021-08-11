@@ -11,11 +11,6 @@
         internal const string Create = "create";
 
         /// <summary>
-        /// Name of the 'Page' command.
-        /// </summary>
-        internal const string Page = "page";
-
-        /// <summary>
         /// Name of the 'Request' command.
         /// </summary>
         internal const string Request = "request";
@@ -31,7 +26,6 @@
         internal static readonly string[] CommandList = new string[]
         {
             Create,
-            Page,
             Request,
         };
     }

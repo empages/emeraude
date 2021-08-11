@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Definux.Emeraude.Cli.Commands;
 using Definux.Emeraude.Cli.Commands.Implementations.Create;
-using Definux.Emeraude.Cli.Commands.Implementations.Page;
 using Definux.Emeraude.Cli.Commands.Implementations.Request;
 using Definux.Emeraude.Cli.Properties;
 
@@ -28,7 +27,6 @@ namespace Definux.Emeraude.Cli
             this.commandFactories = new Dictionary<string, Command>
             {
                 { CommandsNames.Create, new CreateCommand() },
-                { CommandsNames.Page, new PageCommand() },
                 { CommandsNames.Request, new RequestCommand() },
             };
         }
