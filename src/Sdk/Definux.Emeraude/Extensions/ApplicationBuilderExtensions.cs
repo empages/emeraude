@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Admin.Extensions;
+﻿using System;
+using Definux.Emeraude.Admin.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.StaticFiles;
@@ -14,72 +15,21 @@ namespace Definux.Emeraude.Extensions
     public static class ApplicationBuilderExtensions
     {
         /// <summary>
-        /// Registers and configures Emeraude required middlewares.
+        /// Configure errors with status code page for the predefined action.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="environment"></param>
-        /// <param name="forseProduction"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseEmeraude(this IApplicationBuilder app, IWebHostEnvironment environment, bool forseProduction = false)
+        public static void UseEmeraudeStatusCodePage(this IApplicationBuilder app)
         {
-            if (environment.IsDevelopment() && !forseProduction)
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-
-                app.UseEmeraudeAdminSwagger();
-            }
-            else
-            {
-                app.UseExceptionHandler("/error/400");
-
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
             app.UseStatusCodePagesWithReExecute("/error/{0}");
-
-            app.UseHttpsRedirection();
-
-            app.UseEmeraudeStaticFiles();
-
-            app.UseWebMarkupMin();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            return app;
         }
 
-        private static IApplicationBuilder UseEmeraudeStaticFiles(this IApplicationBuilder app)
+        /// <summary>
+        /// Configure exception handler to be redirected to the Emeraude error page.
+        /// </summary>
+        /// <param name="app"></param>
+        public static void UseEmeraudeExceptionHandler(this IApplicationBuilder app)
         {
-            var mimeTypeProvider = new FileExtensionContentTypeProvider();
-            var staticFilesOptions = (IOptions<StaticFileOptions>)app.ApplicationServices.GetService(typeof(IOptions<StaticFileOptions>));
-            var staticFilesOptionsValue = staticFilesOptions.Value;
-            staticFilesOptionsValue.OnPrepareResponse = context =>
-            {
-                var headers = context.Context.Response.Headers;
-                var contentType = headers["Content-Type"];
-
-                if (contentType != "application/x-gzip" && !context.File.Name.EndsWith(".gz"))
-                {
-                    return;
-                }
-
-                var fileNameToTry = context.File.Name.Substring(0, context.File.Name.Length - 3);
-
-                if (mimeTypeProvider.TryGetContentType(fileNameToTry, out var mimeType))
-                {
-                    headers.Add("Content-Encoding", "gzip");
-                    headers["Content-Type"] = mimeType;
-                }
-            };
-            app.UseStaticFiles(staticFilesOptionsValue);
-
-            return app;
+            app.UseExceptionHandler("/error/400");
         }
     }
 }

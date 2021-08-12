@@ -41,26 +41,25 @@ namespace Definux.Emeraude.Presentation.ModelBinders
             }
 
             bool unixTimeStampFormat = double.TryParse(valueProviderResult.FirstValue, out double unixTimeStamp);
-            CultureInfo enUS = new CultureInfo("en-US");
-            bool standardFormat = DateTime.TryParseExact(valueProviderResult.FirstValue, SystemFormats.ShortDateFormat, enUS, DateTimeStyles.None, out DateTime parsedDateTime);
+            CultureInfo enUs = new CultureInfo("en-US");
+            bool standardFormat = DateTime.TryParseExact(valueProviderResult.FirstValue, SystemFormats.ShortDateFormat, enUs, DateTimeStyles.None, out DateTime parsedDateTime);
 
             if (unixTimeStampFormat)
             {
                 DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                DateTime date = start.AddSeconds(unixTimeStamp).ToLocalTime();
+                DateTime date = start.AddSeconds(unixTimeStamp).ToUniversalTime();
                 bindingContext.Result = ModelBindingResult.Success(this.GetDateTimeObject(date));
                 return Task.CompletedTask;
             }
-            else if (standardFormat)
+
+            if (standardFormat)
             {
                 bindingContext.Result = ModelBindingResult.Success(parsedDateTime);
                 return Task.CompletedTask;
             }
-            else
-            {
-                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Incorrect DateTime format. Use Unix Timestamp or {SystemFormats.ShortDateFormat}");
-                return Task.CompletedTask;
-            }
+
+            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Incorrect DateTime format. Use Unix Timestamp or {SystemFormats.ShortDateFormat}");
+            return Task.CompletedTask;
         }
 
         private object GetDateTimeObject(DateTime dateTime)

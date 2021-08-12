@@ -41,8 +41,7 @@ namespace Definux.Emeraude.Admin.Extensions
         /// Register all required Emeraude administration services.
         /// </summary>
         /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddEmeraudeAdmin(this IServiceCollection services)
+        public static void AddEmeraudeAdmin(this IServiceCollection services)
         {
             services.ConfigureAdminUI();
             services.ConfigureAdminClientBuilderUI();
@@ -52,22 +51,9 @@ namespace Definux.Emeraude.Admin.Extensions
                 options.ConstraintMap.Add(RootConstraint.RootConstraintKey, typeof(RootConstraint));
             });
 
-            var serviceProvider = services.BuildServiceProvider();
-            var hostEnvironment = serviceProvider.GetService<IWebHostEnvironment>();
-
-            if (hostEnvironment.IsDevelopment())
-            {
-                services.AddSwaggerGen(config =>
-                {
-                    config.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Application API", Version = "v1" });
-                });
-            }
-
             services.RegisterAdapters();
 
             services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
-
-            return services;
         }
 
         /// <summary>
