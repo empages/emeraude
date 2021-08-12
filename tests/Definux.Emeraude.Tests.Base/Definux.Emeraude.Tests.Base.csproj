@@ -13,12 +13,10 @@
         <PackageReference Include="xunit" Version="2.4.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
         <PackageReference Include="coverlet.collector" Version="1.2.0" />
-        <PackageReference Include="Definux.Emeraude.Client.Seo" Version="1.0.27" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
-      <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\web\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
     </ItemGroup>
 
 </Project>

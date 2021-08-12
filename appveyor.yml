@@ -1,7 +1,7 @@
-version: 1.2.1.{build}
+version: 2.0.0.{build}-preview
 branches:
   only:
-  - master
+  - v2.0-preview
 skip_tags: true
 image: Visual Studio 2019
 clone_depth: 1
@@ -27,7 +27,7 @@ deploy:
 - provider: Environment
   name: nuget
   on:
-    branch: master
+    branch: v2.0-preview
 - provider: GitHub
   tag: v$(appveyor_build_version)
   release: $(appveyor_build_version)
@@ -36,4 +36,4 @@ deploy:
     secure: HWgJb3yYS+zFJpUK3i7AQb14rhVfZTK4Aj1EKXQbYW96VbqnRa5NTCqC3bvsM/Lm
   artifact: /.*\.nupkg/
   on:
-    branch: master
+    branch: v2.0-preview
