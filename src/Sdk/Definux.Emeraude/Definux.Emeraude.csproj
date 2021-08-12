@@ -41,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Admin\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
     <ProjectReference Include="..\..\Client\Definux.Emeraude.Client.Seo\Definux.Emeraude.Client.Seo.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Emails\Definux.Emeraude.Emails.csproj" />

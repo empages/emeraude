@@ -18,12 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue\Definux.Emeraude.Admin.ClientBuilder.Modules.Vue.csproj" />
-    <ProjectReference Include="..\..\src\Admin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin\Definux.Emeraude.Admin.ClientBuilder.Modules.Xamarin.csproj" />
     <ProjectReference Include="..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Base\Definux.Emeraude.Tests.Base.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\web\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
   </ItemGroup>
 
 </Project>
