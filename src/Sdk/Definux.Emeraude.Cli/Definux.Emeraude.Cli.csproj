@@ -103,12 +103,6 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>
-    <GenerateDocs>False</GenerateDocs>
-  </PropertyGroup>
-
   <Import Project="..\..\..\Emeraude.targets" />
-  
-  <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
-  
+
 </Project>

@@ -34,7 +34,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     {
         private readonly UserManager<User> userManager;
         private readonly UrlEncoder urlEncoder;
-        private readonly EmOptions options;
+        private readonly EmMainOptions options;
         private readonly ITwoFactorAuthenticationService twoFactorAuthenticationService;
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             UserManager<User> userManager,
             UrlEncoder urlEncoder,
             ITwoFactorAuthenticationService twoFactorAuthenticationService,
-            IOptions<EmOptions> optionsAccessor)
+            IOptions<EmMainOptions> optionsAccessor)
         {
             this.userManager = userManager;
             this.urlEncoder = urlEncoder;

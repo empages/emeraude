@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Locales.Attributes;
+﻿using Definux.Emeraude.Configuration.Extensions;
+using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [LanguageRoute(MaintenanceRoute)]
         public IActionResult Index()
         {
-            if (!this.Options.MaintenanceMode)
+            if (!this.OptionsProvider.GetMainOptions().MaintenanceMode)
             {
                 return this.NotFound();
             }

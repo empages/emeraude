@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+using Definux.Emeraude.Client.Extensions;
+using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
@@ -20,7 +22,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         [Route("external")]
         public async Task<IActionResult> ExternalAuthentication([FromBody]ExternalAuthenticationData authData)
         {
-            if (!this.Options.Account.HasExternalAuthentication)
+            if (!this.OptionsProvider.GetIdentityOptions().HasExternalAuthentication)
             {
                 return this.NotFound();
             }

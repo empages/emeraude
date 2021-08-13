@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
@@ -86,7 +87,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         /// <inheritdoc/>
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!this.Options.Account.HasClientMvcAuthentication)
+            if (!this.OptionsProvider.GetClientOptions().HasClientMvcAuthentication)
             {
                 context.Result = this.NotFound();
             }

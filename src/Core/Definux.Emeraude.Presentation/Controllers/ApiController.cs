@@ -18,19 +18,19 @@ namespace Definux.Emeraude.Presentation.Controllers
     {
         private IEmLogger logger;
         private IMediator mediator;
-        private EmOptions options;
+        private IEmOptionsProvider optionsProvider;
 
-        /// <inheritdoc cref="EmOptions"/>
-        protected EmOptions Options
+        /// <inheritdoc cref="IEmOptionsProvider"/>
+        protected IEmOptionsProvider OptionsProvider
         {
             get
             {
-                if (this.options is null)
+                if (this.optionsProvider is null)
                 {
-                    this.options = this.HttpContext.RequestServices.GetService<IOptions<EmOptions>>()?.Value;
+                    this.optionsProvider = this.HttpContext.RequestServices.GetService<IEmOptionsProvider>();
                 }
 
-                return this.options;
+                return this.optionsProvider;
             }
         }
 

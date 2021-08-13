@@ -28,7 +28,7 @@ namespace Definux.Emeraude
                 {
                     var databaseInitializerManager = services.GetRequiredService<IDatabaseInitializerManager>();
                     var foldersInitializer = services.GetRequiredService<IFoldersInitializer>();
-                    var options = services.GetRequiredService<IOptions<EmOptions>>().Value;
+                    var options = services.GetRequiredService<IOptions<EmMainOptions>>().Value;
 
                     databaseInitializerManager.LoadDatabaseInitializers(options.DatabaseInitializers);
                     databaseInitializerManager.SeedAsync().Wait();

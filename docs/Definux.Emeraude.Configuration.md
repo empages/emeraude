@@ -57,7 +57,7 @@
 - [EmOptions](#T-Definux-Emeraude-Configuration-Options-EmOptions 'Definux.Emeraude.Configuration.Options.EmOptions')
   - [#ctor()](#M-Definux-Emeraude-Configuration-Options-EmOptions-#ctor 'Definux.Emeraude.Configuration.Options.EmOptions.#ctor')
   - [Account](#P-Definux-Emeraude-Configuration-Options-EmOptions-Account 'Definux.Emeraude.Configuration.Options.EmOptions.Account')
-  - [AdditonalRoles](#P-Definux-Emeraude-Configuration-Options-EmOptions-AdditonalRoles 'Definux.Emeraude.Configuration.Options.EmOptions.AdditonalRoles')
+  - [AdditionalRoles](#P-Definux-Emeraude-Configuration-Options-EmOptions-AdditionalRoles 'Definux.Emeraude.Configuration.Options.EmOptions.AdditionalRoles')
   - [AdminDashboardRequestType](#P-Definux-Emeraude-Configuration-Options-EmOptions-AdminDashboardRequestType 'Definux.Emeraude.Configuration.Options.EmOptions.AdminDashboardRequestType')
   - [Assemblies](#P-Definux-Emeraude-Configuration-Options-EmOptions-Assemblies 'Definux.Emeraude.Configuration.Options.EmOptions.Assemblies')
   - [DatabaseContextProvider](#P-Definux-Emeraude-Configuration-Options-EmOptions-DatabaseContextProvider 'Definux.Emeraude.Configuration.Options.EmOptions.DatabaseContextProvider')
@@ -65,6 +65,7 @@
   - [EmeraudeAssembly](#P-Definux-Emeraude-Configuration-Options-EmOptions-EmeraudeAssembly 'Definux.Emeraude.Configuration.Options.EmOptions.EmeraudeAssembly')
   - [EmeraudeVersion](#P-Definux-Emeraude-Configuration-Options-EmOptions-EmeraudeVersion 'Definux.Emeraude.Configuration.Options.EmOptions.EmeraudeVersion')
   - [ExecuteMigrations](#P-Definux-Emeraude-Configuration-Options-EmOptions-ExecuteMigrations 'Definux.Emeraude.Configuration.Options.EmOptions.ExecuteMigrations')
+  - [ExternalOptions](#P-Definux-Emeraude-Configuration-Options-EmOptions-ExternalOptions 'Definux.Emeraude.Configuration.Options.EmOptions.ExternalOptions')
   - [LoggerContextProvider](#P-Definux-Emeraude-Configuration-Options-EmOptions-LoggerContextProvider 'Definux.Emeraude.Configuration.Options.EmOptions.LoggerContextProvider')
   - [MaintenanceMode](#P-Definux-Emeraude-Configuration-Options-EmOptions-MaintenanceMode 'Definux.Emeraude.Configuration.Options.EmOptions.MaintenanceMode')
   - [Mapping](#P-Definux-Emeraude-Configuration-Options-EmOptions-Mapping 'Definux.Emeraude.Configuration.Options.EmOptions.Mapping')
@@ -75,15 +76,15 @@
   - [AddAssembly(assemblyName)](#M-Definux-Emeraude-Configuration-Options-EmOptions-AddAssembly-System-String- 'Definux.Emeraude.Configuration.Options.EmOptions.AddAssembly(System.String)')
   - [AddAssembly(assembly)](#M-Definux-Emeraude-Configuration-Options-EmOptions-AddAssembly-System-Reflection-Assembly- 'Definux.Emeraude.Configuration.Options.EmOptions.AddAssembly(System.Reflection.Assembly)')
   - [AddDatabaseInitializer\`\`1()](#M-Definux-Emeraude-Configuration-Options-EmOptions-AddDatabaseInitializer``1 'Definux.Emeraude.Configuration.Options.EmOptions.AddDatabaseInitializer``1')
+  - [AddExternalOptions\`\`1(option)](#M-Definux-Emeraude-Configuration-Options-EmOptions-AddExternalOptions``1-``0- 'Definux.Emeraude.Configuration.Options.EmOptions.AddExternalOptions``1(``0)')
   - [AddRole(roleName,claims)](#M-Definux-Emeraude-Configuration-Options-EmOptions-AddRole-System-String,System-String[]- 'Definux.Emeraude.Configuration.Options.EmOptions.AddRole(System.String,System.String[])')
+  - [GetExternalOption\`\`1()](#M-Definux-Emeraude-Configuration-Options-EmOptions-GetExternalOption``1 'Definux.Emeraude.Configuration.Options.EmOptions.GetExternalOption``1')
   - [SetEmeraudeAssembly(assembly)](#M-Definux-Emeraude-Configuration-Options-EmOptions-SetEmeraudeAssembly-System-Reflection-Assembly- 'Definux.Emeraude.Configuration.Options.EmOptions.SetEmeraudeAssembly(System.Reflection.Assembly)')
 - [MappingOptions](#T-Definux-Emeraude-Configuration-Options-MappingOptions 'Definux.Emeraude.Configuration.Options.MappingOptions')
   - [#ctor()](#M-Definux-Emeraude-Configuration-Options-MappingOptions-#ctor 'Definux.Emeraude.Configuration.Options.MappingOptions.#ctor')
   - [MappingAssemblies](#P-Definux-Emeraude-Configuration-Options-MappingOptions-MappingAssemblies 'Definux.Emeraude.Configuration.Options.MappingOptions.MappingAssemblies')
   - [MappingProfiles](#P-Definux-Emeraude-Configuration-Options-MappingOptions-MappingProfiles 'Definux.Emeraude.Configuration.Options.MappingOptions.MappingProfiles')
   - [AddProfile\`\`1()](#M-Definux-Emeraude-Configuration-Options-MappingOptions-AddProfile``1 'Definux.Emeraude.Configuration.Options.MappingOptions.AddProfile``1')
-- [Policies](#T-Definux-Emeraude-Configuration-Authorization-Policies 'Definux.Emeraude.Configuration.Authorization.Policies')
-  - [AuthorizedUploadPolicy](#F-Definux-Emeraude-Configuration-Authorization-Policies-AuthorizedUploadPolicy 'Definux.Emeraude.Configuration.Authorization.Policies.AuthorizedUploadPolicy')
 - [UIConfigureOptions](#T-Definux-Emeraude-Configuration-Abstractions-UIConfigureOptions 'Definux.Emeraude.Configuration.Abstractions.UIConfigureOptions')
   - [#ctor(environment)](#M-Definux-Emeraude-Configuration-Abstractions-UIConfigureOptions-#ctor-Microsoft-AspNetCore-Hosting-IHostingEnvironment- 'Definux.Emeraude.Configuration.Abstractions.UIConfigureOptions.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment)')
   - [Environment](#P-Definux-Emeraude-Configuration-Abstractions-UIConfigureOptions-Environment 'Definux.Emeraude.Configuration.Abstractions.UIConfigureOptions.Environment')
@@ -559,8 +560,8 @@ This constructor has no parameters.
 
 Account configuration options. For more information see [AccountOptions](#T-Definux-Emeraude-Configuration-Options-AccountOptions 'Definux.Emeraude.Configuration.Options.AccountOptions').
 
-<a name='P-Definux-Emeraude-Configuration-Options-EmOptions-AdditonalRoles'></a>
-### AdditonalRoles `property`
+<a name='P-Definux-Emeraude-Configuration-Options-EmOptions-AdditionalRoles'></a>
+### AdditionalRoles `property`
 
 ##### Summary
 
@@ -614,6 +615,13 @@ Get the current Emeraude Framework version.
 ##### Summary
 
 Flag that turn on/off auto execution of migrations for all database contexts.
+
+<a name='P-Definux-Emeraude-Configuration-Options-EmOptions-ExternalOptions'></a>
+### ExternalOptions `property`
+
+##### Summary
+
+Contains external options dictionary separated by type.
 
 <a name='P-Definux-Emeraude-Configuration-Options-EmOptions-LoggerContextProvider'></a>
 ### LoggerContextProvider `property`
@@ -707,6 +715,25 @@ This method has no parameters.
 | ---- | ----------- |
 | TDatabaseInitializer | Interface type of the database initializer. |
 
+<a name='M-Definux-Emeraude-Configuration-Options-EmOptions-AddExternalOptions``1-``0-'></a>
+### AddExternalOptions\`\`1(option) `method`
+
+##### Summary
+
+Add external option into the options instance.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| option | [\`\`0](#T-``0 '``0') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TOption | Type of the external option. |
+
 <a name='M-Definux-Emeraude-Configuration-Options-EmOptions-AddRole-System-String,System-String[]-'></a>
 ### AddRole(roleName,claims) `method`
 
@@ -720,6 +747,27 @@ Add additional role to the roles of the system. It is prefered to be added befor
 | ---- | ---- | ----------- |
 | roleName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
 | claims | [System.String[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String[] 'System.String[]') |  |
+
+<a name='M-Definux-Emeraude-Configuration-Options-EmOptions-GetExternalOption``1'></a>
+### GetExternalOption\`\`1() `method`
+
+##### Summary
+
+Gets instance of applied external option.
+
+##### Returns
+
+
+
+##### Parameters
+
+This method has no parameters.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TOption | Type of the external option. |
 
 <a name='M-Definux-Emeraude-Configuration-Options-EmOptions-SetEmeraudeAssembly-System-Reflection-Assembly-'></a>
 ### SetEmeraudeAssembly(assembly) `method`
@@ -786,24 +834,6 @@ This method has no parameters.
 | Name | Description |
 | ---- | ----------- |
 | TProfile | AutoMapper profile type. |
-
-<a name='T-Definux-Emeraude-Configuration-Authorization-Policies'></a>
-## Policies `type`
-
-##### Namespace
-
-Definux.Emeraude.Configuration.Authorization
-
-##### Summary
-
-List of the all predefined policies into the Emeraude framework.
-
-<a name='F-Definux-Emeraude-Configuration-Authorization-Policies-AuthorizedUploadPolicy'></a>
-### AuthorizedUploadPolicy `constants`
-
-##### Summary
-
-Policy used for upload functionality restrictions.
 
 <a name='T-Definux-Emeraude-Configuration-Abstractions-UIConfigureOptions'></a>
 ## UIConfigureOptions `type`

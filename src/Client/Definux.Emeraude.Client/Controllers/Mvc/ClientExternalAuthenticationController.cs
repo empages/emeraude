@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using IdentityServer4;
@@ -27,7 +28,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin([FromForm(Name = "externalProvider")]string externalProvider, string returnUrl = "")
         {
-            if (!this.Options.Account.HasExternalAuthentication)
+            if (!this.OptionsProvider.GetIdentityOptions().HasExternalAuthentication)
             {
                 return this.NotFound();
             }

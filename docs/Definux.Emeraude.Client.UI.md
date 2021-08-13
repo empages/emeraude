@@ -63,7 +63,7 @@ Definux.Emeraude.Client.UI
 
 ##### Summary
 
-Static class that provides access to the Client UI asembly information.
+Static class that provides access to the Client UI assembly information.
 
 <a name='P-Definux-Emeraude-Client-UI-ClientUIAssemblyPart-Assembly'></a>
 ### Assembly `property`

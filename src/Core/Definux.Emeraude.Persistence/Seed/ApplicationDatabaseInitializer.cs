@@ -17,7 +17,7 @@ namespace Definux.Emeraude.Persistence.Seed
         private readonly IEmContext context;
         private readonly IUserManager userManager;
         private readonly IRoleManager roleManager;
-        private readonly EmOptions options;
+        private readonly EmMainOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDatabaseInitializer"/> class.
@@ -30,7 +30,7 @@ namespace Definux.Emeraude.Persistence.Seed
             IEmContext context,
             IUserManager userManager,
             IRoleManager roleManager,
-            IOptions<EmOptions> optionsAccessor)
+            IOptions<EmMainOptions> optionsAccessor)
         {
             this.context = context;
             this.userManager = userManager;

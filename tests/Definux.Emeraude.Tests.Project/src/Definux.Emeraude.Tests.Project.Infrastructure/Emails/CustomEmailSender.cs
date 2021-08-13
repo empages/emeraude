@@ -7,7 +7,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Emails
     {
         public async Task<SendEmailResult> SendEmailAsync(string templateName, EmailModel model)
         {
-            return SendEmailResult.SuccessResult;
+            return await Task.FromResult(SendEmailResult.SuccessResult);
         }
     }
 }

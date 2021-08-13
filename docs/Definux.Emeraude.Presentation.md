@@ -8,12 +8,25 @@
   - [HideActivityLogParameters](#P-Definux-Emeraude-Presentation-Controllers-ApiController-HideActivityLogParameters 'Definux.Emeraude.Presentation.Controllers.ApiController.HideActivityLogParameters')
   - [Logger](#P-Definux-Emeraude-Presentation-Controllers-ApiController-Logger 'Definux.Emeraude.Presentation.Controllers.ApiController.Logger')
   - [Mediator](#P-Definux-Emeraude-Presentation-Controllers-ApiController-Mediator 'Definux.Emeraude.Presentation.Controllers.ApiController.Mediator')
+  - [Options](#P-Definux-Emeraude-Presentation-Controllers-ApiController-Options 'Definux.Emeraude.Presentation.Controllers.ApiController.Options')
   - [GetSimpleResponse(success)](#M-Definux-Emeraude-Presentation-Controllers-ApiController-GetSimpleResponse-System-Boolean- 'Definux.Emeraude.Presentation.Controllers.ApiController.GetSimpleResponse(System.Boolean)')
   - [GetSuccessResponse(success)](#M-Definux-Emeraude-Presentation-Controllers-ApiController-GetSuccessResponse-System-Boolean- 'Definux.Emeraude.Presentation.Controllers.ApiController.GetSuccessResponse(System.Boolean)')
   - [OnActionExecuting()](#M-Definux-Emeraude-Presentation-Controllers-ApiController-OnActionExecuting-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext- 'Definux.Emeraude.Presentation.Controllers.ApiController.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)')
+- [ApiEndpointsControllerAttribute](#T-Definux-Emeraude-Presentation-Attributes-ApiEndpointsControllerAttribute 'Definux.Emeraude.Presentation.Attributes.ApiEndpointsControllerAttribute')
 - [ControllerExtensions](#T-Definux-Emeraude-Presentation-Extensions-ControllerExtensions 'Definux.Emeraude.Presentation.Extensions.ControllerExtensions')
   - [BadRequestWithModelErrors(controller)](#M-Definux-Emeraude-Presentation-Extensions-ControllerExtensions-BadRequestWithModelErrors-Microsoft-AspNetCore-Mvc-Controller- 'Definux.Emeraude.Presentation.Extensions.ControllerExtensions.BadRequestWithModelErrors(Microsoft.AspNetCore.Mvc.Controller)')
   - [UploadFileResponse(controller,result)](#M-Definux-Emeraude-Presentation-Extensions-ControllerExtensions-UploadFileResponse-Microsoft-AspNetCore-Mvc-Controller,Definux-Emeraude-Application-Requests-Files-Commands-Shared-UploadResult- 'Definux.Emeraude.Presentation.Extensions.ControllerExtensions.UploadFileResponse(Microsoft.AspNetCore.Mvc.Controller,Definux.Emeraude.Application.Requests.Files.Commands.Shared.UploadResult)')
+- [DateTimeModelBinderProvider](#T-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinderProvider 'Definux.Emeraude.Presentation.ModelBinders.DateTimeModelBinderProvider')
+  - [GetBinder()](#M-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinderProvider-GetBinder-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBinderProviderContext- 'Definux.Emeraude.Presentation.ModelBinders.DateTimeModelBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)')
+- [DateTimeModelBinder\`1](#T-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1 'Definux.Emeraude.Presentation.ModelBinders.DateTimeModelBinder`1')
+  - [AllowNullValue](#P-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1-AllowNullValue 'Definux.Emeraude.Presentation.ModelBinders.DateTimeModelBinder`1.AllowNullValue')
+  - [BindModelAsync()](#M-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1-BindModelAsync-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBindingContext- 'Definux.Emeraude.Presentation.ModelBinders.DateTimeModelBinder`1.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)')
+- [EndpointAttribute](#T-Definux-Emeraude-Presentation-Attributes-EndpointAttribute 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute')
+  - [#ctor(responseType)](#M-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-#ctor-System-Type- 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute.#ctor(System.Type)')
+  - [#ctor()](#M-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-#ctor 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute.#ctor')
+  - [ResponseType](#P-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-ResponseType 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute.ResponseType')
+- [ErrorController](#T-Definux-Emeraude-Presentation-Controllers-ErrorController 'Definux.Emeraude.Presentation.Controllers.ErrorController')
+  - [Index(statusCode,compositeViewEngine)](#M-Definux-Emeraude-Presentation-Controllers-ErrorController-Index-System-Int32,Microsoft-AspNetCore-Mvc-ViewEngines-ICompositeViewEngine- 'Definux.Emeraude.Presentation.Controllers.ErrorController.Index(System.Int32,Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine)')
 - [IChildController](#T-Definux-Emeraude-Presentation-Controllers-IChildController 'Definux.Emeraude.Presentation.Controllers.IChildController')
   - [ParentController](#P-Definux-Emeraude-Presentation-Controllers-IChildController-ParentController 'Definux.Emeraude.Presentation.Controllers.IChildController.ParentController')
 - [ModelStateDictionaryExtensions](#T-Definux-Emeraude-Presentation-Extensions-ModelStateDictionaryExtensions 'Definux.Emeraude.Presentation.Extensions.ModelStateDictionaryExtensions')
@@ -44,6 +57,12 @@
   - [ManageLanguageCookie()](#M-Definux-Emeraude-Presentation-Controllers-PublicController-ManageLanguageCookie 'Definux.Emeraude.Presentation.Controllers.PublicController.ManageLanguageCookie')
   - [OnActionExecuting()](#M-Definux-Emeraude-Presentation-Controllers-PublicController-OnActionExecuting-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext- 'Definux.Emeraude.Presentation.Controllers.PublicController.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)')
   - [OnActionExecutionAsync()](#M-Definux-Emeraude-Presentation-Controllers-PublicController-OnActionExecutionAsync-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext,Microsoft-AspNetCore-Mvc-Filters-ActionExecutionDelegate- 'Definux.Emeraude.Presentation.Controllers.PublicController.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)')
+- [RequestExceptionFilter](#T-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter 'Definux.Emeraude.Presentation.ActionFilters.RequestExceptionFilter')
+  - [#ctor()](#M-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter-#ctor 'Definux.Emeraude.Presentation.ActionFilters.RequestExceptionFilter.#ctor')
+  - [OnException()](#M-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter-OnException-Microsoft-AspNetCore-Mvc-Filters-ExceptionContext- 'Definux.Emeraude.Presentation.ActionFilters.RequestExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)')
+- [TimeSpanConverter](#T-Definux-Emeraude-Presentation-Converters-TimeSpanConverter 'Definux.Emeraude.Presentation.Converters.TimeSpanConverter')
+  - [Read()](#M-Definux-Emeraude-Presentation-Converters-TimeSpanConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'Definux.Emeraude.Presentation.Converters.TimeSpanConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-Definux-Emeraude-Presentation-Converters-TimeSpanConverter-Write-System-Text-Json-Utf8JsonWriter,System-TimeSpan,System-Text-Json-JsonSerializerOptions- 'Definux.Emeraude.Presentation.Converters.TimeSpanConverter.Write(System.Text.Json.Utf8JsonWriter,System.TimeSpan,System.Text.Json.JsonSerializerOptions)')
 
 <a name='T-Definux-Emeraude-Presentation-Controllers-ApiController'></a>
 ## ApiController `type`
@@ -79,6 +98,13 @@ Flag that hide or show the request params in activity log.
 
 <a name='P-Definux-Emeraude-Presentation-Controllers-ApiController-Mediator'></a>
 ### Mediator `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-Definux-Emeraude-Presentation-Controllers-ApiController-Options'></a>
+### Options `property`
 
 ##### Summary
 
@@ -129,6 +155,17 @@ Get HTTP default OK or Bad request response based on the passed flag.
 
 This method has no parameters.
 
+<a name='T-Definux-Emeraude-Presentation-Attributes-ApiEndpointsControllerAttribute'></a>
+## ApiEndpointsControllerAttribute `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.Attributes
+
+##### Summary
+
+Attribute that indicates that the current action must be tolerated as a endpoint from the API.
+
 <a name='T-Definux-Emeraude-Presentation-Extensions-ControllerExtensions'></a>
 ## ControllerExtensions `type`
 
@@ -174,6 +211,134 @@ Action result based on upload result.
 | ---- | ---- | ----------- |
 | controller | [Microsoft.AspNetCore.Mvc.Controller](#T-Microsoft-AspNetCore-Mvc-Controller 'Microsoft.AspNetCore.Mvc.Controller') |  |
 | result | [Definux.Emeraude.Application.Requests.Files.Commands.Shared.UploadResult](#T-Definux-Emeraude-Application-Requests-Files-Commands-Shared-UploadResult 'Definux.Emeraude.Application.Requests.Files.Commands.Shared.UploadResult') |  |
+
+<a name='T-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinderProvider'></a>
+## DateTimeModelBinderProvider `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.ModelBinders
+
+##### Summary
+
+Customized [DateTime](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.DateTime 'System.DateTime') model binder provider for the needs of Emeraude.
+
+<a name='M-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinderProvider-GetBinder-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBinderProviderContext-'></a>
+### GetBinder() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1'></a>
+## DateTimeModelBinder\`1 `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.ModelBinders
+
+##### Summary
+
+Customized [DateTime](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.DateTime 'System.DateTime') model binder for the needs of Emeraude.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TDateTime | DateTime or DateTimeOffset type. |
+
+<a name='P-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1-AllowNullValue'></a>
+### AllowNullValue `property`
+
+##### Summary
+
+Flag that indicates whether the model can be null.
+
+<a name='M-Definux-Emeraude-Presentation-ModelBinders-DateTimeModelBinder`1-BindModelAsync-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBindingContext-'></a>
+### BindModelAsync() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Definux-Emeraude-Presentation-Attributes-EndpointAttribute'></a>
+## EndpointAttribute `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.Attributes
+
+##### Summary
+
+Decorates action from API controller to be marked as a endpoint with specified response type.
+
+<a name='M-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-#ctor-System-Type-'></a>
+### #ctor(responseType) `constructor`
+
+##### Summary
+
+Initializes a new instance of the [EndpointAttribute](#T-Definux-Emeraude-Presentation-Attributes-EndpointAttribute 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute') class.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| responseType | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') |  |
+
+<a name='M-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance of the [EndpointAttribute](#T-Definux-Emeraude-Presentation-Attributes-EndpointAttribute 'Definux.Emeraude.Presentation.Attributes.EndpointAttribute') class.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='P-Definux-Emeraude-Presentation-Attributes-EndpointAttribute-ResponseType'></a>
+### ResponseType `property`
+
+##### Summary
+
+Result type of the endpoint.
+
+<a name='T-Definux-Emeraude-Presentation-Controllers-ErrorController'></a>
+## ErrorController `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.Controllers
+
+##### Summary
+
+Generic error controller which is triggered by the error interceptor.
+
+<a name='M-Definux-Emeraude-Presentation-Controllers-ErrorController-Index-System-Int32,Microsoft-AspNetCore-Mvc-ViewEngines-ICompositeViewEngine-'></a>
+### Index(statusCode,compositeViewEngine) `method`
+
+##### Summary
+
+Error index action that returns a status code result if there no defined error view or the view placed on 'Views/Client/Error/Index.cshtml'.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| statusCode | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
+| compositeViewEngine | [Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine](#T-Microsoft-AspNetCore-Mvc-ViewEngines-ICompositeViewEngine 'Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine') |  |
 
 <a name='T-Definux-Emeraude-Presentation-Controllers-IChildController'></a>
 ## IChildController `type`
@@ -525,6 +690,72 @@ This method has no parameters.
 
 <a name='M-Definux-Emeraude-Presentation-Controllers-PublicController-OnActionExecutionAsync-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext,Microsoft-AspNetCore-Mvc-Filters-ActionExecutionDelegate-'></a>
 ### OnActionExecutionAsync() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter'></a>
+## RequestExceptionFilter `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.ActionFilters
+
+##### Summary
+
+Filter for catching specific exceptions during request execution.
+
+<a name='M-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance of the [RequestExceptionFilter](#T-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter 'Definux.Emeraude.Presentation.ActionFilters.RequestExceptionFilter') class.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-Definux-Emeraude-Presentation-ActionFilters-RequestExceptionFilter-OnException-Microsoft-AspNetCore-Mvc-Filters-ExceptionContext-'></a>
+### OnException() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Definux-Emeraude-Presentation-Converters-TimeSpanConverter'></a>
+## TimeSpanConverter `type`
+
+##### Namespace
+
+Definux.Emeraude.Presentation.Converters
+
+##### Summary
+
+Convertor for transform timespan to a JSON.
+
+<a name='M-Definux-Emeraude-Presentation-Converters-TimeSpanConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Definux-Emeraude-Presentation-Converters-TimeSpanConverter-Write-System-Text-Json-Utf8JsonWriter,System-TimeSpan,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 

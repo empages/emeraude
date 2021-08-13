@@ -1,5 +1,5 @@
 @using Definux.Emeraude.Client.UI.Adapters
-@if (EmOptionsAccessor.Value.Account.HasExternalAuthentication)
+@if (OptionsProvider.GetOptionValue<bool>("IdentityOptions:HasExternalAuthentication"))
 {
     @inject IExternalAuthenticationProvidersCollection ExternalAuthenticationProvidersCollection
     <h6 class="text-center">@Titles.ContinueWith</h6>

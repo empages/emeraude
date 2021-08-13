@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Identity;
+using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -38,7 +41,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// <inheritdoc/>
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!this.Options.Account.HasClientApiAuthentication)
+            if (!this.OptionsProvider.GetClientOptions().HasClientApiAuthentication)
             {
                 context.Result = this.NotFound();
             }

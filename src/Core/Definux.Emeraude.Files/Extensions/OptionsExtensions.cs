@@ -4,7 +4,7 @@ using Definux.Emeraude.Configuration.Options;
 namespace Definux.Emeraude.Files.Extensions
 {
     /// <summary>
-    /// Extensions for <see cref="EmOptions"/>.
+    /// Extensions for <see cref="EmMainOptions"/>.
     /// </summary>
     public static class OptionsExtensions
     {
@@ -13,15 +13,15 @@ namespace Definux.Emeraude.Files.Extensions
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static EmFilesOptions GetFilesOptions(this EmOptions options) => options.GetExternalOption<EmFilesOptions>() ?? new EmFilesOptions();
+        public static EmFilesOptions GetFilesOptions(this EmMainOptions options) => options.GetExternalOption<EmFilesOptions>() ?? new EmFilesOptions();
 
         /// <summary>
-        /// Add external Emeraude files options
+        /// Add external Emeraude files options.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="filesOptionsAction"></param>
         public static void ConfigureFilesInfrastructure(
-            this EmOptions options,
+            this EmMainOptions options,
             Action<EmFilesOptions> filesOptionsAction)
         {
             EmFilesOptions filesOptions = new EmFilesOptions();

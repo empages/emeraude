@@ -19,16 +19,20 @@ namespace Definux.Emeraude.Client.Extensions
         /// Register client features.
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static IServiceCollection AddEmeraudeClient(this IServiceCollection services)
+        public static IServiceCollection AddEmeraudeClient(this IServiceCollection services, EmClientOptions options)
         {
             services.ConfigureClientUI();
-            services.AddRouting(options =>
+            services.AddRouting(opt =>
             {
-                options.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
+                opt.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
             });
 
             services.AddScoped<IExternalAuthenticationProvidersCollection, ExternalAuthenticationProvidersCollection>();
+
+            services.AddScoped(typeof(ISitemapComposition), options.SitemapCompositionType);
+            services.AddScoped<IHtmlMetaTagsBuilder, HtmlMetaTagsBuilder>();
 
             return services;
         }

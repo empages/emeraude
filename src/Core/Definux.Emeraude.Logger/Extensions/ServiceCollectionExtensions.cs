@@ -20,25 +20,25 @@ namespace Definux.Emeraude.Logger.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public static IServiceCollection RegisterEmeraudeLogger(this IServiceCollection services, IConfiguration configuration, EmOptions options)
+        /// <param name="loggerOptions"></param>
+        /// <param name="mainOptions"></param>
+        public static void RegisterEmeraudeLogger(this IServiceCollection services, IConfiguration configuration, EmLoggerOptions loggerOptions, EmMainOptions mainOptions)
         {
             string connectionString = configuration.GetConnectionString(LoggerConnectionStringKey);
 
-            switch (options.LoggerContextProvider)
+            switch (loggerOptions.ContextProvider)
             {
                 case DatabaseContextProvider.MicrosoftSqlServer:
                     services.AddDbContext<LoggerContext>(contextOptions =>
                         contextOptions.UseSqlServer(
                             connectionString,
-                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
                     break;
                 case DatabaseContextProvider.PostgreSql:
                     services.AddDbContext<LoggerContext>(contextOptions =>
                         contextOptions.UseNpgsql(
                             connectionString,
-                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
                     break;
                 case DatabaseContextProvider.InMemoryDatabase:
                     services.AddDbContext<LoggerContext>(contextOptions =>
@@ -47,25 +47,27 @@ namespace Definux.Emeraude.Logger.Extensions
             }
 
             services.AddScoped<ILoggerContext, LoggerContext>();
-            if (!options.UseExternalLoggerImplementation)
+            if (!loggerOptions.UseExternalLoggerImplementation)
             {
                 services.AddScoped<ILogger, Logger>();
                 services.AddScoped<IEmLogger, Logger>();
             }
 
-            if (options.ExecuteMigrations)
+            if (mainOptions.ExecuteMigrations)
             {
                 try
                 {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<LoggerContext>().Database.Migrate();
+                    services
+                        .BuildServiceProvider()
+                        .GetService<LoggerContext>()
+                        ?.Database
+                        .Migrate();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                 }
             }
-
-            return services;
         }
     }
 }

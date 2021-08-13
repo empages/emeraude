@@ -26,17 +26,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
-    <ProjectReference Include="..\..\Core\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder.UI\Definux.Emeraude.ClientBuilder.UI.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <GenerateDocs>False</GenerateDocs>
-  </PropertyGroup>
-  
   <Import Project="..\..\..\Emeraude.targets" />
   
-  <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
 </Project>

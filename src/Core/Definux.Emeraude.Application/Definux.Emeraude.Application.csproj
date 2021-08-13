@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
@@ -35,12 +36,6 @@
     </Reference>
   </ItemGroup>
 
-  <PropertyGroup>
-    <GenerateDocs>False</GenerateDocs>
-  </PropertyGroup>
-
   <Import Project="..\..\..\Emeraude.targets" />
-  
-  <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
-  
+
 </Project>

@@ -28,7 +28,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// Initializes a new instance of the <see cref="ClientUploadApiController"/> class.
         /// </summary>
         /// <param name="emeraudeOptionsAccessor"></param>
-        public ClientUploadApiController(IOptions<EmOptions> emeraudeOptionsAccessor)
+        public ClientUploadApiController(IOptions<EmMainOptions> emeraudeOptionsAccessor)
         {
             this.filesOptions = emeraudeOptionsAccessor.Value.GetFilesOptions();
         }

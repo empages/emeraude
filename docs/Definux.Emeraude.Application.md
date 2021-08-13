@@ -13,8 +13,6 @@
   - [#ctor()](#M-Definux-Emeraude-Application-Requests-Identity-Commands-ActivateTwoFactorAuthentication-ActivateTwoFactorAuthenticationCommandValidator-#ctor 'Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication.ActivateTwoFactorAuthenticationCommandValidator.#ctor')
 - [ActivateTwoFactorAuthenticationResult](#T-Definux-Emeraude-Application-Requests-Identity-Commands-ActivateTwoFactorAuthentication-ActivateTwoFactorAuthenticationResult 'Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication.ActivateTwoFactorAuthenticationResult')
   - [#ctor(success)](#M-Definux-Emeraude-Application-Requests-Identity-Commands-ActivateTwoFactorAuthentication-ActivateTwoFactorAuthenticationResult-#ctor-System-Boolean- 'Definux.Emeraude.Application.Requests.Identity.Commands.ActivateTwoFactorAuthentication.ActivateTwoFactorAuthenticationResult.#ctor(System.Boolean)')
-- [ApplicationMappingProfile](#T-Definux-Emeraude-Application-Mapping-ApplicationMappingProfile 'Definux.Emeraude.Application.Mapping.ApplicationMappingProfile')
-  - [#ctor()](#M-Definux-Emeraude-Application-Mapping-ApplicationMappingProfile-#ctor 'Definux.Emeraude.Application.Mapping.ApplicationMappingProfile.#ctor')
 - [AssemblyMappingProfile](#T-Definux-Emeraude-Application-Mapping-AssemblyMappingProfile 'Definux.Emeraude.Application.Mapping.AssemblyMappingProfile')
   - [#ctor(assembly)](#M-Definux-Emeraude-Application-Mapping-AssemblyMappingProfile-#ctor-System-Reflection-Assembly- 'Definux.Emeraude.Application.Mapping.AssemblyMappingProfile.#ctor(System.Reflection.Assembly)')
 - [BearerAuthenticationResult](#T-Definux-Emeraude-Application-Identity-BearerAuthenticationResult 'Definux.Emeraude.Application.Identity.BearerAuthenticationResult')
@@ -155,6 +153,8 @@
 - [IEmLogger](#T-Definux-Emeraude-Application-Logger-IEmLogger 'Definux.Emeraude.Application.Logger.IEmLogger')
   - [LogActivity(context,hideParameters)](#M-Definux-Emeraude-Application-Logger-IEmLogger-LogActivity-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext,System-Boolean- 'Definux.Emeraude.Application.Logger.IEmLogger.LogActivity(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,System.Boolean)')
   - [LogEmailAsync(emailAddress,receiver,subject,body,sent)](#M-Definux-Emeraude-Application-Logger-IEmLogger-LogEmailAsync-System-String,System-String,System-String,System-String,System-Boolean- 'Definux.Emeraude.Application.Logger.IEmLogger.LogEmailAsync(System.String,System.String,System.String,System.String,System.Boolean)')
+- [IEmailRenderer](#T-Definux-Emeraude-Application-Emails-IEmailRenderer 'Definux.Emeraude.Application.Emails.IEmailRenderer')
+  - [RenderToStringAsync(templateName,model)](#M-Definux-Emeraude-Application-Emails-IEmailRenderer-RenderToStringAsync-System-String,Definux-Emeraude-Application-Emails-EmailModel- 'Definux.Emeraude.Application.Emails.IEmailRenderer.RenderToStringAsync(System.String,Definux.Emeraude.Application.Emails.EmailModel)')
 - [IEmailSender](#T-Definux-Emeraude-Application-Emails-IEmailSender 'Definux.Emeraude.Application.Emails.IEmailSender')
   - [SendEmailAsync(templateName,model)](#M-Definux-Emeraude-Application-Emails-IEmailSender-SendEmailAsync-System-String,Definux-Emeraude-Application-Emails-EmailModel- 'Definux.Emeraude.Application.Emails.IEmailSender.SendEmailAsync(System.String,Definux.Emeraude.Application.Emails.EmailModel)')
 - [IExternalLoginEventHandler](#T-Definux-Emeraude-Application-EventHandlers-IExternalLoginEventHandler 'Definux.Emeraude.Application.EventHandlers.IExternalLoginEventHandler')
@@ -354,14 +354,6 @@
 - [InitFolder](#T-Definux-Emeraude-Application-Files-InitFolder 'Definux.Emeraude.Application.Files.InitFolder')
   - [Children](#P-Definux-Emeraude-Application-Files-InitFolder-Children 'Definux.Emeraude.Application.Files.InitFolder.Children')
   - [Name](#P-Definux-Emeraude-Application-Files-InitFolder-Name 'Definux.Emeraude.Application.Files.InitFolder.Name')
-- [LogFrontEndErrorCommand](#T-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand')
-  - [Message](#P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Message 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.Message')
-  - [Method](#P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Method 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.Method')
-  - [Source](#P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Source 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.Source')
-  - [StackTrace](#P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-StackTrace 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.StackTrace')
-- [LogFrontEndErrorCommandHandler](#T-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.LogFrontEndErrorCommandHandler')
-  - [#ctor(logger,loggerContext,mapper)](#M-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler-#ctor-Definux-Emeraude-Application-Logger-IEmLogger,Definux-Emeraude-Application-Logger-ILoggerContext,AutoMapper-IMapper- 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.LogFrontEndErrorCommandHandler.#ctor(Definux.Emeraude.Application.Logger.IEmLogger,Definux.Emeraude.Application.Logger.ILoggerContext,AutoMapper.IMapper)')
-  - [Handle()](#M-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler-Handle-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand,System-Threading-CancellationToken- 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.LogFrontEndErrorCommandHandler.Handle(Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand,System.Threading.CancellationToken)')
 - [LoginCommand](#T-Definux-Emeraude-Application-Requests-Identity-Commands-Login-LoginCommand 'Definux.Emeraude.Application.Requests.Identity.Commands.Login.LoginCommand')
   - [Email](#P-Definux-Emeraude-Application-Requests-Identity-Commands-Login-LoginCommand-Email 'Definux.Emeraude.Application.Requests.Identity.Commands.Login.LoginCommand.Email')
   - [Password](#P-Definux-Emeraude-Application-Requests-Identity-Commands-Login-LoginCommand-Password 'Definux.Emeraude.Application.Requests.Identity.Commands.Login.LoginCommand.Password')
@@ -623,28 +615,6 @@ Initializes a new instance of the [ActivateTwoFactorAuthenticationResult](#T-Def
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | success | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
-
-<a name='T-Definux-Emeraude-Application-Mapping-ApplicationMappingProfile'></a>
-## ApplicationMappingProfile `type`
-
-##### Namespace
-
-Definux.Emeraude.Application.Mapping
-
-##### Summary
-
-Mapping profile for custom rules.
-
-<a name='M-Definux-Emeraude-Application-Mapping-ApplicationMappingProfile-#ctor'></a>
-### #ctor() `constructor`
-
-##### Summary
-
-Initializes a new instance of the [ApplicationMappingProfile](#T-Definux-Emeraude-Application-Mapping-ApplicationMappingProfile 'Definux.Emeraude.Application.Mapping.ApplicationMappingProfile') class.
-
-##### Parameters
-
-This constructor has no parameters.
 
 <a name='T-Definux-Emeraude-Application-Mapping-AssemblyMappingProfile'></a>
 ## AssemblyMappingProfile `type`
@@ -2190,6 +2160,35 @@ Save information about sent/unsent email.
 | subject | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
 | body | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
 | sent | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
+
+<a name='T-Definux-Emeraude-Application-Emails-IEmailRenderer'></a>
+## IEmailRenderer `type`
+
+##### Namespace
+
+Definux.Emeraude.Application.Emails
+
+##### Summary
+
+Service that provides renderer that use Razor for generate email body.
+
+<a name='M-Definux-Emeraude-Application-Emails-IEmailRenderer-RenderToStringAsync-System-String,Definux-Emeraude-Application-Emails-EmailModel-'></a>
+### RenderToStringAsync(templateName,model) `method`
+
+##### Summary
+
+Render email HTML body via provided template name and Email model.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| templateName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| model | [Definux.Emeraude.Application.Emails.EmailModel](#T-Definux-Emeraude-Application-Emails-EmailModel 'Definux.Emeraude.Application.Emails.EmailModel') |  |
 
 <a name='T-Definux-Emeraude-Application-Emails-IEmailSender'></a>
 ## IEmailSender `type`
@@ -4728,82 +4727,6 @@ List of all children folders that are placed in the current folder.
 ##### Summary
 
 Name of the folder.
-
-<a name='T-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand'></a>
-## LogFrontEndErrorCommand `type`
-
-##### Namespace
-
-Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError
-
-##### Summary
-
-Command for log front-end error.
-
-<a name='P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Message'></a>
-### Message `property`
-
-##### Summary
-
-Message of the error.
-
-<a name='P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Method'></a>
-### Method `property`
-
-##### Summary
-
-The method where the error occured.
-
-<a name='P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-Source'></a>
-### Source `property`
-
-##### Summary
-
-Error source.
-
-<a name='P-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-StackTrace'></a>
-### StackTrace `property`
-
-##### Summary
-
-Stack trace of the error.
-
-<a name='T-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler'></a>
-## LogFrontEndErrorCommandHandler `type`
-
-##### Namespace
-
-Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand
-
-##### Summary
-
-*Inherit from parent.*
-
-<a name='M-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler-#ctor-Definux-Emeraude-Application-Logger-IEmLogger,Definux-Emeraude-Application-Logger-ILoggerContext,AutoMapper-IMapper-'></a>
-### #ctor(logger,loggerContext,mapper) `constructor`
-
-##### Summary
-
-Initializes a new instance of the [LogFrontEndErrorCommandHandler](#T-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler 'Definux.Emeraude.Application.Requests.Logging.Commands.LogFrontEndError.LogFrontEndErrorCommand.LogFrontEndErrorCommandHandler') class.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| logger | [Definux.Emeraude.Application.Logger.IEmLogger](#T-Definux-Emeraude-Application-Logger-IEmLogger 'Definux.Emeraude.Application.Logger.IEmLogger') |  |
-| loggerContext | [Definux.Emeraude.Application.Logger.ILoggerContext](#T-Definux-Emeraude-Application-Logger-ILoggerContext 'Definux.Emeraude.Application.Logger.ILoggerContext') |  |
-| mapper | [AutoMapper.IMapper](#T-AutoMapper-IMapper 'AutoMapper.IMapper') |  |
-
-<a name='M-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand-LogFrontEndErrorCommandHandler-Handle-Definux-Emeraude-Application-Requests-Logging-Commands-LogFrontEndError-LogFrontEndErrorCommand,System-Threading-CancellationToken-'></a>
-### Handle() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
 
 <a name='T-Definux-Emeraude-Application-Requests-Identity-Commands-Login-LoginCommand'></a>
 ## LoginCommand `type`

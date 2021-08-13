@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Identity.Services
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private readonly UserManager<User> userManager;
         private readonly UrlEncoder urlEncoder;
-        private readonly EmOptions options;
+        private readonly EmMainOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TwoFactorAuthenticationService"/> class.
@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Identity.Services
         /// <param name="userManager"></param>
         /// <param name="urlEncoder"></param>
         /// <param name="optionsAccessor"></param>
-        public TwoFactorAuthenticationService(UserManager<User> userManager, UrlEncoder urlEncoder, IOptions<EmOptions> optionsAccessor)
+        public TwoFactorAuthenticationService(UserManager<User> userManager, UrlEncoder urlEncoder, IOptions<EmMainOptions> optionsAccessor)
         {
             this.userManager = userManager;
             this.urlEncoder = urlEncoder;

@@ -1,14 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Copyright>2020 Definux</Copyright>
+		<Copyright>2021 Definux</Copyright>
 		<Company>Definux</Company>
 		<Authors>Definux</Authors>
 		<Product>Emeraude</Product>
 		<PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
-		<Description>Emeraude Framework is a powerful library providing abstractions, builders and ready to use ASP.NET Core structure for creating SEO friendly web applications based on SSR Vue.js.</Description>
-		<PackageTags>aspnetcore, aspnetcoremvc, vuejs, seo, razor, definux, mvc, mvvm, ssr</PackageTags>
+		<Description>Emeraude Framework is a powerful solution for creating ASP.NET based web applications with predefined administration, authentication, authorization, localization, logging.</Description>
+		<PackageTags>aspnet, aspnetmvc, razor, definux, mvc, administration, localization, logging, authentication, authorization</PackageTags>
 		<Version>$(PACKAGE_VERSION)</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>logo_128.jpg</PackageIcon>
@@ -21,11 +21,18 @@
 	<ItemGroup>
 		<None Include="..\..\..\art\logo_128.jpg">
 		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
+		  <!--suppress CheckTagEmptyBody -->
+			<PackagePath></PackagePath>
 		</None>
 		<None Include="..\..\..\LICENSE">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
 		</None>
-  </ItemGroup>
+  	</ItemGroup>
+
+	<PropertyGroup>
+		<GenerateDocs>False</GenerateDocs>
+	</PropertyGroup>
+	<Import Project="builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
+	
 </Project>

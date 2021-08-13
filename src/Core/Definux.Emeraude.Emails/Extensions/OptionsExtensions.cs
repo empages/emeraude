@@ -4,7 +4,7 @@ using Definux.Emeraude.Configuration.Options;
 namespace Definux.Emeraude.Emails.Extensions
 {
     /// <summary>
-    /// Extensions for <see cref="EmOptions"/>.
+    /// Extensions for <see cref="EmMainOptions"/>.
     /// </summary>
     public static class OptionsExtensions
     {
@@ -13,15 +13,15 @@ namespace Definux.Emeraude.Emails.Extensions
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static EmEmailOptions GetEmailOptions(this EmOptions options) => options.GetExternalOption<EmEmailOptions>() ?? new EmEmailOptions();
+        public static EmEmailOptions GetEmailOptions(this EmMainOptions options) => options.GetExternalOption<EmEmailOptions>() ?? new EmEmailOptions();
 
         /// <summary>
-        /// Add external Emeraude email options
+        /// Add external Emeraude email options.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="emailOptionsAction"></param>
         public static void ConfigureEmailsInfrastructure(
-            this EmOptions options,
+            this EmMainOptions options,
             Action<EmEmailOptions> emailOptionsAction)
         {
             EmEmailOptions emailOptions = new EmEmailOptions();

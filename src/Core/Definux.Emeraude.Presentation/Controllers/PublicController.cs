@@ -4,6 +4,7 @@ using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Localization.Extensions;
 using Definux.Utilities.Extensions;
@@ -31,24 +32,24 @@ namespace Definux.Emeraude.Presentation.Controllers
         private IMediator mediator;
         private IUserManager userManager;
         private IEmLocalizer localizer;
-        private EmOptions options;
+        private IEmOptionsProvider optionsProvider;
 
         /// <summary>
-        /// Ignore <see cref="EmOptions.MaintenanceMode"/> from the Emeraude options.
+        /// Ignore <see cref="EmMainOptions.MaintenanceMode"/> from the Emeraude options.
         /// </summary>
         public bool IgnoreMaintenanceMode { get; set; }
 
-        /// <inheritdoc cref="EmOptions"/>
-        protected EmOptions Options
+        /// <inheritdoc cref="IEmOptionsProvider"/>
+        protected IEmOptionsProvider OptionsProvider
         {
             get
             {
-                if (this.options is null)
+                if (this.optionsProvider is null)
                 {
-                    this.options = this.HttpContext.RequestServices.GetService<IOptions<EmOptions>>()?.Value;
+                    this.optionsProvider = this.HttpContext.RequestServices.GetService<IEmOptionsProvider>();
                 }
 
-                return this.options;
+                return this.optionsProvider;
             }
         }
 
@@ -159,9 +160,9 @@ namespace Definux.Emeraude.Presentation.Controllers
         }
 
         /// <inheritdoc/>
-        public async override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!this.IgnoreMaintenanceMode && this.Options.MaintenanceMode)
+            if (!this.IgnoreMaintenanceMode && this.OptionsProvider.GetMainOptions().MaintenanceMode)
             {
                 var adminAuthenticationResult = await this.HttpContext.AuthenticateAsync(AuthenticationDefaults.AdminAuthenticationScheme);
                 if (!adminAuthenticationResult.Succeeded)

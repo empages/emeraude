@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail;
-using Definux.Emeraude.Client.Seo.Attributes;
-using Definux.Emeraude.Client.Seo.Models;
+using Definux.Emeraude.Client.Attributes;
+using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;

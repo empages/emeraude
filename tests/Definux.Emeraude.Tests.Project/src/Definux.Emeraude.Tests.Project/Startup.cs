@@ -20,29 +20,25 @@ namespace Definux.Emeraude.Tests.Project
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEmeraude<IEntityContext, EntityContext>(options =>
+            services.AddEmeraude<IEntityContext, EntityContext>(setup =>
             {
-                options.ApplyEmeraudeBaseOptions();
+                setup.MainOptions.ApplyEmeraudeBaseOptions();
 
-                options.DatabaseContextProvider = DatabaseContextProvider.InMemoryDatabase;
-                options.LoggerContextProvider = DatabaseContextProvider.InMemoryDatabase;
-                options.MigrationsAssembly = "Definux.Emeraude.Tests.Project.Infrastructure";
+                setup.MainOptions.DomainAssembly = "Definux.Emeraude.Tests.Project.Domain";
+                setup.MainOptions.ApplicationAssembly = "Definux.Emeraude.Tests.Project.Application";
+                setup.MainOptions.InfrastructureAssembly = "Definux.Emeraude.Tests.Project.Infrastructure";
                 
-                options.Mapping.AddProfile<MainAssemblyMappingProfile>();
-                options.AddAssembly("Definux.Emeraude.Tests.Project");
-                options.AddAssembly("Definux.Emeraude.Tests.Project.Application");
-                options.ProjectName = "Definux.Emeraude.Tests.Project";
+                setup.PersistenceOptions.ContextProvider = DatabaseContextProvider.InMemoryDatabase;
+                setup.LoggerOptions.ContextProvider = DatabaseContextProvider.InMemoryDatabase;
+                
+                setup.ApplicationsOptions.AddMappingProfile<MainAssemblyMappingProfile>();
+                setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project");
+                setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project.Application");
+                setup.MainOptions.ProjectName = "Definux.Emeraude.Tests.Project";
 
-                options.TestMode = true;
-                options.ConfigureSeo(seoOptions =>
-                {
-                    seoOptions.SetSitemapComposition<SitemapComposition>();
-                });
-                
-                options.ConfigureEmailsInfrastructure(emailOptions =>
-                {
-                    emailOptions.EmailSenderImplementationType = typeof(CustomEmailSender);
-                });
+                setup.MainOptions.TestMode = true;
+                setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
+                setup.EmailOptions.EmailSenderImplementationType = typeof(CustomEmailSender);
             })
                 .AddExternalProvidersAuthenticators(authenticators =>
                 {

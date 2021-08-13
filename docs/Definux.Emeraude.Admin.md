@@ -67,6 +67,7 @@
   - [BreadcrumbEntityNamePluralPlaceholder](#F-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-BreadcrumbEntityNamePluralPlaceholder 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.BreadcrumbEntityNamePluralPlaceholder')
   - [BreadcrumbPageTitlePlaceholder](#F-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-BreadcrumbPageTitlePlaceholder 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.BreadcrumbPageTitlePlaceholder')
   - [DeleteRedirectUrlFunction](#P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-DeleteRedirectUrlFunction 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.DeleteRedirectUrlFunction')
+  - [EntityMapper](#P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-EntityMapper 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.EntityMapper')
   - [EntityName](#P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-EntityName 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.EntityName')
   - [HasCreate](#P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-HasCreate 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.HasCreate')
   - [HasDelete](#P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-HasDelete 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.HasDelete')
@@ -107,6 +108,10 @@
   - [RedirectToDetails(entityId)](#M-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-RedirectToDetails-System-Guid- 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.RedirectToDetails(System.Guid)')
   - [SetPartialAboveTheTable(partialName)](#M-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-SetPartialAboveTheTable-System-String- 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.SetPartialAboveTheTable(System.String)')
   - [SetPartialBelowTheTable(partialName)](#M-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-SetPartialBelowTheTable-System-String- 'Definux.Emeraude.Admin.Controllers.Abstractions.AdminEntityController`2.SetPartialBelowTheTable(System.String)')
+- [AdminEntityMapper](#T-Definux-Emeraude-Admin-Mapping-AdminEntityMapper 'Definux.Emeraude.Admin.Mapping.AdminEntityMapper')
+  - [MapToDetailsViewModel\`\`1()](#M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToDetailsViewModel``1-``0- 'Definux.Emeraude.Admin.Mapping.AdminEntityMapper.MapToDetailsViewModel``1(``0)')
+  - [MapToFormInputViewModels()](#M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToFormInputViewModels-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel- 'Definux.Emeraude.Admin.Mapping.AdminEntityMapper.MapToFormInputViewModels(Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel)')
+  - [MapToTableViewModel\`\`1()](#M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToTableViewModel``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]- 'Definux.Emeraude.Admin.Mapping.AdminEntityMapper.MapToTableViewModel``1(Definux.Utilities.Objects.PaginatedList{``0},Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[])')
 - [AdminLoggingController](#T-Definux-Emeraude-Admin-Controllers-Mvc-AdminLoggingController 'Definux.Emeraude.Admin.Controllers.Mvc.AdminLoggingController')
   - [#ctor(userManager)](#M-Definux-Emeraude-Admin-Controllers-Mvc-AdminLoggingController-#ctor-Definux-Emeraude-Application-Identity-IUserManager- 'Definux.Emeraude.Admin.Controllers.Mvc.AdminLoggingController.#ctor(Definux.Emeraude.Application.Identity.IUserManager)')
   - [DeleteLog(logType,logId,returnUrl)](#M-Definux-Emeraude-Admin-Controllers-Mvc-AdminLoggingController-DeleteLog-System-String,System-Int32,System-String- 'Definux.Emeraude.Admin.Controllers.Mvc.AdminLoggingController.DeleteLog(System.String,System.Int32,System.String)')
@@ -133,6 +138,7 @@
   - [UploadFile(root,formFile,model)](#M-Definux-Emeraude-Admin-Controllers-Mvc-AdminRootsController-UploadFile-System-String,Microsoft-AspNetCore-Http-IFormFile,Definux-Emeraude-Admin-UI-ViewModels-Roots-RootUploadFilesViewModel- 'Definux.Emeraude.Admin.Controllers.Mvc.AdminRootsController.UploadFile(System.String,Microsoft.AspNetCore.Http.IFormFile,Definux.Emeraude.Admin.UI.ViewModels.Roots.RootUploadFilesViewModel)')
   - [UploadFiles(root,folders)](#M-Definux-Emeraude-Admin-Controllers-Mvc-AdminRootsController-UploadFiles-System-String,System-String- 'Definux.Emeraude.Admin.Controllers.Mvc.AdminRootsController.UploadFiles(System.String,System.String)')
 - [AdminUploadApiController](#T-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController')
+  - [#ctor(emeraudeOptionsAccessor)](#M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-#ctor-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions}- 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController.#ctor(Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions})')
   - [File(formFile)](#M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-File-Microsoft-AspNetCore-Http-IFormFile- 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController.File(Microsoft.AspNetCore.Http.IFormFile)')
   - [Image(formFile)](#M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-Image-Microsoft-AspNetCore-Http-IFormFile- 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController.Image(Microsoft.AspNetCore.Http.IFormFile)')
   - [Video(formFile)](#M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-Video-Microsoft-AspNetCore-Http-IFormFile- 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController.Video(Microsoft.AspNetCore.Http.IFormFile)')
@@ -234,20 +240,10 @@
   - [#ctor(context)](#M-Definux-Emeraude-Admin-Adapters-EmContextAdapter-#ctor-Definux-Emeraude-Application-Persistence-IEmContext- 'Definux.Emeraude.Admin.Adapters.EmContextAdapter.#ctor(Definux.Emeraude.Application.Persistence.IEmContext)')
   - [GetAllEntitiesByPropertyName()](#M-Definux-Emeraude-Admin-Adapters-EmContextAdapter-GetAllEntitiesByPropertyName-System-String- 'Definux.Emeraude.Admin.Adapters.EmContextAdapter.GetAllEntitiesByPropertyName(System.String)')
   - [GetAllEntitiesByType()](#M-Definux-Emeraude-Admin-Adapters-EmContextAdapter-GetAllEntitiesByType-System-Type- 'Definux.Emeraude.Admin.Adapters.EmContextAdapter.GetAllEntitiesByType(System.Type)')
-- [EntityDetailsMapper](#T-Definux-Emeraude-Admin-Mapping-Mappers-EntityDetailsMapper 'Definux.Emeraude.Admin.Mapping.Mappers.EntityDetailsMapper')
-  - [Map\`\`1(entity)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityDetailsMapper-Map``1-``0- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityDetailsMapper.Map``1(``0)')
-- [EntityFormMapper](#T-Definux-Emeraude-Admin-Mapping-Mappers-EntityFormMapper 'Definux.Emeraude.Admin.Mapping.Mappers.EntityFormMapper')
-  - [BuildInputs(entityViewModel)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityFormMapper-BuildInputs-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityFormMapper.BuildInputs(Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel)')
 - [EntityIdentifierAttribute](#T-Definux-Emeraude-Admin-Attributes-EntityIdentifierAttribute 'Definux.Emeraude.Admin.Attributes.EntityIdentifierAttribute')
 - [EntitySelectModel](#T-Definux-Emeraude-Admin-Models-EntitySelectModel 'Definux.Emeraude.Admin.Models.EntitySelectModel')
   - [Id](#P-Definux-Emeraude-Admin-Models-EntitySelectModel-Id 'Definux.Emeraude.Admin.Models.EntitySelectModel.Id')
   - [Text](#P-Definux-Emeraude-Admin-Models-EntitySelectModel-Text 'Definux.Emeraude.Admin.Models.EntitySelectModel.Text')
-- [EntityTableMapper](#T-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper')
-  - [CreateAction(title,icon,method,urlStringFormat,parameters)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-CreateAction-System-String,System-String,Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod,System-String,System-Object[]- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper.CreateAction(System.String,System.String,Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod,System.String,System.Object[])')
-  - [DeleteAction(urlStringFormat,parameters)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-DeleteAction-System-String,System-Object[]- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper.DeleteAction(System.String,System.Object[])')
-  - [DetailsAction(urlStringFormat,parameters)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-DetailsAction-System-String,System-Object[]- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper.DetailsAction(System.String,System.Object[])')
-  - [EditAction(urlStringFormat,parameters)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-EditAction-System-String,System-Object[]- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper.EditAction(System.String,System.Object[])')
-  - [Map\`\`1(entitiesResult,actions)](#M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-Map``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]- 'Definux.Emeraude.Admin.Mapping.Mappers.EntityTableMapper.Map``1(Definux.Utilities.Objects.PaginatedList{``0},Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[])')
 - [ExistsQueryHandler\`1](#T-Definux-Emeraude-Admin-Requests-Exists-ExistsQueryHandler`1 'Definux.Emeraude.Admin.Requests.Exists.ExistsQueryHandler`1')
   - [#ctor(context,logger)](#M-Definux-Emeraude-Admin-Requests-Exists-ExistsQueryHandler`1-#ctor-Definux-Emeraude-Application-Persistence-IEmContext,Definux-Emeraude-Application-Logger-IEmLogger- 'Definux.Emeraude.Admin.Requests.Exists.ExistsQueryHandler`1.#ctor(Definux.Emeraude.Application.Persistence.IEmContext,Definux.Emeraude.Application.Logger.IEmLogger)')
   - [Handle()](#M-Definux-Emeraude-Admin-Requests-Exists-ExistsQueryHandler`1-Handle-Definux-Emeraude-Admin-Requests-Exists-ExistsQuery{`0},System-Threading-CancellationToken- 'Definux.Emeraude.Admin.Requests.Exists.ExistsQueryHandler`1.Handle(Definux.Emeraude.Admin.Requests.Exists.ExistsQuery{`0},System.Threading.CancellationToken)')
@@ -321,6 +317,10 @@
   - [#ctor(entityId)](#M-Definux-Emeraude-Admin-Requests-GetEntityImage-GetEntityImageQuery`1-#ctor-System-Guid- 'Definux.Emeraude.Admin.Requests.GetEntityImage.GetEntityImageQuery`1.#ctor(System.Guid)')
   - [EntityId](#P-Definux-Emeraude-Admin-Requests-GetEntityImage-GetEntityImageQuery`1-EntityId 'Definux.Emeraude.Admin.Requests.GetEntityImage.GetEntityImageQuery`1.EntityId')
 - [IAdminEntityController](#T-Definux-Emeraude-Admin-Controllers-Abstractions-IAdminEntityController 'Definux.Emeraude.Admin.Controllers.Abstractions.IAdminEntityController')
+- [IAdminEntityMapper](#T-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper 'Definux.Emeraude.Admin.Mapping.IAdminEntityMapper')
+  - [MapToDetailsViewModel\`\`1(entity)](#M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToDetailsViewModel``1-``0- 'Definux.Emeraude.Admin.Mapping.IAdminEntityMapper.MapToDetailsViewModel``1(``0)')
+  - [MapToFormInputViewModels(entityViewModel)](#M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToFormInputViewModels-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel- 'Definux.Emeraude.Admin.Mapping.IAdminEntityMapper.MapToFormInputViewModels(Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel)')
+  - [MapToTableViewModel\`\`1(entitiesResult,actions)](#M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToTableViewModel``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]- 'Definux.Emeraude.Admin.Mapping.IAdminEntityMapper.MapToTableViewModel``1(Definux.Utilities.Objects.PaginatedList{``0},Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[])')
 - [ICreateCommandHandler\`3](#T-Definux-Emeraude-Admin-Requests-Create-ICreateCommandHandler`3 'Definux.Emeraude.Admin.Requests.Create.ICreateCommandHandler`3')
 - [ICreateCommand\`2](#T-Definux-Emeraude-Admin-Requests-Create-ICreateCommand`2 'Definux.Emeraude.Admin.Requests.Create.ICreateCommand`2')
   - [Model](#P-Definux-Emeraude-Admin-Requests-Create-ICreateCommand`2-Model 'Definux.Emeraude.Admin.Requests.Create.ICreateCommand`2.Model')
@@ -366,8 +366,6 @@
   - [RootKey](#F-Definux-Emeraude-Admin-RouteConstraints-RootConstraint-RootKey 'Definux.Emeraude.Admin.RouteConstraints.RootConstraint.RootKey')
   - [RootRouteSlug](#F-Definux-Emeraude-Admin-RouteConstraints-RootConstraint-RootRouteSlug 'Definux.Emeraude.Admin.RouteConstraints.RootConstraint.RootRouteSlug')
   - [Match()](#M-Definux-Emeraude-Admin-RouteConstraints-RootConstraint-Match-Microsoft-AspNetCore-Http-HttpContext,Microsoft-AspNetCore-Routing-IRouter,System-String,Microsoft-AspNetCore-Routing-RouteValueDictionary,Microsoft-AspNetCore-Routing-RouteDirection- 'Definux.Emeraude.Admin.RouteConstraints.RootConstraint.Match(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Routing.IRouter,System.String,Microsoft.AspNetCore.Routing.RouteValueDictionary,Microsoft.AspNetCore.Routing.RouteDirection)')
-- [RootMapper](#T-Definux-Emeraude-Admin-Mapping-Mappers-RootMapper 'Definux.Emeraude.Admin.Mapping.Mappers.RootMapper')
-  - [Map(folderName,fileSystemItems)](#M-Definux-Emeraude-Admin-Mapping-Mappers-RootMapper-Map-System-String,System-Collections-Generic-IEnumerable{Definux-Emeraude-Application-Files-SystemItem}- 'Definux.Emeraude.Admin.Mapping.Mappers.RootMapper.Map(System.String,System.Collections.Generic.IEnumerable{Definux.Emeraude.Application.Files.SystemItem})')
 - [ServiceCollectionExtensions](#T-Definux-Emeraude-Admin-Extensions-ServiceCollectionExtensions 'Definux.Emeraude.Admin.Extensions.ServiceCollectionExtensions')
   - [AddAdminCookie(builder)](#M-Definux-Emeraude-Admin-Extensions-ServiceCollectionExtensions-AddAdminCookie-Microsoft-AspNetCore-Authentication-AuthenticationBuilder- 'Definux.Emeraude.Admin.Extensions.ServiceCollectionExtensions.AddAdminCookie(Microsoft.AspNetCore.Authentication.AuthenticationBuilder)')
   - [AddAdminMapperConfiguration(configuration)](#M-Definux-Emeraude-Admin-Extensions-ServiceCollectionExtensions-AddAdminMapperConfiguration-AutoMapper-IMapperConfigurationExpression- 'Definux.Emeraude.Admin.Extensions.ServiceCollectionExtensions.AddAdminMapperConfiguration(AutoMapper.IMapperConfigurationExpression)')
@@ -1083,6 +1081,13 @@ Breadcrumb page title default placeholder for transferring custom page title to 
 
 Deletion callback on success deletion of the entity.
 
+<a name='P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-EntityMapper'></a>
+### EntityMapper `property`
+
+##### Summary
+
+*Inherit from parent.*
+
 <a name='P-Definux-Emeraude-Admin-Controllers-Abstractions-AdminEntityController`2-EntityName'></a>
 ### EntityName `property`
 
@@ -1718,6 +1723,50 @@ Set partial below the table of get all view.
 | ---- | ---- | ----------- |
 | partialName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
 
+<a name='T-Definux-Emeraude-Admin-Mapping-AdminEntityMapper'></a>
+## AdminEntityMapper `type`
+
+##### Namespace
+
+Definux.Emeraude.Admin.Mapping
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToDetailsViewModel``1-``0-'></a>
+### MapToDetailsViewModel\`\`1() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToFormInputViewModels-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel-'></a>
+### MapToFormInputViewModels() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Definux-Emeraude-Admin-Mapping-AdminEntityMapper-MapToTableViewModel``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]-'></a>
+### MapToTableViewModel\`\`1() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-Definux-Emeraude-Admin-Controllers-Mvc-AdminLoggingController'></a>
 ## AdminLoggingController `type`
 
@@ -2122,6 +2171,19 @@ Definux.Emeraude.Admin.Controllers.Api
 ##### Summary
 
 Admin upload API controller.
+
+<a name='M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-#ctor-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions}-'></a>
+### #ctor(emeraudeOptionsAccessor) `constructor`
+
+##### Summary
+
+Initializes a new instance of the [AdminUploadApiController](#T-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController 'Definux.Emeraude.Admin.Controllers.Api.AdminUploadApiController') class.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| emeraudeOptionsAccessor | [Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions}](#T-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions} 'Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions}') |  |
 
 <a name='M-Definux-Emeraude-Admin-Controllers-Api-AdminUploadApiController-File-Microsoft-AspNetCore-Http-IFormFile-'></a>
 ### File(formFile) `method`
@@ -3340,68 +3402,6 @@ This method has no parameters.
 
 This method has no parameters.
 
-<a name='T-Definux-Emeraude-Admin-Mapping-Mappers-EntityDetailsMapper'></a>
-## EntityDetailsMapper `type`
-
-##### Namespace
-
-Definux.Emeraude.Admin.Mapping.Mappers
-
-##### Summary
-
-Static mapper that convert entities in the details card format.
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityDetailsMapper-Map``1-``0-'></a>
-### Map\`\`1(entity) `method`
-
-##### Summary
-
-Map entities to [DetailsViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-DetailsCard-DetailsViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard.DetailsViewModel') by using the decorated properties of the view model entity implementation by .
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| entity | [\`\`0](#T-``0 '``0') |  |
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| T | ViewModel entity implementation. |
-
-<a name='T-Definux-Emeraude-Admin-Mapping-Mappers-EntityFormMapper'></a>
-## EntityFormMapper `type`
-
-##### Namespace
-
-Definux.Emeraude.Admin.Mapping.Mappers
-
-##### Summary
-
-Static mapper that convert entities in the form format.
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityFormMapper-BuildInputs-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel-'></a>
-### BuildInputs(entityViewModel) `method`
-
-##### Summary
-
-Converts specified ViewModel ([IEntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel')) to collection of [EntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-EntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.EntityFormViewModel') by using the decorated properties of the view model entity implementation by .
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| entityViewModel | [Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel') |  |
-
 <a name='T-Definux-Emeraude-Admin-Attributes-EntityIdentifierAttribute'></a>
 ## EntityIdentifierAttribute `type`
 
@@ -3437,116 +3437,6 @@ Identifier of data item.
 ##### Summary
 
 Text visualization of data item.
-
-<a name='T-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper'></a>
-## EntityTableMapper `type`
-
-##### Namespace
-
-Definux.Emeraude.Admin.Mapping.Mappers
-
-##### Summary
-
-Static mapper that convert entities in the table format.
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-CreateAction-System-String,System-String,Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod,System-String,System-Object[]-'></a>
-### CreateAction(title,icon,method,urlStringFormat,parameters) `method`
-
-##### Summary
-
-Creates table view item action.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| title | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| icon | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | See https://cdn.materialdesignicons.com/4.9.95/ for more information. |
-| method | [Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod](#T-Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod 'Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod') |  |
-| urlStringFormat | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| parameters | [System.Object[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object[] 'System.Object[]') |  |
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-DeleteAction-System-String,System-Object[]-'></a>
-### DeleteAction(urlStringFormat,parameters) `method`
-
-##### Summary
-
-Creates predefined delete table view item action.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| urlStringFormat | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| parameters | [System.Object[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object[] 'System.Object[]') |  |
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-DetailsAction-System-String,System-Object[]-'></a>
-### DetailsAction(urlStringFormat,parameters) `method`
-
-##### Summary
-
-Creates predefined details table view item action.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| urlStringFormat | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| parameters | [System.Object[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object[] 'System.Object[]') |  |
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-EditAction-System-String,System-Object[]-'></a>
-### EditAction(urlStringFormat,parameters) `method`
-
-##### Summary
-
-Creates predefined edit table view item action.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| urlStringFormat | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| parameters | [System.Object[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object[] 'System.Object[]') |  |
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-EntityTableMapper-Map``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]-'></a>
-### Map\`\`1(entitiesResult,actions) `method`
-
-##### Summary
-
-Map entities to [TableViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableViewModel') by using the decorated properties of the view model entity implementation by .
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| entitiesResult | [Definux.Utilities.Objects.PaginatedList{\`\`0}](#T-Definux-Utilities-Objects-PaginatedList{``0} 'Definux.Utilities.Objects.PaginatedList{``0}') |  |
-| actions | [Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[]](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[] 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[]') |  |
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| T | ViewModel entity implementation. |
 
 <a name='T-Definux-Emeraude-Admin-Requests-Exists-ExistsQueryHandler`1'></a>
 ## ExistsQueryHandler\`1 `type`
@@ -4408,6 +4298,81 @@ Definux.Emeraude.Admin.Controllers.Abstractions
 
 Informative empty interface that defines the administration entity controllers.
 
+<a name='T-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper'></a>
+## IAdminEntityMapper `type`
+
+##### Namespace
+
+Definux.Emeraude.Admin.Mapping
+
+##### Summary
+
+Mapper service that provides conversion service between admin view models and UI models.
+
+<a name='M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToDetailsViewModel``1-``0-'></a>
+### MapToDetailsViewModel\`\`1(entity) `method`
+
+##### Summary
+
+Map entities to [DetailsViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-DetailsCard-DetailsViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.DetailsCard.DetailsViewModel') by using the decorated properties of the view model entity implementation by .
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| entity | [\`\`0](#T-``0 '``0') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | ViewModel entity implementation. |
+
+<a name='M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToFormInputViewModels-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel-'></a>
+### MapToFormInputViewModels(entityViewModel) `method`
+
+##### Summary
+
+Converts specified ViewModel ([IEntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel')) to collection of [EntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-EntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.EntityFormViewModel') by using the decorated properties of the view model entity implementation by .
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| entityViewModel | [Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Form-IEntityFormViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Form.IEntityFormViewModel') |  |
+
+<a name='M-Definux-Emeraude-Admin-Mapping-IAdminEntityMapper-MapToTableViewModel``1-Definux-Utilities-Objects-PaginatedList{``0},Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[]-'></a>
+### MapToTableViewModel\`\`1(entitiesResult,actions) `method`
+
+##### Summary
+
+Map entities to [TableViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableViewModel') by using the decorated properties of the view model entity implementation by .
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| entitiesResult | [Definux.Utilities.Objects.PaginatedList{\`\`0}](#T-Definux-Utilities-Objects-PaginatedList{``0} 'Definux.Utilities.Objects.PaginatedList{``0}') |  |
+| actions | [Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[]](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel[] 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel[]') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | ViewModel entity implementation. |
+
 <a name='T-Definux-Emeraude-Admin-Requests-Create-ICreateCommandHandler`3'></a>
 ## ICreateCommandHandler\`3 `type`
 
@@ -4875,35 +4840,6 @@ Root route slug.
 
 This method has no parameters.
 
-<a name='T-Definux-Emeraude-Admin-Mapping-Mappers-RootMapper'></a>
-## RootMapper `type`
-
-##### Namespace
-
-Definux.Emeraude.Admin.Mapping.Mappers
-
-##### Summary
-
-Static mapper that supports roots feature.
-
-<a name='M-Definux-Emeraude-Admin-Mapping-Mappers-RootMapper-Map-System-String,System-Collections-Generic-IEnumerable{Definux-Emeraude-Application-Files-SystemItem}-'></a>
-### Map(folderName,fileSystemItems) `method`
-
-##### Summary
-
-Method that sorting a collection of [SystemItem](#T-Definux-Emeraude-Application-Files-SystemItem 'Definux.Emeraude.Application.Files.SystemItem') into a files and folders.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| folderName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| fileSystemItems | [System.Collections.Generic.IEnumerable{Definux.Emeraude.Application.Files.SystemItem}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{Definux.Emeraude.Application.Files.SystemItem}') |  |
-
 <a name='T-Definux-Emeraude-Admin-Extensions-ServiceCollectionExtensions'></a>
 ## ServiceCollectionExtensions `type`
 
@@ -4955,10 +4891,6 @@ Register Emeraude administration mapping configuration.
 ##### Summary
 
 Register all required Emeraude administration services.
-
-##### Returns
-
-
 
 ##### Parameters
 

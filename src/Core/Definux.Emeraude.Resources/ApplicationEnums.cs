@@ -15,25 +15,4 @@
         /// </summary>
         Public = 1,
     }
-
-    /// <summary>
-    /// Classification of the route types.
-    /// </summary>
-    public enum RouteType
-    {
-        /// <summary>
-        /// Client route.
-        /// </summary>
-        Client = 1,
-
-        /// <summary>
-        /// Admin route.
-        /// </summary>
-        Admin = 2,
-
-        /// <summary>
-        /// API route.
-        /// </summary>
-        Api = 3,
-    }
 }

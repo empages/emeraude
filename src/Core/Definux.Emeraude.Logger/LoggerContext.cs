@@ -15,26 +15,26 @@ using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Logger
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ILoggerContext"/>
     public class LoggerContext : DbContext, ILoggerContext
     {
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly EmOptions options;
+        private readonly EmLoggerOptions loggerOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerContext"/> class.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="httpContextAccessor"></param>
-        /// <param name="optionsAccessor"></param>
+        /// <param name="optionsProvider"></param>
         public LoggerContext(
             DbContextOptions<LoggerContext> options,
             IHttpContextAccessor httpContextAccessor,
-            IOptions<EmOptions> optionsAccessor)
+            IEmOptionsProvider optionsProvider)
             : base(options)
         {
             this.httpContextAccessor = httpContextAccessor;
-            this.options = optionsAccessor.Value;
+            this.loggerOptions = optionsProvider.GetOptions<EmLoggerOptions>();
         }
 
         /// <inheritdoc/>
@@ -80,19 +80,7 @@ namespace Definux.Emeraude.Logger
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            string textType;
-            switch (this.options.LoggerContextProvider)
-            {
-                case DatabaseContextProvider.MicrosoftSqlServer:
-                    textType = "nvarchar(max)";
-                    break;
-                case DatabaseContextProvider.PostgreSql:
-                    textType = "text";
-                    break;
-                default:
-                    textType = "text";
-                    break;
-            }
+            string textType = this.GetTextType();
 
             builder
                 .Entity<ActivityLog>()
@@ -145,6 +133,18 @@ namespace Definux.Emeraude.Logger
             }
 
             return currentUserId;
+        }
+
+        private string GetTextType()
+        {
+            string textType = this.loggerOptions.ContextProvider switch
+            {
+                DatabaseContextProvider.MicrosoftSqlServer => "nvarchar(max)",
+                DatabaseContextProvider.PostgreSql => "text",
+                _ => "text"
+            };
+
+            return textType;
         }
     }
 }

@@ -7,19 +7,17 @@ using AutoMapper;
 using Definux.Emeraude.Admin;
 using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Mapping.Profiles;
+using Definux.Emeraude.Application;
 using Definux.Emeraude.Application.Behaviours;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Client.Mapping;
-using Definux.Emeraude.Client.Seo.Extensions;
-using Definux.Emeraude.Client.Seo.Options;
 using Definux.Emeraude.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Emails;
 using Definux.Emeraude.Emails.Extensions;
-using Definux.Emeraude.Files;
 using Definux.Emeraude.Files.Extensions;
+using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Localization.Extensions;
@@ -60,11 +58,11 @@ namespace Definux.Emeraude.Extensions
         /// <typeparam name="TContextInterface">Interface of the application database context.</typeparam>
         /// <typeparam name="TContextImplementation">Implementation of the application database context.</typeparam>
         /// <param name="services"></param>
-        /// <param name="optionsAction"></param>
+        /// <param name="setupAction"></param>
         /// <returns></returns>
         public static EmeraudeSettingsBuilder AddEmeraude<TContextInterface, TContextImplementation>(
             this IServiceCollection services,
-            Action<EmOptions> optionsAction = null)
+            Action<EmOptionsSetup> setupAction = null)
             where TContextInterface : class, IEmContext
             where TContextImplementation : EmContext<TContextImplementation>, TContextInterface
         {
@@ -73,26 +71,23 @@ namespace Definux.Emeraude.Extensions
                 Services = services,
             };
 
-            var options = new EmOptions();
-            optionsAction?.Invoke(options);
-
             var applicationAssembly = Assembly.GetCallingAssembly().GetName().Name;
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
 
-            services.RegisterEmeraudeOptions(optionsAction);
+            var setup = services.RegisterEmeraudeOptions(setupAction);
 
             services.AddHttpContextAccessor();
 
-            services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, options);
+            services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, setup.PersistenceOptions, setup.MainOptions);
 
-            services.ConfigureMapper(applicationAssembly, options.Mapping);
+            services.ConfigureMapper(applicationAssembly, setup.ApplicationsOptions);
 
             services.ConfigureIdentityOptions<TContextImplementation>();
 
             services.ConfigureRazorViews();
 
-            settingsBuilder.AuthenticationBuilder = services.AddEmeraudeAuthentication(options.Account);
+            settingsBuilder.AuthenticationBuilder = services.AddEmeraudeAuthentication(setup.IdentityOptions);
 
             services.ConfigureGoogleReCaptcha();
 
@@ -100,23 +95,21 @@ namespace Definux.Emeraude.Extensions
 
             services.RegisterEmeraudeIdentity();
 
-            services.RegisterEmeraudeLogger(configuration, options);
+            services.RegisterEmeraudeLogger(configuration, setup.LoggerOptions, setup.MainOptions);
 
-            services.RegisterEmeraudeLocalization(options);
+            services.RegisterEmeraudeLocalization(setup.MainOptions);
 
-            services.RegisterEmailInfrastructure(options.GetExternalOption<EmEmailOptions>());
+            services.RegisterEmailInfrastructure(setup.EmailOptions);
 
-            services.RegisterEmeraudeSystemFilesManagement(options.GetExternalOption<EmFilesOptions>());
+            services.RegisterEmeraudeSystemFilesManagement(setup.FilesOptions);
 
             services.ConfigureAuthorizationPolicies();
 
             services.AddEmeraudeAdmin();
 
-            services.AddEmeraudeClient();
+            services.AddEmeraudeClient(setup.ClientOptions);
 
-            services.AddSeo(options.GetExternalOption<Action<SeoOptions>>());
-
-            services.RegisterMediatR(options.Assemblies);
+            services.RegisterMediatR(setup.MainOptions.Assemblies);
 
             services.AddCqrsBehaviours();
 
@@ -126,7 +119,7 @@ namespace Definux.Emeraude.Extensions
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.ConfigureMvc(options);
+            services.ConfigureMvc(setup.MainOptions);
 
             return settingsBuilder;
         }
@@ -135,7 +128,7 @@ namespace Definux.Emeraude.Extensions
         /// Apply Emeraude base options. In case you want to override the method check the documentation first.
         /// </summary>
         /// <param name="options"></param>
-        public static void ApplyEmeraudeBaseOptions(this EmOptions options)
+        public static void ApplyEmeraudeBaseOptions(this EmMainOptions options)
         {
             options.AddAssembly("Definux.Emeraude.Admin");
             options.AddAssembly("Definux.Emeraude.ClientBuilder");
@@ -179,7 +172,7 @@ namespace Definux.Emeraude.Extensions
             return services;
         }
 
-        private static AuthenticationBuilder AddEmeraudeAuthentication(this IServiceCollection services, AccountOptions accountOptions)
+        private static AuthenticationBuilder AddEmeraudeAuthentication(this IServiceCollection services, EmIdentityOptions identityOptions)
         {
             services.LoadJwtOptions();
 
@@ -193,7 +186,7 @@ namespace Definux.Emeraude.Extensions
                 })
                 .AddCookie(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
-            if (accountOptions.HasExternalAuthentication)
+            if (identityOptions.HasExternalAuthentication)
             {
                 services.LoadOAuth2Options();
             }
@@ -226,7 +219,7 @@ namespace Definux.Emeraude.Extensions
             return services;
         }
 
-        private static IServiceCollection ConfigureMapper(this IServiceCollection services, string applicationAssembly, MappingOptions options)
+        private static IServiceCollection ConfigureMapper(this IServiceCollection services, string applicationAssembly, EmApplicationsOptions applicationsOptions)
         {
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
             {
@@ -239,19 +232,20 @@ namespace Definux.Emeraude.Extensions
                 configuration.AddClientMapperConfiguration();
                 configuration.AllowNullCollections = true;
                 configuration.AllowNullDestinationValues = true;
-                if (options != null)
+
+                if (applicationsOptions != null)
                 {
-                    if (options.MappingAssemblies != null && options.MappingAssemblies.Count > 0)
+                    if (applicationsOptions.MappingAssemblies != null && applicationsOptions.MappingAssemblies.Count > 0)
                     {
-                        foreach (var mappingAssembly in options.MappingAssemblies)
+                        foreach (var mappingAssembly in applicationsOptions.MappingAssemblies)
                         {
                             configuration.AddMaps(mappingAssembly);
                         }
                     }
 
-                    if (options.MappingProfiles != null && options.MappingProfiles.Count > 0)
+                    if (applicationsOptions.MappingProfiles != null && applicationsOptions.MappingProfiles.Count > 0)
                     {
-                        foreach (var mappingProfileType in options.MappingProfiles)
+                        foreach (var mappingProfileType in applicationsOptions.MappingProfiles)
                         {
                             configuration.AddProfile(mappingProfileType);
                         }
@@ -296,7 +290,7 @@ namespace Definux.Emeraude.Extensions
             return services;
         }
 
-        private static IServiceCollection ConfigureMvc(this IServiceCollection services, EmOptions emeraudeOptions)
+        private static IServiceCollection ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions)
         {
             services.AddMvc(options =>
             {
@@ -321,9 +315,13 @@ namespace Definux.Emeraude.Extensions
             return services;
         }
 
-        private static void RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptions> emeraudeOptionsAction)
+        private static EmOptionsSetup RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptionsSetup> setupAction)
         {
-            services.Configure(emeraudeOptionsAction);
+            var setup = new EmOptionsSetup();
+            setupAction?.Invoke(setup);
+            services.AddSingleton<IEmOptionsProvider>(new EmOptionsProvider(setup));
+
+            return setup;
         }
 
         private static AuthenticationBuilder AddJwtAuthentication(this AuthenticationBuilder builder, JsonWebTokenOptions jwtOptions)

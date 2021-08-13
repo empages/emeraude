@@ -91,7 +91,7 @@ namespace Definux.Emeraude.Files.Validation
         /// Initializes a new instance of the <see cref="FilesValidationProvider"/> class.
         /// </summary>
         /// <param name="optionsAccessor"></param>
-        public FilesValidationProvider(IOptions<EmOptions> optionsAccessor)
+        public FilesValidationProvider(IOptions<EmMainOptions> optionsAccessor)
         {
             this.options = optionsAccessor.Value.GetFilesOptions();
         }

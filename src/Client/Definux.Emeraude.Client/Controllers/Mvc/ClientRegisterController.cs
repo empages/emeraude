@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Register;
-using Definux.Emeraude.Client.Seo.Attributes;
-using Definux.Emeraude.Client.Seo.Models;
+using Definux.Emeraude.Client.Attributes;
+using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;

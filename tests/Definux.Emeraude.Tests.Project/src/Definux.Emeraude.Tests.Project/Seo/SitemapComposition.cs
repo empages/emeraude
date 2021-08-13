@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Definux.Emeraude.Client.Seo;
-using Definux.Emeraude.Client.Seo.Models;
+using Definux.Emeraude.Client.Adapters;
+using Definux.Emeraude.Client.Models;
 
 namespace Definux.Emeraude.Tests.Project.Seo
 {
@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Tests.Project.Seo
     {
         public async Task<IEnumerable<PageSitemapPattern>> SetupAsync()
         {
-            return new List<PageSitemapPattern>();
+            return await Task.FromResult(new List<PageSitemapPattern>());
         }
     }
 }

@@ -425,6 +425,7 @@
   - [Post](#F-Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod-Post 'Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod.Post')
 - [TableRowActionViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel')
   - [#ctor(title,icon,urlStringFormat,rawParameters,method)](#M-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-#ctor-System-String,System-String,System-String,System-Collections-Generic-List{System-String},Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod- 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel.#ctor(System.String,System.String,System.String,System.Collections.Generic.List{System.String},Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod)')
+  - [#ctor()](#M-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-#ctor 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel.#ctor')
   - [ConfirmationMessage](#P-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-ConfirmationMessage 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel.ConfirmationMessage')
   - [ConfirmationTitle](#P-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-ConfirmationTitle 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel.ConfirmationTitle')
   - [HasConfirmation](#P-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-HasConfirmation 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel.HasConfirmation')
@@ -839,7 +840,7 @@ Definux.Emeraude.Admin.UI
 
 ##### Summary
 
-Static class that provides access to the Admin UI asembly information.
+Static class that provides access to the Admin UI assembly information.
 
 <a name='P-Definux-Emeraude-Admin-UI-AdminUIAssemblyPart-Assembly'></a>
 ### Assembly `property`
@@ -4471,6 +4472,17 @@ Initializes a new instance of the [TableRowActionViewModel](#T-Definux-Emeraude-
 | urlStringFormat | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
 | rawParameters | [System.Collections.Generic.List{System.String}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.String}') |  |
 | method | [Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod](#T-Definux-Emeraude-Admin-UI-Utilities-TableRowActionMethod 'Definux.Emeraude.Admin.UI.Utilities.TableRowActionMethod') |  |
+
+<a name='M-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance of the [TableRowActionViewModel](#T-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel 'Definux.Emeraude.Admin.UI.ViewModels.Entity.Table.TableRowActionViewModel') class.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='P-Definux-Emeraude-Admin-UI-ViewModels-Entity-Table-TableRowActionViewModel-ConfirmationMessage'></a>
 ### ConfirmationMessage `property`

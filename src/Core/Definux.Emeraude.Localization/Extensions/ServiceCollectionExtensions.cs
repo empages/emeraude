@@ -21,12 +21,12 @@ namespace Definux.Emeraude.Localization.Extensions
         /// <param name="services"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static IServiceCollection RegisterEmeraudeLocalization(this IServiceCollection services, EmOptions options)
+        public static IServiceCollection RegisterEmeraudeLocalization(this IServiceCollection services, EmMainOptions options)
         {
             if (!options.TestMode)
             {
-                services.AddDbContext<LocalizationContext>(options =>
-                    options.UseSqlite(
+                services.AddDbContext<LocalizationContext>(opt =>
+                    opt.UseSqlite(
                         connectionString: LocalesDatabaseSqlLiteConnectionString,
                         sqliteOptionsAction: b => b.MigrationsAssembly(AssemblyInfo.GetAssembly().FullName)));
             }
@@ -46,11 +46,15 @@ namespace Definux.Emeraude.Localization.Extensions
             {
                 try
                 {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<LocalizationContext>().Database.Migrate();
+                    services
+                        .BuildServiceProvider()
+                        .GetService<LocalizationContext>()
+                        ?.Database
+                        .Migrate();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                 }
             }
 

@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
         /// Initializes a new instance of the <see cref="EmeraudeVersionTagHelper"/> class.
         /// </summary>
         /// <param name="options"></param>
-        public EmeraudeVersionTagHelper(IOptions<EmOptions> options)
+        public EmeraudeVersionTagHelper(IOptions<EmMainOptions> options)
         {
             this.version = options.Value.EmeraudeVersion;
         }

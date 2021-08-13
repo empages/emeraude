@@ -23,12 +23,6 @@
     <ProjectReference Include="..\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <GenerateDocs>False</GenerateDocs>
-  </PropertyGroup>
-
   <Import Project="..\..\..\Emeraude.targets" />
-  
-  <Import Project="..\..\..\builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
-  
+
 </Project>

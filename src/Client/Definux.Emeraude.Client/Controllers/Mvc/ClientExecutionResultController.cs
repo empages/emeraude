@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Client.Seo.Attributes;
-using Definux.Emeraude.Client.Seo.Models;
+using Definux.Emeraude.Client.Attributes;
+using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Client.UI.ViewModels.ExecutionResult;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Controllers;

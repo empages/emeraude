@@ -16,13 +16,13 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     [Route("/admin/")]
     public sealed class AdminDashboardController : AdminController
     {
-        private readonly EmOptions options;
+        private readonly EmMainOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminDashboardController"/> class.
         /// </summary>
         /// <param name="optionsAccessor"></param>
-        public AdminDashboardController(IOptions<EmOptions> optionsAccessor)
+        public AdminDashboardController(IOptions<EmMainOptions> optionsAccessor)
         {
             this.options = optionsAccessor.Value;
         }

@@ -3,6 +3,13 @@
 
 ## Contents
 
+- [EmFilesOptions](#T-Definux-Emeraude-Files-EmFilesOptions 'Definux.Emeraude.Files.EmFilesOptions')
+  - [AllowFileUpload](#P-Definux-Emeraude-Files-EmFilesOptions-AllowFileUpload 'Definux.Emeraude.Files.EmFilesOptions.AllowFileUpload')
+  - [AllowImageUpload](#P-Definux-Emeraude-Files-EmFilesOptions-AllowImageUpload 'Definux.Emeraude.Files.EmFilesOptions.AllowImageUpload')
+  - [AllowVideoUpload](#P-Definux-Emeraude-Files-EmFilesOptions-AllowVideoUpload 'Definux.Emeraude.Files.EmFilesOptions.AllowVideoUpload')
+  - [MaxAllowedFileSize](#P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedFileSize 'Definux.Emeraude.Files.EmFilesOptions.MaxAllowedFileSize')
+  - [MaxAllowedImageFileSize](#P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedImageFileSize 'Definux.Emeraude.Files.EmFilesOptions.MaxAllowedImageFileSize')
+  - [MaxAllowedVideoFileSize](#P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedVideoFileSize 'Definux.Emeraude.Files.EmFilesOptions.MaxAllowedVideoFileSize')
 - [FileExtensionHandler](#T-Definux-Emeraude-Files-Validation-Handlers-FileExtensionHandler 'Definux.Emeraude.Files.Validation.Handlers.FileExtensionHandler')
   - [#ctor(allowedFileExtensions)](#M-Definux-Emeraude-Files-Validation-Handlers-FileExtensionHandler-#ctor-System-Collections-Generic-List{Definux-Utilities-Enumerations-FileExtensions}- 'Definux.Emeraude.Files.Validation.Handlers.FileExtensionHandler.#ctor(System.Collections.Generic.List{Definux.Utilities.Enumerations.FileExtensions})')
   - [HandleProcessAction()](#M-Definux-Emeraude-Files-Validation-Handlers-FileExtensionHandler-HandleProcessAction 'Definux.Emeraude.Files.Validation.Handlers.FileExtensionHandler.HandleProcessAction')
@@ -13,6 +20,7 @@
   - [#ctor(maxAllowedFileSize)](#M-Definux-Emeraude-Files-Validation-Handlers-FileSizeHandler-#ctor-System-Int64- 'Definux.Emeraude.Files.Validation.Handlers.FileSizeHandler.#ctor(System.Int64)')
   - [HandleProcessAction()](#M-Definux-Emeraude-Files-Validation-Handlers-FileSizeHandler-HandleProcessAction 'Definux.Emeraude.Files.Validation.Handlers.FileSizeHandler.HandleProcessAction')
 - [FilesValidationProvider](#T-Definux-Emeraude-Files-Validation-FilesValidationProvider 'Definux.Emeraude.Files.Validation.FilesValidationProvider')
+  - [#ctor(optionsAccessor)](#M-Definux-Emeraude-Files-Validation-FilesValidationProvider-#ctor-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions}- 'Definux.Emeraude.Files.Validation.FilesValidationProvider.#ctor(Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions})')
   - [ValidateFormFile()](#M-Definux-Emeraude-Files-Validation-FilesValidationProvider-ValidateFormFile-Microsoft-AspNetCore-Http-IFormFile,System-Collections-Generic-List{Definux-Utilities-Enumerations-FileExtensions},System-Collections-Generic-List{System-String},System-Int64- 'Definux.Emeraude.Files.Validation.FilesValidationProvider.ValidateFormFile(Microsoft.AspNetCore.Http.IFormFile,System.Collections.Generic.List{Definux.Utilities.Enumerations.FileExtensions},System.Collections.Generic.List{System.String},System.Int64)')
   - [ValidateFormImageFile()](#M-Definux-Emeraude-Files-Validation-FilesValidationProvider-ValidateFormImageFile-Microsoft-AspNetCore-Http-IFormFile,System-Collections-Generic-List{Definux-Utilities-Enumerations-FileExtensions},System-Collections-Generic-List{System-String},System-Int64- 'Definux.Emeraude.Files.Validation.FilesValidationProvider.ValidateFormImageFile(Microsoft.AspNetCore.Http.IFormFile,System.Collections.Generic.List{Definux.Utilities.Enumerations.FileExtensions},System.Collections.Generic.List{System.String},System.Int64)')
   - [ValidateFormVideoFile()](#M-Definux-Emeraude-Files-Validation-FilesValidationProvider-ValidateFormVideoFile-Microsoft-AspNetCore-Http-IFormFile,System-Collections-Generic-List{Definux-Utilities-Enumerations-FileExtensions},System-Collections-Generic-List{System-String},System-Int64- 'Definux.Emeraude.Files.Validation.FilesValidationProvider.ValidateFormVideoFile(Microsoft.AspNetCore.Http.IFormFile,System.Collections.Generic.List{Definux.Utilities.Enumerations.FileExtensions},System.Collections.Generic.List{System.String},System.Int64)')
@@ -23,6 +31,9 @@
   - [GetTempUploadDirectory(hostingEnvironment)](#M-Definux-Emeraude-Files-Extensions-HostingEnvironmentExtensions-GetTempUploadDirectory-Microsoft-AspNetCore-Hosting-IHostingEnvironment- 'Definux.Emeraude.Files.Extensions.HostingEnvironmentExtensions.GetTempUploadDirectory(Microsoft.AspNetCore.Hosting.IHostingEnvironment)')
 - [ImageBoxingHandler](#T-Definux-Emeraude-Files-Validation-Handlers-ImageBoxingHandler 'Definux.Emeraude.Files.Validation.Handlers.ImageBoxingHandler')
   - [HandleProcessAction()](#M-Definux-Emeraude-Files-Validation-Handlers-ImageBoxingHandler-HandleProcessAction 'Definux.Emeraude.Files.Validation.Handlers.ImageBoxingHandler.HandleProcessAction')
+- [OptionsExtensions](#T-Definux-Emeraude-Files-Extensions-OptionsExtensions 'Definux.Emeraude.Files.Extensions.OptionsExtensions')
+  - [ConfigureFilesInfrastructure(options,filesOptionsAction)](#M-Definux-Emeraude-Files-Extensions-OptionsExtensions-ConfigureFilesInfrastructure-Definux-Emeraude-Configuration-Options-EmOptions,System-Action{Definux-Emeraude-Files-EmFilesOptions}- 'Definux.Emeraude.Files.Extensions.OptionsExtensions.ConfigureFilesInfrastructure(Definux.Emeraude.Configuration.Options.EmOptions,System.Action{Definux.Emeraude.Files.EmFilesOptions})')
+  - [GetFilesOptions(options)](#M-Definux-Emeraude-Files-Extensions-OptionsExtensions-GetFilesOptions-Definux-Emeraude-Configuration-Options-EmOptions- 'Definux.Emeraude.Files.Extensions.OptionsExtensions.GetFilesOptions(Definux.Emeraude.Configuration.Options.EmOptions)')
 - [RootsService](#T-Definux-Emeraude-Files-Services-RootsService 'Definux.Emeraude.Files.Services.RootsService')
   - [#ctor(hostingEnvironment)](#M-Definux-Emeraude-Files-Services-RootsService-#ctor-Microsoft-AspNetCore-Hosting-IHostingEnvironment- 'Definux.Emeraude.Files.Services.RootsService.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment)')
   - [PrivateRootDirectory](#P-Definux-Emeraude-Files-Services-RootsService-PrivateRootDirectory 'Definux.Emeraude.Files.Services.RootsService.PrivateRootDirectory')
@@ -30,7 +41,7 @@
   - [GetPathFromPrivateRoot()](#M-Definux-Emeraude-Files-Services-RootsService-GetPathFromPrivateRoot-System-String[]- 'Definux.Emeraude.Files.Services.RootsService.GetPathFromPrivateRoot(System.String[])')
   - [GetPathFromPublicRoot()](#M-Definux-Emeraude-Files-Services-RootsService-GetPathFromPublicRoot-System-String[]- 'Definux.Emeraude.Files.Services.RootsService.GetPathFromPublicRoot(System.String[])')
 - [ServiceCollectionExtensions](#T-Definux-Emeraude-Files-Extensions-ServiceCollectionExtensions 'Definux.Emeraude.Files.Extensions.ServiceCollectionExtensions')
-  - [RegisterEmeraudeSystemFilesManagement(services)](#M-Definux-Emeraude-Files-Extensions-ServiceCollectionExtensions-RegisterEmeraudeSystemFilesManagement-Microsoft-Extensions-DependencyInjection-IServiceCollection- 'Definux.Emeraude.Files.Extensions.ServiceCollectionExtensions.RegisterEmeraudeSystemFilesManagement(Microsoft.Extensions.DependencyInjection.IServiceCollection)')
+  - [RegisterEmeraudeSystemFilesManagement(services,options)](#M-Definux-Emeraude-Files-Extensions-ServiceCollectionExtensions-RegisterEmeraudeSystemFilesManagement-Microsoft-Extensions-DependencyInjection-IServiceCollection,Definux-Emeraude-Files-EmFilesOptions- 'Definux.Emeraude.Files.Extensions.ServiceCollectionExtensions.RegisterEmeraudeSystemFilesManagement(Microsoft.Extensions.DependencyInjection.IServiceCollection,Definux.Emeraude.Files.EmFilesOptions)')
 - [SystemFilesService](#T-Definux-Emeraude-Files-Services-SystemFilesService 'Definux.Emeraude.Files.Services.SystemFilesService')
   - [#ctor(logger,hostingEnvironment,loggerContext,rootsService)](#M-Definux-Emeraude-Files-Services-SystemFilesService-#ctor-Definux-Emeraude-Application-Logger-IEmLogger,Microsoft-AspNetCore-Hosting-IHostingEnvironment,Definux-Emeraude-Application-Logger-ILoggerContext,Definux-Emeraude-Application-Files-IRootsService- 'Definux.Emeraude.Files.Services.SystemFilesService.#ctor(Definux.Emeraude.Application.Logger.IEmLogger,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Definux.Emeraude.Application.Logger.ILoggerContext,Definux.Emeraude.Application.Files.IRootsService)')
   - [ApplyTempFileToPrivateDirectoryAsync()](#M-Definux-Emeraude-Files-Services-SystemFilesService-ApplyTempFileToPrivateDirectoryAsync-System-Int32,System-String- 'Definux.Emeraude.Files.Services.SystemFilesService.ApplyTempFileToPrivateDirectoryAsync(System.Int32,System.String)')
@@ -51,6 +62,59 @@
   - [#ctor(loggerContext,logger,hostingEnvironment,rootsService)](#M-Definux-Emeraude-Files-Services-UploadService-#ctor-Definux-Emeraude-Application-Logger-ILoggerContext,Definux-Emeraude-Application-Logger-IEmLogger,Microsoft-AspNetCore-Hosting-IHostingEnvironment,Definux-Emeraude-Application-Files-IRootsService- 'Definux.Emeraude.Files.Services.UploadService.#ctor(Definux.Emeraude.Application.Logger.ILoggerContext,Definux.Emeraude.Application.Logger.IEmLogger,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Definux.Emeraude.Application.Files.IRootsService)')
   - [UploadFileAsync()](#M-Definux-Emeraude-Files-Services-UploadService-UploadFileAsync-Microsoft-AspNetCore-Http-IFormFile- 'Definux.Emeraude.Files.Services.UploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile)')
   - [UploadFileAsync()](#M-Definux-Emeraude-Files-Services-UploadService-UploadFileAsync-Microsoft-AspNetCore-Http-IFormFile,System-String,System-Boolean- 'Definux.Emeraude.Files.Services.UploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Boolean)')
+
+<a name='T-Definux-Emeraude-Files-EmFilesOptions'></a>
+## EmFilesOptions `type`
+
+##### Namespace
+
+Definux.Emeraude.Files
+
+##### Summary
+
+Options for files infrastructure of Emeraude.
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-AllowFileUpload'></a>
+### AllowFileUpload `property`
+
+##### Summary
+
+Enables file upload. The default value is true.
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-AllowImageUpload'></a>
+### AllowImageUpload `property`
+
+##### Summary
+
+Enables image upload. The default value is false.
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-AllowVideoUpload'></a>
+### AllowVideoUpload `property`
+
+##### Summary
+
+Enables video upload. The default value is false.
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedFileSize'></a>
+### MaxAllowedFileSize `property`
+
+##### Summary
+
+Maximum allowed upload file size. The default value is 20971520 bytes (~20MB).
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedImageFileSize'></a>
+### MaxAllowedImageFileSize `property`
+
+##### Summary
+
+Maximum allowed upload image size. The default value is 10485760 bytes (~10MB).
+
+<a name='P-Definux-Emeraude-Files-EmFilesOptions-MaxAllowedVideoFileSize'></a>
+### MaxAllowedVideoFileSize `property`
+
+##### Summary
+
+Maximum allowed upload video size. The default value is 209715200 bytes (~200MB).
 
 <a name='T-Definux-Emeraude-Files-Validation-Handlers-FileExtensionHandler'></a>
 ## FileExtensionHandler `type`
@@ -167,6 +231,19 @@ Definux.Emeraude.Files.Validation
 ##### Summary
 
 *Inherit from parent.*
+
+<a name='M-Definux-Emeraude-Files-Validation-FilesValidationProvider-#ctor-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions}-'></a>
+### #ctor(optionsAccessor) `constructor`
+
+##### Summary
+
+Initializes a new instance of the [FilesValidationProvider](#T-Definux-Emeraude-Files-Validation-FilesValidationProvider 'Definux.Emeraude.Files.Validation.FilesValidationProvider') class.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| optionsAccessor | [Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions}](#T-Microsoft-Extensions-Options-IOptions{Definux-Emeraude-Configuration-Options-EmOptions} 'Microsoft.Extensions.Options.IOptions{Definux.Emeraude.Configuration.Options.EmOptions}') |  |
 
 <a name='M-Definux-Emeraude-Files-Validation-FilesValidationProvider-ValidateFormFile-Microsoft-AspNetCore-Http-IFormFile,System-Collections-Generic-List{Definux-Utilities-Enumerations-FileExtensions},System-Collections-Generic-List{System-String},System-Int64-'></a>
 ### ValidateFormFile() `method`
@@ -287,6 +364,48 @@ File validation handler that check whether a file can be cast to a image.
 
 This method has no parameters.
 
+<a name='T-Definux-Emeraude-Files-Extensions-OptionsExtensions'></a>
+## OptionsExtensions `type`
+
+##### Namespace
+
+Definux.Emeraude.Files.Extensions
+
+##### Summary
+
+Extensions for [EmOptions](#T-Definux-Emeraude-Configuration-Options-EmOptions 'Definux.Emeraude.Configuration.Options.EmOptions').
+
+<a name='M-Definux-Emeraude-Files-Extensions-OptionsExtensions-ConfigureFilesInfrastructure-Definux-Emeraude-Configuration-Options-EmOptions,System-Action{Definux-Emeraude-Files-EmFilesOptions}-'></a>
+### ConfigureFilesInfrastructure(options,filesOptionsAction) `method`
+
+##### Summary
+
+Add external Emeraude files options.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | [Definux.Emeraude.Configuration.Options.EmOptions](#T-Definux-Emeraude-Configuration-Options-EmOptions 'Definux.Emeraude.Configuration.Options.EmOptions') |  |
+| filesOptionsAction | [System.Action{Definux.Emeraude.Files.EmFilesOptions}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{Definux.Emeraude.Files.EmFilesOptions}') |  |
+
+<a name='M-Definux-Emeraude-Files-Extensions-OptionsExtensions-GetFilesOptions-Definux-Emeraude-Configuration-Options-EmOptions-'></a>
+### GetFilesOptions(options) `method`
+
+##### Summary
+
+Get Emeraude files infrastructure options.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | [Definux.Emeraude.Configuration.Options.EmOptions](#T-Definux-Emeraude-Configuration-Options-EmOptions 'Definux.Emeraude.Configuration.Options.EmOptions') |  |
+
 <a name='T-Definux-Emeraude-Files-Services-RootsService'></a>
 ## RootsService `type`
 
@@ -358,8 +477,8 @@ Definux.Emeraude.Files.Extensions
 
 Extensions for [IServiceCollection](#T-Microsoft-Extensions-DependencyInjection-IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection').
 
-<a name='M-Definux-Emeraude-Files-Extensions-ServiceCollectionExtensions-RegisterEmeraudeSystemFilesManagement-Microsoft-Extensions-DependencyInjection-IServiceCollection-'></a>
-### RegisterEmeraudeSystemFilesManagement(services) `method`
+<a name='M-Definux-Emeraude-Files-Extensions-ServiceCollectionExtensions-RegisterEmeraudeSystemFilesManagement-Microsoft-Extensions-DependencyInjection-IServiceCollection,Definux-Emeraude-Files-EmFilesOptions-'></a>
+### RegisterEmeraudeSystemFilesManagement(services,options) `method`
 
 ##### Summary
 
@@ -374,6 +493,7 @@ Registers system file management services.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | services | [Microsoft.Extensions.DependencyInjection.IServiceCollection](#T-Microsoft-Extensions-DependencyInjection-IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection') |  |
+| options | [Definux.Emeraude.Files.EmFilesOptions](#T-Definux-Emeraude-Files-EmFilesOptions 'Definux.Emeraude.Files.EmFilesOptions') |  |
 
 <a name='T-Definux-Emeraude-Files-Services-SystemFilesService'></a>
 ## SystemFilesService `type`

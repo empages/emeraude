@@ -23,27 +23,28 @@ namespace Definux.Emeraude.Persistence.Extensions
         /// <typeparam name="TContextImplementation">Implementation of the application database context.</typeparam>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        /// <param name="options"></param>
+        /// <param name="persistenceOptions"></param>
+        /// <param name="mainOptions"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureDatabases<TContextInterface, TContextImplementation>(this IServiceCollection services, IConfiguration configuration, EmOptions options)
+        public static IServiceCollection ConfigureDatabases<TContextInterface, TContextImplementation>(this IServiceCollection services, IConfiguration configuration, EmPersistenceOptions persistenceOptions, EmMainOptions mainOptions)
             where TContextInterface : class, IEmContext
             where TContextImplementation : EmContext<TContextImplementation>, TContextInterface
         {
             string connectionString = configuration.GetConnectionString(DatabaseConnectionStringKey);
 
-            switch (options.DatabaseContextProvider)
+            switch (persistenceOptions.ContextProvider)
             {
                 case DatabaseContextProvider.MicrosoftSqlServer:
                     services.AddDbContext<TContextImplementation>(contextOptions =>
                         contextOptions.UseSqlServer(
                             connectionString,
-                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
                     break;
                 case DatabaseContextProvider.PostgreSql:
                     services.AddDbContext<TContextImplementation>(contextOptions =>
                         contextOptions.UseNpgsql(
                             connectionString,
-                            b => b.MigrationsAssembly(options.MigrationsAssembly)));
+                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
                     break;
                 case DatabaseContextProvider.InMemoryDatabase:
                     services.AddDbContext<TContextImplementation>(contextOptions =>
@@ -55,15 +56,19 @@ namespace Definux.Emeraude.Persistence.Extensions
             services.AddScoped<TContextInterface, TContextImplementation>();
             services.AddTransient<IDatabaseInitializerManager, DatabaseInitializerManager>();
 
-            if (options.ExecuteMigrations)
+            if (mainOptions.ExecuteMigrations)
             {
                 try
                 {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<TContextImplementation>().Database.Migrate();
+                    services
+                        .BuildServiceProvider()
+                        .GetService<TContextImplementation>()
+                        ?.Database
+                        .Migrate();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                 }
             }
 
