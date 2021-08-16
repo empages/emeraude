@@ -15,6 +15,7 @@ using EmDoggo.ClientBuilder.Modules.WebApi;
 using EmDoggo.Infrastructure.Extensions;
 using EmDoggo.Infrastructure.Persistance;
 using EmDoggo.Seo;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,51 +28,43 @@ namespace EmDoggo
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEmeraude<IEntityContext, EntityContext>(options =>
+            services.AddEmeraude<IEntityContext, EntityContext>(setup =>
             {
-                options.ApplyEmeraudeBaseOptions();
+                setup.ApplyEmeraudeBaseOptions();
 
-                options.DatabaseContextProvider = DatabaseContextProvider.PostgreSql;
-                options.LoggerContextProvider = DatabaseContextProvider.PostgreSql;
-                options.MigrationsAssembly = "EmDoggo.Infrastructure";
-                options.ExecuteMigrations = true;
+                setup.PersistenceOptions.ContextProvider = DatabaseContextProvider.PostgreSql;
+                setup.LoggerOptions.ContextProvider = DatabaseContextProvider.PostgreSql;
+                setup.MainOptions.InfrastructureAssembly = "EmDoggo.Infrastructure";
+                setup.MainOptions.ExecuteMigrations = true;
 
-                options.Mapping.AddProfile<EmDoggoAssemblyMappingProfile>();
-                options.AddAssembly("EmDoggo");
-                options.AddAssembly("EmDoggo.Application");
-                options.ProjectName = "EmDoggo Dev";
-                options.MaintenanceMode = false;
-                options.Account.HasExternalAuthentication = true;
-                options.AdminDashboardRequestType = typeof(AdminDashboardQuery);
+                setup.ApplicationsOptions.AddMappingProfile<EmDoggoAssemblyMappingProfile>();
+                setup.MainOptions.AddAssembly("EmDoggo");
+                setup.MainOptions.AddAssembly("EmDoggo.Application");
+                setup.MainOptions.ProjectName = "EmDoggo Dev";
+                setup.MainOptions.MaintenanceMode = false;
+                setup.IdentityOptions.HasExternalAuthentication = true;
+                setup.IdentityOptions.ExternalProvidersAuthenticators.Add(new FacebookAuthenticator());
+                setup.IdentityOptions.ExternalProvidersAuthenticators.Add(new GoogleAuthenticator());
                 
-                options.ConfigureSeo(seoOptions =>
-                {
-                    seoOptions.SetSitemapComposition<SitemapComposition>();
-                    seoOptions.DefaultMetaTags.TitleSuffix = " | EmDoggo";
-                    seoOptions.DefaultMetaTags.SetImage("https://scontent.definux.net/emeraude/EmeraudeFramework.jpg");
-                });
-            })
-                .AddExternalProvidersAuthenticators(authenticators =>
-                {
-                    authenticators.Add(new FacebookAuthenticator());
-                    authenticators.Add(new GoogleAuthenticator());
-                });
-
-            services.AddEmeraudeClientBuilder(options =>
-            {
-                options.SetClientApplicationPath("VueClientApp", "src", "EmDoggo", "ClientApp");
-
-                options.AddAssembly("Definux.Emeraude");
-                options.AddAssembly("EmDoggo");
-
-                options.AddModule<VueConstantsModule>();
-                options.AddModule<VueStaticContentModule>();
-                options.AddModule<VueTranslationsResourcesModule>();
-                options.AddModule<VueWebApiModule>();
+                setup.AdminOptions.SetDashboardRequestType<AdminDashboardQuery>();
                 
-                options.ConstantsTypes.Add(typeof(SomeConstants));
-                options.Constants.Add("SomeKey1", "SomeValue1");
-                options.Constants.Add("SomeKey2", "SomeValue2");
+                setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
+                setup.ClientOptions.DefaultMetaTags.TitleSuffix = " | EmDoggo";
+                setup.ClientOptions.DefaultMetaTags.SetImage("https://scontent.definux.net/emeraude/EmeraudeFramework.jpg");
+                
+                setup.ClientBuilderOptions.SetClientApplicationPath("VueClientApp", "src", "EmDoggo", "ClientApp");
+
+                setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude");
+                setup.ClientBuilderOptions.AddAssembly("EmDoggo");
+
+                setup.ClientBuilderOptions.AddModule<VueConstantsModule>();
+                setup.ClientBuilderOptions.AddModule<VueStaticContentModule>();
+                setup.ClientBuilderOptions.AddModule<VueTranslationsResourcesModule>();
+                setup.ClientBuilderOptions.AddModule<VueWebApiModule>();
+                
+                setup.ClientBuilderOptions.ConstantsTypes.Add(typeof(SomeConstants));
+                setup.ClientBuilderOptions.Constants.Add("SomeKey1", "SomeValue1");
+                setup.ClientBuilderOptions.Constants.Add("SomeKey2", "SomeValue2");
             });
 
             services.RegisterInfrastructureServices();

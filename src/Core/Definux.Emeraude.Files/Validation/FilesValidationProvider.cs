@@ -6,14 +6,13 @@ using Definux.Emeraude.Files.Validation.Handlers;
 using Definux.Utilities.Enumerations;
 using Definux.Utilities.Validation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Files.Validation
 {
     /// <inheritdoc cref="IFilesValidationProvider"/>
     public class FilesValidationProvider : IFilesValidationProvider
     {
-        private readonly List<FileExtensions> allowedFileFormatExtensions = new List<FileExtensions>
+        private readonly List<FileExtensions> allowedFileFormatExtensions = new ()
         {
             FileExtensions._Jpeg,
             FileExtensions._Jpg,
@@ -30,7 +29,7 @@ namespace Definux.Emeraude.Files.Validation
             FileExtensions._Pdf,
         };
 
-        private readonly List<FileExtensions> allowedImageFormatExtensions = new List<FileExtensions>
+        private readonly List<FileExtensions> allowedImageFormatExtensions = new ()
         {
             FileExtensions._Jpeg,
             FileExtensions._Jpg,
@@ -38,7 +37,7 @@ namespace Definux.Emeraude.Files.Validation
             FileExtensions._Png,
         };
 
-        private readonly List<FileExtensions> allowedVideoFormatExtensions = new List<FileExtensions>
+        private readonly List<FileExtensions> allowedVideoFormatExtensions = new ()
         {
             FileExtensions._Mp4,
             FileExtensions._Avi,
@@ -47,7 +46,7 @@ namespace Definux.Emeraude.Files.Validation
             FileExtensions._Wmv,
         };
 
-        private readonly List<string> allowedFilesMimeTypes = new List<string>
+        private readonly List<string> allowedFilesMimeTypes = new ()
         {
             "image/jpg",
             "image/jpeg",
@@ -66,7 +65,7 @@ namespace Definux.Emeraude.Files.Validation
             "application/pdf",
         };
 
-        private readonly List<string> allowedImageMimeTypes = new List<string>
+        private readonly List<string> allowedImageMimeTypes = new ()
         {
             "image/jpg",
             "image/jpeg",
@@ -76,7 +75,7 @@ namespace Definux.Emeraude.Files.Validation
             "image/png",
         };
 
-        private readonly List<string> allowedVideoMimeTypes = new List<string>
+        private readonly List<string> allowedVideoMimeTypes = new ()
         {
             "video/x-flv",
             "video/mp4",
@@ -90,10 +89,10 @@ namespace Definux.Emeraude.Files.Validation
         /// <summary>
         /// Initializes a new instance of the <see cref="FilesValidationProvider"/> class.
         /// </summary>
-        /// <param name="optionsAccessor"></param>
-        public FilesValidationProvider(IOptions<EmMainOptions> optionsAccessor)
+        /// <param name="optionsProvider"></param>
+        public FilesValidationProvider(IEmOptionsProvider optionsProvider)
         {
-            this.options = optionsAccessor.Value.GetFilesOptions();
+            this.options = optionsProvider.GetFilesOptions();
         }
 
         /// <inheritdoc/>

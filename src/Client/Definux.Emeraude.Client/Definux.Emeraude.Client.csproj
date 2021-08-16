@@ -31,7 +31,6 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Client.Seo\Definux.Emeraude.Client.Seo.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Client.UI\Definux.Emeraude.Client.UI.csproj" />
   </ItemGroup>
 

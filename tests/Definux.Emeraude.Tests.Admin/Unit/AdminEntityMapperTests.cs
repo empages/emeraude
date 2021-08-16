@@ -18,7 +18,7 @@ namespace Definux.Emeraude.Tests.Admin.Unit
         public void MapToTableViewModel_EnterNoItems_ShouldReturnCorrectHeader()
         {
             // Arrange
-            var entityMapper = this.GetSut();
+            var entityMapper = this.GetSubject();
             var items = new PaginatedList<SampleEntityViewModelFake>
             {
                 Items = new List<SampleEntityViewModelFake>()
@@ -49,7 +49,7 @@ namespace Definux.Emeraude.Tests.Admin.Unit
         public void MapToTableViewModel_EnterValidInput_ShouldExecuteCorrectMapping()
         {
             // Arrange
-            var entityMapper = this.GetSut();
+            var entityMapper = this.GetSubject();
             var items = this.GetSampleItems();
             var actions = this.GetSampleActions();
             
@@ -166,7 +166,7 @@ namespace Definux.Emeraude.Tests.Admin.Unit
             };
         }
         
-        private IAdminEntityMapper GetSut()
+        private IAdminEntityMapper GetSubject()
         {
             return new AdminEntityMapper();
         }

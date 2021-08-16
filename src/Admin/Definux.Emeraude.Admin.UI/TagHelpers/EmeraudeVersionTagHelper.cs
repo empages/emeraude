@@ -1,3 +1,4 @@
+using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
@@ -15,10 +16,10 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
         /// <summary>
         /// Initializes a new instance of the <see cref="EmeraudeVersionTagHelper"/> class.
         /// </summary>
-        /// <param name="options"></param>
-        public EmeraudeVersionTagHelper(IOptions<EmMainOptions> options)
+        /// <param name="optionsProvider"></param>
+        public EmeraudeVersionTagHelper(IEmOptionsProvider optionsProvider)
         {
-            this.version = options.Value.EmeraudeVersion;
+            this.version = optionsProvider.GetMainOptions().EmeraudeVersion;
         }
 
         /// <inheritdoc/>

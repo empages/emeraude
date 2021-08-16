@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
   </ItemGroup>
 

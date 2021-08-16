@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client.Seo\Definux.Emeraude.Client.Seo.csproj" />
     <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
     <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
     <ProjectReference Include="..\..\..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />

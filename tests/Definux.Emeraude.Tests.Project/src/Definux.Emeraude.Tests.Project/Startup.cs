@@ -22,7 +22,7 @@ namespace Definux.Emeraude.Tests.Project
         {
             services.AddEmeraude<IEntityContext, EntityContext>(setup =>
             {
-                setup.MainOptions.ApplyEmeraudeBaseOptions();
+                setup.ApplyEmeraudeBaseOptions();
 
                 setup.MainOptions.DomainAssembly = "Definux.Emeraude.Tests.Project.Domain";
                 setup.MainOptions.ApplicationAssembly = "Definux.Emeraude.Tests.Project.Application";
@@ -39,16 +39,9 @@ namespace Definux.Emeraude.Tests.Project
                 setup.MainOptions.TestMode = true;
                 setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
                 setup.EmailOptions.EmailSenderImplementationType = typeof(CustomEmailSender);
-            })
-                .AddExternalProvidersAuthenticators(authenticators =>
-                {
-                    // here comes the external provider authenticators.
-                });
-
-            services.AddEmeraudeClientBuilder(options =>
-            {
-                options.AddAssembly("Definux.Emeraude");
-                options.AddAssembly("Definux.Emeraude.Tests.Project");
+                
+                setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude");
+                setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude.Tests.Project");
             });
 
             services.RegisterInfrastructureServices();

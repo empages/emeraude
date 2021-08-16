@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Client.Seo;
-using Definux.Emeraude.Client.Seo.Models;
+using Definux.Emeraude.Client.Adapters;
+using Definux.Emeraude.Client.Models;
 using EmDoggo.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

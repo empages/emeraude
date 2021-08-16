@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Options;
 using Definux.Emeraude.ClientBuilder.Shared;
+using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -13,22 +15,22 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
     public class ScaffoldModulesProvider : IScaffoldModulesProvider
     {
         private readonly IWebHostEnvironment hostEnvironment;
-        private readonly ClientBuilderOptions clientBuilderOptions;
+        private readonly EmClientBuilderOptions clientBuilderOptions;
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaffoldModulesProvider"/> class.
         /// </summary>
         /// <param name="hostEnvironment"></param>
-        /// <param name="options"></param>
+        /// <param name="optionsProvider"></param>
         /// <param name="serviceProvider"></param>
         public ScaffoldModulesProvider(
             IWebHostEnvironment hostEnvironment,
-            IOptions<ClientBuilderOptions> options,
+            IEmOptionsProvider optionsProvider,
             IServiceProvider serviceProvider)
         {
             this.hostEnvironment = hostEnvironment;
-            this.clientBuilderOptions = options.Value;
+            this.clientBuilderOptions = optionsProvider.GetClientBuilderOptions();
             this.serviceProvider = serviceProvider;
 
             this.LoadModules();

@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Files\Definux.Emeraude.Files.csproj" />
   </ItemGroup>
 

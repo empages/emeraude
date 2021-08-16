@@ -39,23 +39,18 @@ namespace Definux.Emeraude.Identity.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <param name="authenticationBuilder"></param>
-        /// <param name="authenticatorsAction"></param>
-        /// <returns></returns>
-        public static IServiceCollection RegisterExternalProvidersAuthenticators(
+        /// <param name="authenticators"></param>
+        public static void RegisterExternalProvidersAuthenticators(
             this IServiceCollection services,
             AuthenticationBuilder authenticationBuilder,
-            Action<List<IExternalProviderAuthenticator>> authenticatorsAction)
+            List<IExternalProviderAuthenticator> authenticators)
         {
-            var authenticators = new List<IExternalProviderAuthenticator>();
-            authenticatorsAction?.Invoke(authenticators);
             services.AddSingleton<IExternalProviderAuthenticatorFactory>(new ExternalProviderAuthenticatorFactory(authenticators));
 
             foreach (var authenticator in authenticators)
             {
                 authenticator.RegisterAuthenticator(authenticationBuilder);
             }
-
-            return services;
         }
 
         /// <summary>

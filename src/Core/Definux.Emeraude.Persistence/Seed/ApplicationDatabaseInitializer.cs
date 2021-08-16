@@ -5,7 +5,9 @@ using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Entities;
+using Definux.Emeraude.Identity.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -17,7 +19,7 @@ namespace Definux.Emeraude.Persistence.Seed
         private readonly IEmContext context;
         private readonly IUserManager userManager;
         private readonly IRoleManager roleManager;
-        private readonly EmMainOptions options;
+        private readonly EmIdentityOptions identityOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDatabaseInitializer"/> class.
@@ -25,17 +27,17 @@ namespace Definux.Emeraude.Persistence.Seed
         /// <param name="context"></param>
         /// <param name="userManager"></param>
         /// <param name="roleManager"></param>
-        /// <param name="optionsAccessor"></param>
+        /// <param name="optionsProvider"></param>
         public ApplicationDatabaseInitializer(
             IEmContext context,
             IUserManager userManager,
             IRoleManager roleManager,
-            IOptions<EmMainOptions> optionsAccessor)
+            IEmOptionsProvider optionsProvider)
         {
             this.context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
-            this.options = optionsAccessor.Value;
+            this.identityOptions = optionsProvider.GetIdentityOptions();
         }
 
         /// <inheritdoc/>
@@ -45,9 +47,9 @@ namespace Definux.Emeraude.Persistence.Seed
             {
                 await this.EnsureRoleAsync(ApplicationRoles.Admin, AdminPermissions.GetAllPermissionValues());
                 await this.EnsureRoleAsync(ApplicationRoles.User, new string[] { });
-                if (this.options.AdditionalRoles != null && this.options.AdditionalRoles.Count > 0)
+                if (this.identityOptions.AdditionalRoles != null && this.identityOptions.AdditionalRoles.Count > 0)
                 {
-                    foreach (var role in this.options.AdditionalRoles)
+                    foreach (var role in this.identityOptions.AdditionalRoles)
                     {
                         await this.EnsureRoleAsync(role.Key, role.Value);
                     }

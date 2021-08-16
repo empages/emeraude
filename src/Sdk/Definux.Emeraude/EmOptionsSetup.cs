@@ -1,6 +1,7 @@
 ﻿using Definux.Emeraude.Admin;
 using Definux.Emeraude.Application;
 using Definux.Emeraude.Client;
+using Definux.Emeraude.ClientBuilder.Options;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Emails;
 using Definux.Emeraude.Files;
@@ -17,33 +18,36 @@ namespace Definux.Emeraude
     public class EmOptionsSetup
     {
         /// <inheritdoc cref="EmMainOptions" />
-        public EmMainOptions MainOptions { get; set; } = new EmMainOptions();
+        public EmMainOptions MainOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmApplicationsOptions" />
-        public EmApplicationsOptions ApplicationsOptions { get; set; } = new EmApplicationsOptions();
+        public EmApplicationsOptions ApplicationsOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmAdminOptions" />
-        public EmAdminOptions AdminOptions { get; set; } = new EmAdminOptions();
+        public EmAdminOptions AdminOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmClientOptions" />
-        public EmClientOptions ClientOptions { get; set; } = new EmClientOptions();
+        public EmClientOptions ClientOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmPersistenceOptions" />
-        public EmPersistenceOptions PersistenceOptions { get; set; } = new EmPersistenceOptions();
+        public EmPersistenceOptions PersistenceOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmIdentityOptions" />
-        public EmIdentityOptions IdentityOptions { get; set; } = new EmIdentityOptions();
+        public EmIdentityOptions IdentityOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmLoggerOptions" />
-        public EmLoggerOptions LoggerOptions { get; set; } = new EmLoggerOptions();
+        public EmLoggerOptions LoggerOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmLocalizationOptions" />
-        public EmLocalizationOptions LocalizationOptions { get; set; } = new EmLocalizationOptions();
+        public EmLocalizationOptions LocalizationOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmEmailOptions" />
-        public EmEmailOptions EmailOptions { get; set; } = new EmEmailOptions();
+        public EmEmailOptions EmailOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmFilesOptions" />
-        public EmFilesOptions FilesOptions { get; set; } = new EmFilesOptions();
+        public EmFilesOptions FilesOptions { get; set; } = new ();
+
+        /// <inheritdoc cref="EmClientBuilderOptions" />
+        public EmClientBuilderOptions ClientBuilderOptions { get; set; } = new ();
     }
 }

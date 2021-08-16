@@ -21,6 +21,8 @@ namespace Definux.Emeraude
         {
             this.optionsFactory = new Dictionary<Type, IEmOptions>();
             this.optionsByAddress = new Dictionary<string, object>();
+
+            this.LoadOptions(setup);
         }
 
         /// <summary>

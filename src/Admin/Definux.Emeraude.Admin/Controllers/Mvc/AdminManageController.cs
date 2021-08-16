@@ -11,6 +11,7 @@ using Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword;
 using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ResetTwoFactorAuthentication;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
@@ -32,28 +33,15 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
     public sealed class AdminManageController : AdminController
     {
-        private readonly UserManager<User> userManager;
-        private readonly UrlEncoder urlEncoder;
-        private readonly EmMainOptions options;
         private readonly ITwoFactorAuthenticationService twoFactorAuthenticationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminManageController"/> class.
         /// </summary>
-        /// <param name="userManager"></param>
-        /// <param name="urlEncoder"></param>
         /// <param name="twoFactorAuthenticationService"></param>
-        /// <param name="optionsAccessor"></param>
-        public AdminManageController(
-            UserManager<User> userManager,
-            UrlEncoder urlEncoder,
-            ITwoFactorAuthenticationService twoFactorAuthenticationService,
-            IOptions<EmMainOptions> optionsAccessor)
+        public AdminManageController(ITwoFactorAuthenticationService twoFactorAuthenticationService)
         {
-            this.userManager = userManager;
-            this.urlEncoder = urlEncoder;
             this.twoFactorAuthenticationService = twoFactorAuthenticationService;
-            this.options = optionsAccessor.Value;
         }
 
         /// <summary>

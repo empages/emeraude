@@ -4,8 +4,10 @@ using System.Linq;
 using System.Reflection;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.ClientBuilder.Attributes;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Models;
 using Definux.Emeraude.ClientBuilder.Options;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -18,16 +20,16 @@ namespace Definux.Emeraude.ClientBuilder.Services
     public class EndpointService : IEndpointService
     {
         private readonly IEmLogger logger;
-        private readonly ClientBuilderOptions clientBuilderOptions;
+        private readonly EmClientBuilderOptions clientBuilderOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EndpointService"/> class.
         /// </summary>
-        /// <param name="clientBuilderOptions"></param>
+        /// <param name="optionsProvider"></param>
         /// <param name="logger"></param>
-        public EndpointService(IOptions<ClientBuilderOptions> clientBuilderOptions, IEmLogger logger)
+        public EndpointService(IEmOptionsProvider optionsProvider, IEmLogger logger)
         {
-            this.clientBuilderOptions = clientBuilderOptions.Value;
+            this.clientBuilderOptions = optionsProvider.GetClientBuilderOptions();
             this.logger = logger;
         }
 

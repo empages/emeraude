@@ -96,7 +96,7 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         /// General options of the client builder.
         /// </summary>
         [JsonIgnore]
-        protected ClientBuilderOptions Options { get; private set; }
+        protected EmClientBuilderOptions Options { get; private set; }
 
         /// <summary>
         /// Add module file.
@@ -173,7 +173,7 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         /// Load client builder options.
         /// </summary>
         /// <param name="options"></param>
-        public void LoadOptions(ClientBuilderOptions options)
+        public void LoadOptions(EmClientBuilderOptions options)
         {
             this.Options = options;
         }

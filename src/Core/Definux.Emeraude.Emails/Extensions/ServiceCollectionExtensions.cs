@@ -14,10 +14,7 @@ namespace Definux.Emeraude.Emails.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <param name="options"></param>
-        /// <returns></returns>
-        public static IServiceCollection RegisterEmailInfrastructure(
-            this IServiceCollection services,
-            EmEmailOptions options)
+        public static void RegisterEmailInfrastructure(this IServiceCollection services, EmEmailOptions options)
         {
             services.AddScoped<IEmailRenderer, EmailRenderer>();
             if (options == null || options.EmailSenderImplementationType == null)
@@ -28,8 +25,6 @@ namespace Definux.Emeraude.Emails.Extensions
             {
                 services.AddScoped(typeof(IEmailSender), options.EmailSenderImplementationType);
             }
-
-            return services;
         }
     }
 }

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Definux.Emeraude.ClientBuilder.ScaffoldModules;
+using Definux.Emeraude.Configuration.Options;
 
 namespace Definux.Emeraude.ClientBuilder.Options
 {
     /// <summary>
     /// Options for client builder.
     /// </summary>
-    public class ClientBuilderOptions
+    public class EmClientBuilderOptions : IEmOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientBuilderOptions"/> class.
+        /// Initializes a new instance of the <see cref="EmClientBuilderOptions"/> class.
         /// </summary>
-        public ClientBuilderOptions()
+        public EmClientBuilderOptions()
         {
             this.Assemblies = new List<Assembly>();
             this.ModulesTypes = new List<Type>();
@@ -24,24 +25,29 @@ namespace Definux.Emeraude.ClientBuilder.Options
         }
 
         /// <summary>
+        /// Enables client builder of the framework. Default value is 'true'.
+        /// </summary>
+        public bool EnableClientBuilder { get; set; } = true;
+
+        /// <summary>
         /// Assemblies which will be scanned for the purposes of client builder.
         /// </summary>
-        public List<Assembly> Assemblies { get; internal set; }
+        public List<Assembly> Assemblies { get; }
 
         /// <summary>
         /// List of all scaffold modules used for code generation from the client builder.
         /// </summary>
-        public List<Type> ModulesTypes { get; internal set; }
+        public List<Type> ModulesTypes { get; }
 
         /// <summary>
         /// List of all classes types which will be scanned for constants.
         /// </summary>
-        public List<Type> ConstantsTypes { get; private set; }
+        public List<Type> ConstantsTypes { get; }
 
         /// <summary>
         /// Dictionary of all constants which will be exposed by the Client Builder.
         /// </summary>
-        public Dictionary<string, object> Constants { get; private set; }
+        public Dictionary<string, object> Constants { get; }
 
         /// <summary>
         /// Paths of the client applications used use for the purposes of client builder.

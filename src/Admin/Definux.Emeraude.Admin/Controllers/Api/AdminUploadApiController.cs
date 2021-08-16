@@ -28,10 +28,10 @@ namespace Definux.Emeraude.Admin.Controllers.Api
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminUploadApiController"/> class.
         /// </summary>
-        /// <param name="emeraudeOptionsAccessor"></param>
-        public AdminUploadApiController(IOptions<EmMainOptions> emeraudeOptionsAccessor)
+        /// <param name="optionsProvider"></param>
+        public AdminUploadApiController(IEmOptionsProvider optionsProvider)
         {
-            this.filesOptions = emeraudeOptionsAccessor.Value.GetFilesOptions();
+            this.filesOptions = optionsProvider.GetFilesOptions();
         }
 
         /// <summary>

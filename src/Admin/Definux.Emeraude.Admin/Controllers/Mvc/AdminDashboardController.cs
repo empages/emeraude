@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Requests;
 using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +17,15 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     [Route("/admin/")]
     public sealed class AdminDashboardController : AdminController
     {
-        private readonly EmMainOptions options;
+        private readonly EmAdminOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminDashboardController"/> class.
         /// </summary>
-        /// <param name="optionsAccessor"></param>
-        public AdminDashboardController(IOptions<EmMainOptions> optionsAccessor)
+        /// <param name="optionsProvider"></param>
+        public AdminDashboardController(IEmOptionsProvider optionsProvider)
         {
-            this.options = optionsAccessor.Value;
+            this.options = optionsProvider.GetAdminOptions();
         }
 
         /// <summary>
@@ -36,16 +37,16 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         public async Task<IActionResult> Index()
         {
             object viewModel = null;
-            if (this.options.AdminDashboardRequestType != null)
+            if (this.options.DashboardRequestType != null)
             {
-                var dashboardRequestType = this.options.AdminDashboardRequestType;
+                var dashboardRequestType = this.options.DashboardRequestType;
                 var dashboardRequestTypeInterfaces = dashboardRequestType.GetInterfaces();
                 if (dashboardRequestTypeInterfaces.All(x => x.Name != "IDashboardRequest`1"))
                 {
                     throw new InvalidCastException("AdminDashboardRequestType must be implementation of IDashboardRequest<TResponse>");
                 }
 
-                var request = Activator.CreateInstance(this.options.AdminDashboardRequestType);
+                var request = Activator.CreateInstance(this.options.DashboardRequestType);
                 if (request != null)
                 {
                     viewModel = await this.Mediator.Send(request);

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Admin\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
   </ItemGroup>
 
   <ItemGroup>

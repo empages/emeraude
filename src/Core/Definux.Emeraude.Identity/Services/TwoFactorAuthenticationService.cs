@@ -2,6 +2,7 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
@@ -16,19 +17,19 @@ namespace Definux.Emeraude.Identity.Services
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private readonly UserManager<User> userManager;
         private readonly UrlEncoder urlEncoder;
-        private readonly EmMainOptions options;
+        private readonly EmMainOptions mainOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TwoFactorAuthenticationService"/> class.
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="urlEncoder"></param>
-        /// <param name="optionsAccessor"></param>
-        public TwoFactorAuthenticationService(UserManager<User> userManager, UrlEncoder urlEncoder, IOptions<EmMainOptions> optionsAccessor)
+        /// <param name="optionsProvider"></param>
+        public TwoFactorAuthenticationService(UserManager<User> userManager, UrlEncoder urlEncoder, IEmOptionsProvider optionsProvider)
         {
             this.userManager = userManager;
             this.urlEncoder = urlEncoder;
-            this.options = optionsAccessor.Value;
+            this.mainOptions = optionsProvider.GetMainOptions();
         }
 
         /// <inheritdoc/>
@@ -59,7 +60,7 @@ namespace Definux.Emeraude.Identity.Services
 
             return string.Format(
                 AuthenticatorUriFormat,
-                this.urlEncoder.Encode(this.options.ProjectName),
+                this.urlEncoder.Encode(this.mainOptions.ProjectName),
                 this.urlEncoder.Encode(user.Email),
                 unformattedKey);
         }
