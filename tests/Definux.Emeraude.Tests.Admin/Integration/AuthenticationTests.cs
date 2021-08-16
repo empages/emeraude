@@ -17,7 +17,7 @@ namespace Definux.Emeraude.Tests.Admin.Integration
         public async Task Login_EnterCorrectCredentialsWithAccessAdministrationPermission_SuccessLogin()
         {
             // Arrange
-            await this.AuthenticateAsync(EmIdentityConstants.DefaultEmeraudeAdminEmail, EmIdentityConstants.DefaultEmeraudeAdminPassword);            
+            await this.AuthenticateAsync();            
 
             // Act
             var adminDashboardResponse = await this.HttpClient.GetAsync("/admin");

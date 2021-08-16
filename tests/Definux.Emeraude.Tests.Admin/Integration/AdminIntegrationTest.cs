@@ -11,21 +11,19 @@ namespace Definux.Emeraude.Tests.Admin.Integration
 {
     public class AdminIntegrationTest : IClassFixture<EmeraudeWebApplicationFactory>
     {
-        private readonly EmeraudeWebApplicationFactory factory;
-        
         public AdminIntegrationTest(EmeraudeWebApplicationFactory factory)
         {
-            this.factory = factory;
-            this.HttpClient = this.factory.CreateClient(new WebApplicationFactoryClientOptions
+            this.Factory = factory;
+            this.HttpClient = this.Factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 HandleCookies = true,
                 AllowAutoRedirect = true
             });
         }
         
-        public HttpClient HttpClient { get; }
+        protected HttpClient HttpClient { get; }
 
-        
+        protected EmeraudeWebApplicationFactory Factory { get; }
         
         protected async Task AuthenticateAsync(
             string email = EmIdentityConstants.DefaultEmeraudeAdminEmail,

@@ -24,6 +24,8 @@ namespace Definux.Emeraude.Tests.Base
             return (TService)this.testServer.Services.GetService(typeof(TService));
         }
 
+        public TestServer Server => this.testServer;
+        
         public void Dispose()
         {
             this.testServer.Dispose();
