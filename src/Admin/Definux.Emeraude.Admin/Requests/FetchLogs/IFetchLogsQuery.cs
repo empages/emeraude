@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Application.Models;
 
 namespace Definux.Emeraude.Admin.Requests.FetchLogs
 {
@@ -20,12 +21,12 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
         /// <summary>
         /// Filters by start date.
         /// </summary>
-        DateTime? FromDate { get; set; }
+        DateModel? FromDate { get; set; }
 
         /// <summary>
         /// Filters by end date.
         /// </summary>
-        DateTime? ToDate { get; set; }
+        DateModel? ToDate { get; set; }
 
         /// <summary>
         /// Filters by user.

@@ -44,25 +44,25 @@ namespace Definux.Emeraude.Files.Services
         }
 
         /// <inheritdoc/>
+        public bool CreateFolder(string folderName, string folderPath)
+        {
+            try
+            {
+                return this.CreateFolderAction(folderName, folderPath);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex);
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> CreateFolderAsync(string folderName, string folderPath)
         {
             try
             {
-                if (!(folderPath.StartsWith(this.rootsService.PublicRootDirectory) || folderPath.StartsWith(this.rootsService.PrivateRootDirectory)))
-                {
-                    return false;
-                }
-
-                string newFolderPath = Path.Combine(folderPath, folderName);
-
-                if (Directory.Exists(newFolderPath))
-                {
-                    return false;
-                }
-
-                Directory.CreateDirectory(newFolderPath);
-
-                return true;
+                return this.CreateFolderAction(folderName, folderPath);
             }
             catch (Exception ex)
             {
@@ -316,6 +316,25 @@ namespace Definux.Emeraude.Files.Services
                 await this.logger.LogErrorAsync(ex);
                 return default;
             }
+        }
+
+        private bool CreateFolderAction(string folderName, string folderPath)
+        {
+            if (!(folderPath.StartsWith(this.rootsService.PublicRootDirectory) || folderPath.StartsWith(this.rootsService.PrivateRootDirectory)))
+            {
+                return false;
+            }
+
+            string newFolderPath = Path.Combine(folderPath, folderName);
+
+            if (Directory.Exists(newFolderPath))
+            {
+                return false;
+            }
+
+            Directory.CreateDirectory(newFolderPath);
+
+            return true;
         }
     }
 }

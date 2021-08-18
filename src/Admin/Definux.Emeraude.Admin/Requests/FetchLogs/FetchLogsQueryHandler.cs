@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -11,6 +12,7 @@ using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Identity.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.Requests.FetchLogs
 {
@@ -60,13 +62,13 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
                 Expression<Func<TLoggerEntity, bool>> startDateFilterExpression = x => true;
                 if (request.FromDate.HasValue)
                 {
-                    startDateFilterExpression = x => x.CreatedOn >= request.FromDate.Value;
+                    startDateFilterExpression = x => x.CreatedOn >= request.FromDate.Value.ToDateTime();
                 }
 
                 Expression<Func<TLoggerEntity, bool>> endDateFilterExpression = x => true;
                 if (request.ToDate.HasValue)
                 {
-                    endDateFilterExpression = x => x.CreatedOn < request.ToDate.Value.AddDays(1);
+                    endDateFilterExpression = x => x.CreatedOn < request.ToDate.Value.ToDateTime().AddDays(1);
                 }
 
                 Expression<Func<TLoggerEntity, bool>> userFilterExpression = x => true;
@@ -86,7 +88,7 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
                 result.CurrentPage = request.Page;
                 result.PageSize = pageSize;
 
-                var logs = this.loggerContext
+                var logsList = await this.loggerContext
                     .Set<TLoggerEntity>()
                     .OrderByDescending(x => x.CreatedOn)
                     .Where(searchQueryExpression)
@@ -95,7 +97,10 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
                     .Where(userFilterExpression)
                     .Skip(result.StartRow)
                     .Take(pageSize)
-                    .ProjectTo<TLoggerEntityViewModel>(this.mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
+
+                var logs = this.mapper
+                    .Map<IEnumerable<TLoggerEntityViewModel>>(logsList)
                     .ToList();
 
                 var involvedUsersIds = logs

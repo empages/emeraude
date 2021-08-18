@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Extensions.Primitives
+@using Definux.Emeraude.Interfaces.Models
 @{
     Layout = "_AdminLayout";
     var tablePagination = (TablePaginationViewModel)ViewData["LoggerTablePagination"];
@@ -30,10 +31,10 @@
             <h5 class="card-title mb-3">@ViewData["Title"]</h5>
             <form class="row no-gutters mb-3">
                 <div class="ml-0 mr-2">
-                    <datepicker name="fromDate" placeholder="From" value="@ViewData.GetDateValueOrNull("FromDate")"></datepicker>
+                    <datepicker name="fromDate" placeholder="From" value="@(ViewData["FromDate"] as IDateModel)"></datepicker>
                 </div>
                 <div class="ml-0 mr-2">
-                    <datepicker name="toDate" placeholder="To" value="@ViewData.GetDateValueOrNull("ToDate")"></datepicker>
+                    <datepicker name="toDate" placeholder="To" value="@(ViewData["ToDate"] as IDateModel)"></datepicker>
                 </div>
                 <div class="ml-0 mr-2">
                     <select class="form-control user-select-2 width-200px" name="user">

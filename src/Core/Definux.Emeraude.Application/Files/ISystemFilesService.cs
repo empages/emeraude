@@ -109,6 +109,14 @@ namespace Definux.Emeraude.Application.Files
         /// <param name="folderName"></param>
         /// <param name="folderPath"></param>
         /// <returns></returns>
+        bool CreateFolder(string folderName, string folderPath);
+
+        /// <summary>
+        /// Create folder.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <param name="folderPath"></param>
+        /// <returns></returns>
         Task<bool> CreateFolderAsync(string folderName, string folderPath);
     }
 }

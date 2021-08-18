@@ -6,6 +6,7 @@ using Definux.Emeraude.Admin.Requests.FetchLogs;
 using Definux.Emeraude.Admin.Requests.GetEmailBody;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Application.Models;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Utilities.Objects;
@@ -91,8 +92,8 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             [FromRoute]string logType,
             [FromQuery]int page = 1,
             [FromQuery]string searchQuery = null,
-            [FromQuery]DateTime? fromDate = null,
-            [FromQuery]DateTime? toDate = null,
+            [FromQuery]DateModel? fromDate = null,
+            [FromQuery]DateModel? toDate = null,
             [FromQuery]string user = null)
         {
             return logType switch
@@ -128,8 +129,8 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             string viewName,
             int page,
             string searchQuery,
-            DateTime? fromDate,
-            DateTime? toDate,
+            DateModel? fromDate,
+            DateModel? toDate,
             string user)
             where TFetchQuery : IFetchLogsQuery, new()
         {

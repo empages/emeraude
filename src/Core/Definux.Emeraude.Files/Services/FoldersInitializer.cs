@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Logger;
+using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Files.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 
@@ -12,19 +14,22 @@ namespace Definux.Emeraude.Files.Services
     /// <inheritdoc cref="IFoldersInitializer"/>
     public class FoldersInitializer : IFoldersInitializer
     {
-        private const string ConfigurationFileName = "folders.json";
+        private readonly EmFilesOptions options;
         private readonly IEmLogger logger;
         private readonly IHostingEnvironment hostingEnvironment;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FoldersInitializer"/> class.
         /// </summary>
+        /// <param name="optionsProvider"></param>
         /// <param name="logger"></param>
         /// <param name="hostingEnvironment"></param>
         public FoldersInitializer(
+            IEmOptionsProvider optionsProvider,
             IEmLogger logger,
             IHostingEnvironment hostingEnvironment)
         {
+            this.options = optionsProvider.GetFilesOptions();
             this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -35,12 +40,12 @@ namespace Definux.Emeraude.Files.Services
             try
             {
                 var projectFolder = this.hostingEnvironment.ContentRootPath;
-                string configurationFilePath = Path.Combine(projectFolder, ConfigurationFileName);
-                if (File.Exists(configurationFilePath))
+                if (this.options.InitFolders != null && this.options.InitFolders.Count > 0)
                 {
-                    var configurationFileContent = await File.ReadAllTextAsync(configurationFilePath);
-                    var foldersForInit = JsonConvert.DeserializeObject<IEnumerable<InitFolder>>(configurationFileContent);
-                    CreateRootPathsRecursively(projectFolder, null, foldersForInit);
+                    foreach (var initFolderPaths in this.options.InitFolders)
+                    {
+                        CreateContentRootPath(projectFolder, initFolderPaths);
+                    }
                 }
             }
             catch (Exception ex)
@@ -49,31 +54,7 @@ namespace Definux.Emeraude.Files.Services
             }
         }
 
-        private static void CreateRootPathsRecursively(string contentRootPath, string rootFolder, IEnumerable<InitFolder> folders)
-        {
-            if (folders == null)
-            {
-                return;
-            }
-
-            foreach (var folder in folders)
-            {
-                string folderPath = folder.Name;
-                if (!string.IsNullOrEmpty(rootFolder))
-                {
-                    folderPath = Path.Combine(rootFolder, folder.Name);
-                    CreateContentRootPath(contentRootPath, rootFolder, folder.Name);
-                }
-                else
-                {
-                    CreateContentRootPath(contentRootPath, folder.Name);
-                }
-
-                CreateRootPathsRecursively(contentRootPath, folderPath, folder.Children);
-            }
-        }
-
-        private static void CreateContentRootPath(string contentRootPath, params string[] folders)
+        private static void CreateContentRootPath(string contentRootPath, string[] folders)
         {
             var foldersList = new List<string> { contentRootPath };
             foldersList.AddRange(folders);

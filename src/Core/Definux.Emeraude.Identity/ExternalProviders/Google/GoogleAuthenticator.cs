@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Identity.Options;
 using Definux.Utilities.Extensions;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
@@ -56,7 +57,7 @@ namespace Definux.Emeraude.Identity.ExternalProviders.Google
         {
             var settings = builder
                 .Services
-                .GetOAuth2Options()
+                .GetOptions<ExternalOAuth2ProvidersOptions>()
                 .GetOauth2Settings("Google");
 
             builder.AddGoogle(options =>

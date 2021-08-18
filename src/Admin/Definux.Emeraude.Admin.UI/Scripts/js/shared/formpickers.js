@@ -17,7 +17,7 @@
           todayHighlight: true,
           format: 'dd/mm/yyyy'
       }).on('changeDate', function(e){
-          let value = Math.round(e.date.getTime() / 1000).toString();
+          let value = moment(e.date, 'dd/mm/yyyy').format("YYYY-MM-DD");
           let targetElementId = e.target.id;
           $("#" + targetElementId + "-hidden").val(value);
       });

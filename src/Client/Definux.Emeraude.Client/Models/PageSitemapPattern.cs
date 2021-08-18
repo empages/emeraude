@@ -42,7 +42,7 @@ namespace Definux.Emeraude.Client.Models
         /// <summary>
         /// Collection of all page patterns which will be applied for the current object URL generation.
         /// </summary>
-        public List<string> Patterns { get; set; } = new List<string>();
+        public List<string> Patterns { get; set; } = new ();
 
         /// <summary>
         /// Priority of the sitemap page for search engines.
@@ -51,6 +51,11 @@ namespace Definux.Emeraude.Client.Models
 
         /// <inheritdoc cref="SeoChangeFrequencyTypes"/>
         public SeoChangeFrequencyTypes ChangeFrequency { get; set; } = SeoChangeFrequencyTypes.Always;
+
+        /// <summary>
+        /// Last modification of the url.
+        /// </summary>
+        public List<DateTime> LastModificationDates { get; set; } = new ();
 
         /// <summary>
         /// Function that contains logic for accessing data from any source for generating the sitemap.
@@ -84,6 +89,7 @@ namespace Definux.Emeraude.Client.Models
             {
                 if (!this.SinglePage)
                 {
+                    var dataIndex = 0;
                     foreach (var dataItemArgs in data)
                     {
                         string route = string.Format(pattern, dataItemArgs);
@@ -92,7 +98,10 @@ namespace Definux.Emeraude.Client.Models
                             Location = $"{domain}{route}",
                             Priority = this.Priority.ToString(CultureInfo.InvariantCulture),
                             ChangeFrequency = this.ChangeFrequency.ToString(),
+                            LastModification = this.GetLastModificationDate(dataIndex),
                         });
+
+                        dataIndex++;
                     }
                 }
                 else
@@ -102,11 +111,25 @@ namespace Definux.Emeraude.Client.Models
                         Location = $"{domain}{pattern}",
                         Priority = this.Priority.ToString(CultureInfo.InvariantCulture),
                         ChangeFrequency = this.ChangeFrequency.ToString(),
+                        LastModification = this.GetLastModificationDate(0),
                     });
                 }
             }
 
             return result;
+        }
+
+        private string GetLastModificationDate(int index)
+        {
+            var date = string.Empty;
+            if (this.LastModificationDates.Count > index)
+            {
+                date = this.LastModificationDates
+                    .ElementAt(index)
+                    .ToString("o");
+            }
+
+            return date;
         }
     }
 }

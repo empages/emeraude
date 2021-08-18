@@ -57,16 +57,15 @@ namespace Definux.Emeraude.Admin.Requests.GetAll
                 result.PageSize = request.PageSize;
 
                 var orderType = this.GetOrderTypeByString(request.OrderType);
-                IEnumerable<TRequestModel> entities = this.context
+                var entities = this.context
                         .Set<TEntity>()
                         .Where(requestExpression)
                         .OrderByProperty(request.OrderBy, orderType)
                         .Skip(result.StartRow)
                         .Take(request.PageSize)
-                        .ProjectTo<TRequestModel>(this.mapper.ConfigurationProvider)
                         .ToList();
 
-                result.Items = entities;
+                result.Items = this.mapper.Map<IEnumerable<TRequestModel>>(entities);
             }
             catch (Exception ex)
             {

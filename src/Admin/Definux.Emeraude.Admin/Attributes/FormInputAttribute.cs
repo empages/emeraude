@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Admin.Attributes
         public Type UIElementType { get; }
 
         /// <summary>
-        /// The existence of this property defines external data source for the current property. In case you use database source or additional data source map <see cref="IDataSourceMap"/>.
+        /// The existence of this property defines external data source for the current property. In case you use database source or additional custom entity data pair <see cref="ICustomEntityDataPair"/>.
         /// </summary>
         public Type DataSourceType { get; set; }
 

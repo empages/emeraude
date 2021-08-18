@@ -1,6 +1,9 @@
 ﻿using Definux.Emeraude.Application.Exceptions;
+using Definux.Emeraude.Client.Extensions;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Shared;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +19,21 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Mvc
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
     public sealed class AdminClientBuilderController : Controller
     {
+        private readonly IEmOptionsProvider optionsProvider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminClientBuilderController"/> class.
         /// </summary>
         /// <param name="hostEnvironment"></param>
-        public AdminClientBuilderController(IHostEnvironment hostEnvironment)
+        /// <param name="optionsProvider"></param>
+        public AdminClientBuilderController(IHostEnvironment hostEnvironment, IEmOptionsProvider optionsProvider)
         {
             if (!hostEnvironment.IsDevelopment())
             {
                 throw new DevelopmentOnlyException(ClientBuilderMessages.ProtectedControllerExceptionMessage);
             }
+
+            this.optionsProvider = optionsProvider;
         }
 
         /// <summary>
@@ -36,6 +44,11 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Mvc
         [Route("/admin/client-builder/{**route}")]
         public IActionResult Index()
         {
+            if (!this.optionsProvider.GetClientBuilderOptions().EnableClientBuilder)
+            {
+                return this.NotFound();
+            }
+
             return this.View();
         }
     }

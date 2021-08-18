@@ -6,7 +6,7 @@ using Definux.Emeraude.Application.Mapping;
 using EmDoggo.Domain.Entities;
 using System;
 using Definux.Emeraude.Admin.UI.UIElements.Details.Implementations;
-using EmDoggo.Application.DataSourceMaps;
+using EmDoggo.Application.CustomEntityDataPairs;
 
 namespace EmDoggo.Application.Models.Admin.Shops
 {
@@ -16,8 +16,8 @@ namespace EmDoggo.Application.Models.Admin.Shops
         public string Id { get; set; }
 
         [FormInput(1, typeof(FormDatabaseDropdownElement), typeof(Food), nameof(Food.Name))]
-        [TableColumn(1, "Food", typeof(TableDataSourceMapElement<FoodDataSourceMap>))]
-        [DetailsField(1, "Food", typeof(DetailsFieldDataSourceMapElement<FoodDataSourceMap>))]
+        [TableColumn(1, "Food", typeof(TableCustomEntityDataPairElement<FoodCustomEntityDataPair>))]
+        [DetailsField(1, "Food", typeof(DetailsFieldCustomEntityDataPairElement<FoodCustomEntityDataPair>))]
         public Guid FoodId { get; set; }
 
         [TableColumn(2, typeof(TableTextElement))]

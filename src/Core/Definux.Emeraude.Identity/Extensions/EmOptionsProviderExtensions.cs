@@ -1,4 +1,5 @@
 ﻿using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Identity.Options;
 
 namespace Definux.Emeraude.Identity.Extensions
 {

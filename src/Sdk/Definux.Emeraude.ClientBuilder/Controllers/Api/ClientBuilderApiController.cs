@@ -1,14 +1,16 @@
 ﻿using System;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.ClientBuilder.DataTransferObjects;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.ClientBuilder.Services;
 using Definux.Emeraude.ClientBuilder.Shared;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 
 namespace Definux.Emeraude.ClientBuilder.Controllers.Api
@@ -22,6 +24,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
     {
         private readonly IEndpointService endpointService;
         private readonly IScaffoldModulesProvider scaffoldModulesProvider;
+        private readonly IEmOptionsProvider optionsProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientBuilderApiController"/> class.
@@ -29,10 +32,12 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <param name="hostEnvironment"></param>
         /// <param name="endpointService"></param>
         /// <param name="scaffoldModulesProvider"></param>
+        /// <param name="optionsProvider"></param>
         public ClientBuilderApiController(
             IHostEnvironment hostEnvironment,
-            IEndpointService endpointService,
-            IScaffoldModulesProvider scaffoldModulesProvider)
+            IEmOptionsProvider optionsProvider,
+            IEndpointService endpointService = null,
+            IScaffoldModulesProvider scaffoldModulesProvider = null)
         {
             if (!hostEnvironment.IsDevelopment())
             {
@@ -41,6 +46,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
 
             this.endpointService = endpointService;
             this.scaffoldModulesProvider = scaffoldModulesProvider;
+            this.optionsProvider = optionsProvider;
         }
 
         /// <summary>
@@ -170,6 +176,17 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
             }
 
             return this.BadRequest(errorMessage);
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (!this.optionsProvider.GetClientBuilderOptions().EnableClientBuilder)
+            {
+                context.Result = this.NotFound();
+            }
+
+            base.OnActionExecuting(context);
         }
     }
 }

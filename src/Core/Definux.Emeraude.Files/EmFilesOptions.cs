@@ -1,4 +1,6 @@
-﻿using Definux.Emeraude.Configuration.Options;
+﻿using System.Collections.Generic;
+using Definux.Emeraude.Application.Files;
+using Definux.Emeraude.Configuration.Options;
 
 namespace Definux.Emeraude.Files
 {
@@ -7,6 +9,14 @@ namespace Definux.Emeraude.Files
     /// </summary>
     public class EmFilesOptions : IEmOptions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmFilesOptions"/> class.
+        /// </summary>
+        public EmFilesOptions()
+        {
+            this.InitFolders = new List<string[]>();
+        }
+
         /// <summary>
         /// Enables file upload. The default value is true.
         /// </summary>
@@ -36,5 +46,16 @@ namespace Definux.Emeraude.Files
         /// Maximum allowed upload video size. The default value is 209715200 bytes (~200MB).
         /// </summary>
         public int MaxAllowedVideoFileSize { get; set; } = 209715200;
+
+        /// <summary>
+        /// List of all folders that must be initialized on the application start.
+        /// </summary>
+        public List<string[]> InitFolders { get; }
+
+        /// <summary>
+        /// Defines init folders by folder names only.
+        /// </summary>
+        /// <param name="folders"></param>
+        public void AddInitFolders(params string[] folders) => this.InitFolders.Add(folders);
     }
 }

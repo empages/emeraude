@@ -34,5 +34,10 @@
         /// Images folder name.
         /// </summary>
         public const string ImagesFolderName = "images";
+
+        /// <summary>
+        /// Resources folder name.
+        /// </summary>
+        public const string ResourcesFolderName = "resources";
     }
 }

@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Admin.UI.AdminMenu;
+﻿using Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus;
 using Definux.HtmlBuilder;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;

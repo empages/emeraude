@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using AutoMapper;
 using Definux.Emeraude.Client.Adapters;
 using Definux.Emeraude.Client.UI.Adapters;
 using Definux.Emeraude.Client.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Locales.Constraints;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Client.Extensions
@@ -19,9 +24,8 @@ namespace Definux.Emeraude.Client.Extensions
         /// Register client features.
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddEmeraudeClient(this IServiceCollection services, EmClientOptions options)
+        /// <param name="clientOptions"></param>
+        public static void AddEmeraudeClient(this IServiceCollection services, EmClientOptions clientOptions)
         {
             services.ConfigureClientUI();
             services.AddRouting(opt =>
@@ -31,10 +35,8 @@ namespace Definux.Emeraude.Client.Extensions
 
             services.AddScoped<IExternalAuthenticationProvidersCollection, ExternalAuthenticationProvidersCollection>();
 
-            services.AddScoped(typeof(ISitemapComposition), options.SitemapCompositionType);
+            services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
             services.AddScoped<IHtmlMetaTagsBuilder, HtmlMetaTagsBuilder>();
-
-            return services;
         }
 
         /// <summary>

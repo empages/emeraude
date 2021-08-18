@@ -1,5 +1,6 @@
 ﻿using System;
 using Definux.Emeraude.Admin.UI.HtmlBuilders;
+using Definux.Emeraude.Interfaces.Models;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Definux.Emeraude.Admin.UI.TagHelpers
@@ -14,7 +15,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
         /// Current value of the datepicker.
         /// </summary>
         [HtmlAttributeName("value")]
-        public DateTime? Value { get; set; }
+        public IDateModel Value { get; set; }
 
         /// <summary>
         /// Target property name of the datepicker.

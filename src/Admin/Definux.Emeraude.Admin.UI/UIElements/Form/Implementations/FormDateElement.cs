@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Versioning;
 using Definux.Emeraude.Admin.UI.HtmlBuilders;
+using Definux.Emeraude.Interfaces.Models;
 using Definux.Emeraude.Resources;
 using Definux.HtmlBuilder;
 using Definux.Utilities.Functions;
@@ -15,20 +16,9 @@ namespace Definux.Emeraude.Admin.UI.UIElements.Form.Implementations
         /// <inheritdoc/>
         public override void DefineHtmlBuilder()
         {
-            DateTime? dateValue = null;
-
-            if (this.Value is DateTime dateTime)
-            {
-                dateValue = dateTime;
-            }
-            else if (this.Value is DateTimeOffset offset)
-            {
-                dateValue = offset.DateTime;
-            }
-
             this.HtmlBuilder = new DatePickerHtmlBuilder(
                 this.TargetProperty,
-                dateValue,
+                this.Value as IDateModel,
                 StringFunctions.SplitWordsByCapitalLetters(this.TargetProperty));
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Definux.Emeraude.Interfaces.Models;
 using Definux.Utilities.Objects;
 
 namespace Definux.Emeraude.Admin.UI.ViewModels.Logging
@@ -18,12 +19,12 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Logging
         /// <summary>
         /// Date indicates the start date of the filter.
         /// </summary>
-        public DateTime? FromDate { get; set; }
+        public IDateModel FromDate { get; set; }
 
         /// <summary>
         /// Date indicates the end date of the filter.
         /// </summary>
-        public DateTime? ToDate { get; set; }
+        public IDateModel ToDate { get; set; }
 
         /// <summary>
         /// User id or null used for filter by involved user.

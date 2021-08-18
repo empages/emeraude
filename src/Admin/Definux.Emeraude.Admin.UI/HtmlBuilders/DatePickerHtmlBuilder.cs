@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Interfaces.Models;
 using Definux.Emeraude.Resources;
 using Definux.HtmlBuilder;
 
@@ -15,7 +16,7 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
         /// <param name="targetProperty"></param>
         /// <param name="value"></param>
         /// <param name="placeholder"></param>
-        public DatePickerHtmlBuilder(string targetProperty, DateTime? value, string placeholder)
+        public DatePickerHtmlBuilder(string targetProperty, IDateModel value, string placeholder)
         {
             var pickerId = Guid.NewGuid().ToString().Replace("-", string.Empty);
 
@@ -30,7 +31,7 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                         .WithClasses("form-control")
                         .WithAttribute("type", "text")
                         .WithAttribute("placeholder", placeholder)
-                        .WithAttribute("value", value?.ToString(SystemFormats.ShortDateFormat)))
+                        .WithAttribute("value", value?.ToDateTime().ToString(SystemFormats.ShortDateFormat)))
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Span)
                         .WithClasses("input-group-addon input-group-append border-left")
@@ -42,17 +43,7 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                     .WithId($"datepicker-popup-{pickerId}-hidden")
                     .WithAttribute("type", "hidden")
                     .WithAttribute("name", targetProperty)
-                    .WithAttribute("value", this.GetUnixTimeStamp(value)));
-        }
-
-        private string GetUnixTimeStamp(DateTime? dateTime)
-        {
-            if (dateTime.HasValue)
-            {
-                return ((int)dateTime.Value.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString();
-            }
-
-            return null;
+                    .WithAttribute("value", value?.ToDateTime().ToString(SystemFormats.DateModelFormat)));
         }
     }
 }

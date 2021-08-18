@@ -9,6 +9,10 @@ namespace Definux.Emeraude.Configuration.Options
     /// </summary>
     public class EmMainOptions : IEmOptions
     {
+        private string domainAssembly;
+        private string applicationAssembly;
+        private string infrastructureAssembly;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EmMainOptions"/> class.
         /// </summary>
@@ -30,17 +34,41 @@ namespace Definux.Emeraude.Configuration.Options
         /// <summary>
         /// Contains the domain assembly name.
         /// </summary>
-        public string DomainAssembly { get; set; }
+        public string DomainAssembly
+        {
+            get => this.domainAssembly;
+            set
+            {
+                this.domainAssembly = value;
+                this.AddAssembly(this.domainAssembly);
+            }
+        }
 
         /// <summary>
         /// Contains the infrastructure assembly name.
         /// </summary>
-        public string InfrastructureAssembly { get; set; }
+        public string InfrastructureAssembly
+        {
+            get => this.infrastructureAssembly;
+            set
+            {
+                this.infrastructureAssembly = value;
+                this.AddAssembly(this.infrastructureAssembly);
+            }
+        }
 
         /// <summary>
         /// Contains the application assembly name.
         /// </summary>
-        public string ApplicationAssembly { get; set; }
+        public string ApplicationAssembly
+        {
+            get => this.applicationAssembly;
+            set
+            {
+                this.applicationAssembly = value;
+                this.AddAssembly(this.applicationAssembly);
+            }
+        }
 
         /// <summary>
         /// List with all assemblies used for registration of execution services and requests.
@@ -94,6 +122,7 @@ namespace Definux.Emeraude.Configuration.Options
             if (this.EmeraudeAssembly == null)
             {
                 this.EmeraudeAssembly = assembly;
+                this.AddAssembly(assembly);
             }
         }
     }

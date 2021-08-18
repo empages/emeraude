@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
@@ -10,6 +10,7 @@ using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Mapping.Profiles;
 using Definux.Emeraude.Application;
 using Definux.Emeraude.Application.Behaviours;
+using Definux.Emeraude.Application.Mapping;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Client.Mapping;
@@ -21,20 +22,21 @@ using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Emails.Extensions;
 using Definux.Emeraude.Files.Extensions;
-using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
+using Definux.Emeraude.Identity.Options;
 using Definux.Emeraude.Localization.Extensions;
 using Definux.Emeraude.Logger.Extensions;
 using Definux.Emeraude.Persistence;
 using Definux.Emeraude.Persistence.Extensions;
 using Definux.Emeraude.Persistence.Seed;
 using Definux.Emeraude.Presentation.ActionFilters;
+using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
-using Definux.Utilities.DataAnnotations;
+using Definux.Emeraude.Presentation.Options;
+using Definux.Emeraude.Resources;
 using Definux.Utilities.Extensions;
-using Definux.Utilities.Options;
 using FluentValidation.AspNetCore;
 using IdentityServer4;
 using MediatR;
@@ -81,6 +83,8 @@ namespace Definux.Emeraude.Extensions
 
             var setup = services.RegisterEmeraudeOptions(setupAction);
 
+            SetDefaultsCulture();
+
             services.AddHttpContextAccessor();
 
             services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, setup.PersistenceOptions, setup.MainOptions);
@@ -95,8 +99,6 @@ namespace Definux.Emeraude.Extensions
 
             services.ConfigureGoogleReCaptcha();
 
-            services.LoadSmtpOptions();
-
             services.RegisterEmeraudeIdentity();
 
             services.RegisterEmeraudeLogger(configuration, setup.LoggerOptions, setup.MainOptions);
@@ -109,7 +111,7 @@ namespace Definux.Emeraude.Extensions
 
             services.ConfigureAuthorizationPolicies();
 
-            services.AddEmeraudeAdmin();
+            services.AddEmeraudeAdmin(setup.AdminOptions, setup.MainOptions);
 
             services.AddEmeraudeClient(setup.ClientOptions);
 
@@ -141,6 +143,7 @@ namespace Definux.Emeraude.Extensions
             setup.MainOptions.AddAssembly("Definux.Emeraude.Client");
             setup.MainOptions.AddAssembly("Definux.Emeraude.Application");
             setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
+            setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
 
             setup.PersistenceOptions.AddDatabaseInitializer<IApplicationDatabaseInitializer>();
         }
@@ -175,7 +178,7 @@ namespace Definux.Emeraude.Extensions
 
         private static AuthenticationBuilder AddEmeraudeAuthentication(this IServiceCollection services, EmIdentityOptions identityOptions)
         {
-            services.LoadJwtOptions();
+            services.LoadOptions<JsonWebTokenOptions>(nameof(JsonWebTokenOptions));
 
             var authenticationBuilder = services
                 .AddAuthentication(options =>
@@ -187,7 +190,7 @@ namespace Definux.Emeraude.Extensions
                 })
                 .AddCookie(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
-            services.LoadOAuth2Options();
+            services.LoadOptions<ExternalOAuth2ProvidersOptions>(nameof(ExternalOAuth2ProvidersOptions));
             services.RegisterExternalProvidersAuthenticators(
                 authenticationBuilder,
                 identityOptions.ExternalProvidersAuthenticators);
@@ -195,7 +198,7 @@ namespace Definux.Emeraude.Extensions
             authenticationBuilder
                 .AddClientCookie()
                 .AddAdminCookie()
-                .AddJwtAuthentication(services.GetJwtOptions());
+                .AddJwtAuthentication(services.GetOptions<JsonWebTokenOptions>());
 
             return authenticationBuilder;
         }
@@ -226,6 +229,7 @@ namespace Definux.Emeraude.Extensions
                 configuration.AddProfile<AdminAssemblyMappingProfile>();
                 configuration.AddProfile<ClientAssemblyMappingProfile>();
                 configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();
+                configuration.AddProfile<ApplicationMappingProfile>();
                 configuration.AddMaps(applicationAssembly);
                 configuration.AddAdminMapperConfiguration();
                 configuration.AddClientMapperConfiguration();
@@ -255,9 +259,8 @@ namespace Definux.Emeraude.Extensions
 
         private static void ConfigureGoogleReCaptcha(this IServiceCollection services)
         {
-            services.LoadGoogleRecaptchaOptions();
-            services.AddScoped<InvisibleReCaptchaValidateAttribute>();
-            services.AddScoped<VisibleReCaptchaValidateAttribute>();
+            services.LoadOptions<GoogleRecaptchaKeysOptions>(nameof(GoogleRecaptchaKeysOptions));
+            services.AddScoped<GoogleReCaptchaValidateAttribute>();
         }
 
         private static void ConfigureIdentityOptions<TContext>(this IServiceCollection services)
@@ -283,12 +286,12 @@ namespace Definux.Emeraude.Extensions
             });
         }
 
-        private static IServiceCollection ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions)
+        private static void ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions)
         {
             services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestExceptionFilter());
-                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+                options.ModelBinderProviders.Insert(0, new DateModelBinderProvider());
             })
                 .AddFluentValidation(options =>
                 {
@@ -304,8 +307,6 @@ namespace Definux.Emeraude.Extensions
                 .AddJsonOptions(options =>
                     options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter()))
                 .AddXmlSerializerFormatters();
-
-            return services;
         }
 
         private static EmOptionsSetup RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptionsSetup> setupAction)
@@ -317,7 +318,7 @@ namespace Definux.Emeraude.Extensions
             return setup;
         }
 
-        private static AuthenticationBuilder AddJwtAuthentication(this AuthenticationBuilder builder, JsonWebTokenOptions jwtOptions)
+        private static void AddJwtAuthentication(this AuthenticationBuilder builder, JsonWebTokenOptions jwtOptions)
         {
             builder
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -333,8 +334,6 @@ namespace Definux.Emeraude.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
                     };
                 });
-
-            return builder;
         }
 
         private static void ConfigureAuthorizationPolicies(this IServiceCollection services)
@@ -368,6 +367,12 @@ namespace Definux.Emeraude.Extensions
                 services.AddScoped<IEndpointService, EndpointService>();
                 services.AddScoped<IScaffoldModulesProvider, ScaffoldModulesProvider>();
             }
+        }
+
+        private static void SetDefaultsCulture()
+        {
+            CultureInfo.DefaultThreadCurrentCulture = SystemFormats.DefaultCultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = SystemFormats.DefaultCultureInfo;
         }
     }
 }

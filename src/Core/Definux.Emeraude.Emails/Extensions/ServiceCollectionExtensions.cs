@@ -1,5 +1,7 @@
 ﻿using Definux.Emeraude.Application.Emails;
+using Definux.Emeraude.Emails.Options;
 using Definux.Emeraude.Emails.Services;
+using Definux.Utilities.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Emails.Extensions
@@ -17,6 +19,7 @@ namespace Definux.Emeraude.Emails.Extensions
         public static void RegisterEmailInfrastructure(this IServiceCollection services, EmEmailOptions options)
         {
             services.AddScoped<IEmailRenderer, EmailRenderer>();
+            services.LoadOptions<SmtpOptions>(nameof(SmtpOptions));
             if (options == null || options.EmailSenderImplementationType == null)
             {
                 services.AddScoped<IEmailSender, EmailSender>();

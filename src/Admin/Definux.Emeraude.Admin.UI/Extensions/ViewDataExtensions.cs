@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Definux.Emeraude.Admin.UI.ViewModels.Layout;
+using Definux.Emeraude.Interfaces.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Definux.Emeraude.Admin.UI.Extensions
@@ -234,22 +235,6 @@ namespace Definux.Emeraude.Admin.UI.Extensions
             }
 
             return new List<NavigationActionViewModel>();
-        }
-
-        /// <summary>
-        /// Get a date value from the ViewData.
-        /// </summary>
-        /// <param name="viewData"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static DateTime? GetDateValueOrNull(this ViewDataDictionary viewData, string key)
-        {
-            if (viewData.ContainsKey(key) && DateTime.TryParse(viewData[key]?.ToString() ?? string.Empty, out DateTime parsedDate))
-            {
-                return parsedDate;
-            }
-
-            return null;
         }
 
         private static string GetStringValueOrDefault(this ViewDataDictionary viewData, string key)

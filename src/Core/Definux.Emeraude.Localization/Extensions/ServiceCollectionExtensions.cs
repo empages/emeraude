@@ -41,6 +41,7 @@ namespace Definux.Emeraude.Localization.Extensions
             services.AddScoped<ILocalizer, Localizer>();
             services.AddScoped<IEmLocalizer, Localizer>();
             services.AddScoped<ILanguageStore, LanguageStore>();
+            services.AddScoped<ILanguagesResourceManager, LanguagesResourceManager>();
 
             if (options.ExecuteMigrations)
             {

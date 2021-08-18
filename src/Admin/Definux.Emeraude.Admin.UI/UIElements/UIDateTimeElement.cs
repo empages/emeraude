@@ -1,4 +1,6 @@
 ﻿using System;
+using Definux.Emeraude.Interfaces.Models;
+using Definux.Emeraude.Resources;
 using Definux.HtmlBuilder;
 
 namespace Definux.Emeraude.Admin.UI.UIElements
@@ -28,7 +30,11 @@ namespace Definux.Emeraude.Admin.UI.UIElements
         {
             DateTime? sourceData = null;
 
-            if (this.DataSource is DateTime dateTime)
+            if (this.DataSource is IDateModel dateModel)
+            {
+                sourceData = dateModel.ToDateTime();
+            }
+            else if (this.DataSource is DateTime dateTime)
             {
                 sourceData = dateTime;
             }
@@ -37,7 +43,7 @@ namespace Definux.Emeraude.Admin.UI.UIElements
                 sourceData = offset.DateTime;
             }
 
-            string htmlString = sourceData.HasValue ? sourceData.Value.ToString(this.dateTimeFormat) : string.Empty;
+            string htmlString = sourceData.HasValue ? sourceData.Value.ToString(this.dateTimeFormat, SystemFormats.DefaultCultureInfo) : string.Empty;
 
             this.HtmlBuilder.StartElement(HtmlTags.Span)
                 .Append(htmlString);

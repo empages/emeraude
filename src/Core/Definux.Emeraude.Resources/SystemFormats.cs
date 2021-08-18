@@ -1,4 +1,6 @@
-﻿namespace Definux.Emeraude.Resources
+﻿using System.Globalization;
+
+namespace Definux.Emeraude.Resources
 {
     /// <summary>
     /// Default system formats in the Emeraude.
@@ -26,8 +28,18 @@
         public const string ShortDateFormat = "dd/MM/yyyy";
 
         /// <summary>
+        /// Default date model format used by Emeraude.
+        /// </summary>
+        public const string DateModelFormat = "yyyy-MM-dd";
+
+        /// <summary>
         /// Default date separator used by Emeraude.
         /// </summary>
         public const string DateSeparator = "/";
+
+        /// <summary>
+        /// Default culture info used by Emeraude.
+        /// </summary>
+        public static readonly CultureInfo DefaultCultureInfo = new CultureInfo("en-US");
     }
 }

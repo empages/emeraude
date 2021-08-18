@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Application.Models;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.Requests.FetchLogs
@@ -16,10 +17,10 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
         public string SearchQuery { get; set; }
 
         /// <inheritdoc />
-        public DateTime? FromDate { get; set; }
+        public DateModel? FromDate { get; set; }
 
         /// <inheritdoc />
-        public DateTime? ToDate { get; set; }
+        public DateModel? ToDate { get; set; }
 
         /// <inheritdoc />
         public string User { get; set; }

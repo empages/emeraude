@@ -18,8 +18,10 @@ using Definux.Emeraude.Admin.Requests.GetEntityImage;
 using Definux.Emeraude.Admin.RouteConstraints;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Admin.UI.UIElements;
 using Definux.Emeraude.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Objects;
@@ -41,7 +43,9 @@ namespace Definux.Emeraude.Admin.Extensions
         /// Register all required Emeraude administration services.
         /// </summary>
         /// <param name="services"></param>
-        public static void AddEmeraudeAdmin(this IServiceCollection services)
+        /// <param name="adminOptions"></param>
+        /// <param name="mainOptions"></param>
+        public static void AddEmeraudeAdmin(this IServiceCollection services, EmAdminOptions adminOptions, EmMainOptions mainOptions)
         {
             services.ConfigureAdminUI();
             services.ConfigureAdminClientBuilderUI();
@@ -51,7 +55,7 @@ namespace Definux.Emeraude.Admin.Extensions
                 options.ConstraintMap.Add(RootConstraint.RootConstraintKey, typeof(RootConstraint));
             });
 
-            services.RegisterAdapters();
+            services.RegisterAdapters(adminOptions);
 
             services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
         }
@@ -246,12 +250,31 @@ namespace Definux.Emeraude.Admin.Extensions
             return services;
         }
 
-        private static IServiceCollection RegisterAdapters(this IServiceCollection services)
+        private static void RegisterAdapters(this IServiceCollection services, EmAdminOptions options)
         {
             services.AddScoped<IIdentityUserInfoAdapter, IdentityUserInfoAdapter>();
             services.AddScoped<IEmContextAdapter, EmContextAdapter>();
 
-            return services;
+            services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
+        }
+
+        private static void RegisterCustomEntityDataPairs(
+            this IServiceCollection services,
+            IEnumerable<Assembly> assemblies)
+        {
+            var typesForRegistration = new List<Type>();
+            foreach (var assembly in assemblies)
+            {
+                typesForRegistration.AddRange(assembly
+                    .GetTypes()
+                    .Where(x => x.GetInterfaces().Any(y => y == typeof(ICustomEntityDataPair)))
+                    .ToList());
+            }
+
+            foreach (var type in typesForRegistration)
+            {
+                services.AddScoped(type);
+            }
         }
     }
 }

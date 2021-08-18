@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.CreateContentKeyWithContent;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.CreateKeyWithValues;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.CreateLanguage;
@@ -16,11 +17,13 @@ using Definux.Emeraude.ClientBuilder.Requests.Queries.GetStaticContentKeys;
 using Definux.Emeraude.ClientBuilder.Requests.Queries.GetTranslationsGridData;
 using Definux.Emeraude.ClientBuilder.Shared;
 using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 
 namespace Definux.Emeraude.ClientBuilder.Controllers.Api
@@ -32,16 +35,23 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
     public sealed class ClientBuilderLanguagesApiController : ApiController
     {
+        private readonly IEmOptionsProvider optionsProvider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientBuilderLanguagesApiController"/> class.
         /// </summary>
         /// <param name="hostEnvironment"></param>
-        public ClientBuilderLanguagesApiController(IHostEnvironment hostEnvironment)
+        /// <param name="optionsProvider"></param>
+        public ClientBuilderLanguagesApiController(
+            IHostEnvironment hostEnvironment,
+            IEmOptionsProvider optionsProvider)
         {
             if (!hostEnvironment.IsDevelopment())
             {
                 throw new DevelopmentOnlyException(ClientBuilderMessages.ProtectedControllerExceptionMessage);
             }
+
+            this.optionsProvider = optionsProvider;
         }
 
         /// <summary>
@@ -230,6 +240,17 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
             {
                 LanguageId = languageId,
             }));
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (!this.optionsProvider.GetClientBuilderOptions().EnableClientBuilder)
+            {
+                context.Result = this.NotFound();
+            }
+
+            base.OnActionExecuting(context);
         }
     }
 }

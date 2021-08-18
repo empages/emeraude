@@ -8,6 +8,7 @@ using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
+using Definux.Emeraude.Identity.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

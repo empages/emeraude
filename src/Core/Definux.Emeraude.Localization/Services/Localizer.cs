@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Resources;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Application.Logger;
@@ -14,6 +15,7 @@ namespace Definux.Emeraude.Localization.Services
         private readonly ILocalizationContext context;
         private readonly IEmLogger logger;
         private readonly ICurrentLanguageProvider currentLanguageProvider;
+        private readonly ILanguagesResourceManager languagesResourceManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Localizer"/> class.
@@ -21,11 +23,17 @@ namespace Definux.Emeraude.Localization.Services
         /// <param name="context"></param>
         /// <param name="logger"></param>
         /// <param name="currentLanguageProvider"></param>
-        public Localizer(ILocalizationContext context, IEmLogger logger, ICurrentLanguageProvider currentLanguageProvider)
+        /// <param name="languagesResourceManager"></param>
+        public Localizer(
+            ILocalizationContext context,
+            IEmLogger logger,
+            ICurrentLanguageProvider currentLanguageProvider,
+            ILanguagesResourceManager languagesResourceManager)
         {
             this.context = context;
             this.logger = logger;
             this.currentLanguageProvider = currentLanguageProvider;
+            this.languagesResourceManager = languagesResourceManager;
         }
 
         /// <inheritdoc/>
@@ -39,9 +47,8 @@ namespace Definux.Emeraude.Localization.Services
                 string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
                 string content = this.context
                     .StaticContent
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    .FirstOrDefault()?.Content;
+                    .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    ?.Content;
 
                 return string.IsNullOrEmpty(content) ? key : content;
             }
@@ -59,9 +66,8 @@ namespace Definux.Emeraude.Localization.Services
             {
                 string content = this.context
                     .StaticContent
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    .FirstOrDefault()?.Content;
+                    .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                    ?.Content;
 
                 return string.IsNullOrEmpty(content) ? key : content;
             }
@@ -77,10 +83,9 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+                string languageCode = (await this.currentLanguageProvider.GetCurrentLanguageAsync())?.Code;
                 string content = (await this.context
                     .StaticContent
-                    .AsQueryable()
                     .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
                     .FirstOrDefaultAsync())?.Content;
 
@@ -100,7 +105,6 @@ namespace Definux.Emeraude.Localization.Services
             {
                 string content = (await this.context
                     .StaticContent
-                    .AsQueryable()
                     .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
                     .FirstOrDefaultAsync())?.Content;
 
@@ -118,14 +122,8 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
-                string value = this.context
-                    .Values
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.TranslationKey.Key == key)
-                    .FirstOrDefault()?.Value;
-
-                return string.IsNullOrEmpty(value) ? key : value;
+                var languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+                return this.TranslateKeyAction(key, languageCode);
             }
             catch (Exception ex)
             {
@@ -139,13 +137,7 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                string value = this.context
-                    .Values
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.TranslationKey.Key == key)
-                    .FirstOrDefault()?.Value;
-
-                return string.IsNullOrEmpty(value) ? key : value;
+                return this.TranslateKeyAction(key, languageCode);
             }
             catch (Exception ex)
             {
@@ -160,13 +152,7 @@ namespace Definux.Emeraude.Localization.Services
             try
             {
                 string languageCode = (await this.currentLanguageProvider.GetCurrentLanguageAsync())?.Code;
-                string value = (await this.context
-                    .Values
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.TranslationKey.Key == key)
-                    .FirstOrDefaultAsync())?.Value;
-
-                return string.IsNullOrEmpty(value) ? key : value;
+                return this.TranslateKeyAction(key, languageCode);
             }
             catch (Exception ex)
             {
@@ -180,19 +166,19 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                string value = (await this.context
-                    .Values
-                    .AsQueryable()
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.TranslationKey.Key == key)
-                    .FirstOrDefaultAsync())?.Value;
-
-                return string.IsNullOrEmpty(value) ? key : value;
+                return this.TranslateKeyAction(key, languageCode);
             }
             catch (Exception ex)
             {
                 await this.logger.LogErrorAsync(ex);
                 return key;
             }
+        }
+
+        private string TranslateKeyAction(string key, string languageCode)
+        {
+            string value = this.languagesResourceManager.GetTranslationResource(key, languageCode);
+            return string.IsNullOrEmpty(value) ? key : value;
         }
     }
 }

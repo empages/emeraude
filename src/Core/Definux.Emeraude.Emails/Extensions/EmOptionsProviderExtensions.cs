@@ -1,4 +1,5 @@
 ﻿using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Emails.Options;
 
 namespace Definux.Emeraude.Emails.Extensions
 {

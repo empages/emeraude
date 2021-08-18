@@ -5,7 +5,7 @@ using Definux.Emeraude.Client.Models;
 namespace Definux.Emeraude.Client.Adapters
 {
     /// <summary>
-    /// Main interface for setup all <see cref="PageSitemapPattern"/>.
+    /// Contract for setup all <see cref="PageSitemapPattern"/>.
     /// </summary>
     public interface ISitemapComposition
     {

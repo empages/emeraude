@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var gulp = require("gulp"),
-    sass = require('gulp-sass'),
+    sass = require('gulp-sass')(require('sass')),
     concat = require('gulp-concat'),
     cssmin = require('gulp-cssmin'),
     uglify = require('gulp-uglify-es').default;
