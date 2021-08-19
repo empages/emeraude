@@ -60,6 +60,12 @@ namespace Definux.Emeraude
             foreach (var setupProperty in setupProperties)
             {
                 var optionsValue = setupProperty.GetValue(setup) as IEmOptions;
+                if (optionsValue == null)
+                {
+                    throw new EmMissingConfigurationException($"'{setupProperty.Name}' is missing. Please check your application startup setup.");
+                }
+
+                optionsValue.Validate();
                 this.optionsFactory[setupProperty.PropertyType] = optionsValue;
                 var propertyProperties = setupProperty.PropertyType.GetProperties();
                 foreach (var property in propertyProperties)

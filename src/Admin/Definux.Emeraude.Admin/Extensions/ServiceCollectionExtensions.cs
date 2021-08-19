@@ -57,6 +57,8 @@ namespace Definux.Emeraude.Admin.Extensions
 
             services.RegisterAdapters(adminOptions);
 
+            services.RegisterCustomEntityDataPairs(mainOptions.Assemblies);
+
             services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
         }
 

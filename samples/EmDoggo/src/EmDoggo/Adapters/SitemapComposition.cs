@@ -46,7 +46,7 @@ namespace EmDoggo.Adapters
                 }
             });
             
-            return sitemapPatterns;
+            return await Task.FromResult(sitemapPatterns);
         }
     }
 }

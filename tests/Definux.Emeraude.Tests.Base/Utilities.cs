@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -35,6 +36,14 @@ namespace Definux.Emeraude.Tests.Base
                 .Value;
 
             return result;
+        }
+
+        public static HttpRequestMessage BuildPostRequestMessageWithBody(string url, string jsonBody)
+        {
+            var postRequest = new HttpRequestMessage(HttpMethod.Post, url);
+            postRequest.Content = new StringContent(jsonBody, Encoding.UTF8, Defaults.DefaultMediaType);
+
+            return postRequest;
         }
     }
 }

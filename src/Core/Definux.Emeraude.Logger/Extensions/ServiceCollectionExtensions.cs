@@ -47,11 +47,8 @@ namespace Definux.Emeraude.Logger.Extensions
             }
 
             services.AddScoped<ILoggerContext, LoggerContext>();
-            if (!loggerOptions.UseExternalLoggerImplementation)
-            {
-                services.AddScoped<ILogger, Logger>();
-                services.AddScoped<IEmLogger, Logger>();
-            }
+            services.AddScoped<ILogger, Logger>();
+            services.AddScoped<IEmLogger, Logger>();
 
             if (mainOptions.ExecuteMigrations)
             {

@@ -125,5 +125,12 @@ namespace Definux.Emeraude.Configuration.Options
                 this.AddAssembly(assembly);
             }
         }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

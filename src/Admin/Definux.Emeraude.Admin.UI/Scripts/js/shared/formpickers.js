@@ -15,6 +15,7 @@
       $('.datepicker-popup').datepicker({
           enableOnReadonly: true,
           todayHighlight: true,
+          disableTouchKeyboard: true,
           format: 'dd/mm/yyyy'
       }).on('changeDate', function(e){
           let value = moment(e.date, 'dd/mm/yyyy').format("YYYY-MM-DD");

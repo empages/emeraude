@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.UI.Extensions;
@@ -171,6 +172,15 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
         protected void InitializeNavigationActions(IEnumerable<NavigationActionViewModel> actions)
         {
             this.ViewData.InitializeNavigationActions(actions);
+        }
+
+        /// <summary>
+        /// Initialize navigation actions for the navbar of the admin panel.
+        /// </summary>
+        /// <param name="actions"></param>
+        protected void InitializeNavigationActions(params NavigationActionViewModel[] actions)
+        {
+            this.InitializeNavigationActions(actions.ToList());
         }
 
         /// <summary>

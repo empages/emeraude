@@ -28,8 +28,9 @@ namespace Definux.Emeraude.Admin.UI.HtmlBuilders
                     .WithClasses("input-group date datepicker datepicker-popup")
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Input)
-                        .WithClasses("form-control")
+                        .WithClasses("form-control bg-white")
                         .WithAttribute("type", "text")
+                        .WithAttribute("readonly", "readonly")
                         .WithAttribute("placeholder", placeholder)
                         .WithAttribute("value", value?.ToDateTime().ToString(SystemFormats.ShortDateFormat)))
                     .Append(xx => xx

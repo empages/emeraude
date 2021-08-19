@@ -13,8 +13,10 @@ namespace Definux.Emeraude.Logger
         public DatabaseContextProvider ContextProvider { get; set; }
 
         /// <summary>
-        /// Provides the availability to be used custom logger with the base logger definitions.
+        /// <inheritdoc />
         /// </summary>
-        public bool UseExternalLoggerImplementation { get; set; }
+        public void Validate()
+        {
+        }
     }
 }

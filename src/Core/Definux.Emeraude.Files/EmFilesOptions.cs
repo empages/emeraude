@@ -57,5 +57,12 @@ namespace Definux.Emeraude.Files
         /// </summary>
         /// <param name="folders"></param>
         public void AddInitFolders(params string[] folders) => this.InitFolders.Add(folders);
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

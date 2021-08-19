@@ -5,5 +5,9 @@
     /// </summary>
     public interface IEmOptions
     {
+        /// <summary>
+        /// Validate current instance of the options.
+        /// </summary>
+        void Validate();
     }
 }

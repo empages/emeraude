@@ -98,5 +98,12 @@ namespace Definux.Emeraude.ClientBuilder.Options
         {
             this.ModulesTypes.Add(typeof(TModule));
         }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

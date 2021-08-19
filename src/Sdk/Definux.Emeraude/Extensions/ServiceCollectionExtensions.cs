@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -35,7 +34,6 @@ using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
 using Definux.Emeraude.Presentation.Options;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Extensions;
 using FluentValidation.AspNetCore;
 using IdentityServer4;
@@ -49,6 +47,8 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebMarkupMin.AspNetCore3;
 
 namespace Definux.Emeraude.Extensions
@@ -83,15 +83,13 @@ namespace Definux.Emeraude.Extensions
 
             var setup = services.RegisterEmeraudeOptions(setupAction);
 
-            SetDefaultsCulture();
-
             services.AddHttpContextAccessor();
 
             services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, setup.PersistenceOptions, setup.MainOptions);
 
             services.ConfigureMapper(applicationAssembly, setup.ApplicationsOptions);
 
-            services.ConfigureIdentityOptions<TContextImplementation>();
+            services.ConfigureIdentityOptions<TContextImplementation>(setup.IdentityOptions);
 
             services.ConfigureRazorViews();
 
@@ -263,26 +261,22 @@ namespace Definux.Emeraude.Extensions
             services.AddScoped<GoogleReCaptchaValidateAttribute>();
         }
 
-        private static void ConfigureIdentityOptions<TContext>(this IServiceCollection services)
+        private static void ConfigureIdentityOptions<TContext>(this IServiceCollection services, EmIdentityOptions options)
             where TContext : EmContext<TContext>
         {
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<TContext>()
                 .AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(options =>
+            services.Configure<IdentityOptions>(opt =>
             {
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = EmIdentityConstants.PasswordRequiredLength;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(EmIdentityConstants.DefaultLockoutTimeSpanMinutes);
-                options.Lockout.MaxFailedAccessAttempts = EmIdentityConstants.MaxFailedAccessAttempts;
-
-                options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedAccount = true;
+                opt.Lockout = options.SourceIdentityOptions.Lockout;
+                opt.Password = options.SourceIdentityOptions.Password;
+                opt.Stores = options.SourceIdentityOptions.Stores;
+                opt.Tokens = options.SourceIdentityOptions.Tokens;
+                opt.User = options.SourceIdentityOptions.User;
+                opt.ClaimsIdentity = options.SourceIdentityOptions.ClaimsIdentity;
+                opt.SignIn = options.SourceIdentityOptions.SignIn;
             });
         }
 
@@ -305,7 +299,28 @@ namespace Definux.Emeraude.Extensions
                     p.FeatureProviders.Add(new ViewComponentFeatureProvider());
                 })
                 .AddJsonOptions(options =>
-                    options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter()))
+                {
+                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                    {
+                        ContractResolver = new DefaultContractResolver
+                        {
+                            NamingStrategy = new CamelCaseNamingStrategy(),
+                        },
+                        Formatting = Formatting.Indented,
+                        Converters = new List<JsonConverter>
+                        {
+                            new TimeSpanNewtonsoftConverter(),
+                            new TimeSpanNullableNewtonsoftConverter(),
+                            new DateModelNewtonsoftConverter(),
+                            new DateModelNullableNewtonsoftConverter(),
+                        },
+                    };
+
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanNullableConverter());
+                    options.JsonSerializerOptions.Converters.Add(new DateModelConverter());
+                    options.JsonSerializerOptions.Converters.Add(new DateModelNullableConverter());
+                })
                 .AddXmlSerializerFormatters();
         }
 
@@ -367,12 +382,6 @@ namespace Definux.Emeraude.Extensions
                 services.AddScoped<IEndpointService, EndpointService>();
                 services.AddScoped<IScaffoldModulesProvider, ScaffoldModulesProvider>();
             }
-        }
-
-        private static void SetDefaultsCulture()
-        {
-            CultureInfo.DefaultThreadCurrentCulture = SystemFormats.DefaultCultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = SystemFormats.DefaultCultureInfo;
         }
     }
 }

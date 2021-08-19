@@ -12,7 +12,7 @@ namespace Definux.Emeraude.Presentation.Converters
         /// <inheritdoc />
         public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return TimeSpan.Parse(reader.GetString());
+            return TimeSpan.Parse(reader.GetString() ?? "00:00");
         }
 
         /// <inheritdoc />

@@ -168,6 +168,18 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             string singleEntityName = StringFunctions.SplitWordsByCapitalLetters(typeof(TEntity).Name);
             this.ViewData[BreadcrumbEntityNamePluralPlaceholder] = singleEntityName.ToPluralString();
 
+            if (this.HasEdit)
+            {
+                this.InitializeNavigationActions(
+                    new NavigationActionViewModel
+                    {
+                        Name = $"Edit Current",
+                        ActionUrl = $"{this.ControllerRoute}{id}/edit",
+                        Icon = MaterialDesignIcons.Pencil,
+                        Method = System.Net.Http.HttpMethod.Get,
+                    });
+            }
+
             return this.DetailsView(model);
         }
 

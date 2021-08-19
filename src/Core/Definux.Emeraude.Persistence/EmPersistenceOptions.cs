@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Definux.Emeraude.Configuration.Exceptions;
 using Definux.Emeraude.Configuration.Options;
 
 namespace Definux.Emeraude.Persistence
@@ -28,6 +29,13 @@ namespace Definux.Emeraude.Persistence
         public void AddDatabaseInitializer<TDatabaseInitializer>()
         {
             this.databaseInitializers.Add(typeof(TDatabaseInitializer));
+        }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
         }
     }
 }

@@ -19,7 +19,7 @@ namespace EmDoggo.Controllers.Api
             return Ok(SimpleResult.SuccessfulResult);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("complex")]
         [Endpoint(typeof(ComplexRequestResult))]
         public async Task<IActionResult> ComplexRequestTypeAction([FromBody]ComplexRequestCommand request)

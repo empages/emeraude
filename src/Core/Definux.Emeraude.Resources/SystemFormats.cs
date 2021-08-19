@@ -36,10 +36,5 @@ namespace Definux.Emeraude.Resources
         /// Default date separator used by Emeraude.
         /// </summary>
         public const string DateSeparator = "/";
-
-        /// <summary>
-        /// Default culture info used by Emeraude.
-        /// </summary>
-        public static readonly CultureInfo DefaultCultureInfo = new CultureInfo("en-US");
     }
 }

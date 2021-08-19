@@ -36,6 +36,8 @@ namespace Definux.Emeraude.Tests.Project
                 setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project.Application");
                 setup.MainOptions.ProjectName = "Definux.Emeraude.Tests.Project";
 
+                setup.AdminOptions.SetAdminMenusBuilder<AdminMenusBuilder>();
+                
                 setup.MainOptions.TestMode = true;
                 setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
                 setup.EmailOptions.EmailSenderImplementationType = typeof(CustomEmailSender);

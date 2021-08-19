@@ -12,5 +12,12 @@ namespace Definux.Emeraude.Emails.Options
         /// Type of email service implementation. If null the default email provider will be registered.
         /// </summary>
         public Type EmailSenderImplementationType { get; set; }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

@@ -47,5 +47,12 @@ namespace Definux.Emeraude.Client
         {
             this.SitemapCompositionType = typeof(TSitemapComposition);
         }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

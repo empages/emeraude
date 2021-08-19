@@ -7,5 +7,11 @@ namespace Definux.Emeraude.Localization
     /// </summary>
     public class EmLocalizationOptions : IEmOptions
     {
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

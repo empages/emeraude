@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Configuration.Options;
+using Microsoft.AspNetCore.Identity;
 
 namespace Definux.Emeraude.Identity.Options
 {
@@ -16,6 +18,8 @@ namespace Definux.Emeraude.Identity.Options
         {
             this.AdditionalRoles = new Dictionary<string, string[]>();
             this.ExternalProvidersAuthenticators = new List<IExternalProviderAuthenticator>();
+            this.SourceIdentityOptions = new IdentityOptions();
+            this.SetDefaults();
         }
 
         /// <summary>
@@ -27,6 +31,11 @@ namespace Definux.Emeraude.Identity.Options
         /// Dictionary that contains all additional roles and their claims.
         /// </summary>
         public Dictionary<string, string[]> AdditionalRoles { get; set; }
+
+        /// <summary>
+        /// Internal options for identity management of ASP.NET.
+        /// </summary>
+        public IdentityOptions SourceIdentityOptions { get; set; }
 
         /// <summary>
         /// Collection of all external provider authenticators implementations used in the framework.
@@ -41,6 +50,27 @@ namespace Definux.Emeraude.Identity.Options
         public void AddRole(string roleName, string[] claims)
         {
             this.AdditionalRoles[roleName] = claims;
+        }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
+
+        private void SetDefaults()
+        {
+            this.SourceIdentityOptions.User.RequireUniqueEmail = true;
+            this.SourceIdentityOptions.Password.RequireDigit = true;
+            this.SourceIdentityOptions.Password.RequiredLength = EmIdentityConstants.PasswordRequiredLength;
+            this.SourceIdentityOptions.Password.RequireNonAlphanumeric = false;
+            this.SourceIdentityOptions.Password.RequireUppercase = false;
+            this.SourceIdentityOptions.Password.RequireLowercase = false;
+            this.SourceIdentityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(EmIdentityConstants.DefaultLockoutTimeSpanMinutes);
+            this.SourceIdentityOptions.Lockout.MaxFailedAccessAttempts = EmIdentityConstants.MaxFailedAccessAttempts;
+            this.SourceIdentityOptions.SignIn.RequireConfirmedEmail = true;
+            this.SourceIdentityOptions.SignIn.RequireConfirmedAccount = true;
         }
     }
 }

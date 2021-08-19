@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Definux.Emeraude.Interfaces.Models;
 using Definux.Emeraude.Resources;
 using Definux.HtmlBuilder;
@@ -43,7 +44,7 @@ namespace Definux.Emeraude.Admin.UI.UIElements
                 sourceData = offset.DateTime;
             }
 
-            string htmlString = sourceData.HasValue ? sourceData.Value.ToString(this.dateTimeFormat, SystemFormats.DefaultCultureInfo) : string.Empty;
+            string htmlString = sourceData.HasValue ? sourceData.Value.ToString(this.dateTimeFormat, CultureInfo.InvariantCulture) : string.Empty;
 
             this.HtmlBuilder.StartElement(HtmlTags.Span)
                 .Append(htmlString);

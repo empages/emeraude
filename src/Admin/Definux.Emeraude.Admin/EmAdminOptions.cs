@@ -34,5 +34,12 @@ namespace Definux.Emeraude.Admin
         {
             this.AdminMenusBuilderType = typeof(TAdminMenusBuilder);
         }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

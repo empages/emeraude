@@ -38,5 +38,12 @@ namespace Definux.Emeraude.Application
         {
             this.MappingProfiles.Add(typeof(TProfile));
         }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public void Validate()
+        {
+        }
     }
 }

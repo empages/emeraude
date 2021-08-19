@@ -10,12 +10,7 @@ namespace Definux.Emeraude.Application.Mapping.Converters
         /// <inheritdoc />
         public DateModel Convert(DateTimeOffset? source, DateModel destination, ResolutionContext context)
         {
-            DateModel result = new DateModel
-            {
-                Year = -1,
-                Month = -1,
-                Day = -1,
-            };
+            DateModel result = DateModel.Default;
 
             if (source.HasValue)
             {
