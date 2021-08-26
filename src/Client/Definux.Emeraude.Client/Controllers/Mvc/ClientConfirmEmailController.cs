@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrEmpty(token))

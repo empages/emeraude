@@ -43,6 +43,16 @@ namespace Definux.Emeraude.Identity.Options
         public List<IExternalProviderAuthenticator> ExternalProvidersAuthenticators { get; }
 
         /// <summary>
+        /// Seconds that indicate the valid time of the access token. Default is 900 (15 minutes).
+        /// </summary>
+        public int AccessTokenExpiration { get; set; } = 900;
+
+        /// <summary>
+        /// Seconds that indicate the valid time of the refresh token. Default is 31536000 (365 days).
+        /// </summary>
+        public int RefreshTokenExpiration { get; set; } = 31536000;
+
+        /// <summary>
         /// Add additional role to the roles of the system. It is prefered to be added before first initialization of the system.
         /// </summary>
         /// <param name="roleName"></param>

@@ -63,10 +63,14 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                     {
                         string userAvatarRelativePath = this.userAvatarService.GetUserAvatarRelativePath(user);
                         string avatarPath = this.rootsService.GetPathFromPublicRoot(userAvatarRelativePath.Substring(1));
-                        result.Avatar = await this.systemFilesService.GetFileAsync(avatarPath);
-                        if (result.Avatar == null)
+                        var avatarFileResult = await this.systemFilesService.GetFileAsync(avatarPath);
+                        if (avatarFileResult == null)
                         {
                             result = this.GetDefaultAvatarResult();
+                        }
+                        else
+                        {
+                            result.Avatar = this.ConvertStreamToAvatarValue(avatarFileResult.Stream);
                         }
                     }
                     else
@@ -87,12 +91,23 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             {
                 return new GetUserAvatarResult
                 {
-                    Avatar = new SystemFileResult
-                    {
-                        Stream = new MemoryStream(Resources.Images.default_avatar),
-                        ContentType = "image/png",
-                    },
+                    Avatar = this.ConvertStreamToAvatarValue(new MemoryStream(Resources.Images.default_avatar)),
                     IsDefault = true,
+                };
+            }
+
+            private UserAvatarValue ConvertStreamToAvatarValue(Stream stream)
+            {
+                byte[] bytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
+                }
+
+                return new UserAvatarValue
+                {
+                    Value = Convert.ToBase64String(bytes),
                 };
             }
         }

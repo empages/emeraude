@@ -9,6 +9,7 @@ using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
 using Definux.Emeraude.Application.Requests.Identity.Commands.LoginWithTwoFactorAuthentication;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Utilities.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
@@ -94,7 +95,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         /// <param name="model"></param>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
-        [ServiceFilter(typeof(VisibleReCaptchaValidateAttribute))]
+        [ServiceFilter(typeof(GoogleReCaptchaValidateAttribute))]
         [Route("/admin/login")]
         [HttpPost]
         public async Task<IActionResult> Login(AdminLoginViewModel model)

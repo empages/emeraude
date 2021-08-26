@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.UI.Extensions;
+using Definux.Emeraude.Configuration.Options;
 using Definux.HtmlBuilder;
-using Definux.Utilities.Options;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -20,10 +20,10 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
         /// <summary>
         /// Initializes a new instance of the <see cref="FormVisibleRecaptchaTagHelper"/> class.
         /// </summary>
-        /// <param name="options"></param>
-        public FormVisibleRecaptchaTagHelper(IOptions<GoogleRecaptchaKeysOptions> options)
+        /// <param name="optionsAccessor"></param>
+        public FormVisibleRecaptchaTagHelper(IOptions<GoogleRecaptchaKeysOptions> optionsAccessor)
         {
-            this.recaptchaOptions = options.Value;
+            this.recaptchaOptions = optionsAccessor.Value;
         }
 
         /// <inheritdoc cref="Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>
@@ -41,7 +41,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                 .Append(x => x
                     .OpenElement(HtmlTags.Div)
                     .WithClasses("g-recaptcha")
-                    .WithDataAttribute("sitekey", this.recaptchaOptions.VisibleRecaptcha.SiteKey)
+                    .WithDataAttribute("sitekey", this.recaptchaOptions.SiteKey)
                     .AppendMultiple(xx =>
                     {
                         if (this.ViewContext.ModelState.ContainsKey("ReCaptcha") &&

@@ -1,4 +1,4 @@
-﻿namespace Definux.Emeraude.Presentation.Options
+﻿namespace Definux.Emeraude.Configuration.Options
 {
     /// <summary>
     /// Implementation of Google Visible ReCaptcha keys options.

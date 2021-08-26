@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Definux.Emeraude.Presentation.Options;
+using Definux.Emeraude.Configuration.Options;
 using Definux.Utilities.DataAnnotations;
 using Definux.Utilities.DataAnnotations.Helpers;
 using Microsoft.AspNetCore.Hosting;

@@ -102,7 +102,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
                     ActionName = endpointMethodInfo.Name,
                     Route = actionRoute.StartsWith("/", StringComparison.OrdinalIgnoreCase) ? actionRoute : $"{controllerRoute}{actionRoute}",
                     Method = endpointMethodInfo.GetControllerActionHttpMethod(),
-                    Authorized = endpointMethodInfo.HasAttribute<AuthorizeAttribute>() || controllerType.HasAttribute<AuthorizeAttribute>(),
+                    Authorized = endpointMethodInfo.HasAttribute<AuthorizeAttribute>() || (controllerType.HasAttribute<AuthorizeAttribute>() && !endpointMethodInfo.HasAttribute<AllowAnonymousAttribute>()),
                     Response = DescriptionExtractor.ExtractResponseDescription(endpointAttribute.ResponseType),
                     Arguments = endpointMethodInfo
                         .GetParameters()

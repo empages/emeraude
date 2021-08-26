@@ -1,6 +1,4 @@
-﻿using Definux.Emeraude.Interfaces.Results;
-
-namespace Definux.Emeraude.Application.Emails
+﻿namespace Definux.Emeraude.Application.Emails
 {
     /// <summary>
     /// Result model used on sending email operation.

@@ -2,6 +2,8 @@
 using Definux.Emeraude.Client.Adapters;
 using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Configuration.Options;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client
 {
@@ -27,6 +29,11 @@ namespace Definux.Emeraude.Client
         /// Flag that turn on/off the provided client API authentication. The default value is true.
         /// </summary>
         public bool HasClientApiAuthentication { get; set; } = true;
+
+        /// <summary>
+        /// Default redirect function that compute the action result redirection after login. If callback is null redirection will be executed to Index of HomeController if exists.
+        /// </summary>
+        public Func<HttpContext, IActionResult> ClientAuthenticationDefaultRedirectCallback { get; set; }
 
         /// <summary>
         /// Implementation type of <see cref="ISitemapComposition"/>.

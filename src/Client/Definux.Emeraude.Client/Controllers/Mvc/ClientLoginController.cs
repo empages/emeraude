@@ -34,7 +34,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             string returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
@@ -67,7 +67,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             try
@@ -79,7 +79,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                     await this.SignInAsync(requestResult.User);
                     if (string.IsNullOrWhiteSpace(returnUrl))
                     {
-                        return this.RedirectToHomeIndex();
+                        return this.RedirectToDefault();
                     }
 
                     return this.LocalRedirect(returnUrl);

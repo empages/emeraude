@@ -75,7 +75,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             await this.HttpContext.SignOutAsync(AuthenticationDefaults.ClientAuthenticationScheme);
 
-            return this.RedirectToHomeIndex();
+            return this.RedirectToDefault();
         }
 
         /// <inheritdoc/>
@@ -118,9 +118,12 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 this.AuthenticationProperties);
         }
 
-        private IActionResult RedirectToHomeIndex()
+        private IActionResult RedirectToDefault()
         {
-            return this.RedirectToAction("Index", "Home");
+            var redirectCallback = this.OptionsProvider.GetClientOptions().ClientAuthenticationDefaultRedirectCallback;
+            return redirectCallback != null
+                ? redirectCallback.Invoke(this.HttpContext)
+                : this.RedirectToAction("Index", "Home");
         }
     }
 }

@@ -20,7 +20,7 @@
                             @if (navigationAction.Method == System.Net.Http.HttpMethod.Get)
                             {
                                 <a href="@navigationAction.ActionUrl" target="@targetAttribute" class="nav-link btn btn-secondary h-auto">
-                                    <span class="mdi @navigationAction.Icon mr-1"></span> @navigationAction.Name
+                                    <span class="@navigationAction.Icon mr-1"></span> @navigationAction.Name
                                 </a>
                             }
                             else if (navigationAction.Method == System.Net.Http.HttpMethod.Post)
@@ -34,7 +34,7 @@
                                             <input type="hidden" name="@navigationActionParameter.Key" value="@navigationActionParameter.Value" />
                                         }
                                     }
-                                    <button type="submit" class="nav-link btn btn-secondary h-auto"><span class="mdi @navigationAction.Icon mr-1"></span> @navigationAction.Name</button>
+                                    <button type="submit" class="nav-link btn btn-secondary h-auto"><span class="@navigationAction.Icon mr-1"></span> @navigationAction.Name</button>
                                 </form>
                             }
                         </li>

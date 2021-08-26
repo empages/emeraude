@@ -16,14 +16,14 @@ namespace Definux.Emeraude.Identity.Extensions
         /// <param name="context"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string BuildRefreshToken(this IEmContext context, User user)
+        public static (string, DateTimeOffset?) BuildRefreshToken(this IEmContext context, User user, int tokenExpirationSeconds)
         {
             string refreshToken = StaticFunctions.GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiration = DateTime.Now.AddYears(1);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddSeconds(tokenExpirationSeconds);
             context.Set<User>().Update(user);
 
-            return refreshToken;
+            return (user.RefreshToken, user.RefreshTokenExpiration);
         }
 
         /// <summary>

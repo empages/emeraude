@@ -9,9 +9,9 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
     public class GetUserAvatarResult : UserAvatarTypeResult
     {
         /// <summary>
-        /// Avatar file result.
+        /// Avatar result in base64.
         /// </summary>
-        public SystemFileResult Avatar { get; set; }
+        public UserAvatarValue Avatar { get; set; }
 
         /// <summary>
         /// Gets the user avatar type result.

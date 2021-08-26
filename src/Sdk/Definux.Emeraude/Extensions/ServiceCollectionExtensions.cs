@@ -33,7 +33,6 @@ using Definux.Emeraude.Presentation.ActionFilters;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
-using Definux.Emeraude.Presentation.Options;
 using Definux.Utilities.Extensions;
 using FluentValidation.AspNetCore;
 using IdentityServer4;

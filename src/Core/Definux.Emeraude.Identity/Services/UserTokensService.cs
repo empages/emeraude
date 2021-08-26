@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
-using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
-using Definux.Utilities.Options;
+using Definux.Emeraude.Identity.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -24,6 +25,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly UserManager<User> userManager;
         private readonly IEmContext context;
         private readonly IUserClaimsService userClaimsService;
+        private readonly EmIdentityOptions identityOptions;
         private readonly JsonWebTokenOptions jwtOptions;
         private readonly IEmLogger logger;
 
@@ -34,33 +36,43 @@ namespace Definux.Emeraude.Identity.Services
         /// <param name="context"></param>
         /// <param name="userClaimsService"></param>
         /// <param name="jsonWebTokenOptions"></param>
+        /// <param name="optionsProvider"></param>
         /// <param name="logger"></param>
         public UserTokensService(
             UserManager<User> userManager,
             IEmContext context,
             IUserClaimsService userClaimsService,
             IOptions<JsonWebTokenOptions> jsonWebTokenOptions,
+            IEmOptionsProvider optionsProvider,
             IEmLogger logger)
         {
             this.userManager = userManager;
             this.context = context;
             this.userClaimsService = userClaimsService;
+            this.identityOptions = optionsProvider.GetIdentityOptions();
             this.jwtOptions = jsonWebTokenOptions.Value;
             this.logger = logger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public async Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(Guid userId)
+            => await this.BuildJwtTokenForUserAsync(await this.userManager.FindByIdAsync(userId.ToString()));
+
+        /// <inheritdoc/>
+        public async Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(string userEmail)
+            => await this.BuildJwtTokenForUserAsync(await this.userManager.FindByEmailAsync(userEmail));
+
+        /// <inheritdoc/>
+        public async Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(IUser user)
         {
             try
             {
-                var user = await this.userManager.FindByIdAsync(userId.ToString());
-                var userClaims = await this.userClaimsService.GetUserClaimsForJwtTokenAsync(userId);
-                string jwt = this.BuildJwtToken(userClaims);
-                string refreshToken = this.context.BuildRefreshToken(user);
+                var userClaims = await this.userClaimsService.GetUserClaimsForJwtTokenAsync(user.Id);
+                var jwt = this.BuildJwtToken(userClaims);
+                var (refreshToken, refreshTokenExpiration) = this.context.BuildRefreshToken((User)user, this.identityOptions.RefreshTokenExpiration);
                 await this.context.SaveChangesAsync();
 
-                return BearerAuthenticationResult.SuccessResult(jwt, refreshToken);
+                return BearerAuthenticationResult.SuccessResult(jwt, refreshToken, refreshTokenExpiration.Value);
             }
             catch (Exception ex)
             {
@@ -98,12 +110,12 @@ namespace Definux.Emeraude.Identity.Services
                 user = await this.context.Set<User>().AsQueryable().FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
             }
 
-            if (user != null && user.RefreshToken == refreshToken && user.RefreshTokenExpiration.HasValue && user.RefreshTokenExpiration > DateTime.Now)
+            if (user != null && user.RefreshToken == refreshToken && user.RefreshTokenExpiration.HasValue && user.RefreshTokenExpiration > DateTime.UtcNow)
             {
                 var userClaims = await this.userClaimsService.GetUserClaimsForJwtTokenAsync(user.Id);
                 string jwt = this.BuildJwtToken(userClaims);
 
-                return BearerAuthenticationResult.SuccessResult(jwt, refreshToken);
+                return BearerAuthenticationResult.SuccessResult(jwt, refreshToken, user.RefreshTokenExpiration.Value);
             }
 
             return BearerAuthenticationResult.FailedResult;
@@ -129,8 +141,7 @@ namespace Definux.Emeraude.Identity.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.jwtOptions.Key));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            DateTime expirationDate;
-            expirationDate = DateTime.Now.AddMinutes(15);
+            DateTime expirationDate = DateTime.UtcNow.AddSeconds(this.identityOptions.AccessTokenExpiration);
 
             var token = new JwtSecurityToken(
                 this.jwtOptions.Issuer,

@@ -35,7 +35,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             if (this.User.Identity.IsAuthenticated &&
                 this.User.Identity.Name?.Trim().ToLower() != email?.Trim().ToLower())
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrEmpty(token))
@@ -68,7 +68,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             if (this.User.Identity.IsAuthenticated &&
                 this.User.Identity.Name?.Trim().ToLower() != request.Email?.Trim().ToLower())
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             try

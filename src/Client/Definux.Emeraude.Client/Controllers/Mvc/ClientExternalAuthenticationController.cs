@@ -35,7 +35,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             if (!this.externalProviderAuthenticatorFactory.ContainsProvider(externalProvider))
@@ -61,7 +61,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             var result = await this.HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
@@ -79,7 +79,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                     return this.LocalRedirect(returnUrl);
                 }
 
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             return this.RedirectToAction(nameof(this.Login));

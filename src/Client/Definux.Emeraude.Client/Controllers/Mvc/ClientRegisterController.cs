@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             var request = new RegisterCommand();
@@ -56,7 +56,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToHomeIndex();
+                return this.RedirectToDefault();
             }
 
             try

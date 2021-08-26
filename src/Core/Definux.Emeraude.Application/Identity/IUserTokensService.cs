@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Application.Identity
 {
@@ -15,6 +16,20 @@ namespace Definux.Emeraude.Application.Identity
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(Guid userId);
+
+        /// <summary>
+        /// Build JSON web token for specified user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(IUser user);
+
+        /// <summary>
+        /// Build JSON web token for specified user.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns></returns>
+        Task<BearerAuthenticationResult> BuildJwtTokenForUserAsync(string userEmail);
 
         /// <summary>
         /// Build JSON web token for specified external user.

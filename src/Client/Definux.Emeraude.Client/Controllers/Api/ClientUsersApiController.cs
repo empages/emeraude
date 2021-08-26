@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvatar;
@@ -8,6 +9,7 @@ using Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternalLogi
 using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternalLoginProviders;
+using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
@@ -40,17 +42,50 @@ namespace Definux.Emeraude.Client.Controllers.Api
         }
 
         /// <summary>
+        /// Gets the current user.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("current")]
+        [AllowAnonymous]
+        [Endpoint(typeof(RequestCurrentUser))]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
+            var user = new RequestCurrentUser
+            {
+                IsAuthenticated = this.User.Identity?.IsAuthenticated ?? false,
+                Roles = new string[] { },
+            };
+
+            if (user.IsAuthenticated && currentUser != null)
+            {
+                user.Roles = this
+                    .User
+                    .Claims
+                    .Where(x => x.Type == System.Security.Claims.ClaimTypes.Role)
+                    .Select(x => x.Value)
+                    .ToArray();
+                user.Email = currentUser.Email;
+                user.Name = currentUser.Name;
+            }
+
+            return this.Ok(user);
+        }
+
+        /// <summary>
         /// Gets the current user avatar file result.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [Route("current/avatar")]
+        [Endpoint(typeof(UserAvatarValue))]
         public async Task<IActionResult> GetCurrentUserAvatar()
         {
             var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
             var avatarResult = await this.Mediator.Send(new GetUserAvatarQuery { UserId = currentUser.Id });
 
-            return this.File(avatarResult.Avatar.Stream, avatarResult.Avatar.ContentType);
+            return this.Ok(avatarResult.Avatar);
         }
 
         /// <summary>
