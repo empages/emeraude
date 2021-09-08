@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// </summary>
     [Route("/api/users/")]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.JwtBearerAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = AuthenticationDefaults.BearerAuthenticationScheme)]
     [ApiEndpointsController]
     public sealed class ClientUsersApiController : ApiController
     {

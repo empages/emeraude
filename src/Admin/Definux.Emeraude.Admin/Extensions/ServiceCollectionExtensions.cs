@@ -27,10 +27,7 @@ using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace Definux.Emeraude.Admin.Extensions
 {

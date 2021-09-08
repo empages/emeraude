@@ -28,6 +28,6 @@
         /// <summary>
         /// Name of the JSON web token Bearer authentication scheme.
         /// </summary>
-        public const string JwtBearerAuthenticationScheme = "Bearer";
+        public const string BearerAuthenticationScheme = "Bearer";
     }
 }

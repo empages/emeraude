@@ -12,7 +12,7 @@ namespace Definux.Emeraude.Application.Identity
         /// <summary>
         /// Static property that returns failed bearer result.
         /// </summary>
-        public static BearerAuthenticationResult FailedResult => new ()
+        public static BearerAuthenticationResult FailedResult => new()
         {
             Succeeded = false,
             Message = "Authentication failed.",
@@ -49,7 +49,7 @@ namespace Definux.Emeraude.Application.Identity
             string accessToken,
             string refreshToken,
             DateTimeOffset refreshTokenExpirationDate) =>
-            new ()
+            new()
             {
                 Succeeded = true,
                 Message = "Successful authentication.",

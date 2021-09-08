@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
@@ -272,7 +273,18 @@ namespace Definux.Emeraude.Extensions
                 opt.Lockout = options.SourceIdentityOptions.Lockout;
                 opt.Password = options.SourceIdentityOptions.Password;
                 opt.Stores = options.SourceIdentityOptions.Stores;
-                opt.Tokens = options.SourceIdentityOptions.Tokens;
+
+                opt.Tokens.AuthenticatorIssuer = options.SourceIdentityOptions.Tokens.AuthenticatorIssuer;
+                opt.Tokens.AuthenticatorTokenProvider = options.SourceIdentityOptions.Tokens.AuthenticatorTokenProvider;
+                opt.Tokens.ChangeEmailTokenProvider = options.SourceIdentityOptions.Tokens.ChangeEmailTokenProvider;
+                opt.Tokens.EmailConfirmationTokenProvider = options.SourceIdentityOptions.Tokens.EmailConfirmationTokenProvider;
+                opt.Tokens.PasswordResetTokenProvider = options.SourceIdentityOptions.Tokens.PasswordResetTokenProvider;
+                opt.Tokens.ChangePhoneNumberTokenProvider = options.SourceIdentityOptions.Tokens.ChangePhoneNumberTokenProvider;
+                if (options.SourceIdentityOptions.Tokens.ProviderMap.Any())
+                {
+                    opt.Tokens.ProviderMap = options.SourceIdentityOptions.Tokens.ProviderMap;
+                }
+
                 opt.User = options.SourceIdentityOptions.User;
                 opt.ClaimsIdentity = options.SourceIdentityOptions.ClaimsIdentity;
                 opt.SignIn = options.SourceIdentityOptions.SignIn;

@@ -44,6 +44,7 @@ namespace Definux.Emeraude.Tests.Client.Integration
                     x.ChangeFrequency,
                     x.Location
                 })
+                .First()
                 .Should()
                 .BeEquivalentTo(new
                 {

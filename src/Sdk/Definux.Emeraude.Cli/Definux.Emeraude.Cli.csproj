@@ -6,20 +6,20 @@
 	<PackAsTool>true</PackAsTool>
     <ToolCommandName>em</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.40" />
     <PackageReference Include="Definux.Utilities.Functions" Version="1.0.40" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-2.final" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-3.final" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.CodeDom" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0-preview.7.21377.19" />
   </ItemGroup>
 
   <ItemGroup>

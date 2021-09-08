@@ -10,7 +10,7 @@ namespace Definux.Emeraude.Persistence
     /// </summary>
     public class EmPersistenceOptions : IEmOptions
     {
-        private readonly List<Type> databaseInitializers = new List<Type>();
+        private readonly List<Type> databaseInitializers = new ();
 
         /// <summary>
         /// Provider of database storage for the application.

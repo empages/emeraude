@@ -13,7 +13,7 @@
                 <b-col cols="12">
                     <h5>By parent type</h5>
                     <b-row no-gutters>
-                        <button class="btn btn-primary cb-gen-btn" v-for="(uniqueModule, uniqueModuleIdIndex) in uniqueModulesByParent" :key="uniqueModule.parentModuleId" @click="generateModules(uniqueModule.parentModuleId)"><img :src="'data:image/png;base64, ' + uniqueModule.icon" class="cb-gen-btn-img" /> <span class="cb-gen-btn-text">{{ uniqueModule.scaffoldTypeName }} Modules</span></button>
+                        <button class="btn btn-primary cb-gen-btn" v-for="(uniqueModule, uniqueModuleIdIndex) in uniqueModulesByParent" :key="uniqueModule.parentModuleId" @click="generateModules(uniqueModule.parentModuleId)"><img :src="uniqueModule.iconUrl" class="cb-gen-btn-img" /> <span class="cb-gen-btn-text">{{ uniqueModule.scaffoldTypeName }} Modules</span></button>
                     </b-row>
                 </b-col>
             </b-row>
@@ -22,8 +22,8 @@
         <div>
             <div class="responsive-table">
                 <b-table striped hover :items="modules" :fields="fields" v-if="modules.length > 0">
-                    <template v-slot:cell(icon)="data">
-                        <img class="table-row-icon" :src="'data:image/png;base64, ' + data.item.icon" />
+                    <template v-slot:cell(icon)="row">
+                        <img class="table-row-icon" :src="row.item.iconUrl"  :alt="row.item.name"/>
                     </template>
                     <template v-slot:cell(name)="data">
                         <span>{{data.item.name}}</span>
@@ -75,10 +75,10 @@
         },
         computed: {
             hasWebModules() {
-                return this.modules.filter(x => x.type == 1).length > 0;
+                return this.modules.filter(x => x.type === 1).length > 0;
             },
             hasMobileModules() {
-                return this.modules.filter(x => x.type == 2).length > 0;
+                return this.modules.filter(x => x.type === 2).length > 0;
             },
             uniqueModulesIdsByParent() {
                 if (this.modules != null && this.modules.length > 0) {
@@ -101,7 +101,7 @@
         methods: {
             getDefaultModuleByParentModuleId(parentModuleId) {
                 if (this.modules != null && this.modules.length > 0) {
-                    let currentModules = this.modules.filter(x => x.parentModuleId == parentModuleId);
+                    let currentModules = this.modules.filter(x => x.parentModuleId === parentModuleId);
                     if (currentModules.length > 0) {
                         return currentModules[0];
                     }

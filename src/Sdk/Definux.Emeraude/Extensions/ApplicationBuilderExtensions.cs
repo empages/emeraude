@@ -1,12 +1,6 @@
-﻿using System;
-using Definux.Emeraude.Admin.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.StaticFiles;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using WebMarkupMin.AspNetCore3;
 
 namespace Definux.Emeraude.Extensions
 {

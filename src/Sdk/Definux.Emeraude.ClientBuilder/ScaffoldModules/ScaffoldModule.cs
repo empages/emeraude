@@ -46,7 +46,7 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         /// <summary>
         /// Icon of the module.
         /// </summary>
-        public string Icon { get; protected set; }
+        public string IconUrl { get; protected set; }
 
         /// <summary>
         /// Type name of the module. The main use of this property is to give the name of the grouped modules.
