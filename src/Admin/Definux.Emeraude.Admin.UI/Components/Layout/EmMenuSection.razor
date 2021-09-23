@@ -1,0 +1,81 @@
+﻿@using Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
+
+<li class="@($"{RenderIf("active", MenuSection.IsActive)} nav-item main-nav-item")">
+    @if (MenuSection.Dropdown)
+    {
+        <NavLink
+            class="nav-link sidebar-main-menu-item"
+            title="@MenuSection.Title"
+            href="@Href"
+            aria-controls="@RenderIf(SectionIdentifier, !MenuSection.IsSingle)"
+            data-bs-target="@($"#{SectionIdentifier}")"
+            aria-expanded="@MenuSection.IsActive.ToString().ToLower()"
+            data-bs-toggle="collapse">
+            <i class="menu-icon @MenuSection.Icon"></i>
+            <span class="menu-title">@MenuSection.Title</span>
+            <i class="menu-arrow"></i>
+        </NavLink>
+    }
+    else
+    {
+        <NavLink
+            class="nav-link sidebar-main-menu-item"
+            title="@MenuSection.Title"
+            href="@Href">
+            <i class="menu-icon @MenuSection.Icon"></i>
+            <span class="menu-title">@MenuSection.Title</span>
+        </NavLink>
+    }
+
+    @if (!MenuSection.IsSingle)
+    {
+        <div class="@($"{RenderIf("show", MenuSection.IsActive)} collapse")" id="@SectionIdentifier">
+            <ul class="nav flex-column sub-menu">
+                @foreach (var menuSectionChild in MenuSection.Children)
+                {
+                    <li class="nav-item">
+                        <NavLink class="@($"{RenderIf("active", menuSectionChild.IsActive)} nav-link")" title="@menuSectionChild.Title" href="@menuSectionChild.DefaultRoute">
+                            <span>@menuSectionChild.Title</span>
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</li>
+
+@code {
+    [Parameter]
+    public int Index { get; set; }
+
+    [Parameter]
+    public SidebarMenuSectionItem MenuSection { get; set; }
+
+    private string SectionIdentifier => $"section{Index}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MenuSection.StateChanged += (_, _) => this.StateHasChanged();
+    }
+
+    private string RenderIf(string content, bool condition) => condition ? content : string.Empty;
+
+    private string Href
+    {
+        get
+        {
+            string href = "";
+            if (MenuSection.IsSingle && !MenuSection.Dropdown)
+            {
+                href = MenuSection.SingleLinkItem?.DefaultRoute;
+            }
+            else if (MenuSection.Dropdown)
+            {
+                href = $"#{SectionIdentifier}";
+            }
+
+            return href;
+        }
+    }
+}

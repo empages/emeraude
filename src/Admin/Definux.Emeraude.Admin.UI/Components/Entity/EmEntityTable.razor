@@ -1,0 +1,17 @@
+﻿<div class="responsive-table table-container">
+    <table class="table table-hover table-striped table-bordered">
+        <EmEntityTableHead Model="HeadModel" HasActions="HasActions" />
+        <EmEntityTableBody Rows="ViewData?.Rows ?? new List<EntityTableRowModel>()" HasActions="HasActions" />
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public EntityTableHeadModel HeadModel { get; set; }
+
+    [Parameter]
+    public bool HasActions { get; set; }
+    
+    [Parameter]
+    public EntityTableViewData ViewData { get; set; }
+}

@@ -1,0 +1,90 @@
+﻿@page "/admin/{entityKey}"
+@using Definux.Emeraude.Admin.UI.Adapters
+@implements IDisposable
+@inject IEntitiesViewsSchemaProvider EntitiesViewsSchemaProvider;
+@inject IEntityAdminServiceAgent EntityAdminServiceAgent;
+@inject NavigationManager NavigationManager;
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+@if (Loaded)
+{
+    <EmEntityTableView ViewSchema="ViewSchema" ViewData="ViewData" />
+}
+else
+{
+    <LoadingIndicator/>
+}
+
+@code {
+    private string entityKey;
+    private EntityTableViewSchema ViewSchema { get; set; }
+    private EntityTableViewData ViewData { get; set; }
+    private bool FirstInitial { get; set; }
+    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
+    
+    [Parameter]
+    public string EntityKey { get; set; }
+
+    private string PageTitle => ViewSchema?.Context.Title;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        this.entityKey = EntityKey;
+        NavigationManager.LocationChanged += LocationChanged;
+        await LoadViewParametersAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
+        {
+            this.entityKey = EntityKey;
+            await LoadViewParametersAsync();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            FirstInitial = true;
+            StateHasChanged();
+        }
+    }
+
+    private void ResetData()
+    {
+        ViewSchema = null;
+        ViewData = null;
+        StateHasChanged();
+    }
+    
+    private async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await LoadViewParametersAsync();
+    }
+    
+    private async Task LoadViewParametersAsync()
+    {
+        ResetData();
+        ViewSchema = EntitiesViewsSchemaProvider.GetTableViewSchema(EntityKey);
+        if (ViewSchema == null)
+        {
+            NavigationManager.NavigateTo("/error/404", true, true);
+        }
+        else
+        {
+            var queryString = new Uri(NavigationManager.Uri).Query;
+            ViewData = await EntityAdminServiceAgent.RetrieveTableViewDataAsync(EntityKey, queryString, ViewSchema);
+        }
+        
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+}

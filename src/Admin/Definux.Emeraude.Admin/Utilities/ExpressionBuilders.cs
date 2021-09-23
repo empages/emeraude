@@ -103,7 +103,14 @@ namespace Definux.Emeraude.Admin.Utilities
             }
         }
 
-        private static Expression<Func<T, bool>> Search<T>(string propertyName, string searchQuery)
+        /// <summary>
+        /// Return expression from property of the target type and search query.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="searchQuery"></param>
+        /// <typeparam name="T">Target type.</typeparam>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> Search<T>(string propertyName, string searchQuery)
         {
             if (string.IsNullOrEmpty(propertyName) || string.IsNullOrEmpty(searchQuery))
             {

@@ -14,7 +14,7 @@ namespace Definux.Emeraude.ClientBuilder.UI.Extensions
         /// <returns></returns>
         public static IServiceCollection ConfigureAdminClientBuilderUI(this IServiceCollection services)
         {
-            services.ConfigureOptions(typeof(AdminClientBuilderUIConfigureOptions));
+            // services.ConfigureOptions(typeof(AdminClientBuilderUIConfigureOptions));
 
             return services;
         }

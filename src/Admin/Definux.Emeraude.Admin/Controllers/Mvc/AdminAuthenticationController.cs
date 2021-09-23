@@ -221,10 +221,10 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         /// Logout action.
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         [HttpPost]
         [Route("/admin/logout")]
         [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await this.HttpContext.SignOutAsync(AuthenticationDefaults.AdminAuthenticationScheme);

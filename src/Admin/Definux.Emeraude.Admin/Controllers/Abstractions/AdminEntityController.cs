@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
     /// </summary>
     /// <typeparam name="TEntity">Entity from the domain model.</typeparam>
     /// <typeparam name="TEntityViewModel">View Model for selected entity.</typeparam>
-    public abstract class AdminEntityController<TEntity, TEntityViewModel> : AdminController, IAdminEntityController
+    public abstract class AdminEntityController<TEntity, TEntityViewModel> : AdminController, IAdminEntityApiController
         where TEntity : class, IEntity, new()
         where TEntityViewModel : class, new()
     {
@@ -718,4 +718,4 @@ namespace Definux.Emeraude.Admin.Controllers.Abstractions
             return castedModel;
         }
     }
-}
+}*/

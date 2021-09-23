@@ -9,7 +9,6 @@ namespace Definux.Emeraude.Tests.Admin.Fakes
 {
     public class SampleEntityViewModelFake : EntityFormViewModel
     {
-        [EntityIdentifier]
         public Guid Id { get; set; }
 
         [TableColumn(1, typeof(TableTextElement))]

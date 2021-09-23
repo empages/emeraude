@@ -7,8 +7,8 @@
 @using Definux.Emeraude.Admin.UI.Adapters
 
 @{
-    var navigationScheme = await AdminMenusBuilder.BuildAsync(ViewContext);
-    navigationScheme.ApplyCurrentRoute(ViewContext.HttpContext.Request.Path);
+    var navigationScheme = await AdminMenusBuilder.BuildAsync();
+    // navigationScheme.ApplyCurrentRoute(ViewContext.HttpContext.Request.Path);
     int sectionCounter = 1;
 }
 

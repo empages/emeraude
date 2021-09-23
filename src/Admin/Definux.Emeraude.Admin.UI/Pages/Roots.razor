@@ -1,0 +1,13 @@
+﻿@page "/admin/roots/{root}/{*folders}"
+
+<h3>@Root</h3>
+<p>@Folders</p>
+
+
+@code {
+    [Parameter]
+    public string Root { get; set; }
+    
+    [Parameter]
+    public string Folders { get; set; }
+}

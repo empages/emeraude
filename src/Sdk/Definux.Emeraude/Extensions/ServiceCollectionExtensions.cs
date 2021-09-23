@@ -34,6 +34,7 @@ using Definux.Emeraude.Presentation.ActionFilters;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
+using Definux.Emeraude.Resources;
 using Definux.Utilities.Extensions;
 using FluentValidation.AspNetCore;
 using IdentityServer4;
@@ -41,11 +42,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -80,10 +85,16 @@ namespace Definux.Emeraude.Extensions
             var applicationAssembly = Assembly.GetCallingAssembly().GetName().Name;
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
-
             var setup = services.RegisterEmeraudeOptions(setupAction);
 
             services.AddHttpContextAccessor();
+
+            services.AddHttpClient(DefaultNames.HttpClientName, client =>
+            {
+                client.BaseAddress = new Uri(setup.MainOptions.BaseUri);
+            });
+
+            services.AddOptions();
 
             services.ConfigureDatabases<TContextInterface, TContextImplementation>(configuration, setup.PersistenceOptions, setup.MainOptions);
 
@@ -91,7 +102,7 @@ namespace Definux.Emeraude.Extensions
 
             services.ConfigureIdentityOptions<TContextImplementation>(setup.IdentityOptions);
 
-            services.ConfigureRazorViews();
+            services.ConfigureRazor();
 
             settingsBuilder.AuthenticationBuilder = services.AddEmeraudeAuthentication(setup.IdentityOptions);
 
@@ -124,6 +135,8 @@ namespace Definux.Emeraude.Extensions
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddEmeraudeClientBuilder(setup.ClientBuilderOptions);
+
+            services.AddServerSideBlazor();
 
             services.ConfigureMvc(setup.MainOptions);
 
@@ -201,8 +214,15 @@ namespace Definux.Emeraude.Extensions
             return authenticationBuilder;
         }
 
-        private static void ConfigureRazorViews(this IServiceCollection services)
+        private static void ConfigureRazor(this IServiceCollection services)
         {
+            services.AddRazorPages(options =>
+            {
+                options.RootDirectory = "/Views/Admin";
+            });
+
+            services.Configure<RazorPagesOptions>(options => options.RootDirectory = "/Views/Admin");
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationFormats.Clear();
@@ -219,7 +239,10 @@ namespace Definux.Emeraude.Extensions
             });
         }
 
-        private static void ConfigureMapper(this IServiceCollection services, string applicationAssembly, EmApplicationsOptions applicationsOptions)
+        private static void ConfigureMapper(
+            this IServiceCollection services,
+            string applicationAssembly,
+            EmApplicationsOptions applicationsOptions)
         {
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
             {
@@ -305,6 +328,7 @@ namespace Definux.Emeraude.Extensions
                 .ConfigureApplicationPartManager(p =>
                 {
                     p.ApplicationParts.Add(ApplicationAssemblyPart.AssemblyPart);
+
                     p.AddAdminUIApplicationParts();
                     p.AddClientUIApplicationParts();
                     p.FeatureProviders.Add(new ViewComponentFeatureProvider());

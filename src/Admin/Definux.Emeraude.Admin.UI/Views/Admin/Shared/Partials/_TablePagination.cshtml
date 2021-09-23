@@ -6,7 +6,7 @@
             @if (Model.PreviousPage != null && Model.PreviousPagesCount > 0)
             {
                 <li class="page-item mx-0">
-                    <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.PreviousPage)">⯇</a>
+                    <a class="btn btn-primary p-2" href="@Model.GetPaginationHref(Model.PreviousPage, ViewData, Url)">⯇</a>
                 </li>
             }
             @if (Model.PreviousPagesCount > 0)
@@ -14,7 +14,7 @@
                 for (int i = Model.PreviousPagesCount; i >= 1; i--)
                 {
                     <li class="page-item ml-1 mr-0">
-                        <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.CurrentPage - i)">@(Model.CurrentPage - i)</a>
+                        <a class="btn btn-primary p-2" href="@Model.GetPaginationHref(Model.CurrentPage - i, ViewData, Url)">@(Model.CurrentPage - i)</a>
                     </li>
                 }
             }
@@ -26,39 +26,16 @@
                 for (int i = 1; i <= Model.NextPagesCount; i++)
                 {
                     <li class="page-item mr-1 ml-0">
-                        <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.CurrentPage + i)">@(Model.CurrentPage + i)</a>
+                        <a class="btn btn-primary p-2" href="@Model.GetPaginationHref(Model.CurrentPage + i, ViewData, Url)">@(Model.CurrentPage + i)</a>
                     </li>
                 }
             }
             @if (Model.NextPage != null && Model.NextPagesCount > 0)
             {
                 <li class="page-item mx-0">
-                    <a class="btn btn-primary p-2" href="@GetPaginationHref(Model.NextPage)">⯈</a>
+                    <a class="btn btn-primary p-2" href="@Model.GetPaginationHref(Model.NextPage, ViewData, Url)">⯈</a>
                 </li>
             }
         </ul>
     </nav>
-}
-
-@functions {
-    string GetPaginationHref(int? page)
-    {
-        if (Model.AdditionalQueryParams == null)
-        {
-            return Url.Action(ViewData.GetAction(), ViewData.GetController(), new
-            {
-                Area = ViewData.GetArea(), 
-                page = page, 
-                searchQuery = ViewData.GetSearchQuery(),
-                orderBy = ViewData.GetOrderProperty(),
-                orderType = ViewData.GetOrderType()
-            });
-        }
-        else
-        {
-            Model.AdditionalQueryParams["page"] = page;
-            Model.AdditionalQueryParams["Area"] = ViewData.GetArea();
-            return Url.Action(ViewData.GetAction(), ViewData.GetController(), Model.AdditionalQueryParams);
-        }
-    }
 }

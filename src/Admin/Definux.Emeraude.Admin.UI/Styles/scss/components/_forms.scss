@@ -48,7 +48,7 @@ select {
   }
   &.has-danger {
     .form-control {
-      border-color: theme-color(danger);
+      border-color: $theme-colors(danger);
     }
   }
   .file-upload-default {

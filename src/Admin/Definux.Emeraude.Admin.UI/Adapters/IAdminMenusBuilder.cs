@@ -13,8 +13,7 @@ namespace Definux.Emeraude.Admin.UI.Adapters
         /// <summary>
         /// Setup method for building the admin menus.
         /// </summary>
-        /// <param name="context"></param>
         /// <returns></returns>
-        Task<AdminNavigationSchema> BuildAsync(ViewContext context);
+        Task<AdminNavigationSchema> BuildAsync();
     }
 }

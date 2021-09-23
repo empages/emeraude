@@ -30,7 +30,7 @@ ul {
   li {
     &:before {
       content: '\F12D';
-      color: theme-color(danger);
+      color: $theme-colors(danger);
     }
   }
 }
@@ -39,7 +39,7 @@ ul {
   li {
     &:before {
       content: '\F142';
-      color: theme-color(success);
+      color: $theme-colors(success);
     }
   }
 }
@@ -48,7 +48,7 @@ ul {
   li {
     &:before {
       content: '\F4CE';
-      color: theme-color(warning);
+      color: $theme-colors(warning);
     }
   }
 }

@@ -45,7 +45,7 @@
                 border-right: none;
                 border-left: none;
                 border-bottom: 2px solid theme-color(primary);
-                color: theme-color(primary);
+                color: $theme-colors(primary);
                 font-weight: bold;
             }
         }
@@ -116,7 +116,7 @@ $value in $theme-colors {
 			padding: 0;
 			color: $text-muted;
 			&.active {
-				color: theme-color(info);
+				color: $theme-colors(info);
 			}
 		}
 	}

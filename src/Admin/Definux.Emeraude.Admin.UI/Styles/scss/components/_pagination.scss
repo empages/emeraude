@@ -6,8 +6,8 @@
         &.active {
             .btn {
                 text-shadow: none !important;
-                background: theme-color("primary");
-                border-color: darken(theme-color("primary"), 15%);
+                background: $theme-colors("primary");
+                border-color: darken($theme-colors("primary"), 15%);
                 color: color(white);
             }
         }
@@ -36,8 +36,8 @@
         &:focus,
         &:hover {
             .page-link {
-                background: theme-color("primary");
-                border-color: theme-color("primary");
+                background: $theme-colors("primary");
+                border-color: $theme-colors("primary");
                 color: color(white);
             }
         }

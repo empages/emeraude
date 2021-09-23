@@ -2,7 +2,7 @@
 
 .select2-container--default {
   .select2-results__option--highlighted[aria-selected] {
-    background: theme-color(primary);
+    background: $theme-colors(primary);
   }
 
   .select2-dropdown,
@@ -53,23 +53,23 @@
       }
 
       &:nth-child(5n+1) {
-        background: theme-color(primary);
+        background: $theme-colors(primary);
       }
 
       &:nth-child(5n+2) {
-        background: theme-color(success);
+        background: $theme-colors(success);
       }
 
       &:nth-child(5n+3) {
-        background: theme-color(info);
+        background: $theme-colors(info);
       }
 
       &:nth-child(5n+4) {
-        background: theme-color(danger);
+        background: $theme-colors(danger);
       }
 
       &:nth-child(5n+5) {
-        background: theme-color(warning);
+        background: $theme-colors(warning);
       }
     }
   }

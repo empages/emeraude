@@ -33,29 +33,18 @@
                         if (breadcrumb.Title.StartsWith("[") && breadcrumb.Title.EndsWith("]"))
                         {
                             <li @((breadcrumb.Order == orderMax) ? "aria-current=\"page\"" : "")>
-                                <a title="@ViewData[breadcrumb.Title]" class="btn btn-outline-light btn-disabled p-1 mr-2 cursor-normal text-light-gray @OrderMaxClass(breadcrumb.Order, orderMax)">@ViewData[breadcrumb.Title]</a>
+                                <a title="@ViewData[breadcrumb.Title]" class="btn btn-outline-light btn-disabled p-1 mr-2 cursor-normal text-light-gray @HtmlUtilities.BreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)">@ViewData[breadcrumb.Title]</a>
                             </li>
                         }
                         else
                         {
                             <li @((breadcrumb.Order == orderMax) ? "aria-current=\"page\"" : "")>
-                                <a title="@breadcrumb.Title" class="btn btn-outline-light btn-disabled p-1 mr-2 cursor-normal text-light-gray @OrderMaxClass(breadcrumb.Order, orderMax)">@breadcrumb.Title</a>
+                                <a title="@breadcrumb.Title" class="btn btn-outline-light btn-disabled p-1 mr-2 cursor-normal text-light-gray @HtmlUtilities.BreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)">@breadcrumb.Title</a>
                             </li>
                         }
                     }
                 }
             </ol>
         </nav>
-    }
-}
-
-@functions {
-    private string OrderMaxClass(int order, int orderMax)
-    {
-        if (order == orderMax)
-        {
-            return "current-breadcrumb";
-        }
-        return string.Empty;
     }
 }

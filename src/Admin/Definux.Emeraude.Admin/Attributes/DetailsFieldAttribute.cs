@@ -8,6 +8,7 @@ namespace Definux.Emeraude.Admin.Attributes
     /// <summary>
     /// Attribute used for rendering the details card of the details action of admin entity controller.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
     public class DetailsFieldAttribute : Attribute
     {
         /// <summary>

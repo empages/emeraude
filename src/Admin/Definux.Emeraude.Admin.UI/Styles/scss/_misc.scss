@@ -197,35 +197,6 @@ pre {
     html, body {
         height: 100%;
     }
-
-    #main-body-container {
-        display: none;
-    }
-
-    #resolution-message-container {
-        display: flex;
-        height: 100%;
-        background: $primary;
-
-        .resolution-card {
-            padding: 10px;
-            max-width: 480px;
-            margin: auto;
-
-            .card {
-                .card-header {
-                    font-size: 24px;
-                    font-weight: bold;
-                    padding: 10px;
-
-                    img {
-                        margin-right: 5px;
-                        width: 30px;
-                    }
-                }
-            }
-        }
-    }
 }
 
 .page-body-wrapper {
@@ -328,4 +299,8 @@ pre {
 
 .overflow-wrap-anywhere {
     overflow-wrap: anywhere !important;
+}
+
+.opacity-1 {
+    opacity: 1 !important;
 }

@@ -174,22 +174,22 @@
 .status-indicator {
   border-width: 2px;
   border-style: solid;
-  border-color: theme-color(warning);
+  border-color: $warning;
   border-radius: 100%;
   display: inline-block;
   height: 8px;
   width: 8px;
 
   &.online {
-    border-color: theme-color(success);
+    border-color: $success;
   }
 
   &.offline {
-    border-color: theme-color(primary);
+    border-color: $primary;
   }
 
   &.away {
-    border-color: theme-color(warning);
+    border-color: $warning;
   }
 }
 

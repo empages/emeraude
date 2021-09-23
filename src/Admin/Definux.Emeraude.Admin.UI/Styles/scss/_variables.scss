@@ -4,6 +4,15 @@ $light-gray: #bebebe;
 $lighter-gray: #ddd;
 $dark-gray: #999;
 
+$primary: $base;
+$secondary: $base;
+$success: #309700;
+$info: #00aeef;
+$warning: #ffaf00;
+$danger: #ff6258;
+$light: #e3e3e3;
+$dark: #23282d;
+
 $blue: #00aeef;
 $indigo: #6610f2;
 $purple: #ab8ce4;
@@ -23,24 +32,28 @@ $darkslategray: #2e383e;
 $dodger-blue: #3498db;
 $light-gray: #bebebe;
 $lighter-gray: #e4e5e8;
-$primary: #7eb62f;
-$danger: #ff6258;
 
 $csharp-warning-bg: #fefcc8;
 
-$blue-teal-gradient: linear-gradient(120deg, #556cdc, #128bfc, #18bef1);
 $primary-gray: #5f5f5f;
 $blue-teal-gradient-light: linear-gradient(120deg, rgba(0, 228, 208, 0.7), rgba(89, 131, 232, 0.7));
-$theme-colors: (primary: #7eb62f, secondary: #e6eef2, success: #3c8dde, info: #00aeef, warning: #ffaf00, danger: #ff6258, light: #fbfbfb, dark: #23282d, primary-inverse: #7eb62f);
-$colors: (blue: $blue, indigo: $indigo, purple: $purple, pink: $pink, red: $red, orange: $orange, yellow: $yellow, green: $green, teal: $teal, cyan: $cyan, white: $white, white-smoke: #f3f5f6, gray: $gray-600, gray-light: #8ba2b5, gray-lightest: #f7f7f9, gray-dark: #292b2c);
+$theme-colors: (primary: $primary, secondary: $secondary, success: $success, info: $info, warning: $warning, danger: $danger, light: $light, dark: $dark);
+$theme-colors-sample: (secondary: $secondary, success: $success, info: $info, warning: $warning, danger: $danger, light: $light, dark: $dark);
+
+$colors: (blue: $blue, indigo: $indigo, purple: $purple, pink: $pink, red: $red, orange: $orange, yellow: $yellow, green: $green, teal: $teal, cyan: $cyan, white: $white, white-smoke: #f3f5f6, gray: #bebebe, gray-light: #8ba2b5, gray-lightest: #f7f7f9, gray-dark: #292b2c);
 
 $social-colors: (twitter: #4DBFF5, facebook: #648ACA, google: #E55F4B, linkedin: #0177b4, pinterest: #cc2127, youtube: #e52d27, github: #333333, behance: #1769ff, dribbble: #ea4c89, reddit: #ff4500);
 
 $sidebar-default: #23282d;
 $content-bg: #f3f4fa;
 $footer-bg: $content-bg;
-$footer-color: color(dark);
+$footer-color: $light-gray;
 $border-color: #f2f2f2;
+
+$form-check-input-checked-color: $white;
+$form-check-input-checked-bg-color: $base;
+$form-check-input-checked-border-color: $base-dark;
+
 $footer-height: 60px;
 
 $type-1: 'Nunito', sans-serif;
@@ -80,7 +93,7 @@ $btn-border-radius-lg: .1875rem;
 $social-btn-padding: 13px;
 $social-btn-icon-size: 1rem;
 
-$input-bg: color(white);
+$input-bg: white;
 $input-border-radius: 2px;
 $input-placeholder-color: #c9c8c8;
 $input-font-size: .9rem;
@@ -100,11 +113,11 @@ $dropdown-link-color: $body-color;
 $dropdown-header-color: $body-color;
 
 $table-accent-bg: rgba(144, 144, 144, 0.29);
-$table-hover-bg: rgba(0, 0, 0, 0.25);
+$table-hover-bg: #b9b9b9;
 $table-cell-padding: 8px 15px;
 $table-border-color: $border-color;
 $table-inverse-bg: #2a2b32;
-$table-inverse-color: color(white);
+$table-inverse-color: white;
 $table-striped-order: even;
 
 $boxed-container-width: 1200px;
@@ -164,12 +177,12 @@ $tooltip-font-size: .75rem;
 $tooltip-padding-y: .4rem;
 $tooltip-padding-x: .75rem;
 $tooltip-border-radius: .375rem;
-$tooltip-bg: theme-color(dark);
+$tooltip-bg: $dark;
 $tooltip-arrow-color: $tooltip-bg;
 
-$popover-bg: theme-color(dark);
+$popover-bg: $dark;
 $popover-text-color: $white;
-$popover-border-color: theme-color(dark);
+$popover-border-color: $dark;
 $popover-arrow-color: $popover-bg;
 $popover-arrow-outer-color: $popover-border-color;
 $popover-header-bg: $popover-bg;
@@ -229,7 +242,7 @@ $primary-gradient: linear-gradient(120deg, $base, $base-dark);
 
 $content-bg:#f3f4fa;
 $footer-bg: $content-bg;
-$footer-color: color(dark);
+$footer-color: $theme-colors(dark);
 $border-color: #d0d0d0;
 $footer-height: 60px;
 
@@ -242,7 +255,7 @@ $sidebar-width-mini: 185px;
 $sidebar-width-icon: 40px;
 $sidebar-light-bg: $white;
 $sidebar-light-menu-color: #4a4a4a;
-$sidebar-light-menu-active-bg: theme-color(primary);
+$sidebar-light-menu-active-bg: $primary;
 $sidebar-light-menu-active-color: #fafbfc;
 $sidebar-light-menu-hover-bg: $sidebar-light-menu-active-bg;
 $sidebar-light-menu-hover-color: $sidebar-light-menu-color;

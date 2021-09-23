@@ -144,22 +144,22 @@ namespace Definux.Emeraude.Admin.Mapping
             TableRowViewModel tableRow = new TableRowViewModel();
             foreach (var property in properties)
             {
-                if (property.HasAttribute<EntityIdentifierAttribute>())
-                {
-                    tableRow.Identifier = property.GetValue(entity)?.ToString();
-                }
+                // if (property.HasAttribute<EntityIdentifierAttribute>())
+                // {
+                //     tableRow.Identifier = property.GetValue(entity)?.ToString();
+                // }
 
-                if (property.HasAttribute<TableColumnAttribute>())
-                {
-                    TableColumnAttribute propertyAttribute = (TableColumnAttribute)property.GetCustomAttributes(typeof(TableColumnAttribute), false).FirstOrDefault();
-
-                    ITableElement tableElementInstance = (ITableElement)Activator.CreateInstance(propertyAttribute.UIElementType);
-
-                    tableRow.AddCell(
-                        propertyAttribute.Order,
-                        property.GetValue(entity),
-                        tableElementInstance);
-                }
+                // if (property.HasAttribute<TableColumnAttribute>())
+                // {
+                //     TableColumnAttribute propertyAttribute = (TableColumnAttribute)property.GetCustomAttributes(typeof(TableColumnAttribute), false).FirstOrDefault();
+                //
+                //     ITableElement tableElementInstance = (ITableElement)Activator.CreateInstance(propertyAttribute.UIElementType);
+                //
+                //     tableRow.AddCell(
+                //         propertyAttribute.Order,
+                //         property.GetValue(entity),
+                //         tableElementInstance);
+                // }
             }
 
             foreach (var action in actions)

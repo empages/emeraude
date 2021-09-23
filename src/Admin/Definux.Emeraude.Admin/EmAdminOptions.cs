@@ -1,6 +1,8 @@
 ﻿using System;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Configuration.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Definux.Emeraude.Admin
 {
@@ -10,6 +12,21 @@ namespace Definux.Emeraude.Admin
     public class EmAdminOptions : IEmOptions
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="EmAdminOptions"/> class.
+        /// </summary>
+        public EmAdminOptions()
+        {
+            this.LocalJsonSerializerSettings = new JsonSerializerSettings()
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy(),
+                },
+                Formatting = Formatting.Indented,
+            };
+        }
+
+        /// <summary>
         /// Admin dashboard request type.
         /// </summary>
         public Type DashboardRequestType { get; set; }
@@ -18,6 +35,11 @@ namespace Definux.Emeraude.Admin
         /// Implementation type of <see cref="IAdminMenusBuilder"/>.
         /// </summary>
         public Type AdminMenusBuilderType { get; set; }
+
+        /// <summary>
+        /// JSON serializer settings for local admin operations with the Web API.
+        /// </summary>
+        public JsonSerializerSettings LocalJsonSerializerSettings { get; set; }
 
         /// <summary>
         /// Sets the type of the request used for administration dashboard index page.

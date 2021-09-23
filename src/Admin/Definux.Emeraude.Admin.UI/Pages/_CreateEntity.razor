@@ -1,0 +1,55 @@
+﻿@page "/admin/{entityKey}/create"
+@using Definux.Emeraude.Admin.UI.Adapters
+@implements IDisposable
+@inject IEntitiesViewsSchemaProvider EntitiesViewsSchemaProvider;
+@inject NavigationManager NavigationManager;
+<h3>@EntityKey</h3>
+@if (ViewSchema != null)
+{
+    <EmEntityFormView ViewSchema="ViewSchema"/>
+}
+
+@code {
+    private string entityKey;
+    private EntityFormViewSchema ViewSchema { get; set; }
+    
+    [Parameter]
+    public string EntityKey { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        this.entityKey = EntityKey;
+        this.LoadViewSchema();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
+        {
+            this.entityKey = EntityKey;
+            this.LoadViewSchema();
+        }
+    }
+
+    private void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        this.LoadViewSchema();
+    }
+
+    private void LoadViewSchema()
+    {
+        this.ViewSchema = EntitiesViewsSchemaProvider.GetFormViewSchema(EntityKey);
+        this.StateHasChanged();
+        if (this.ViewSchema == null)
+        {
+            NavigationManager.NavigateTo("/error/404", true, true);
+        }
+    }
+    
+    void IDisposable.Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+}

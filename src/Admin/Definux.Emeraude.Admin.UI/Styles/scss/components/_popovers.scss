@@ -103,6 +103,6 @@
 @each $color,
 $value in $theme-colors {
 	.popover-#{$color} {
-		@include popover-variant(theme-color($color));
+		@include popover-variant($theme-colors($color));
 	}
 }

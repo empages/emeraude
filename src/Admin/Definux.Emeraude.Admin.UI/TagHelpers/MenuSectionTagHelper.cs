@@ -39,7 +39,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
 
         private TagHelperOutput ProcessOutput(TagHelperOutput output)
         {
-            string sectionIdentificator = $"section{this.Index}";
+            string sectionIdentifier = $"section{this.Index}";
 
             var htmlBuilder = new HtmlBuilder.HtmlBuilder();
             htmlBuilder
@@ -50,8 +50,8 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                     .WithConditionalClasses("collapsed", string.Empty, this.Model.IsSingle && this.Model.IsActive, "nav-link sidebar-main-menu-item")
                     .WithAttribute("title", this.Model.Title)
                     .WithAttributeIf("href", this.Model.SingleLinkItem?.DefaultRoute, this.Model.IsSingle && !this.Model.Dropdown)
-                    .WithAttributeIf("href", $"#{sectionIdentificator}", this.Model.Dropdown)
-                    .WithAttributeIf("aria-controls", sectionIdentificator, !this.Model.IsSingle)
+                    .WithAttributeIf("href", $"#{sectionIdentifier}", this.Model.Dropdown)
+                    .WithAttributeIf("aria-controls", sectionIdentifier, !this.Model.IsSingle)
                     .WithAttributeIf("aria-expanded", this.Model.IsActive.ToString().ToLower(), this.Model.Dropdown)
                     .WithAttributeIf("data-toggle", "collapse", this.Model.Dropdown)
                     .Append(xx => xx
@@ -67,7 +67,7 @@ namespace Definux.Emeraude.Admin.UI.TagHelpers
                 .AppendIf(this.Model.Dropdown, x => x
                     .OpenElement(HtmlTags.Div)
                     .WithConditionalClasses("show", string.Empty, this.Model.IsActive && this.Model.Dropdown, "collapse")
-                    .WithId(sectionIdentificator)
+                    .WithId(sectionIdentifier)
                     .Append(xx => xx
                         .OpenElement(HtmlTags.Ul)
                         .WithClasses("nav flex-column sub-menu")

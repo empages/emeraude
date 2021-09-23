@@ -17,7 +17,8 @@ namespace Definux.Emeraude.Admin.Extensions
         public static ApplicationPartManager AddAdminUIApplicationParts(this ApplicationPartManager applicationPartManager)
         {
             applicationPartManager.ApplicationParts.Add(AdminUIAssemblyPart.AssemblyPart);
-            applicationPartManager.ApplicationParts.Add(AdminClientBuilderUIAssemblyPart.AssemblyPart);
+
+            // applicationPartManager.ApplicationParts.Add(AdminClientBuilderUIAssemblyPart.AssemblyPart);
 
             return applicationPartManager;
         }

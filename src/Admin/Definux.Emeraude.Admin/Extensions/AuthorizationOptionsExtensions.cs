@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Configuration.Authorization;
+﻿using System.Linq;
+using Definux.Emeraude.Configuration.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Definux.Emeraude.Admin.Extensions

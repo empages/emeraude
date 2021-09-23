@@ -13,18 +13,20 @@ using Definux.Emeraude.Admin.Requests.Delete;
 using Definux.Emeraude.Admin.Requests.Details;
 using Definux.Emeraude.Admin.Requests.Edit;
 using Definux.Emeraude.Admin.Requests.Exists;
-using Definux.Emeraude.Admin.Requests.GetAll;
+using Definux.Emeraude.Admin.Requests.Fetch;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
 using Definux.Emeraude.Admin.RouteConstraints;
+using Definux.Emeraude.Admin.Services;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Admin.UI.UIElements;
+using Definux.Emeraude.Admin.ValuePipes;
 using Definux.Emeraude.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Models;
 using Definux.Emeraude.Identity.Entities;
-using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,9 +56,15 @@ namespace Definux.Emeraude.Admin.Extensions
 
             services.RegisterAdapters(adminOptions);
 
-            services.RegisterCustomEntityDataPairs(mainOptions.Assemblies);
+            services.RegisterAllContractedTypes(
+                new[]
+                {
+                    typeof(IValuePipe),
+                },
+                mainOptions.Assemblies);
 
             services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
+            services.AddScoped<IValuePipeService, ValuePipeService>();
         }
 
         /// <summary>
@@ -107,7 +115,7 @@ namespace Definux.Emeraude.Admin.Extensions
                     .GetTypes()
                     .Where(x => x
                         .GetInterfaces()
-                        .Any(x => x == typeof(IAdminEntityController)) && !x.IsInterface && !x.IsAbstract);
+                        .Any(xx => xx == typeof(IAdminEntityDataController)) && !x.IsInterface && !x.IsAbstract);
                 controllerTypes.AddRange(assemblyControllerTypes);
             }
 
@@ -148,8 +156,8 @@ namespace Definux.Emeraude.Admin.Extensions
         {
             Type paginatedResultType = typeof(PaginatedList<>);
             Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type queryType = typeof(GetAllQuery<,>);
-            Type queryHandler = typeof(GetAllQueryHandler<,>);
+            Type queryType = typeof(FetchQuery<,>);
+            Type queryHandler = typeof(FetchQueryHandler<,>);
             Type constructedPaginatedResultType = paginatedResultType.MakeGenericType(viewModelType);
             Type constructedQueryType = queryType.MakeGenericType(entityType, viewModelType);
             Type constructedQueryRequestHandlerType = requestHandlerType.MakeGenericType(constructedQueryType, constructedPaginatedResultType);
@@ -253,12 +261,15 @@ namespace Definux.Emeraude.Admin.Extensions
         {
             services.AddScoped<IIdentityUserInfoAdapter, IdentityUserInfoAdapter>();
             services.AddScoped<IEmContextAdapter, EmContextAdapter>();
+            services.AddScoped<IEntitiesViewsSchemaProvider, EntitiesViewsSchemaProvider>();
+            services.AddScoped<IEntityAdminServiceAgent, EntityAdminServiceAgent>();
 
             services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
         }
 
-        private static void RegisterCustomEntityDataPairs(
+        private static void RegisterAllContractedTypes(
             this IServiceCollection services,
+            IEnumerable<Type> contracts,
             IEnumerable<Assembly> assemblies)
         {
             var typesForRegistration = new List<Type>();
@@ -266,7 +277,7 @@ namespace Definux.Emeraude.Admin.Extensions
             {
                 typesForRegistration.AddRange(assembly
                     .GetTypes()
-                    .Where(x => x.GetInterfaces().Any(y => y == typeof(ICustomEntityDataPair)))
+                    .Where(x => x.GetInterfaces().Any(contracts.Contains))
                     .ToList());
             }
 

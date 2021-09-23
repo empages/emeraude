@@ -33,7 +33,7 @@
       font-weight: initial;
       &.swal2-confirm {
         @extend .btn;
-        background-color: theme-color(success) !important;
+        background-color: $theme-colors(success) !important;
         border: 1px solid theme-color(success) !important;
         font-weight: initial;
         margin-top: 32px;

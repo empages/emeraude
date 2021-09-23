@@ -12,6 +12,7 @@ namespace Definux.Emeraude.Configuration.Options
         private string domainAssembly;
         private string applicationAssembly;
         private string infrastructureAssembly;
+        private string adminAssembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmMainOptions"/> class.
@@ -25,6 +26,11 @@ namespace Definux.Emeraude.Configuration.Options
         /// General name of the project. Default value is 'Emeraude'.
         /// </summary>
         public string ProjectName { get; set; } = "Emeraude";
+
+        /// <summary>
+        /// Base URI of the application.
+        /// </summary>
+        public string BaseUri { get; set; }
 
         /// <summary>
         /// Activate test mode for the application. Recommended for unit and integration tests.
@@ -67,6 +73,19 @@ namespace Definux.Emeraude.Configuration.Options
             {
                 this.applicationAssembly = value;
                 this.AddAssembly(this.applicationAssembly);
+            }
+        }
+
+        /// <summary>
+        /// Contains the admin assembly name.
+        /// </summary>
+        public string AdminAssembly
+        {
+            get => this.adminAssembly;
+            set
+            {
+                this.adminAssembly = value;
+                this.AddAssembly(this.adminAssembly);
             }
         }
 

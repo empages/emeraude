@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Tests.Project.Adapters
 {
     public class AdminMenusBuilder : IAdminMenusBuilder
     {
-        public async Task<AdminNavigationSchema> BuildAsync(ViewContext context)
+        public async Task<AdminNavigationSchema> BuildAsync()
             => await Task.FromResult(new AdminNavigationSchema
             {
                 InsightsItems = new List<SidebarInsightItem>

@@ -9,6 +9,7 @@ namespace Definux.Emeraude.Admin.Attributes
     /// <summary>
     /// Attribute that include the decorated property into the create/edit form of entity admin controller.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
     public class FormInputAttribute : Attribute
     {
         /// <summary>

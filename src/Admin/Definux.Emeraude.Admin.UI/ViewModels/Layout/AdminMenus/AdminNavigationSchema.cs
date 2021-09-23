@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
 {
@@ -30,13 +32,16 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
         /// Method that apply current route to the state of navigation items. This method is called automatically by the framework.
         /// </summary>
         /// <param name="currentRoute"></param>
-        public void ApplyCurrentRoute(string currentRoute)
+        public void ChangeNavigationState(string currentRoute)
         {
+            string route = currentRoute.StartsWith("/") ? currentRoute : $"/{currentRoute}";
+            Console.WriteLine($@"Changing navigation state with route: '{route}'");
+
             if (this.Menus != null && this.Menus.Count > 0)
             {
                 foreach (var menu in this.Menus)
                 {
-                    menu.BuildState(currentRoute);
+                    menu.BuildState(route);
                 }
             }
         }

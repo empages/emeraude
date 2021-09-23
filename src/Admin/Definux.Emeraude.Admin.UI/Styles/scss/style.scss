@@ -1,9 +1,12 @@
 @import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/variables";
 
 @import "variables";
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import "../../node_modules/@mdi/font/scss/materialdesignicons";
 
 @import "mixins/animation";
 @import "mixins/background";
@@ -30,27 +33,28 @@
 @import "layouts";
 @import "footer";
 
-@import "components/badges";
-@import "components/bootstrap-alerts";
+//@import "components/badges";
+//@import "components/bootstrap-alerts";
 @import "components/buttons";
-@import "components/breadcrumbs";
-@import "components/borders";
-@import "components/cards";
+//@import "components/breadcrumbs";
+//@import "components/borders";
+//@import "components/cards";
 @import "components/checkbox-radio";
-@import "components/dropdown";
-@import "components/forms";
-@import "components/lists";
-@import "components/modals";
-@import "components/nav";
-@import "components/pagination";
-@import "components/popovers";
+//@import "components/dropdown";
+//@import "components/forms";
+//@import "components/lists";
+//@import "components/modals";
+//@import "components/nav";
+//@import "components/pagination";
+//@import "components/popovers";
 @import "components/tables";
-@import "components/tabs";
-@import "components/tooltips";
-@import "components/dropzone";
-@import "components/codemirror";
-@import "components/datepicker";
-@import "components/sweet-alert";
-@import "components/select2";
+//@import "components/tabs";
+//@import "components/tooltips";
+//@import "components/dropzone";
+//@import "components/codemirror";
+//@import "components/datepicker";
+//@import "components/sweet-alert";
+//@import "components/select2";
+@import "components/blazor-error";
 
 @import "screens/auth";

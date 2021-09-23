@@ -95,7 +95,7 @@
 								content: "";
 								width: 38px;
 								height: 38px;
-								background: theme-color(success);
+								background: $theme-colors(success);
 								border-radius: 100%;
 								display: block;
 								margin: auto;
@@ -118,7 +118,7 @@
 								content: "";
 								width: 38px;
 								height: 38px;
-								background: theme-color(primary);
+								background: $theme-colors(primary);
 								border-radius: 100%;
 								display: block;
 								margin: auto;
@@ -182,7 +182,7 @@
 				}
 
 				&.datepicker-switch {
-					color: theme-color(primary);
+					color: $theme-colors(primary);
 					padding-bottom: 0.5rem;
 					padding-top: 0.5rem;
 				}

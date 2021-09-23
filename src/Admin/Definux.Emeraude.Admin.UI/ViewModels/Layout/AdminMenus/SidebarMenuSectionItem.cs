@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
@@ -8,6 +9,11 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
     /// </summary>
     public class SidebarMenuSectionItem
     {
+        /// <summary>
+        /// Event that is triggered when section's state changed.
+        /// </summary>
+        public event EventHandler StateChanged;
+
         /// <summary>
         /// Title of the section.
         /// </summary>
@@ -60,7 +66,17 @@ namespace Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
                 {
                     this.Dropdown = true;
                 }
+
+                this.OnStateChanged();
             }
+        }
+
+        /// <summary>
+        /// <see cref="StateChanged"/> event invocator.
+        /// </summary>
+        protected virtual void OnStateChanged()
+        {
+            this.StateChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

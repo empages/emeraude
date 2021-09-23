@@ -1,0 +1,17 @@
+﻿@using Definux.Utilities.Functions
+@using Definux.Utilities.Extensions
+@inherits EmBaseElement
+<span class="em-enum">
+    @EnumValue
+</span>
+
+@code {
+    private string EnumValue
+        => EnumFunctions
+            .GetEnumValueItems(Type)
+            .Where(x => x.Value == Convert.ToInt32(Value))
+            .Select(x => x.Name)
+            .FirstOrDefault()
+            ?.ToString()
+            .SplitWordsByCapitalLetters();
+}

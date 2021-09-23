@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Models;
-using Definux.Emeraude.Admin.Requests.GetAll;
+using Definux.Emeraude.Admin.Requests.Fetch;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Presentation.Controllers;
@@ -30,7 +30,11 @@ namespace Definux.Emeraude.Admin.Controllers.Api
             [FromQuery] int page = 1,
             [FromQuery] string searchQuery = null)
         {
-            return this.Ok(await this.Mediator.Send(new GetAllQuery<User, EntitySelectModel>(page, searchQuery)));
+            return this.Ok(await this.Mediator.Send(new FetchQuery<User, EntitySelectModel>
+            {
+                SearchQuery = searchQuery,
+                Page = page,
+            }));
         }
     }
 }

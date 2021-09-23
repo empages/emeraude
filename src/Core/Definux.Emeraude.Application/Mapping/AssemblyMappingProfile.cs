@@ -23,7 +23,7 @@ namespace Definux.Emeraude.Application.Mapping
         {
             var types = assembly
                 .GetExportedTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+                .Where(x => x.IsClass && x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
                 .ToList();
 
             foreach (var type in types)

@@ -12,12 +12,13 @@
     padding-left: calc(#{$sidebar-width-lg} + 1rem);
 
     a {
-        color: theme-color(primary);
+        color: $primary;
         font-size: inherit;
     }
 
     @media (max-width: 991px) {
         margin-left: 0;
         width: 100%;
+        padding: 20px 1rem;
     }
 }
