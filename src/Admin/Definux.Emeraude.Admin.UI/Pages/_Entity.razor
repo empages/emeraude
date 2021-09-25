@@ -3,6 +3,7 @@
 @implements IDisposable
 @inject IEmPageSchemaProvider EntitiesViewsSchemaProvider;
 @inject NavigationManager NavigationManager;
+@inject BreadcrumbsModule BreadcrumbsModule;
 <h3>@EntityKey @EntityId</h3>
 @if (ViewSchema != null)
 {

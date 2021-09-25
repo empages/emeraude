@@ -4,9 +4,7 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Definux.Emeraude.Admin.Adapters;
-using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.EmPages;
-using Definux.Emeraude.Admin.Mapping;
 using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
 using Definux.Emeraude.Admin.Requests.Create;
@@ -17,10 +15,10 @@ using Definux.Emeraude.Admin.Requests.Exists;
 using Definux.Emeraude.Admin.Requests.Fetch;
 using Definux.Emeraude.Admin.Requests.GetEntityImage;
 using Definux.Emeraude.Admin.RouteConstraints;
-using Definux.Emeraude.Admin.Services;
+using Definux.Emeraude.Admin.UI;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Extensions;
-using Definux.Emeraude.Admin.UI.UIElements;
+using Definux.Emeraude.Admin.UI.Store;
 using Definux.Emeraude.Admin.ValuePipes;
 using Definux.Emeraude.ClientBuilder.UI.Extensions;
 using Definux.Emeraude.Configuration.Authorization;
@@ -66,7 +64,9 @@ namespace Definux.Emeraude.Admin.Extensions
                 },
                 mainOptions.Assemblies);
 
-            services.AddScoped<IEmPageService, EmPageService>();
+            services.RegisterAdminUIStore();
+
+            services.AddSingleton<IEmPageService, EmPageService>();
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace Definux.Emeraude.Admin.Extensions
         {
             services.AddScoped<IIdentityUserInfoAdapter, IdentityUserInfoAdapter>();
             services.AddScoped<IEmContextAdapter, EmContextAdapter>();
-            services.AddScoped<IEmPageSchemaProvider, EntitiesViewsSchemaProvider>();
+            services.AddScoped<IEmPageSchemaProvider, EmPageSchemaProvider>();
             services.AddScoped<IEmPageServiceAgent, EmPageServiceAgent>();
 
             services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
@@ -305,6 +305,13 @@ namespace Definux.Emeraude.Admin.Extensions
             {
                 services.AddScoped(type);
             }
+        }
+
+        private static void RegisterAdminUIStore(this IServiceCollection services)
+        {
+            services.RegisterAllContractedTypes(
+                new List<Type> { typeof(IStoreModule) },
+                new List<Assembly> { AdminUIAssemblyPart.Assembly });
         }
     }
 }

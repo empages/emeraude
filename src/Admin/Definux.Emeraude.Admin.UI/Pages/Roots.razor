@@ -1,4 +1,5 @@
 ﻿@page "/admin/roots/{root}/{*folders}"
+@inherits AdminPage
 
 <h3>@Root</h3>
 <p>@Folders</p>
@@ -10,4 +11,20 @@
     
     [Parameter]
     public string Folders { get; set; }
+
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+    {
+        return new List<BreadcrumbItemModel>
+        {
+            new() {Title = "Home", IsActive = true, Order = 1 },
+            new() {Title = Root, Order = 2 },
+        };
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        ReloadBreadcrumbs();
+    }
+
 }

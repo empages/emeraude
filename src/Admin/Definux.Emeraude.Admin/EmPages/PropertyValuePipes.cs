@@ -2,7 +2,7 @@
 using System.Reflection;
 using Definux.Emeraude.Admin.ValuePipes;
 
-namespace Definux.Emeraude.Admin.Models
+namespace Definux.Emeraude.Admin.EmPages
 {
     /// <summary>
     /// Implementation helper model that contains property info and its corresponding value pipes.
@@ -18,9 +18,9 @@ namespace Definux.Emeraude.Admin.Models
         }
 
         /// <summary>
-        /// Target property.
+        /// Target property name.
         /// </summary>
-        public PropertyInfo Property { get; set; }
+        public string PropertyName { get; set; }
 
         /// <summary>
         /// Value pipes and corresponding parameters that must be applied to the property.

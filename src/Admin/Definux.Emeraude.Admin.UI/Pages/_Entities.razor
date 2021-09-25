@@ -1,9 +1,9 @@
 ﻿@page "/admin/{entityKey}"
 @using Definux.Emeraude.Admin.UI.Adapters
-@implements IDisposable
+@using System.Net.Http
+@inherits AdminPage
 @inject IEmPageSchemaProvider EntitiesViewsSchemaProvider;
 @inject IEmPageServiceAgent EmPageServiceAgent;
-@inject NavigationManager NavigationManager;
 <PageTitle>@PageTitle | Emeraude</PageTitle>
 @if (Loaded)
 {
@@ -20,7 +20,7 @@ else
     private EmPageTableViewData ViewData { get; set; }
     private bool FirstInitial { get; set; }
     private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
-    
+
     [Parameter]
     public string EntityKey { get; set; }
 
@@ -28,10 +28,9 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         this.entityKey = EntityKey;
-        NavigationManager.LocationChanged += LocationChanged;
         await LoadViewParametersAsync();
+        await base.OnInitializedAsync();
     }
 
     protected override async Task OnParametersSetAsync()
@@ -54,18 +53,38 @@ else
         }
     }
 
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+    {
+        return new List<BreadcrumbItemModel>
+        {
+            new() {Title = "Home", ActionUrl = "/admin", IsActive = true, Order = 1},
+            new() {Title = "Middle", Order = 2},
+            new() {Title = ViewSchema.Context.Title, Order = 3},
+        };
+    }
+
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+    {
+        return new List<ActionModel>
+        {
+            new() { Title = "Create", Order = 1, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
+            new() { Title = "Test Item", Order = 2, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
+            new() { Title = "Delete All", Order = 3, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
+        };
+    }
+
     private void ResetData()
     {
         ViewSchema = null;
         ViewData = null;
         StateHasChanged();
     }
-    
-    private async void LocationChanged(object sender, LocationChangedEventArgs e)
+
+    protected override async void OnLocationChanged(object sender, LocationChangedEventArgs e)
     {
         await LoadViewParametersAsync();
     }
-    
+
     private async Task LoadViewParametersAsync()
     {
         ResetData();
@@ -79,12 +98,9 @@ else
             var queryString = new Uri(NavigationManager.Uri).Query;
             ViewData = await EmPageServiceAgent.RetrieveTableViewDataAsync(EntityKey, queryString, ViewSchema);
         }
-        
-        StateHasChanged();
-    }
 
-    void IDisposable.Dispose()
-    {
-        NavigationManager.LocationChanged -= LocationChanged;
+        StateHasChanged();
+        ReloadBreadcrumbs();
+        ReloadNavigationActions();
     }
 }

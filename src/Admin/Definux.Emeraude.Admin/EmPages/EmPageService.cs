@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.Attributes;
 using Definux.Emeraude.Admin.Models;
-using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Admin.ValuePipes;
 using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Admin.EmPages
 {
@@ -16,6 +16,8 @@ namespace Definux.Emeraude.Admin.EmPages
     {
         private readonly IServiceProvider serviceProvider;
         private readonly EmMainOptions mainOptions;
+
+        private IEnumerable<EmPageSchemaDescription> schemaDescriptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageService"/> class.
@@ -31,17 +33,19 @@ namespace Definux.Emeraude.Admin.EmPages
         /// <inheritdoc />
         public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string key)
         {
-            var settings = await this.FindAllSchemasDescriptionsAsync();
-            return settings.FirstOrDefault(x => x.Key?.Equals(key, StringComparison.OrdinalIgnoreCase) ?? false);
+            await this.LoadSchemasIfEmptyAsync();
+            return this.schemaDescriptions?.FirstOrDefault(x => x.Key?.Equals(key, StringComparison.OrdinalIgnoreCase) ?? false);
         }
 
         /// <inheritdoc/>
-        public async Task ApplyValuePipesAsync<TEntityModel>(IEnumerable<TEntityModel> models)
+        public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, ViewType viewType)
         {
-            var propertiesValuePipes = this.ExtractPropertiesValuePipes(typeof(TEntityModel));
+            var modelType = typeof(TEmPageModel);
+            var propertiesValuePipes = this.ExtractPropertiesValuePipes(modelType, viewType);
             foreach (var propertyValuePipes in propertiesValuePipes)
             {
-                var currentPropertyValues = models.Select(x => propertyValuePipes.Property.GetValue(x));
+                var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
+                var currentPropertyValues = models.Select(x => modelProperty?.GetValue(x));
                 foreach (var (valuePipe, valuePipeParameters) in propertyValuePipes.ValuePipes)
                 {
                     await valuePipe.PrepareAsync(currentPropertyValues, valuePipeParameters);
@@ -51,10 +55,18 @@ namespace Definux.Emeraude.Admin.EmPages
                 {
                     foreach (var (valuePipe, _) in propertyValuePipes.ValuePipes)
                     {
-                        var convertedValue = await valuePipe.ConvertAsync(propertyValuePipes.Property.GetValue(model));
-                        propertyValuePipes.Property.SetValue(model, convertedValue);
+                        var convertedValue = await valuePipe.ConvertAsync(modelProperty?.GetValue(model));
+                        modelProperty.SetValue(model, convertedValue);
                     }
                 }
+            }
+        }
+
+        private async Task LoadSchemasIfEmptyAsync()
+        {
+            if (this.schemaDescriptions == null || !this.schemaDescriptions.Any())
+            {
+                this.schemaDescriptions = await this.FindAllSchemasDescriptionsAsync();
             }
         }
 
@@ -70,11 +82,12 @@ namespace Definux.Emeraude.Admin.EmPages
                     .ToList())
                 .ToList();
 
-            var schemaDescriptions = new List<EmPageSchemaDescription>();
+            var foundSchemaDescriptions = new List<EmPageSchemaDescription>();
             var schemaContext = new EmPageSchemaContext();
+            var scopedServiceProvider = this.serviceProvider.CreateScope().ServiceProvider;
             foreach (var schemasImplementationType in schemasImplementationsTypes)
             {
-                var schema = this.serviceProvider.GetService(schemasImplementationType);
+                var schema = scopedServiceProvider.GetService(schemasImplementationType);
                 var schemaSetupMethod = schemasImplementationType.GetMethod("SetupAsync");
                 var schemaSetupResultTask = (Task)schemaSetupMethod?.Invoke(schema, new object[] { schemaContext });
                 if (schemaSetupResultTask != null)
@@ -84,61 +97,52 @@ namespace Definux.Emeraude.Admin.EmPages
                     var schemaDescription = userDefinedSchemaSettings?.BuildDescription(this.mainOptions.Assemblies);
                     if (schemaDescription != null)
                     {
-                        schemaDescriptions.Add(schemaDescription);
+                        foundSchemaDescriptions.Add(schemaDescription);
                     }
                 }
             }
 
-            return schemaDescriptions;
+            return foundSchemaDescriptions;
         }
 
-        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(Type type)
+        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(Type type, ViewType viewType)
         {
-            var targetProperties = type
-                .GetProperties();
+            if (viewType == ViewType.FormView)
+            {
+                throw new ArgumentException("Value pipes are not supported for form views.");
+            }
+
+            var targetSchemaDescription = this.schemaDescriptions.FirstOrDefault(x => x.ModelType == type);
+            IEnumerable<IValuePipedViewItem> valuePipedViewItems = viewType == ViewType.TableView
+                ? targetSchemaDescription?.TableViewItems
+                : targetSchemaDescription?.DetailsViewItems;
+
+            if (valuePipedViewItems == null)
+            {
+                throw new ArgumentException($"Cannot be extracted value piped view items from type {type.Name} for {viewType}.");
+            }
+
+            var valuePipedViewItemsWithRegisteredPipes = valuePipedViewItems.Where(x => x.ValuePipes.Any());
 
             var result = new List<PropertyValuePipes>();
-            foreach (var property in targetProperties)
+            var scopedServiceProvider = this.serviceProvider.CreateScope().ServiceProvider;
+            foreach (var viewItem in valuePipedViewItemsWithRegisteredPipes)
             {
-                var propertyValuePipesAttributes = property
-                    .GetCustomAttributes(typeof(ValuePipeAttribute), true)
-                    .Select(x => (ValuePipeAttribute)x);
-
-                this.ValidateValuePipeAttributes(propertyValuePipesAttributes);
-
-                var orderedValuePipesAttributes = propertyValuePipesAttributes.OrderBy(x => x.Order);
                 var currentPropertyValuePipe = new PropertyValuePipes
                 {
-                    Property = property,
+                    PropertyName = ((IViewItem)viewItem).SourceName,
                 };
 
-                foreach (var valuePipeAttribute in orderedValuePipesAttributes)
+                foreach (var (valuePipeType, valuePipeParameters) in viewItem.ValuePipes)
                 {
-                    var currentValuePipe = this.serviceProvider.GetService(valuePipeAttribute.Type) as IValuePipe;
-                    var currentValuePipeParameters = valuePipeAttribute.Parameters;
-                    currentPropertyValuePipe.ValuePipes.Add((currentValuePipe, currentValuePipeParameters));
+                    var currentValuePipe = scopedServiceProvider.GetService(valuePipeType) as IValuePipe;
+                    currentPropertyValuePipe.ValuePipes.Add((currentValuePipe, valuePipeParameters));
                 }
 
                 result.Add(currentPropertyValuePipe);
             }
 
             return result;
-        }
-
-        private void ValidateValuePipeAttributes(IEnumerable<ValuePipeAttribute> attributes)
-        {
-            foreach (var attribute in attributes)
-            {
-                if (attribute.Type == null)
-                {
-                    throw new InvalidValuePipeException("Value Pipe Type cannot be null and must be specified.");
-                }
-
-                if (attribute.Type.GetInterfaces().All(x => x != typeof(IValuePipe)))
-                {
-                    throw new InvalidValuePipeException($"{attribute.Type.Name} must implements IValuePipe.");
-                }
-            }
         }
     }
 }

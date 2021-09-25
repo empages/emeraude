@@ -19,8 +19,9 @@ namespace Definux.Emeraude.Admin.EmPages
         /// Apply value pipes of the specified entity model.
         /// </summary>
         /// <param name="models"></param>
+        /// <param name="viewType"></param>
         /// <typeparam name="TEmPageModel">Type of the entity model.</typeparam>
         /// <returns></returns>
-        Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models);
+        Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, ViewType viewType);
     }
 }

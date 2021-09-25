@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Admin.Adapters
     /// <summary>
     /// Admin implementation of <see cref="IEmPageSchemaProvider"/>
     /// </summary>
-    public class EntitiesViewsSchemaProvider : IEmPageSchemaProvider
+    public class EmPageSchemaProvider : IEmPageSchemaProvider
     {
         private readonly IEmPageService emPageService;
         private readonly IEmLogger logger;
@@ -24,12 +24,12 @@ namespace Definux.Emeraude.Admin.Adapters
         private readonly EmAdminOptions adminOptions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntitiesViewsSchemaProvider"/> class.
+        /// Initializes a new instance of the <see cref="EmPageSchemaProvider"/> class.
         /// </summary>
         /// <param name="optionsProvider"></param>
         /// <param name="emPageService"></param>
         /// <param name="logger"></param>
-        public EntitiesViewsSchemaProvider(
+        public EmPageSchemaProvider(
             IEmOptionsProvider optionsProvider,
             IEmPageService emPageService,
             IEmLogger logger)

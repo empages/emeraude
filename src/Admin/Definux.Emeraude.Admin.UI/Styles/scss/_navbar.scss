@@ -11,7 +11,6 @@
         }
     }
 
-
     &.default-layout {
         font-family: $type-2;
         background: $sidebar-color-1;
@@ -76,8 +75,8 @@
             -moz-transition: width $action-transition-duration $action-transition-timing-function;
             -ms-transition: width $action-transition-duration $action-transition-timing-function;
             color: $white;
-            padding-left: 15px;
-            padding-right: 15px;
+            padding-left: 0;
+            padding-right: 0;
             width: calc(100% - #{$sidebar-width-lg});
             height: $navbar-height;
 
@@ -179,7 +178,7 @@
                         .nav-link {
                             height: $navbar-height;
                             font-size: $navbar-font-size;
-                            padding: 4px 8px;
+                            padding: 6px 8px !important;
                             display: flex;
                             align-items: center;
 

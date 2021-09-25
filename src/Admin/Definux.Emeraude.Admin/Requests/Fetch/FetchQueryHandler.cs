@@ -72,7 +72,7 @@ namespace Definux.Emeraude.Admin.Requests.Fetch
                         .ToList();
 
                 var entitiesModels = this.mapper.Map<IEnumerable<TRequestModel>>(entities);
-                await this.emPageService.ApplyValuePipesAsync(entitiesModels);
+                await this.emPageService.ApplyValuePipesAsync(entitiesModels, ViewType.TableView);
                 result.Items = entitiesModels;
             }
             catch (Exception ex)

@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Admin.EmPages
             Expression<Func<TModel, object>> property,
             Action<TableViewItem> viewItemAction)
         {
-            var memberInfo = this.GetCorrectPropertyMemberName(property);
+            var memberInfo = this.GetCorrectPropertyMember(property);
             TableViewItem viewItem = new TableViewItem();
             viewItem.LoadSourceInfo(memberInfo as PropertyInfo);
             viewItemAction.Invoke(viewItem);
@@ -57,7 +57,7 @@ namespace Definux.Emeraude.Admin.EmPages
             return this;
         }
 
-        private MemberInfo GetCorrectPropertyMemberName<T>(Expression<Func<T, object>> expression)
+        private MemberInfo GetCorrectPropertyMember<T>(Expression<Func<T, object>> expression)
         {
             if (expression.Body is MemberExpression memberExpression)
             {

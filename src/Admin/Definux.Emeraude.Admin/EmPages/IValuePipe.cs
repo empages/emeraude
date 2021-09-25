@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Definux.Emeraude.Admin.ValuePipes
+namespace Definux.Emeraude.Admin.EmPages
 {
     /// <summary>
     /// Contract of value pipe. Pipe is value interceptor that converts specified data by using specific context logic provided by the implementation class.
