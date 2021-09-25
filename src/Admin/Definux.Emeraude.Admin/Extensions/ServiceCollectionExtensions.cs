@@ -5,6 +5,7 @@ using System.Reflection;
 using AutoMapper;
 using Definux.Emeraude.Admin.Adapters;
 using Definux.Emeraude.Admin.Controllers.Abstractions;
+using Definux.Emeraude.Admin.EmPages;
 using Definux.Emeraude.Admin.Mapping;
 using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.Requests.ApplyImage;
@@ -54,6 +55,8 @@ namespace Definux.Emeraude.Admin.Extensions
                 options.ConstraintMap.Add(RootConstraint.RootConstraintKey, typeof(RootConstraint));
             });
 
+            services.RegisterEmPageSchemas(mainOptions.Assemblies);
+
             services.RegisterAdapters(adminOptions);
 
             services.RegisterAllContractedTypes(
@@ -63,8 +66,7 @@ namespace Definux.Emeraude.Admin.Extensions
                 },
                 mainOptions.Assemblies);
 
-            services.AddScoped<IAdminEntityMapper, AdminEntityMapper>();
-            services.AddScoped<IValuePipeService, ValuePipeService>();
+            services.AddScoped<IEmPageService, EmPageService>();
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace Definux.Emeraude.Admin.Extensions
                     .GetTypes()
                     .Where(x => x
                         .GetInterfaces()
-                        .Any(xx => xx == typeof(IAdminEntityDataController)) && !x.IsInterface && !x.IsAbstract);
+                        .Any(xx => xx == typeof(IEmPageDataController)) && !x.IsInterface && !x.IsAbstract);
                 controllerTypes.AddRange(assemblyControllerTypes);
             }
 
@@ -261,10 +263,28 @@ namespace Definux.Emeraude.Admin.Extensions
         {
             services.AddScoped<IIdentityUserInfoAdapter, IdentityUserInfoAdapter>();
             services.AddScoped<IEmContextAdapter, EmContextAdapter>();
-            services.AddScoped<IEntitiesViewsSchemaProvider, EntitiesViewsSchemaProvider>();
-            services.AddScoped<IEntityAdminServiceAgent, EntityAdminServiceAgent>();
+            services.AddScoped<IEmPageSchemaProvider, EntitiesViewsSchemaProvider>();
+            services.AddScoped<IEmPageServiceAgent, EmPageServiceAgent>();
 
             services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
+        }
+
+        private static void RegisterEmPageSchemas(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        {
+            var schemaType = typeof(IEmPageSchema<>);
+
+            var schemasImplementationsTypes = assemblies
+                .SelectMany(x => x
+                    .GetExportedTypes()
+                    .Where(y => y.IsClass && y.GetInterfaces()
+                        .Any(z => z.IsGenericType && z.GetGenericTypeDefinition() == schemaType))
+                    .ToList())
+                .ToList();
+
+            foreach (var schemasImplementationType in schemasImplementationsTypes)
+            {
+                services.AddScoped(schemasImplementationType);
+            }
         }
 
         private static void RegisterAllContractedTypes(

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Definux.Emeraude.Admin.EmPages;
 using Definux.Emeraude.Admin.Services;
 using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Logger;
@@ -23,7 +24,7 @@ namespace Definux.Emeraude.Admin.Requests.Fetch
         private readonly IEmContext context;
         private readonly IMapper mapper;
         private readonly IEmLogger logger;
-        private readonly IValuePipeService valuePipeService;
+        private readonly IEmPageService emPageService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FetchQueryHandler{TEntity,TRequestModel}"/> class.
@@ -31,17 +32,17 @@ namespace Definux.Emeraude.Admin.Requests.Fetch
         /// <param name="context"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        /// <param name="valuePipeService"></param>
+        /// <param name="emPageService"></param>
         public FetchQueryHandler(
             IEmContext context,
             IMapper mapper,
             IEmLogger logger,
-            IValuePipeService valuePipeService)
+            IEmPageService emPageService)
         {
             this.context = context;
             this.mapper = mapper;
             this.logger = logger;
-            this.valuePipeService = valuePipeService;
+            this.emPageService = emPageService;
         }
 
         /// <inheritdoc/>
@@ -71,7 +72,7 @@ namespace Definux.Emeraude.Admin.Requests.Fetch
                         .ToList();
 
                 var entitiesModels = this.mapper.Map<IEnumerable<TRequestModel>>(entities);
-                await this.valuePipeService.ApplyValuePipesAsync(entitiesModels);
+                await this.emPageService.ApplyValuePipesAsync(entitiesModels);
                 result.Items = entitiesModels;
             }
             catch (Exception ex)

@@ -1,17 +1,17 @@
 ﻿@page "/admin/{entityKey}/{entityId}"
 @using Definux.Emeraude.Admin.UI.Adapters
 @implements IDisposable
-@inject IEntitiesViewsSchemaProvider EntitiesViewsSchemaProvider;
+@inject IEmPageSchemaProvider EntitiesViewsSchemaProvider;
 @inject NavigationManager NavigationManager;
 <h3>@EntityKey @EntityId</h3>
 @if (ViewSchema != null)
 {
-    <EmEntityDetailsView ViewSchema="ViewSchema"/>
+    <EmPagesDetailsView ViewSchema="ViewSchema"/>
 }
 
 @code {
     private string entityKey;
-    private EntityDetailsViewSchema ViewSchema { get; set; }
+    private EmPageDetailsViewSchema ViewSchema { get; set; }
     
     [Parameter]
     public string EntityKey { get; set; }
@@ -23,27 +23,27 @@
     {
         await base.OnInitializedAsync();
         this.entityKey = EntityKey;
-        this.LoadViewSchema();
+        await this.LoadViewSchemaAsync();
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        base.OnParametersSet();
+        await base.OnParametersSetAsync();
         if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
         {
             this.entityKey = EntityKey;
-            this.LoadViewSchema();
+            await this.LoadViewSchemaAsync();
         }
     }
-
-    private void LocationChanged(object sender, LocationChangedEventArgs e)
+    
+    private async void LocationChanged(object sender, LocationChangedEventArgs e)
     {
-        this.LoadViewSchema();
+        await this.LoadViewSchemaAsync();
     }
 
-    private void LoadViewSchema()
+    private async Task LoadViewSchemaAsync()
     {
-        this.ViewSchema = EntitiesViewsSchemaProvider.GetDetailsViewSchema(EntityKey);
+        this.ViewSchema = await EntitiesViewsSchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
         this.StateHasChanged();
         if (this.ViewSchema == null)
         {

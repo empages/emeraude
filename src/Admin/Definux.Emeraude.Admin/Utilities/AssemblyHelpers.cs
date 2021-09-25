@@ -17,9 +17,18 @@ namespace Definux.Emeraude.Admin.Utilities
         /// <typeparam name="TInterface">Type of the interface.</typeparam>
         /// <returns></returns>
         public static IEnumerable<Type> GetClassesThatImplements<TInterface>(IEnumerable<Assembly> assemblies) =>
+            GetClassesThatImplements(typeof(TInterface), assemblies);
+
+        /// <summary>
+        /// Returns list of all types that implements specified interface and collection of assemblies.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="assemblies"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetClassesThatImplements(Type type, IEnumerable<Assembly> assemblies) =>
             assemblies
                 .SelectMany(x => x.GetTypes())
-                .Where(x => x.IsClass && x.GetInterfaces().Any(xx => xx == typeof(TInterface)))
+                .Where(x => x.IsClass && x.GetInterfaces().Any(xx => xx == type))
                 .ToList();
     }
 }

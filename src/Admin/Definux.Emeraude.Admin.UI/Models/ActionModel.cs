@@ -3,7 +3,7 @@
 namespace Definux.Emeraude.Admin.UI.Models
 {
     /// <summary>
-    /// Definition for action button that can be used in the <see cref="EntityViewSchema"/>.
+    /// Definition for action button that can be used in the <see cref="EmPageViewSchema"/>.
     /// </summary>
     public class ActionModel : LinkModel
     {

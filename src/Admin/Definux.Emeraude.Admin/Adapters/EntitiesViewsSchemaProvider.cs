@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Definux.Emeraude.Admin.Attributes;
+using System.Threading.Tasks;
+using Definux.Emeraude.Admin.EmPages;
 using Definux.Emeraude.Admin.Extensions;
 using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Models;
-using Definux.Emeraude.Admin.Utilities;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Utilities.Extensions;
 
 namespace Definux.Emeraude.Admin.Adapters
 {
     /// <summary>
-    /// Admin implementation of <see cref="IEntitiesViewsSchemaProvider"/>
+    /// Admin implementation of <see cref="IEmPageSchemaProvider"/>
     /// </summary>
-    public class EntitiesViewsSchemaProvider : IEntitiesViewsSchemaProvider
+    public class EntitiesViewsSchemaProvider : IEmPageSchemaProvider
     {
+        private readonly IEmPageService emPageService;
         private readonly IEmLogger logger;
         private readonly EmMainOptions mainOptions;
         private readonly EmAdminOptions adminOptions;
@@ -28,65 +27,61 @@ namespace Definux.Emeraude.Admin.Adapters
         /// Initializes a new instance of the <see cref="EntitiesViewsSchemaProvider"/> class.
         /// </summary>
         /// <param name="optionsProvider"></param>
+        /// <param name="emPageService"></param>
         /// <param name="logger"></param>
         public EntitiesViewsSchemaProvider(
             IEmOptionsProvider optionsProvider,
+            IEmPageService emPageService,
             IEmLogger logger)
         {
+            this.emPageService = emPageService;
             this.logger = logger;
             this.mainOptions = optionsProvider.GetMainOptions();
             this.adminOptions = optionsProvider.GetAdminOptions();
         }
 
         /// <inheritdoc/>
-        public EntityTableViewSchema GetTableViewSchema(string entityKey)
+        public async Task<EmPageTableViewSchema> GetTableViewSchemaAsync(string entityKey)
         {
-            var modelsDescriptions = this.GetAllEntitiesAdminModelsDescriptions();
-            if (!this.ValidateEntityKeyValid(entityKey, modelsDescriptions, out var modelDescription))
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+
+            if (!schemaDescription.TableViewItems.Any())
             {
                 return null;
             }
 
-            if (!modelDescription.TableViewItems.Any())
+            var schema = new EmPageTableViewSchema(new EmPageViewSchemaContext
             {
-                return null;
-            }
-
-            var schema = new EntityTableViewSchema(new EntityViewSchemaContext
-            {
-                Key = modelDescription.SchemaSettings.Key,
-                Title = modelDescription.SchemaSettings.Title,
+                Key = schemaDescription.Key,
+                Title = schemaDescription.Title,
             });
-            foreach (var tableViewItem in modelDescription.TableViewItems)
+            foreach (var tableViewItem in schemaDescription.TableViewItems)
             {
-                schema.HeadModel.Cells.Add(new EntityTableHeadCellModel
+                schema.HeadModel.Cells.Add(new EmPageTableHeadCellModel
                 {
-                    Name = tableViewItem.Name,
+                    Name = tableViewItem.Title,
                     Order = tableViewItem.Order,
                 });
 
-                schema.PropertyComponentPair[tableViewItem.Key] = tableViewItem.Component;
-                schema.PropertyTypePair[tableViewItem.Key] = tableViewItem.Type;
+                schema.PropertyComponentPair[tableViewItem.SourceName] = tableViewItem.Component;
+                schema.PropertyTypePair[tableViewItem.SourceName] = tableViewItem.SourceType;
             }
 
-            if (Activator.CreateInstance(modelDescription.Type) is IEntityAdminSchemaModel targetModelInstance)
+            var actions = schemaDescription.ModelActions ?? new List<EntityModelAction>();
+            schema.HasActions = actions.Any();
+            if (schema.HasActions)
             {
-                var actions = modelDescription.SchemaSettings.ModelActions() ?? new List<EntityModelAction>();
-                schema.HasActions = actions.Any();
-                if (schema.HasActions)
+                foreach (var action in actions)
                 {
-                    foreach (var action in actions)
+                    schema.RowActions.Add(new ActionModel
                     {
-                        schema.RowActions.Add(new ActionModel
-                        {
-                            Title = action.Name,
-                            ActionUrl = $"/admin/{entityKey}/{action.Url}",
-                            Order = action.Order,
-                            ActionHttpMethod = action.Method,
-                            OpenOnSeparatePage = action.ExecuteSeparately,
-                            ConfirmationMessage = action.ConfirmationMessage,
-                        });
-                    }
+                        Title = action.Name,
+                        ActionUrl = $"/admin/{entityKey}/{action.Url}",
+                        Order = action.Order,
+                        ActionHttpMethod = action.Method,
+                        OpenOnSeparatePage = action.ExecuteSeparately,
+                        ConfirmationMessage = action.ConfirmationMessage,
+                    });
                 }
             }
 
@@ -94,92 +89,31 @@ namespace Definux.Emeraude.Admin.Adapters
         }
 
         /// <inheritdoc/>
-        public EntityDetailsViewSchema GetDetailsViewSchema(string entityKey)
+        public async Task<EmPageDetailsViewSchema> GetDetailsViewSchemaAsync(string entityKey)
         {
-            var modelsDescriptions = this.GetAllEntitiesAdminModelsDescriptions();
-            if (!this.ValidateEntityKeyValid(entityKey, modelsDescriptions, out var modelDescription))
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+
+            if (!schemaDescription.DetailsViewItems.Any())
             {
                 return null;
             }
 
-            if (!modelDescription.DetailsViewItems.Any())
-            {
-                return null;
-            }
-
-            var schema = new EntityDetailsViewSchema(new EntityViewSchemaContext());
+            var schema = new EmPageDetailsViewSchema(new EmPageViewSchemaContext());
             return schema;
         }
 
         /// <inheritdoc/>
-        public EntityFormViewSchema GetFormViewSchema(string entityKey)
+        public async Task<EmPageFormViewSchema> GetFormViewSchemaAsync(string entityKey)
         {
-            var modelsDescriptions = this.GetAllEntitiesAdminModelsDescriptions();
-            if (!this.ValidateEntityKeyValid(entityKey, modelsDescriptions, out var modelDescription))
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+
+            if (!schemaDescription.DetailsViewItems.Any())
             {
                 return null;
             }
 
-            if (!modelDescription.DetailsViewItems.Any())
-            {
-                return null;
-            }
-
-            var schema = new EntityFormViewSchema(new EntityViewSchemaContext());
+            var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext());
             return schema;
-        }
-
-        private bool ValidateEntityKeyValid(
-            string entityKey,
-            IEnumerable<EntityAdminModelTypeDescription> modelsDescriptions,
-            out EntityAdminModelTypeDescription modelDescription)
-        {
-            modelDescription = modelsDescriptions
-                .FirstOrDefault(x => x.SchemaSettings.Key.Equals(entityKey, StringComparison.OrdinalIgnoreCase));
-
-            return modelDescription != null;
-        }
-
-        private IEnumerable<EntityAdminModelTypeDescription> GetAllEntitiesAdminModelsDescriptions()
-        {
-            var resultTypes = AssemblyHelpers.GetClassesThatImplements<IEntityAdminSchemaModel>(this.mainOptions.Assemblies);
-
-            var resultDescriptions = new List<EntityAdminModelTypeDescription>();
-            foreach (var type in resultTypes)
-            {
-                var currentDescription = this.BuildModelDescription(type, resultDescriptions.Select(x => x.SchemaSettings.Key));
-                if (currentDescription != null)
-                {
-                    resultDescriptions.Add(currentDescription);
-                }
-            }
-
-            return resultDescriptions;
-        }
-
-        private EntityAdminModelTypeDescription BuildModelDescription(Type type, IEnumerable<string> existingKeys)
-        {
-            var description = new EntityAdminModelTypeDescription(type);
-
-            description.TableViewItems = type
-                .GetProperties()
-                .Where(x => x.HasAttribute<TableColumnAttribute>())
-                .Select(x => new TableViewItemArgs(x))
-                .Select(x => new TableViewItem(x));
-
-            description.DetailsViewItems = type
-                .GetProperties()
-                .Where(x => x.HasAttribute<DetailsFieldAttribute>())
-                .Select(x => new DetailsViewItemArgs(x))
-                .Select(x => new DetailsViewItem(x));
-
-            description.FormViewItems = type
-                .GetProperties()
-                .Where(x => x.HasAttribute<FormInputAttribute>())
-                .Select(x => new FormViewItemArgs(x))
-                .Select(x => new FormViewItem(x));
-
-            return description;
         }
     }
 }
