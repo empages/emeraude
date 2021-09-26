@@ -54,24 +54,10 @@ else
     }
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-    {
-        return new List<BreadcrumbItemModel>
-        {
-            new() {Title = "Home", ActionUrl = "/admin", IsActive = true, Order = 1},
-            new() {Title = "Middle", Order = 2},
-            new() {Title = ViewSchema.Context.Title, Order = 3},
-        };
-    }
+        => this.ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-    {
-        return new List<ActionModel>
-        {
-            new() { Title = "Create", Order = 1, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
-            new() { Title = "Test Item", Order = 2, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
-            new() { Title = "Delete All", Order = 3, ActionUrl = "create", ActionHttpMethod = HttpMethod.Get },
-        };
-    }
+        => this.ViewSchema?.NavbarActions ?? new List<ActionModel>();
 
     private void ResetData()
     {

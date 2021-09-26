@@ -1,13 +1,16 @@
 ﻿@page "/admin/{entityKey}/{entityId}"
 @using Definux.Emeraude.Admin.UI.Adapters
-@implements IDisposable
+@inherits AdminPage
 @inject IEmPageSchemaProvider EntitiesViewsSchemaProvider;
-@inject NavigationManager NavigationManager;
-@inject BreadcrumbsModule BreadcrumbsModule;
-<h3>@EntityKey @EntityId</h3>
-@if (ViewSchema != null)
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+
+@if (Loaded)
 {
     <EmPagesDetailsView ViewSchema="ViewSchema"/>
+}
+else
+{
+    <LoadingIndicator/>
 }
 
 @code {
@@ -20,24 +23,46 @@
     [Parameter]
     public string EntityId { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        this.entityKey = EntityKey;
-        await this.LoadViewSchemaAsync();
-    }
-
+    private bool FirstInitial { get; set; }
+    
+    private string PageTitle => ViewSchema?.Context.Title;
+    
+    private bool Loaded => FirstInitial && ViewSchema != null;
+    
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
         if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
         {
             this.entityKey = EntityKey;
-            await this.LoadViewSchemaAsync();
+            await LoadViewSchemaAsync();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            FirstInitial = true;
+            StateHasChanged();
         }
     }
     
-    private async void LocationChanged(object sender, LocationChangedEventArgs e)
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+        => this.ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+        => this.ViewSchema?.NavbarActions ?? new List<ActionModel>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        this.entityKey = EntityKey;
+        await this.LoadViewSchemaAsync();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async void OnLocationChanged(object sender, LocationChangedEventArgs e)
     {
         await this.LoadViewSchemaAsync();
     }
@@ -45,15 +70,14 @@
     private async Task LoadViewSchemaAsync()
     {
         this.ViewSchema = await EntitiesViewsSchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
-        this.StateHasChanged();
         if (this.ViewSchema == null)
         {
             NavigationManager.NavigateTo("/error/404", true, true);
+            return;
         }
-    }
-    
-    void IDisposable.Dispose()
-    {
-        NavigationManager.LocationChanged -= LocationChanged;
+        
+        this.StateHasChanged();
+        ReloadBreadcrumbs();
+        ReloadNavigationActions();
     }
 }

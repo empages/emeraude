@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages;
 using Definux.Emeraude.Admin.Extensions;
-using Definux.Emeraude.Admin.Models;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Models;
 using Definux.Emeraude.Application.Logger;
@@ -45,7 +43,7 @@ namespace Definux.Emeraude.Admin.Adapters
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
 
-            if (!schemaDescription.TableViewItems.Any())
+            if (!schemaDescription.TableView.IsActive)
             {
                 return null;
             }
@@ -55,7 +53,7 @@ namespace Definux.Emeraude.Admin.Adapters
                 Key = schemaDescription.Key,
                 Title = schemaDescription.Title,
             });
-            foreach (var tableViewItem in schemaDescription.TableViewItems)
+            foreach (var tableViewItem in schemaDescription.TableView.ViewItems)
             {
                 schema.HeadModel.Cells.Add(new EmPageTableHeadCellModel
                 {
@@ -67,7 +65,7 @@ namespace Definux.Emeraude.Admin.Adapters
                 schema.PropertyTypePair[tableViewItem.SourceName] = tableViewItem.SourceType;
             }
 
-            var actions = schemaDescription.ModelActions ?? new List<EntityModelAction>();
+            var actions = schemaDescription.ModelActions ?? new List<EmPageAction>();
             schema.HasActions = actions.Any();
             if (schema.HasActions)
             {
@@ -76,14 +74,16 @@ namespace Definux.Emeraude.Admin.Adapters
                     schema.RowActions.Add(new ActionModel
                     {
                         Title = action.Name,
-                        ActionUrl = $"/admin/{entityKey}/{action.Url}",
+                        ActionUrl = action.BuildActionUrlFormat(entityKey),
                         Order = action.Order,
                         ActionHttpMethod = action.Method,
-                        OpenOnSeparatePage = action.ExecuteSeparately,
+                        OpenOnSeparatePage = action.SingleContext,
                         ConfirmationMessage = action.ConfirmationMessage,
                     });
                 }
             }
+
+            this.MapViewSchema(schemaDescription.TableView, schema);
 
             return schema;
         }
@@ -93,12 +93,19 @@ namespace Definux.Emeraude.Admin.Adapters
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
 
-            if (!schemaDescription.DetailsViewItems.Any())
+            if (!schemaDescription.DetailsView.IsActive)
             {
                 return null;
             }
 
-            var schema = new EmPageDetailsViewSchema(new EmPageViewSchemaContext());
+            var schema = new EmPageDetailsViewSchema(new EmPageViewSchemaContext
+            {
+                Key = schemaDescription.Key,
+                Title = schemaDescription.Title,
+            });
+
+            this.MapViewSchema(schemaDescription.DetailsView, schema);
+
             return schema;
         }
 
@@ -107,13 +114,48 @@ namespace Definux.Emeraude.Admin.Adapters
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
 
-            if (!schemaDescription.DetailsViewItems.Any())
+            if (!schemaDescription.FormView.IsActive)
             {
                 return null;
             }
 
-            var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext());
+            var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext
+            {
+                Key = schemaDescription.Key,
+                Title = schemaDescription.Title,
+            });
+
             return schema;
+        }
+
+        private void MapViewSchema<TViewItem>(
+            ViewDescription<TViewItem> sourceDescription,
+            EmPageViewSchema destinationSchema)
+            where TViewItem : class, IViewItem
+        {
+            foreach (var pageAction in sourceDescription.PageActions)
+            {
+                destinationSchema.NavbarActions.Add(new ActionModel
+                {
+                    Title = pageAction.Name,
+                    ActionUrl = pageAction.BuildActionUrlFormat(destinationSchema.Context.Key),
+                    Order = pageAction.Order,
+                    ActionHttpMethod = pageAction.Method,
+                    OpenOnSeparatePage = pageAction.SingleContext,
+                    ConfirmationMessage = pageAction.ConfirmationMessage,
+                });
+            }
+
+            foreach (var breadcrumb in sourceDescription.Breadcrumbs)
+            {
+                destinationSchema.Breadcrumbs.Add(new BreadcrumbItemModel
+                {
+                    Title = breadcrumb.Title,
+                    ActionUrl = breadcrumb.Href,
+                    IsActive = breadcrumb.IsActive,
+                    Order = breadcrumb.Order,
+                });
+            }
         }
     }
 }

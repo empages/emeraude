@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.EmPages
 {
@@ -9,19 +11,27 @@ namespace Definux.Emeraude.Admin.EmPages
     public interface IEmPageService
     {
         /// <summary>
-        /// Finds register schema description by the entity key of the schema.
+        /// Finds registered schema description by the entity key of the schema.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
         Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string key);
 
         /// <summary>
+        /// Finds registered schema description by the entity and model types.
+        /// </summary>
+        /// <param name="entityType"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type entityType, Type modelType);
+
+        /// <summary>
         /// Apply value pipes of the specified entity model.
         /// </summary>
         /// <param name="models"></param>
-        /// <param name="viewType"></param>
+        /// <param name="viewItems"></param>
         /// <typeparam name="TEmPageModel">Type of the entity model.</typeparam>
         /// <returns></returns>
-        Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, ViewType viewType);
+        Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems);
     }
 }

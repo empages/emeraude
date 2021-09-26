@@ -15,6 +15,7 @@ namespace Definux.Emeraude.Admin.UI.Models
         public EmPageViewSchema(EmPageViewSchemaContext context)
         {
             this.NavbarActions = new List<ActionModel>();
+            this.Breadcrumbs = new List<BreadcrumbItemModel>();
             this.Context = context;
         }
 

@@ -271,7 +271,7 @@ namespace Definux.Emeraude.Admin.Extensions
 
         private static void RegisterEmPageSchemas(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            var schemaType = typeof(IEmPageSchema<>);
+            var schemaType = typeof(IEmPageSchema<,>);
 
             var schemasImplementationsTypes = assemblies
                 .SelectMany(x => x

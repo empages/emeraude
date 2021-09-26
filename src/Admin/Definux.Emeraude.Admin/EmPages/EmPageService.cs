@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.Attributes;
-using Definux.Emeraude.Admin.Models;
-using Definux.Emeraude.Admin.ValuePipes;
 using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Admin.EmPages
@@ -38,10 +36,17 @@ namespace Definux.Emeraude.Admin.EmPages
         }
 
         /// <inheritdoc/>
-        public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, ViewType viewType)
+        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type entityType, Type modelType)
+        {
+            await this.LoadSchemasIfEmptyAsync();
+            return this.schemaDescriptions?.FirstOrDefault(x => x.EntityType == entityType && x.ModelType == modelType);
+        }
+
+        /// <inheritdoc/>
+        public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
         {
             var modelType = typeof(TEmPageModel);
-            var propertiesValuePipes = this.ExtractPropertiesValuePipes(modelType, viewType);
+            var propertiesValuePipes = this.ExtractPropertiesValuePipes(modelType, viewItems);
             foreach (var propertyValuePipes in propertiesValuePipes)
             {
                 var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
@@ -72,7 +77,7 @@ namespace Definux.Emeraude.Admin.EmPages
 
         private async Task<IEnumerable<EmPageSchemaDescription>> FindAllSchemasDescriptionsAsync()
         {
-            var schemaType = typeof(IEmPageSchema<>);
+            var schemaType = typeof(IEmPageSchema<,>);
 
             var schemasImplementationsTypes = this.mainOptions.Assemblies
                 .SelectMany(x => x
@@ -105,21 +110,11 @@ namespace Definux.Emeraude.Admin.EmPages
             return foundSchemaDescriptions;
         }
 
-        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(Type type, ViewType viewType)
+        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(Type type, IEnumerable<IValuePipedViewItem> valuePipedViewItems)
         {
-            if (viewType == ViewType.FormView)
-            {
-                throw new ArgumentException("Value pipes are not supported for form views.");
-            }
-
-            var targetSchemaDescription = this.schemaDescriptions.FirstOrDefault(x => x.ModelType == type);
-            IEnumerable<IValuePipedViewItem> valuePipedViewItems = viewType == ViewType.TableView
-                ? targetSchemaDescription?.TableViewItems
-                : targetSchemaDescription?.DetailsViewItems;
-
             if (valuePipedViewItems == null)
             {
-                throw new ArgumentException($"Cannot be extracted value piped view items from type {type.Name} for {viewType}.");
+                throw new ArgumentNullException(nameof(valuePipedViewItems));
             }
 
             var valuePipedViewItemsWithRegisteredPipes = valuePipedViewItems.Where(x => x.ValuePipes.Any());
