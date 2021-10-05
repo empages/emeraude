@@ -15,5 +15,19 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------";
+
+        /// <summary>
+        /// Client Builder CORS policy name;
+        /// </summary>
+        public const string CorsPolicyName = "_ClientBuilderPolicy";
+
+        /// <summary>
+        /// Array of all origins of Client Builder web client.
+        /// </summary>
+        public static readonly string[] WebClientOrigins =
+        {
+            "http://localhost:3000",
+            "https://cb.emeraude.dev",
+        };
     }
 }

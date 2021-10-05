@@ -1,0 +1,30 @@
+﻿
+@inherits EmBaseElement
+<span class="em-enum">
+    @EnumValue
+</span>
+
+@code {
+
+    private string EnumValue
+    {
+        get
+        {
+            try
+            {
+                return EnumFunctions
+                    .GetEnumValueItems(Type)
+                    .Where(x => x.Value == Convert.ToInt32(Value))
+                    .Select(x => x.Name)
+                    .FirstOrDefault()
+                    ?.ToString()
+                    .SplitWordsByCapitalLetters();
+            }
+            catch (Exception)
+            {
+                return "ERROR: Value cannot be read as enum.";
+            }
+        }
+    }
+
+}

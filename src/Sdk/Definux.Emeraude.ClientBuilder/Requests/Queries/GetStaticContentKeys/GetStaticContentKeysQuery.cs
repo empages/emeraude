@@ -36,9 +36,8 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetStaticContentKeys
             {
                 return await this.context
                     .ContentKeys
-                    .AsQueryable()
                     .ProjectTo<StaticContentKeyResult>(this.mapper.ConfigurationProvider)
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
             }
         }
     }

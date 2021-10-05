@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
@@ -59,8 +60,12 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.EditContentKeyWithCon
             {
                 var keyToEdit = await this.context
                     .ContentKeys
-                    .AsQueryable()
                     .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
+
+                if (keyToEdit == null)
+                {
+                    throw new EntityNotFoundException("Content key", request.KeyId);
+                }
 
                 this.mapper.Map(request, keyToEdit);
 

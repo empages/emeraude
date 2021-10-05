@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Definux.Emeraude.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -46,9 +47,20 @@ namespace Definux.Emeraude.Presentation.ActionFilters
         {
             var exception = context.Exception as ValidationException;
 
-            var details = new ValidationProblemDetails(exception.Failures)
+            var errorTitle = "One or more validation errors occurred.";
+            if (exception?.Failures.Any() ?? false)
+            {
+                errorTitle = exception
+                    ?.Failures
+                    .Values
+                    .FirstOrDefault()
+                    ?.FirstOrDefault();
+            }
+
+            var details = new ValidationProblemDetails(exception?.Failures)
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = errorTitle,
             };
 
             context.Result = new BadRequestObjectResult(details);
@@ -73,7 +85,7 @@ namespace Definux.Emeraude.Presentation.ActionFilters
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = "The specified resource was not found.",
-                Detail = exception.Message,
+                Detail = exception?.Message,
             };
 
             context.Result = new NotFoundObjectResult(details);

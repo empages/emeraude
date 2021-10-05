@@ -36,9 +36,8 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetLanguages
             {
                 return await this.context
                     .Languages
-                    .AsQueryable()
                     .ProjectTo<LanguageResult>(this.mapper.ConfigurationProvider)
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
             }
         }
     }

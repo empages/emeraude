@@ -20,7 +20,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     [Route("/api/client/upload/")]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.BearerAuthenticationScheme)]
-    public sealed class ClientUploadApiController : ApiController
+    public sealed class ClientUploadApiController : EmApiController
     {
         private readonly EmFilesOptions filesOptions;
 

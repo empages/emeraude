@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 
 namespace Definux.Emeraude.Presentation.Attributes
 {
+    /// <summary>
+    /// Validation attribute for visible ReCaptcha.
+    /// </summary>
     public class GoogleReCaptchaValidateAttribute : ActionFilterAttribute
     {
                 /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.Requests.DeleteLog;
 using Definux.Emeraude.Admin.Requests.FetchLogs;
 using Definux.Emeraude.Admin.Requests.GetEmailBody;
@@ -20,7 +19,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     /// </summary>
     [Route("/admin/logging/")]
     [Authorize(Policy = AdminPermissions.AccessLogsPolicy)]
-    public sealed class AdminLoggingController : AdminController
+    public sealed class AdminLoggingController : EmAdminController
     {
         private const string ActivityLogsRouteParam = "activity";
         private const string ErrorsLogsRouteParam = "errors";
@@ -64,14 +63,14 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 _ => SimpleResult.UnsuccessfulResult
             };
 
-            if (result.Succeeded)
-            {
-                this.ShowSuccessNotification("Log has been deleted successfully.");
-            }
-            else
-            {
-                this.ShowErrorNotification("Log has not been deleted successfully.");
-            }
+            // if (result.Succeeded)
+            // {
+            //     this.ShowSuccessNotification("Log has been deleted successfully.");
+            // }
+            // else
+            // {
+            //     this.ShowErrorNotification("Log has not been deleted successfully.");
+            // }
 
             return this.LocalRedirect(returnUrl);
         }

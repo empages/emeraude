@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.UI.ViewModels.Manage;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Identity;
@@ -31,7 +30,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     [Route("/admin/manage/")]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
-    public sealed class AdminManageController : AdminController
+    public sealed class AdminManageController : EmAdminController
     {
         private readonly ITwoFactorAuthenticationService twoFactorAuthenticationService;
 
@@ -88,7 +87,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                         Is2faEnabled = this.twoFactorAuthenticationService.IsTwoFactorEnabled(user),
                     };
 
-                    this.ShowSuccessNotification("Two Factor Authenticator has been enabled successfully.");
+                    // this.ShowSuccessNotification("Two Factor Authenticator has been enabled successfully.");
 
                     return this.View(responseModel);
                 }
@@ -159,12 +158,12 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
 
                 if (requestResult.Succeeded)
                 {
-                    this.ShowSuccessNotification("Password has been changed successfully.");
+                    // this.ShowSuccessNotification("Password has been changed successfully.");
                     return this.View();
                 }
                 else
                 {
-                    this.ShowErrorNotification("Password has not been changed successfully.");
+                    // this.ShowErrorNotification("Password has not been changed successfully.");
                     return this.View(model);
                 }
             }
@@ -218,12 +217,12 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
 
                 if (requestResult.Succeeded)
                 {
-                    this.ShowSuccessNotification("Email request has been sent successfully. Check your email for confirmation.");
+                    // this.ShowSuccessNotification("Email request has been sent successfully. Check your email for confirmation.");
                     return this.View();
                 }
                 else
                 {
-                    this.ShowErrorNotification("Email request has not been sent successfully.");
+                    // this.ShowErrorNotification("Email request has not been sent successfully.");
                     return this.View(model);
                 }
             }
@@ -266,10 +265,10 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 await this.Logger.LogErrorAsync(ex);
             }
 
-            this.ShowComputationNotification(
-                requestResult.Succeeded,
-                "Your email has been changed successfully.",
-                "Your email has not been changed successfully.");
+            // this.ShowComputationNotification(
+            //     requestResult.Succeeded,
+            //     "Your email has been changed successfully.",
+            //     "Your email has not been changed successfully.");
 
             return this.RedirectToAction(nameof(this.ChangeEmailRequest));
         }

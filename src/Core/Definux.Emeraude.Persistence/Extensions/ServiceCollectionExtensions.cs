@@ -32,26 +32,38 @@ namespace Definux.Emeraude.Persistence.Extensions
         {
             string connectionString = configuration.GetConnectionString(DatabaseConnectionStringKey);
 
-            switch (persistenceOptions.ContextProvider)
+            if (persistenceOptions.ContextOptionsBuilder == null)
             {
-                case DatabaseContextProvider.MicrosoftSqlServer:
-                    services.AddDbContext<TContextImplementation>(contextOptions =>
-                        contextOptions.UseSqlServer(
-                            connectionString,
-                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
-                    break;
-                case DatabaseContextProvider.PostgreSql:
-                    services.AddDbContext<TContextImplementation>(contextOptions =>
-                        contextOptions.UseNpgsql(
-                            connectionString,
-                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly)));
-                    break;
-                case DatabaseContextProvider.InMemoryDatabase:
-                    services.AddDbContext<TContextImplementation>(contextOptions =>
-                        contextOptions.UseInMemoryDatabase(databaseName: "InMemoryEntityContextDatabase"));
-                    break;
+                switch (persistenceOptions.ContextProvider)
+                {
+                    case DatabaseContextProvider.MicrosoftSqlServer:
+                        persistenceOptions.ContextOptionsBuilder = contextOptions =>
+                            contextOptions.UseSqlServer(
+                                connectionString,
+                                b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly));
+                        break;
+                    case DatabaseContextProvider.PostgreSql:
+                        persistenceOptions.ContextOptionsBuilder = contextOptions =>
+                            contextOptions.UseNpgsql(
+                                connectionString,
+                                b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly));
+                        break;
+                    case DatabaseContextProvider.InMemoryDatabase:
+                        persistenceOptions.ContextOptionsBuilder = contextOptions =>
+                            contextOptions.UseInMemoryDatabase(databaseName: "InMemoryEntityContextDatabase");
+                        break;
+                }
             }
 
+            if (persistenceOptions.ContextOptionsBuilder == null)
+            {
+                throw new InvalidOperationException("Database provider is not configured properly.");
+            }
+
+            services.AddDbContext<TContextImplementation>(persistenceOptions.ContextOptionsBuilder);
+            services.AddDbContextFactory<TContextImplementation>(persistenceOptions.ContextOptionsBuilder, ServiceLifetime.Scoped);
+
+            services.AddScoped<IEmContextFactory, EmContextFactory<TContextImplementation>>();
             services.AddScoped<IEmContext, TContextImplementation>();
             services.AddScoped<TContextInterface, TContextImplementation>();
             services.AddTransient<IDatabaseInitializerManager, DatabaseInitializerManager>();

@@ -1,0 +1,59 @@
+﻿@page "/admin/{entityKey}/{entityId}/edit"
+@using Definux.Emeraude.Admin.EmPages.UI.Adapters
+@using Definux.Emeraude.Admin.UI.Extensions
+@implements IDisposable
+@inject IEmPageSchemaProvider SchemaProvider;
+@inject NavigationManager NavigationManager;
+<h3>@EntityKey @EntityId</h3>
+@if (ViewSchema != null)
+{
+    <EmPageFormView ViewSchema="ViewSchema"/>
+}
+
+@code {
+    private string entityKey;
+    private EmPageFormViewSchema ViewSchema { get; set; }
+    
+    [Parameter]
+    public string EntityKey { get; set; }
+
+    [Parameter]
+    public string EntityId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        this.entityKey = EntityKey;
+        await this.LoadViewSchemaAsync();
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
+        {
+            this.entityKey = EntityKey;
+            await this.LoadViewSchemaAsync();
+        }
+    }
+
+    private async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await this.LoadViewSchemaAsync();
+    }
+
+    private async Task LoadViewSchemaAsync()
+    {
+        this.ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EntityKey);
+        this.StateHasChanged();
+        if (this.ViewSchema == null)
+        {
+            NavigationManager.NavigateToNotFoundPage();
+        }
+    }
+    
+    void IDisposable.Dispose()
+    {
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+}

@@ -8,6 +8,7 @@ using Definux.Emeraude.ClientBuilder.Requests.Commands.DeleteContentKey;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.DeleteKey;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.DeleteLanguage;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.EditContentKeyWithContent;
+using Definux.Emeraude.ClientBuilder.Requests.Commands.EditLanguage;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.EditTranslation;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.EditTranslationKey;
 using Definux.Emeraude.ClientBuilder.Requests.Commands.MakeLanguageDefault;
@@ -21,6 +22,7 @@ using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -32,8 +34,8 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
     /// Client builder controller that manages the languages, translations and static content items of the application.
     /// </summary>
     [Route("/api/client-builder/languages/")]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
-    public sealed class ClientBuilderLanguagesApiController : ApiController
+    [EnableCors(ClientBuilderConstants.CorsPolicyName)]
+    public sealed class ClientBuilderLanguagesApiController : EmApiController
     {
         private readonly IEmOptionsProvider optionsProvider;
 
@@ -68,12 +70,18 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <summary>
         /// Get all language keys and their translations into grid format.
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="searchQuery"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("grid-data")]
-        public async Task<IActionResult> GetTranslationsGridData()
+        public async Task<IActionResult> GetTranslationsGridData([FromQuery]int page = 1, [FromQuery]string searchQuery = "")
         {
-            return this.Ok(await this.Mediator.Send(new GetTranslationGridDataQuery()));
+            return this.Ok(await this.Mediator.Send(new GetTranslationGridDataQuery
+            {
+                Page = page,
+                SearchQuery = searchQuery,
+            }));
         }
 
         /// <summary>
@@ -131,7 +139,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <returns></returns>
         [HttpPut]
         [Route("keys/{keyId}/edit")]
-        public async Task<IActionResult> EditKey(int keyId, [FromBody]SingleValueObject<string> newValue)
+        public async Task<IActionResult> EditKey([FromRoute]int keyId, [FromBody]SingleValueObject<string> newValue)
         {
             return this.Ok(await this.Mediator.Send(new EditTranslationKeyCommand
             {
@@ -148,7 +156,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <returns></returns>
         [HttpPut]
         [Route("content-keys/{keyId}")]
-        public async Task<IActionResult> EditContentKey(int keyId, [FromBody]ContentKeyWithContentRequest request)
+        public async Task<IActionResult> EditContentKey([FromRoute]int keyId, [FromBody]ContentKeyWithContentRequest request)
         {
             return this.Ok(await this.Mediator.Send(new EditContentKeyWithContentCommand(keyId, request)));
         }
@@ -161,7 +169,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <returns></returns>
         [HttpPut]
         [Route("translations/{translationId}/edit")]
-        public async Task<IActionResult> EditTranslation(int translationId, [FromBody]SingleValueObject<string> newValue)
+        public async Task<IActionResult> EditTranslation([FromRoute]int translationId, [FromBody]SingleValueObject<string> newValue)
         {
             return this.Ok(await this.Mediator.Send(new EditTranslationCommand
             {
@@ -225,6 +233,25 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         public async Task<IActionResult> CreateLanguage([FromBody]CreateLanguageRequest request)
         {
             return this.Ok(await this.Mediator.Send(new CreateLanguageCommand(request)));
+        }
+
+        /// <summary>
+        /// Edits a language.
+        /// </summary>
+        /// <param name="languageId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("{languageId}")]
+        public async Task<IActionResult> EditLanguage([FromRoute]int languageId, [FromBody]EditLanguageRequest request)
+        {
+            if (request != null)
+            {
+                request.Id = languageId;
+                return this.Ok(await this.Mediator.Send(new EditLanguageCommand(request)));
+            }
+
+            return this.BadRequest();
         }
 
         /// <summary>

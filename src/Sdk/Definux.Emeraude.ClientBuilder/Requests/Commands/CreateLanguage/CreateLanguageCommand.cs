@@ -53,7 +53,16 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.CreateLanguage
             public async Task<MutationResult> Handle(CreateLanguageCommand request, CancellationToken cancellationToken)
             {
                 var language = this.mapper.Map<Language>(request);
-                var keys = await this.context.Keys.AsQueryable().ToListAsync(cancellationToken);
+                language.Code = language
+                    .Code
+                    .Trim()
+                    .ToLowerInvariant();
+
+                var keys = await this
+                    .context
+                    .Keys
+                    .ToListAsync(cancellationToken);
+
                 foreach (var key in keys)
                 {
                     language.Translations.Add(new TranslationValue

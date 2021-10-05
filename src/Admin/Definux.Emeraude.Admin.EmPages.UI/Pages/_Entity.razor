@@ -1,0 +1,64 @@
+﻿@page "/admin/{entityKey}/{entityId}"
+@using Definux.Emeraude.Admin.EmPages.UI.Adapters
+@using Definux.Emeraude.Admin.UI.Extensions
+@inherits EmPage
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+
+@if (Loaded)
+{
+    <EmPageDetailsView ViewSchema="ViewSchema" ViewData="ViewData"/>
+}
+else
+{
+    <LoadingIndicator/>
+}
+
+@code {
+    private EmPageDetailsViewSchema ViewSchema { get; set; }
+
+    private EmPageDetailsViewData ViewData { get; set; }
+    
+    [Parameter]
+    public string EntityId { get; set; }
+
+    private bool FirstInitial { get; set; }
+    
+    private string PageTitle => ViewSchema?.Context.Title;
+    
+    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
+   
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            FirstInitial = true;
+            StateHasChanged();
+        }
+    }
+    
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+        => this.ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+        => this.ViewSchema?.NavbarActions ?? new List<ActionModel>();
+    
+    protected override async Task ReloadPageAsync()
+    {
+        this.ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
+        if (this.ViewSchema == null)
+        {
+            NavigationManager.NavigateToNotFoundPage();
+            return;
+        }
+        else
+        {
+            ViewData = await DataProvider.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        }
+        
+        this.StateHasChanged();
+        ReloadBreadcrumbs();
+        ReloadNavigationActions();
+    }
+
+}

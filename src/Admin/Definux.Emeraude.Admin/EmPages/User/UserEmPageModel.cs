@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Application.Mapping;
 
 namespace Definux.Emeraude.Admin.EmPages.User

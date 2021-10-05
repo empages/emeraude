@@ -21,7 +21,13 @@ namespace Definux.Emeraude.Localization.Configuration
 
             builder
                 .Property(x => x.Content)
-                .HasColumnName("content");
+                .HasColumnName("content")
+                .UseCollation("NOCASE");
+
+            builder
+                .Property(x => x.NormalizedContent)
+                .HasColumnName("normalized_content")
+                .UseCollation("NOCASE");
 
             builder
                 .Property(x => x.ContentKeyId)

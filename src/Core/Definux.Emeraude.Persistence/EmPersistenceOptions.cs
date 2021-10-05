@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Definux.Emeraude.Configuration.Exceptions;
 using Definux.Emeraude.Configuration.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Persistence
 {
@@ -21,6 +22,11 @@ namespace Definux.Emeraude.Persistence
         /// Collection of all database initializers.
         /// </summary>
         public Type[] DatabaseInitializers => this.databaseInitializers.ToArray();
+
+        /// <summary>
+        /// Database context options builder. If empty the <see cref="ContextProvider"/> built-in setup will be used.
+        /// </summary>
+        public Action<DbContextOptionsBuilder> ContextOptionsBuilder { get; set; }
 
         /// <summary>
         /// Register a database initializer into the database initializer manager. The order of adding is the order of calling.

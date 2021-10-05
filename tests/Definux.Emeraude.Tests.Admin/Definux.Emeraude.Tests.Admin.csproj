@@ -22,4 +22,9 @@
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project\src\Definux.Emeraude.Tests.Project\Definux.Emeraude.Tests.Project.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Fakes" />
+    <Folder Include="Unit" />
+  </ItemGroup>
+
 </Project>

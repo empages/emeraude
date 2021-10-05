@@ -11,14 +11,19 @@
         Undefined = 0,
 
         /// <summary>
-        /// Web module.
+        /// Web module instance.
         /// </summary>
-        WebModule = 1,
+        Web = 1,
 
         /// <summary>
-        /// Mobile module.
+        /// Mobile module instance.
         /// </summary>
-        MobileModule = 2,
+        Mobile = 2,
+
+        /// <summary>
+        /// Desktop module instance.
+        /// </summary>
+        Desktop = 3,
     }
 
     /// <summary>
@@ -42,8 +47,8 @@
         SuccessWithErrors = 2,
 
         /// <summary>
-        /// Unsuccess.
+        /// Unsuccessful.
         /// </summary>
-        Unsuccess = 3,
+        Unsuccessful = 3,
     }
 }

@@ -40,10 +40,9 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetStaticContentKey
             {
                 var key = await this.context
                     .ContentKeys
-                    .AsQueryable()
                     .Include(x => x.StaticContentList)
                     .ProjectTo<StaticContentKeyResult>(this.mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(x => x.Id == request.KeyId);
+                    .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
 
                 return key;
             }

@@ -37,27 +37,22 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.MakeLanguageDefault
             {
                 var languages = await this.context
                     .Languages
-                    .AsQueryable()
                     .ToListAsync(cancellationToken);
 
                 foreach (var language in languages)
                 {
-                    language.IsDefault = false;
-                    if (language.Id == request.LanguageId)
-                    {
-                        language.IsDefault = true;
-                    }
+                    language.IsDefault = language.Id == request.LanguageId;
                 }
 
-                if (languages.Any(x => x.IsDefault))
+                if (!languages.Any(x => x.IsDefault))
                 {
-                    this.context.Languages.UpdateRange(languages);
-                    await this.context.SaveChangesAsync(cancellationToken);
-
-                    return new SimpleResult(true);
+                    return SimpleResult.UnsuccessfulResult;
                 }
 
-                return new SimpleResult(false);
+                this.context.Languages.UpdateRange(languages);
+                await this.context.SaveChangesAsync(cancellationToken);
+
+                return SimpleResult.SuccessfulResult;
             }
         }
     }

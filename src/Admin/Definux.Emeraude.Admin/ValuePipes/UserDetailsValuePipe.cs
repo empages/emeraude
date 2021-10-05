@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Extensions;
@@ -15,16 +16,16 @@ namespace Definux.Emeraude.Admin.ValuePipes
     /// </summary>
     public class UserDetailsValuePipe : IValuePipe
     {
-        private readonly IEmContext context;
+        private readonly IEmContextFactory contextFactory;
         private Dictionary<Guid, string> userDetailsPair;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDetailsValuePipe"/> class.
         /// </summary>
-        /// <param name="context"></param>
-        public UserDetailsValuePipe(IEmContext context)
+        /// <param name="contextFactory"></param>
+        public UserDetailsValuePipe(IEmContextFactory contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.userDetailsPair = new Dictionary<Guid, string>();
         }
 
@@ -32,7 +33,8 @@ namespace Definux.Emeraude.Admin.ValuePipes
         public async Task PrepareAsync(IEnumerable<object> targetObjects, string[] parameters)
         {
             var targetUserIds = targetObjects.Select(x => (Guid)x);
-            this.userDetailsPair = await this.context
+            await using var context = await this.contextFactory.CreateDbContextAsync();
+            this.userDetailsPair = await context
                 .Set<User>()
                 .Where(x => targetUserIds.Contains(x.Id))
                 .ToDictionaryAsync(k => k.Id, v => $"{v.Name} ({v.Email})");

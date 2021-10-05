@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Admin.UI.Components.Base;
+using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Admin.EmPages.UI.Components.Base;
 using FluentValidation;
 
 namespace Definux.Emeraude.Admin.EmPages.User
@@ -10,7 +11,7 @@ namespace Definux.Emeraude.Admin.EmPages.User
     public class UserEmPageSchema : IEmPageSchema<Identity.Entities.User, UserEmPageModel>
     {
         /// <inheritdoc/>
-        public async Task<EmPageSchemaSettings<Identity.Entities.User, UserEmPageModel>> SetupAsync(EmPageSchemaContext context)
+        public async Task<EmPageSchemaSettings<Identity.Entities.User, UserEmPageModel>> SetupAsync()
         {
             var settings = new EmPageSchemaSettings<Identity.Entities.User, UserEmPageModel>
             {
@@ -43,16 +44,16 @@ namespace Definux.Emeraude.Admin.EmPages.User
                         .Use(x => x.TwoFactorEnabled, item =>
                         {
                             item.Title = "2FA";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         })
                         .Use(x => x.IsLockedOut, item =>
                         {
                             item.Title = "Locked Out";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         })
                         .Use(x => x.EmailConfirmed, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         });
                 })
                 .ConfigureDetailsView(detailsView =>
@@ -78,16 +79,16 @@ namespace Definux.Emeraude.Admin.EmPages.User
                         .Use(x => x.TwoFactorEnabled, item =>
                         {
                             item.Title = "2FA";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         })
                         .Use(x => x.IsLockedOut, item =>
                         {
                             item.Title = "Locked Out";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         })
                         .Use(x => x.EmailConfirmed, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmFlag>();
                         });
                 })
                 .ConfigureFormView(x =>

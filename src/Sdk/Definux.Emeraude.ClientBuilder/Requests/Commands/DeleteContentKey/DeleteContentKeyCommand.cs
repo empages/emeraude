@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
@@ -36,11 +37,14 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.DeleteContentKey
             {
                 var keyToRemove = await this.context
                     .ContentKeys
-                    .AsQueryable()
                     .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
 
-                this.context.ContentKeys.Remove(keyToRemove);
+                if (keyToRemove == null)
+                {
+                    throw new EntityNotFoundException("Content key", request.KeyId);
+                }
 
+                this.context.ContentKeys.Remove(keyToRemove);
                 await this.context.SaveChangesAsync(cancellationToken);
 
                 return new SimpleResult(true);

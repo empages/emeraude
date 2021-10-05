@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
@@ -36,8 +37,12 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.DeleteLanguage
             {
                 var language = await this.context
                         .Languages
-                        .AsQueryable()
                         .FirstOrDefaultAsync(x => x.Id == request.LanguageId, cancellationToken);
+
+                if (language == null)
+                {
+                    throw new EntityNotFoundException("Language", request.LanguageId);
+                }
 
                 if (language.IsDefault)
                 {

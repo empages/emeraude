@@ -40,7 +40,13 @@ namespace Definux.Emeraude.Localization.Configuration
 
             builder
                 .Property(x => x.Value)
-                .HasColumnName("value");
+                .HasColumnName("value")
+                .UseCollation("NOCASE");
+
+            builder
+                .Property(x => x.NormalizedValue)
+                .HasColumnName("normalized_value")
+                .UseCollation("NOCASE");
         }
     }
 }

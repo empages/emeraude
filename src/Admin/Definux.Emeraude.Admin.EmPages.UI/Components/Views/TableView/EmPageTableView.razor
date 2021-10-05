@@ -1,0 +1,15 @@
+﻿<div id="entity-table-view">
+    <EmPageView ViewSchema="ViewSchema">
+        <EmPageTableFilter/>
+        <EmPageTable HeadModel="ViewSchema.HeadModel" ViewData="ViewData" HasActions="ViewSchema.HasActions"/>
+        <EmPageTablePagination PaginationModel="ViewData.PaginationModel"/>
+    </EmPageView>
+</div>
+
+@code {
+    [Parameter]
+    public EmPageTableViewSchema ViewSchema { get; set; }
+    
+    [Parameter]
+    public EmPageTableViewData ViewData { get; set; }
+}

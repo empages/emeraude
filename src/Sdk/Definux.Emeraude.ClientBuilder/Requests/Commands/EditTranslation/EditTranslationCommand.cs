@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
@@ -43,6 +44,11 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.EditTranslation
                 var translationEntity = await this.context
                     .Values
                     .FirstOrDefaultAsync(x => x.Id == request.TranslationId, cancellationToken);
+
+                if (translationEntity == null)
+                {
+                    throw new EntityNotFoundException("Translation value", request.TranslationId);
+                }
 
                 translationEntity.Value = request.NewValue;
 

@@ -1,0 +1,54 @@
+﻿<tbody>
+    @foreach (var row in Rows)
+    {
+        <tr>
+            @foreach (var cell in row.Cells)
+            {
+                <td class="px-2 py-0 text-left">
+                    <DynamicComponent Type="cell.Component" Parameters="GetParameters(cell)"/>
+                </td>
+            }
+            @if (HasActions)
+            {
+                var orderedActions = row.Actions.OrderBy(x => x.Order);
+                <td class="d-flex px-1">
+                    @foreach (var action in orderedActions)
+                    {
+                        <EmPageTableRowAction Action="action"/>
+                    }
+                </td>
+            }
+        </tr>
+    }
+</tbody>
+
+@code {
+    [Parameter]
+    public IEnumerable<EmPageTableRowModel> Rows { get; set; }
+    
+    [Parameter]
+    public bool HasActions { get; set; }
+
+    private Dictionary<string, object> GetParameters(EmPageTableCellModel cellModel)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            {"Value", cellModel.Value},
+            {"Property", cellModel.Property},
+            {"Type", cellModel.Type}
+        };
+
+        if (cellModel.Parameters != null && cellModel.Parameters.Count > 0)
+        {
+            foreach (var parameter in cellModel.Parameters)
+            {
+                if (!parameters.ContainsKey(parameter.Key))
+                {
+                    parameters[parameter.Key] = parameter.Value;
+                }
+            }
+        }
+        
+        return parameters;
+    }
+}

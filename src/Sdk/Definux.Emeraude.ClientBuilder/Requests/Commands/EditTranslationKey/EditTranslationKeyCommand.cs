@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Localization;
 using Definux.Utilities.Objects;
 using MediatR;
@@ -43,6 +44,11 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.EditTranslationKey
                 var keyEntity = await this.context
                     .Keys
                     .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
+
+                if (keyEntity == null)
+                {
+                    throw new EntityNotFoundException("Translation key", request.KeyId);
+                }
 
                 keyEntity.Key = request.NewValue;
 

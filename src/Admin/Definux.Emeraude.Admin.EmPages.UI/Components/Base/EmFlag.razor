@@ -1,0 +1,13 @@
+﻿@inherits EmBaseElement
+<div class="em-flag">
+  <div class="form-check d-flex">
+    <input class="form-check-input my-auto me-1 opacity-100" type="checkbox" value="@BooleanValue" checked="@BooleanValue" disabled="disabled">
+    <label class="form-check-label my-auto">
+        @(BooleanValue ? "Yes" : "No")
+      </label>
+  </div>
+</div>
+
+@code {
+  private bool BooleanValue => Convert.ToBoolean(Value);
+}

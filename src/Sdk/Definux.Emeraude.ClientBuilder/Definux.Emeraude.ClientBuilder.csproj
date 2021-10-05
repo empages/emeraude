@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
     <ProjectReference Include="..\..\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />

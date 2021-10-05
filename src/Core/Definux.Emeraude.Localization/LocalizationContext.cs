@@ -35,6 +35,8 @@ namespace Definux.Emeraude.Localization
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.UseCollation("BINARY");
+
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             builder.Entity<Language>().ToTable("languages");

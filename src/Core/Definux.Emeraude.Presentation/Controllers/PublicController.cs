@@ -22,50 +22,18 @@ namespace Definux.Emeraude.Presentation.Controllers
     /// Abstraction for controllers which will be used on the client side of the application (not for the administration).
     /// </summary>
     [ApiExplorerSettings(IgnoreApi = true)]
-    public abstract class PublicController : Controller
+    public abstract class PublicController : EmController
     {
         private const string LanguageCookieName = ".Emeraude.Language";
 
-        private IEmLogger logger;
-        private ICurrentUserProvider currentUserProvider;
         private ICurrentLanguageProvider currentLanguageProvider;
-        private IMediator mediator;
         private IUserManager userManager;
         private IEmLocalizer localizer;
-        private IEmOptionsProvider optionsProvider;
 
         /// <summary>
         /// Ignore <see cref="EmMainOptions.MaintenanceMode"/> from the Emeraude options.
         /// </summary>
         public bool IgnoreMaintenanceMode { get; set; }
-
-        /// <inheritdoc cref="IEmOptionsProvider"/>
-        protected IEmOptionsProvider OptionsProvider
-        {
-            get
-            {
-                if (this.optionsProvider is null)
-                {
-                    this.optionsProvider = this.HttpContext.RequestServices.GetService<IEmOptionsProvider>();
-                }
-
-                return this.optionsProvider;
-            }
-        }
-
-        /// <inheritdoc cref="IEmLogger"/>
-        protected IEmLogger Logger
-        {
-            get
-            {
-                if (this.logger is null)
-                {
-                    this.logger = this.HttpContext.RequestServices.GetService<IEmLogger>();
-                }
-
-                return this.logger;
-            }
-        }
 
         /// <inheritdoc cref="ICurrentLanguageProvider"/>
         protected ICurrentLanguageProvider CurrentLanguageProvider
@@ -81,81 +49,17 @@ namespace Definux.Emeraude.Presentation.Controllers
             }
         }
 
-        /// <inheritdoc cref="ICurrentUserProvider"/>
-        protected ICurrentUserProvider CurrentUserProvider
-        {
-            get
-            {
-                if (this.currentUserProvider is null)
-                {
-                    this.currentUserProvider = this.HttpContext.RequestServices.GetService<ICurrentUserProvider>();
-                }
-
-                return this.currentUserProvider;
-            }
-        }
-
-        /// <inheritdoc cref="IMediator"/>
-        protected IMediator Mediator
-        {
-            get
-            {
-                if (this.mediator is null)
-                {
-                    this.mediator = this.HttpContext?.RequestServices?.GetService<IMediator>();
-                }
-
-                return this.mediator;
-            }
-        }
-
         /// <inheritdoc cref="IUserManager"/>
-        protected IUserManager UserManager
-        {
-            get
-            {
-                if (this.userManager is null)
-                {
-                    this.userManager = this.HttpContext.RequestServices.GetService<IUserManager>();
-                }
-
-                return this.userManager;
-            }
-        }
+        protected IUserManager UserManager =>
+            this.userManager ??= this.HttpContext.RequestServices.GetService<IUserManager>();
 
         /// <inheritdoc cref="IEmLocalizer"/>
-        protected IEmLocalizer Localizer
-        {
-            get
-            {
-                if (this.localizer is null)
-                {
-                    this.localizer = this.HttpContext.RequestServices.GetService<IEmLocalizer>();
-                }
-
-                return this.localizer;
-            }
-        }
-
-        /// <summary>
-        /// Flag that activate and disable activity logging by Emeraude logger.
-        /// </summary>
-        protected bool DisableActivityLog { get; set; }
-
-        /// <summary>
-        /// Flag that hide or show the request params in activity log.
-        /// </summary>
-        protected bool HideActivityLogParameters { get; set; }
+        protected IEmLocalizer Localizer => this.localizer ??= this.HttpContext.RequestServices.GetService<IEmLocalizer>();
 
         /// <inheritdoc/>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             this.ManageLanguageCookie();
-            if (!this.DisableActivityLog)
-            {
-                this.Logger.LogActivity(context, this.HideActivityLogParameters);
-            }
-
             base.OnActionExecuting(context);
         }
 

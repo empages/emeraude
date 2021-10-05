@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.ClientBuilder.DataTransferObjects;
 using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.ScaffoldModules;
 using Definux.Emeraude.ClientBuilder.Services;
 using Definux.Emeraude.ClientBuilder.Shared;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
@@ -19,25 +19,22 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
     /// Client Builder API controller that provide all access and generation features.
     /// </summary>
     [Route("/api/client-builder/")]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
-    public sealed class ClientBuilderApiController : ApiController
+    [EnableCors(ClientBuilderConstants.CorsPolicyName)]
+    public sealed class ClientBuilderApiController : EmApiController
     {
         private readonly IEndpointService endpointService;
-        private readonly IScaffoldModulesProvider scaffoldModulesProvider;
-        private readonly IEmOptionsProvider optionsProvider;
+        private readonly IScaffoldModulesFactory scaffoldModulesFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientBuilderApiController"/> class.
         /// </summary>
         /// <param name="hostEnvironment"></param>
         /// <param name="endpointService"></param>
-        /// <param name="scaffoldModulesProvider"></param>
-        /// <param name="optionsProvider"></param>
+        /// <param name="scaffoldModulesFactory"></param>
         public ClientBuilderApiController(
             IHostEnvironment hostEnvironment,
-            IEmOptionsProvider optionsProvider,
             IEndpointService endpointService = null,
-            IScaffoldModulesProvider scaffoldModulesProvider = null)
+            IScaffoldModulesFactory scaffoldModulesFactory = null)
         {
             if (!hostEnvironment.IsDevelopment())
             {
@@ -45,8 +42,30 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
             }
 
             this.endpointService = endpointService;
-            this.scaffoldModulesProvider = scaffoldModulesProvider;
-            this.optionsProvider = optionsProvider;
+            this.scaffoldModulesFactory = scaffoldModulesFactory;
+        }
+
+        /// <summary>
+        /// Checks availability of the Client Builder.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("availability")]
+        public IActionResult CheckAvailability()
+        {
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Returns current version of the framework.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("version")]
+        public IActionResult GetVersion()
+        {
+            var frameworkVersion = this.OptionsProvider.GetMainOptions().EmeraudeVersion;
+            return this.Ok(new { Version = frameworkVersion });
         }
 
         /// <summary>
@@ -68,7 +87,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         [Route("scaffold/modules")]
         public IActionResult GetAllModules()
         {
-            return this.Ok(this.scaffoldModulesProvider.Modules);
+            return this.Ok(this.scaffoldModulesFactory.Modules);
         }
 
         /// <summary>
@@ -78,115 +97,67 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("scaffold/generate")]
-        public IActionResult GenerateModule([FromBody]ScaffoldGenerateRequest request)
+        public IActionResult GenerateModule([FromBody]ScaffoldGenerateByIdRequest request)
         {
-            string errorMessage = null;
-            try
-            {
-                if (this.scaffoldModulesProvider.GenerateModule(request.ModuleId, out errorMessage))
-                {
-                    return this.Ok();
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-            }
-
-            return this.BadRequest(errorMessage);
+            var targetModule = this.scaffoldModulesFactory.GetModule(request.ModuleId);
+            return this.TriggerGeneration(new List<ScaffoldModule> { targetModule });
         }
 
         /// <summary>
-        /// Trigger all loaded web modules generation.
+        /// Trigger generation for all modules that are filtered by instance type.
         /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("scaffold/generate/web")]
-        public IActionResult GenerateWebModules()
+        [Route("scaffold/generate/by-instance")]
+        public IActionResult GenerateMobileModules([FromBody]ScaffoldGenerateByInstanceTypeRequest request)
         {
-            string errorMessage = null;
-            try
-            {
-                var modules = this.scaffoldModulesProvider.WebModules;
-                foreach (var module in modules)
-                {
-                    this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
-                }
-
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-            }
-
-            return this.BadRequest(errorMessage);
+            var modules = this.scaffoldModulesFactory.GetModulesByInstance(request.InstanceType);
+            return this.TriggerGeneration(modules);
         }
 
         /// <summary>
-        /// Trigger all loaded mobile modules generation.
+        /// Trigger generation for all modules that are filtered by client id.
         /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("scaffold/generate/mobile")]
-        public IActionResult GenerateMobileModules()
+        [Route("scaffold/generate/by-client")]
+        public IActionResult GenerateModulesByParentModuleId([FromBody]ScaffoldGenerateByClientIdRequest request)
         {
-            string errorMessage = null;
-            try
-            {
-                var modules = this.scaffoldModulesProvider.MobileModules;
-                foreach (var module in modules)
-                {
-                    this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
-                }
-
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-            }
-
-            return this.BadRequest(errorMessage);
-        }
-
-        /// <summary>
-        /// Trigger all filtered by parent module id loaded modules generation.
-        /// </summary>
-        /// <param name="parentModuleId"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("scaffold/generate/{parentModuleId}")]
-        public IActionResult GenerateModulesByParentModuleId(string parentModuleId)
-        {
-            string errorMessage = null;
-            try
-            {
-                var modules = this.scaffoldModulesProvider.GetModulesByParentModuleId(parentModuleId);
-                foreach (var module in modules)
-                {
-                    this.scaffoldModulesProvider.GenerateModule(module.Id, out errorMessage);
-                }
-
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-            }
-
-            return this.BadRequest(errorMessage);
+            var modules = this.scaffoldModulesFactory.GetModulesByClientId(request.ClientId);
+            return this.TriggerGeneration(modules);
         }
 
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!this.optionsProvider.GetClientBuilderOptions().EnableClientBuilder)
+            if (!this.OptionsProvider.GetClientBuilderOptions().EnableClientBuilder)
             {
                 context.Result = this.NotFound();
             }
 
             base.OnActionExecuting(context);
+        }
+
+        private IActionResult TriggerGeneration(IEnumerable<ScaffoldModule> modules)
+        {
+            string errorMessage;
+            try
+            {
+                foreach (var module in modules)
+                {
+                    this.scaffoldModulesFactory.GenerateModule(module.Id, out errorMessage);
+                }
+
+                return this.Ok();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+
+            return this.BadRequest(errorMessage);
         }
     }
 }

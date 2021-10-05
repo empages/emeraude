@@ -14,6 +14,7 @@ using Definux.Emeraude.Application.Mapping;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Client.Mapping;
+using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.ClientBuilder.Options;
 using Definux.Emeraude.ClientBuilder.ScaffoldModules;
@@ -88,11 +89,6 @@ namespace Definux.Emeraude.Extensions
             var setup = services.RegisterEmeraudeOptions(setupAction);
 
             services.AddHttpContextAccessor();
-
-            services.AddHttpClient(DefaultNames.HttpClientName, client =>
-            {
-                client.BaseAddress = new Uri(setup.MainOptions.BaseUri);
-            });
 
             services.AddOptions();
 
@@ -178,8 +174,6 @@ namespace Definux.Emeraude.Extensions
             assembliesList.AddRange(assemblies);
 
             services.AddMediatR(assembliesList.ToArray());
-            services.RegisterAdminEntityControllersRequests(assembliesList.ToArray());
-            services.RegisterAdditionalAdminGenericCustomRequests();
         }
 
         private static void AddCqrsBehaviours(this IServiceCollection services)
@@ -414,8 +408,7 @@ namespace Definux.Emeraude.Extensions
         {
             if (options.EnableClientBuilder)
             {
-                services.AddScoped<IEndpointService, EndpointService>();
-                services.AddScoped<IScaffoldModulesProvider, ScaffoldModulesProvider>();
+                services.RegisterClientBuilder(options);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// </summary>
     [Route("/api/logger/")]
     [ApiEndpointsController]
-    public class ClientLoggerApiController : ApiController
+    public class ClientLoggerApiController : EmApiController
     {
         private readonly IEmLogger logger;
 

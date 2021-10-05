@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Domain.Localization;
@@ -59,6 +60,7 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Commands.CreateKeyWithValues
                     {
                         LanguageId = value.LanguageId,
                         Value = value.Value,
+                        NormalizedValue = value.Value?.Trim().ToUpperInvariant() ?? string.Empty,
                     });
                 }
 

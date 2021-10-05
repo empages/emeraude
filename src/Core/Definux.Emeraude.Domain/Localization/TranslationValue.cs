@@ -34,5 +34,10 @@
         /// Translation value.
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// Normalized translation value.
+        /// </summary>
+        public string NormalizedValue { get; set; }
     }
 }

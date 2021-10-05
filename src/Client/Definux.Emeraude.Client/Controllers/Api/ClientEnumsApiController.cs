@@ -12,7 +12,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// </summary>
     [Route("/api/enums/")]
     [ApiEndpointsController]
-    public sealed class ClientEnumsApiController : ApiController
+    public sealed class ClientEnumsApiController : EmApiController
     {
         /// <summary>
         /// Get all enumerations with their values.

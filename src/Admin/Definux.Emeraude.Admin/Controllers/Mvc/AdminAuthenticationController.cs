@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.Controllers.Abstractions;
 using Definux.Emeraude.Admin.UI.ViewModels.Account;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Identity;
@@ -25,7 +24,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
     /// Controller for administrators authentication.
     /// </summary>
     [AllowAnonymous]
-    public sealed class AdminAuthenticationController : AdminController
+    public sealed class AdminAuthenticationController : EmAdminController
     {
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IUserClaimsService userClaimsService;
@@ -49,7 +48,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
             this.HideActivityLogParameters = true;
         }
 
-        private IActionResult AdminDashboardActionResult => this.RedirectToAction("Index", "AdminDashboard");
+        private IActionResult AdminIndexActionResult => this.LocalRedirect("/admin");
 
         private IActionResult Lockout => this.View("Lockout");
 
@@ -79,9 +78,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         [HttpGet]
         public IActionResult Login()
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                return this.AdminDashboardActionResult;
+                return this.AdminIndexActionResult;
             }
 
             AdminLoginViewModel model = new AdminLoginViewModel();
@@ -100,9 +99,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         [HttpPost]
         public async Task<IActionResult> Login(AdminLoginViewModel model)
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                return this.AdminDashboardActionResult;
+                return this.AdminIndexActionResult;
             }
 
             if (this.ModelState.IsValid)
@@ -130,7 +129,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                         {
                             await this.SignInAsync(requestResult.User);
 
-                            return this.AdminDashboardActionResult;
+                            return this.AdminIndexActionResult;
                         }
                     }
                     catch (Exception ex)
@@ -151,9 +150,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         [HttpGet]
         public async Task<IActionResult> LoginWith2Fa()
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                return this.AdminDashboardActionResult;
+                return this.AdminIndexActionResult;
             }
 
             var user = await this.userManager.GetTwoFactorAuthenticationUserAsync();
@@ -179,9 +178,9 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginWith2Fa(AdminLoginWith2FaViewModel model)
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                return this.AdminDashboardActionResult;
+                return this.AdminIndexActionResult;
             }
 
             try
@@ -198,7 +197,7 @@ namespace Definux.Emeraude.Admin.Controllers.Mvc
                 {
                     await this.SignInAsync(requestResult.User);
 
-                    return this.AdminDashboardActionResult;
+                    return this.AdminIndexActionResult;
                 }
                 else if (requestResult.Result.IsLockedOut)
                 {

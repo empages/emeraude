@@ -31,8 +31,13 @@
         public ContentKey ContentKey { get; set; }
 
         /// <summary>
-        /// Static content text.
+        /// Static content.
         /// </summary>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Normalized static content.
+        /// </summary>
+        public string NormalizedContent { get; set; }
     }
 }

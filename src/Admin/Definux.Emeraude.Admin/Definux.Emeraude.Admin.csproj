@@ -11,6 +11,7 @@
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.1.21452.10" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-rc.1.21452.15" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.0-rc.1.21452.15" />
@@ -27,9 +28,15 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Admin.EmPages.UI\Definux.Emeraude.Admin.EmPages.UI.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Admin.EmPages\Definux.Emeraude.Admin.EmPages.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder.UI\Definux.Emeraude.ClientBuilder.UI.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services" />
   </ItemGroup>
 
   <Import Project="..\..\..\Emeraude.targets" />

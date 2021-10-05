@@ -15,7 +15,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
     /// </summary>
     public static class DescriptionExtractor
     {
-        private static Dictionary<Type, string> primitiveTypes = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> PrimitiveTypes = new Dictionary<Type, string>
         {
             { typeof(bool), "bool" },
             { typeof(string), "string" },
@@ -36,7 +36,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
             { typeof(decimal), "decimal" },
         };
 
-        private static Dictionary<Type, string> defaultValues = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> DefaultValues = new Dictionary<Type, string>
         {
             { typeof(bool), "false" },
             { typeof(string), "null" },
@@ -57,7 +57,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
             { typeof(decimal), "0" },
         };
 
-        private static Dictionary<string, string> javaScriptRelativeTypes = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> JavaScriptRelativeTypes = new Dictionary<string, string>
         {
             { "bool", "boolean" },
             { "Boolean", "boolean" },
@@ -114,19 +114,19 @@ namespace Definux.Emeraude.ClientBuilder.Services
                 description.IsEnum = type.IsEnum;
                 bool isPrimitiveType = false;
 
-                if (primitiveTypes.ContainsKey(type))
+                if (PrimitiveTypes.ContainsKey(type))
                 {
-                    description.Name = primitiveTypes[type];
+                    description.Name = PrimitiveTypes[type];
                     description.FullName = description.Name;
-                    description.JavaScriptTypeName = javaScriptRelativeTypes[description.Name];
+                    description.JavaScriptTypeName = JavaScriptRelativeTypes[description.Name];
                     isPrimitiveType = true;
                 }
 
-                if (description.IsNullable && primitiveTypes.ContainsKey(Nullable.GetUnderlyingType(type)))
+                if (description.IsNullable && PrimitiveTypes.ContainsKey(Nullable.GetUnderlyingType(type)))
                 {
-                    description.Name = primitiveTypes[Nullable.GetUnderlyingType(type)];
+                    description.Name = PrimitiveTypes[Nullable.GetUnderlyingType(type)];
                     description.FullName = description.Name;
-                    description.JavaScriptTypeName = javaScriptRelativeTypes[description.Name];
+                    description.JavaScriptTypeName = JavaScriptRelativeTypes[description.Name];
                     isPrimitiveType = true;
                 }
 
@@ -154,7 +154,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
                 {
                     description.Name = type.Name;
                     description.FullName = type.FullName;
-                    description.JavaScriptTypeName = javaScriptRelativeTypes["int"];
+                    description.JavaScriptTypeName = JavaScriptRelativeTypes["int"];
                     description.EnumValues = new Dictionary<string, int>();
                     var enumValues = Enum.GetValues(type);
                     foreach (var value in enumValues)
@@ -174,7 +174,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
                             propertyDescription.Name = propertyInfo.Name;
                             propertyDescription.ReadOnly = propertyInfo.HasAttribute<ReadOnlyAttribute>();
                             propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
-                            propertyDescription.DefaultValue = defaultValues.ContainsKey(propertyInfo.PropertyType) ? defaultValues[propertyInfo.PropertyType] : "null";
+                            propertyDescription.DefaultValue = DefaultValues.ContainsKey(propertyInfo.PropertyType) ? DefaultValues[propertyInfo.PropertyType] : "null";
                             description.Properties.Add(propertyDescription);
                         }
                     }

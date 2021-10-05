@@ -15,7 +15,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// Client API controller for authentication.
     /// </summary>
     [Route("/api/auth/")]
-    public sealed partial class ClientAuthenticationApiController : ApiController
+    public sealed partial class ClientAuthenticationApiController : EmApiController
     {
         private readonly IUserClaimsService userClaimsService;
         private readonly IUserTokensService userTokensService;

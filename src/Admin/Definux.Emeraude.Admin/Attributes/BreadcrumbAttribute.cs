@@ -81,10 +81,10 @@ namespace Definux.Emeraude.Admin.Attributes
                 }
             }
 
-            if (this.UseParentController)
-            {
-                this.controller = ((IChildController)context.Controller).ParentController.Replace("Controller", string.Empty);
-            }
+            // if (this.UseParentController)
+            // {
+            //     this.controller = ((IChildController)context.Controller).ParentController.Replace("Controller", string.Empty);
+            // }
 
             var currentBreadcrumb = new BreadcrumbItemViewModel(context)
             {

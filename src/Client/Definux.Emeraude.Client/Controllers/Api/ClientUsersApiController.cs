@@ -26,7 +26,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
     [Authorize(AuthenticationSchemes = AuthenticationDefaults.BearerAuthenticationScheme)]
     [ApiEndpointsController]
-    public sealed class ClientUsersApiController : ApiController
+    public sealed class ClientUsersApiController : EmApiController
     {
         private readonly ICurrentUserProvider currentUserProvider;
 

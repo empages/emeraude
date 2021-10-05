@@ -19,21 +19,8 @@ namespace Definux.Emeraude.Admin.Controllers.Api
     /// Admin upload API controller.
     /// </summary>
     [Route("/api/admin/upload/")]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
-    [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
-    public sealed class AdminUploadApiController : ApiController
+    public sealed class AdminUploadApiController : EmAdminApiController
     {
-        private readonly EmFilesOptions filesOptions;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdminUploadApiController"/> class.
-        /// </summary>
-        /// <param name="optionsProvider"></param>
-        public AdminUploadApiController(IEmOptionsProvider optionsProvider)
-        {
-            this.filesOptions = optionsProvider.GetFilesOptions();
-        }
-
         /// <summary>
         /// Action for file upload.
         /// </summary>
@@ -43,7 +30,7 @@ namespace Definux.Emeraude.Admin.Controllers.Api
         [Route("file")]
         public async Task<IActionResult> File([FromForm(Name = "file")]IFormFile formFile)
         {
-            if (!this.filesOptions.AllowFileUpload)
+            if (!this.OptionsProvider.GetFilesOptions().AllowFileUpload)
             {
                 return this.NotFound();
             }
@@ -60,7 +47,7 @@ namespace Definux.Emeraude.Admin.Controllers.Api
         [Route("image")]
         public async Task<IActionResult> Image([FromForm(Name = "file")]IFormFile formFile)
         {
-            if (!this.filesOptions.AllowImageUpload)
+            if (!this.OptionsProvider.GetFilesOptions().AllowImageUpload)
             {
                 return this.NotFound();
             }
@@ -77,7 +64,7 @@ namespace Definux.Emeraude.Admin.Controllers.Api
         [Route("video")]
         public async Task<IActionResult> Video([FromForm(Name = "file")]IFormFile formFile)
         {
-            if (!this.filesOptions.AllowVideoUpload)
+            if (!this.OptionsProvider.GetFilesOptions().AllowVideoUpload)
             {
                 return this.NotFound();
             }

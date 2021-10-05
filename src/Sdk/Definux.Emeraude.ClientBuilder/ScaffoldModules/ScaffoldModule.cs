@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
+using Definux.Emeraude.ClientBuilder.Exceptions;
 using Definux.Emeraude.ClientBuilder.Options;
 using Definux.Emeraude.ClientBuilder.Shared;
 
@@ -11,19 +11,13 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
     /// <summary>
     /// Abstract module that provides all abstractions and methods for a module for client builder.
     /// </summary>
-    public abstract class ScaffoldModule
+    public abstract class ScaffoldModule : IScaffoldModule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaffoldModule"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
-        /// <param name="locked"></param>
-        public ScaffoldModule(string name, InstanceType type, bool locked)
+        protected ScaffoldModule()
         {
-            this.Name = name;
-            this.Type = type;
-            this.Locked = locked;
             this.Files = new List<ModuleFile>();
             this.Folders = new List<ModuleFolder>();
         }
@@ -31,7 +25,7 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         /// <summary>
         /// Identifier of the module.
         /// </summary>
-        public string Id => this.Name.Replace(" ", "-").ToLower();
+        public string Id => this.Name?.Replace(" ", "-").ToLower();
 
         /// <summary>
         /// Order of the module.
@@ -59,9 +53,9 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         public InstanceType Type { get; set; }
 
         /// <summary>
-        /// Identification of the module that allows easy modules grouping.
+        /// Identification of the module by client type that allows easy modules grouping.
         /// </summary>
-        public string ParentModuleId { get; protected set; }
+        public string ClientId { get; protected set; }
 
         /// <summary>
         /// List of files for generation.
@@ -81,10 +75,7 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         /// <summary>
         /// Flag that indicates that the module generated files is locked for changes or not.
         /// </summary>
-        public bool Locked { get; set; }
-
-        /// <inheritdoc cref="IServiceProvider"/>
-        public IServiceProvider ServiceProvider { get; private set; }
+        public bool Locked { get; set; } = true;
 
         /// <summary>
         /// Startup directory of the module generation.
@@ -236,22 +227,20 @@ namespace Definux.Emeraude.ClientBuilder.ScaffoldModules
         }
 
         /// <summary>
-        /// Set service provider.
+        /// Validates module properties.
         /// </summary>
-        /// <param name="serviceProvider"></param>
-        public void SetServiceProvider(IServiceProvider serviceProvider)
+        public void ValidateModule()
         {
-            this.ServiceProvider = serviceProvider;
-        }
+            var moduleTypeName = this.GetType().FullName;
+            if (string.IsNullOrWhiteSpace(this.Name))
+            {
+                throw new ClientBuilderException($"You must specify 'Name' for the {moduleTypeName}.");
+            }
 
-        /// <summary>
-        /// Get service from the services container.
-        /// </summary>
-        /// <typeparam name="TService">Service type.</typeparam>
-        /// <returns></returns>
-        protected TService GetService<TService>()
-        {
-            return (TService)this.ServiceProvider.GetService(typeof(TService));
+            if (string.IsNullOrWhiteSpace(this.ClientId))
+            {
+                throw new ClientBuilderException($"You must specify 'ClientId' for the {moduleTypeName}");
+            }
         }
     }
 }

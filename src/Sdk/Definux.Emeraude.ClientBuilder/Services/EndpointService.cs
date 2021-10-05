@@ -95,9 +95,9 @@ namespace Definux.Emeraude.ClientBuilder.Services
                 string controllerRoute = controllerType.GetAttribute<RouteAttribute>().Template;
                 string actionRoute = endpointMethodInfo.GetAttribute<RouteAttribute>().Template;
 
-                Endpoint currentEntpoint = new Endpoint
+                Endpoint currentEndpoint = new Endpoint
                 {
-                    Id = $"{controllerType.FullName.ToString().ToLower().Replace('.', '-')}-{endpointMethodInfo.Name.ToString().ToLower().Replace('.', '-')}",
+                    Id = $"{controllerType.FullName?.ToLower().Replace('.', '-')}-{endpointMethodInfo.Name.ToLower().Replace('.', '-')}",
                     ControllerName = controllerType.Name,
                     ActionName = endpointMethodInfo.Name,
                     Route = actionRoute.StartsWith("/", StringComparison.OrdinalIgnoreCase) ? actionRoute : $"{controllerRoute}{actionRoute}",
@@ -111,7 +111,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
                         .ToList(),
                 };
 
-                return currentEntpoint;
+                return currentEndpoint;
             }
             catch (Exception ex)
             {

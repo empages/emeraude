@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-rc.1.21451.13" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
+      <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
+      <ProjectReference Include="..\..\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
+      <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
+      <ProjectReference Include="..\Definux.Emeraude.Admin.EmPages.UI\Definux.Emeraude.Admin.EmPages.UI.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\Emeraude.targets" />
+    
+</Project>

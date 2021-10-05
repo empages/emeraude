@@ -20,7 +20,8 @@ namespace Definux.Emeraude.Localization.Configuration
 
             builder
                 .Property(x => x.Key)
-                .HasColumnName("key");
+                .HasColumnName("key")
+                .UseCollation("NOCASE");
 
             builder
                 .HasIndex(x => x.Key)

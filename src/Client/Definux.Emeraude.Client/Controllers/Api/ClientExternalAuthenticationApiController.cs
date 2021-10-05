@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Definux.Emeraude.Client.Controllers.Api
 {
     /// <inheritdoc/>
-    public sealed partial class ClientAuthenticationApiController : ApiController
+    public sealed partial class ClientAuthenticationApiController : EmApiController
     {
         /// <summary>
         /// External login provider authentication action.

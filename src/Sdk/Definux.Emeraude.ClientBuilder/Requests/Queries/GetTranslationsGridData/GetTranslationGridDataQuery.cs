@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Domain.Localization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +17,21 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetTranslationsGridDat
     /// </summary>
     public class GetTranslationGridDataQuery : IRequest<TranslationsGridDataResult>
     {
+        /// <summary>
+        /// Search query for filtration.
+        /// </summary>
+        public string SearchQuery { get; set; }
+
+        /// <summary>
+        /// Filtration page number.
+        /// </summary>
+        public int Page { get; set; }
+
         /// <inheritdoc/>
         public class GetTranslationGridDataQueryHandler : IRequestHandler<GetTranslationGridDataQuery, TranslationsGridDataResult>
         {
+            private const int DefaultPageSize = 50;
+
             private readonly ILocalizationContext context;
             private readonly IMapper mapper;
 
@@ -33,9 +49,46 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetTranslationsGridDat
             /// <inheritdoc/>
             public async Task<TranslationsGridDataResult> Handle(GetTranslationGridDataQuery request, CancellationToken cancellationToken)
             {
+                string searchQuery = request.SearchQuery?.Trim().ToUpperInvariant() ?? string.Empty;
                 TranslationsGridDataResult resultData = new TranslationsGridDataResult();
-                var languagesData = await this.context.Languages.Include(x => x.Translations).ToListAsync();
-                var translationsKeys = await this.context.Keys.AsQueryable().OrderBy(x => x.Key).ToListAsync();
+
+                Expression<Func<TranslationKey, bool>> filterExpression = x => true;
+                if (!string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    var idsByValues = await this.context
+                        .Values
+                        .Where(x => EF.Functions.Like(x.NormalizedValue, $"%{searchQuery}%"))
+                        .Select(x => x.TranslationKeyId)
+                        .Distinct()
+                        .ToListAsync(cancellationToken);
+
+                    filterExpression = x =>
+                        EF.Functions.Like(x.Key, $"%{searchQuery}%") || idsByValues.Contains(x.Id);
+                }
+
+                var translationsKeysQuery = this
+                    .context
+                    .Keys
+                    .Where(filterExpression);
+
+                resultData.AllItemsCount = await translationsKeysQuery.CountAsync(cancellationToken);
+                resultData.PageSize = DefaultPageSize;
+                resultData.CurrentPage = request.Page > 0 ? request.Page : 1;
+
+                var translationsKeys = await translationsKeysQuery
+                    .OrderBy(x => x.Key)
+                    .Skip(resultData.StartRow)
+                    .Take(DefaultPageSize)
+                    .Include(x => x.Translations)
+                    .ToListAsync(cancellationToken);
+
+                var languages = await this.context
+                    .Languages
+                    .OrderByDescending(x => x.IsDefault)
+                    .ToListAsync(cancellationToken);
+
+                var items = new List<TranslationsGridItem>();
+
                 foreach (var key in translationsKeys)
                 {
                     var currentDataItem = new TranslationsGridItem
@@ -44,26 +97,26 @@ namespace Definux.Emeraude.ClientBuilder.Requests.Queries.GetTranslationsGridDat
                         Key = key.Key,
                     };
 
-                    foreach (var languagesDataItem in languagesData)
+                    foreach (var language in languages)
                     {
-                        var currentTranslation = languagesDataItem
+                        var currentTranslation = key
                             .Translations
-                            .AsQueryable()
-                            .Include(x => x.TranslationKey)
-                            .FirstOrDefault(x => x.TranslationKey.Key == key.Key);
+                            .FirstOrDefault(x => x.LanguageId == language.Id);
 
-                        TranslationsLanguageValue languageValue = new TranslationsLanguageValue
+                        var languageValue = new TranslationsLanguageValue
                         {
-                            LanguageCode = languagesDataItem.Code,
+                            LanguageCode = language.Code,
                             Value = currentTranslation?.Value,
-                            Id = currentTranslation.Id,
+                            Id = currentTranslation?.Id ?? -1,
                         };
 
                         currentDataItem.LanguageValues.Add(languageValue);
                     }
 
-                    resultData.Items.Add(currentDataItem);
+                    items.Add(currentDataItem);
                 }
+
+                resultData.Items = items;
 
                 return resultData;
             }
