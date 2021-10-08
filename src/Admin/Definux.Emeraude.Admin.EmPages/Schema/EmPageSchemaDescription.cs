@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// <inheritdoc cref="EmPageSchemaSettings{TEntity,TModel}.Key"/>
         public string Key { get; set; }
 
-        /// <inheritdoc cref="EmPageSchemaSettings{Entity, Model}.Title"/>
+        /// <inheritdoc cref="EmPageSchemaSettings{TEntity, TModel}.Title"/>
         public string Title { get; set; }
 
         /// <summary>

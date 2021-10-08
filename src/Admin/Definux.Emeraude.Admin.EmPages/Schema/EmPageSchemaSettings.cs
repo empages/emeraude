@@ -7,6 +7,7 @@ using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Schema.DetailsView;
 using Definux.Emeraude.Admin.EmPages.Schema.FormView;
 using Definux.Emeraude.Admin.EmPages.Schema.TableView;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Helpers;
 
@@ -54,9 +55,10 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         public IList<EmPageAction> ModelActions { get; }
 
         /// <summary>
-        /// Set defaults of the current schema.
+        /// Set defaults of the current schema. It must be executed as a last method of the schema because it is
+        /// using the already defined setup.
         /// </summary>
-        public void UseDefaults()
+        public void BuildDefaults()
         {
             this.ModelActions.Add(new EmPageAction()
             {
@@ -98,6 +100,30 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                 Order = 1,
                 IsActive = false,
             });
+
+            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = this.Title,
+                IsActive = true,
+                Href = $"/admin/{this.Key}",
+            });
+
+            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = EmPagesPlaceholders.FormAction,
+                Order = 1,
+                IsActive = false,
+            });
+
+            if (this.formViewConfigurationBuilder.ViewItems.Any(x => x.Type == FormViewItemType.CreateEdit || x.Type == FormViewItemType.EditOnly))
+            {
+                this.detailsViewConfigurationBuilder.PageActions.Add(new EmPageAction
+                {
+                    Order = 1,
+                    Name = "Edit",
+                    RelativeUrlFormat = "/{0}/edit",
+                });
+            }
         }
 
         /// <summary>
@@ -174,6 +200,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                     Breadcrumbs = this.formViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
                 },
             };
+
+            description.FormView.SetModelValidatorAction(this.formViewConfigurationBuilder.ModelValidatorAction);
 
             return description;
         }

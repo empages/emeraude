@@ -14,7 +14,7 @@ using Definux.Emeraude.Admin.EmPages.Services;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
 using Definux.Emeraude.Essentials.Extensions;
 using Definux.Emeraude.Essentials.Models;
-using Definux.Emeraude.Persistence;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,8 +32,10 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
         /// <param name="assemblies"></param>
         public static void RegisterEmPages(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            services.RegisterEmPageSchemas(assemblies);
-            services.RegisterEmPagesRequests(assemblies);
+            var assembliesList = assemblies.ToList();
+
+            services.RegisterEmPageSchemas(assembliesList);
+            services.RegisterEmPagesDataServices(assembliesList);
 
             services.AddScoped<IEmPageSchemaProvider, EmPageSchemaProvider>();
             services.AddScoped<IEmPageDataProvider, EmPageDataProvider>();
@@ -44,7 +46,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
                 {
                     typeof(IValuePipe),
                 },
-                assemblies);
+                assembliesList);
         }
 
         private static void RegisterEmPageSchemas(this IServiceCollection services, IEnumerable<Assembly> assemblies)
@@ -65,7 +67,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
             }
         }
 
-        private static void RegisterEmPagesRequests(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        private static void RegisterEmPagesDataServices(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
             var managerTypes = new List<Type>();
 
@@ -96,98 +98,131 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
                 var modelType = managerType.BaseType.GetTypeInfo().GenericTypeArguments[1];
 
                 services.AddTransient(managerType);
-                services.RegisterFetchGenericQueries(entityType, modelType);
-                services.RegisterDetailsGenericQueries(entityType, modelType);
-                services.RegisterExistsGenericQueries(entityType);
-                services.RegisterCreateGenericCommands(entityType, modelType);
-                services.RegisterEditGenericCommands(entityType, modelType);
-                services.RegisterDeleteGenericCommands(entityType);
+                services.RegisterFetchQueries(entityType, modelType);
+                services.RegisterDetailsQueries(entityType, modelType);
+                services.RegisterExistsQueries(entityType);
+                services.RegisterCreateCommands(entityType, modelType);
+                services.RegisterEditCommands(entityType, modelType);
+                services.RegisterDeleteCommands(entityType, modelType);
             }
         }
 
-        private static void RegisterFetchGenericQueries(
+        private static void RegisterFetchQueries(
             this IServiceCollection services,
             Type entityType,
             Type modelType)
         {
-            Type paginatedResultType = typeof(PaginatedList<>);
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type queryType = typeof(EmPageDataFetchQuery<,>);
-            Type queryHandler = typeof(EmPageDataFetchQueryHandler<,>);
-            Type constructedPaginatedResultType = paginatedResultType.MakeGenericType(modelType);
-            Type constructedQueryType = queryType.MakeGenericType(entityType, modelType);
-            Type constructedQueryRequestHandlerType = requestHandlerType.MakeGenericType(constructedQueryType, constructedPaginatedResultType);
-            Type constructedQueryHandler = queryHandler.MakeGenericType(entityType, modelType);
+            var paginatedResultType = typeof(PaginatedList<>)
+                .MakeGenericType(modelType);
 
-            services.AddTransient(constructedQueryRequestHandlerType, constructedQueryHandler);
+            var queryType = typeof(EmPageDataFetchQuery<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var queryRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(queryType, paginatedResultType);
+
+            var queryHandler = typeof(EmPageDataFetchQueryHandler<,>)
+                .MakeGenericType(entityType, modelType);
+
+            services.AddTransient(queryRequestHandlerType, queryHandler);
         }
 
-        private static void RegisterDetailsGenericQueries(
+        private static void RegisterDetailsQueries(
             this IServiceCollection services,
             Type entityType,
             Type modelType)
         {
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type queryType = typeof(EmPageDataDetailsQuery<,>);
-            Type queryHandlerType = typeof(EmPageDataDetailsQueryHandler<,>);
-            Type constructedQueryType = queryType.MakeGenericType(entityType, modelType);
-            Type constructedQueryRequestHandlerType = requestHandlerType.MakeGenericType(constructedQueryType, modelType);
-            Type constructedQueryHandler = queryHandlerType.MakeGenericType(entityType, modelType);
-            services.AddTransient(constructedQueryRequestHandlerType, constructedQueryHandler);
+            var queryType = typeof(EmPageDataDetailsQuery<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var queryRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(queryType, modelType);
+
+            var queryHandler = typeof(EmPageDataDetailsQueryHandler<,>)
+                .MakeGenericType(entityType, modelType);
+
+            services.AddTransient(queryRequestHandlerType, queryHandler);
         }
 
-        private static void RegisterExistsGenericQueries(
+        private static void RegisterExistsQueries(
             this IServiceCollection services,
             Type entityType)
         {
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type queryType = typeof(EmPageDataExistsQuery<>);
-            Type queryHandlerType = typeof(EmPageDataExistsQueryHandler<>);
-            Type constructedQueryType = queryType.MakeGenericType(entityType);
-            Type constructedQueryRequestHandlerType = requestHandlerType.MakeGenericType(constructedQueryType, typeof(bool));
-            Type constructedQueryHandler = queryHandlerType.MakeGenericType(entityType);
-            services.AddTransient(constructedQueryRequestHandlerType, constructedQueryHandler);
+            var queryType = typeof(EmPageDataExistsQuery<>)
+                .MakeGenericType(entityType);
+
+            var queryRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(queryType, typeof(bool));
+
+            var queryHandler = typeof(EmPageDataExistsQueryHandler<>)
+                .MakeGenericType(entityType);
+
+            services.AddTransient(queryRequestHandlerType, queryHandler);
         }
 
-        private static void RegisterCreateGenericCommands(
+        private static void RegisterCreateCommands(
             this IServiceCollection services,
             Type entityType,
             Type modelType)
         {
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type commandType = typeof(EmPageDataCreateCommand<,>);
-            Type commandHandlerType = typeof(EmPageDataCreateCommandHandler<,>);
-            Type constructedCommandType = commandType.MakeGenericType(entityType, modelType);
-            Type constructedCommandRequestHandlerType = requestHandlerType.MakeGenericType(constructedCommandType, typeof(Guid?));
-            Type constructedCommandHandler = commandHandlerType.MakeGenericType(entityType, modelType);
-            services.AddTransient(constructedCommandRequestHandlerType, constructedCommandHandler);
+            var commandType = typeof(EmPageDataCreateCommand<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(commandType, typeof(Guid?));
+
+            var commandHandler = typeof(EmPageDataCreateCommandHandler<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandValidatorType = typeof(EmPageDataCreateCommandValidator<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandValidatorContractType = typeof(IValidator<>)
+                .MakeGenericType(commandType);
+
+            services.AddTransient(commandRequestHandlerType, commandHandler);
+            services.AddTransient(commandValidatorContractType, commandValidatorType);
         }
 
-        private static void RegisterEditGenericCommands(
+        private static void RegisterEditCommands(
             this IServiceCollection services,
             Type entityType,
             Type modelType)
         {
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type commandType = typeof(EmPageDataEditCommand<,>);
-            Type commandHandlerType = typeof(EmPageDataEditCommandHandler<,>);
-            Type constructedCommandType = commandType.MakeGenericType(entityType, modelType);
-            Type constructedCommandRequestHandlerType = requestHandlerType.MakeGenericType(constructedCommandType, typeof(Guid?));
-            Type constructedCommandHandler = commandHandlerType.MakeGenericType(entityType, modelType);
-            services.AddTransient(constructedCommandRequestHandlerType, constructedCommandHandler);
+            var commandType = typeof(EmPageDataEditCommand<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(commandType, typeof(Guid?));
+
+            var commandHandler = typeof(EmPageDataEditCommandHandler<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandValidatorType = typeof(EmPageDataEditCommandValidator<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandValidatorContractType = typeof(IValidator<>)
+                .MakeGenericType(commandType);
+
+            services.AddTransient(commandRequestHandlerType, commandHandler);
+            services.AddTransient(commandValidatorContractType, commandValidatorType);
         }
 
-        private static void RegisterDeleteGenericCommands(
+        private static void RegisterDeleteCommands(
             this IServiceCollection services,
-            Type entityType)
+            Type entityType,
+            Type modelType)
         {
-            Type requestHandlerType = typeof(IRequestHandler<,>);
-            Type commandType = typeof(EmPageDataDeleteCommand<>);
-            Type commandHandlerType = typeof(EmPageDataDeleteCommandHandler<>);
-            Type constructedCommandType = commandType.MakeGenericType(entityType);
-            Type constructedCommandRequestHandlerType = requestHandlerType.MakeGenericType(constructedCommandType, typeof(bool));
-            Type constructedCommandHandler = commandHandlerType.MakeGenericType(entityType);
-            services.AddTransient(constructedCommandRequestHandlerType, constructedCommandHandler);
+            var commandType = typeof(EmPageDataDeleteCommand<,>)
+                .MakeGenericType(entityType, modelType);
+
+            var commandRequestHandlerType = typeof(IRequestHandler<,>)
+                .MakeGenericType(commandType, typeof(bool));
+
+            var commandHandler = typeof(EmPageDataDeleteCommandHandler<,>)
+                .MakeGenericType(entityType, modelType);
+
+            services.AddTransient(commandRequestHandlerType, commandHandler);
         }
     }
 }

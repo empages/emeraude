@@ -1,13 +1,14 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Domain.Entities;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails
 {
     /// <inheritdoc/>
-    public interface IEmPageDataDetailsQueryHandler<TDetailsQuery, TEntity, TRequestModel> : IRequestHandler<TDetailsQuery, TRequestModel>
+    public interface IEmPageDataDetailsQueryHandler<TDetailsQuery, TEntity, TModel> : IRequestHandler<TDetailsQuery, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, new()
-        where TDetailsQuery : IEmPageDataDetailsQuery<TEntity, TRequestModel>
+        where TModel : class, IEmPageModel, new()
+        where TDetailsQuery : IEmPageDataDetailsQuery<TEntity, TModel>
     {
     }
 }

@@ -1,5 +1,7 @@
-﻿using Definux.Emeraude.Admin.EmPages.Data;
+﻿using System.Collections.Generic;
+using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Services;
+using FluentValidation;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.EmPages.User

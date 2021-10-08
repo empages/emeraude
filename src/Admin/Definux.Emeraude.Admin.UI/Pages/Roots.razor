@@ -20,11 +20,4 @@
             new() {Title = Root, Order = 2 },
         };
     }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
-        ReloadBreadcrumbs();
-    }
-
 }

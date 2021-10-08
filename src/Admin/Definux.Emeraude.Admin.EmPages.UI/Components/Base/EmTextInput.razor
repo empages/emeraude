@@ -1,0 +1,15 @@
+﻿@inherits EmBaseFormElement
+
+<input type="text" class="form-control" placeholder="@Label" value="@Value" @oninput="HandleOnInputEventAsync" @onchange="HandleOnChangeEventAsync" />
+
+@code {
+    private async Task HandleOnChangeEventAsync(ChangeEventArgs eventArgs)
+    {
+        await OnValueChanged.InvokeAsync(eventArgs);
+    }
+
+    private async Task HandleOnInputEventAsync(ChangeEventArgs eventArgs)
+    {
+        await OnValueChanged.InvokeAsync(eventArgs);
+    }
+}

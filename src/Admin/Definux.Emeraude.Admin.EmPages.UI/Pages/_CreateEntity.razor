@@ -1,56 +1,56 @@
 ﻿@page "/admin/{entityKey}/create"
-@using Definux.Emeraude.Admin.EmPages.UI.Adapters
+@inherits EmPage
 @using Definux.Emeraude.Admin.UI.Extensions
-@implements IDisposable
-@inject IEmPageSchemaProvider SchemaProvider;
-@inject NavigationManager NavigationManager;
-<h3>@EntityKey</h3>
-@if (ViewSchema != null)
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+
+@if (Loaded)
 {
-    <EmPageFormView ViewSchema="ViewSchema"/>
+    <EmPageFormView ViewSchema="ViewSchema" ViewData="ViewData"/>
+}
+else
+{
+    <LoadingIndicator/>
 }
 
 @code {
-    private string entityKey;
     private EmPageFormViewSchema ViewSchema { get; set; }
     
-    [Parameter]
-    public string EntityKey { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        this.entityKey = EntityKey;
-        await this.LoadViewSchemaAsync();
-    }
+    private EmPageFormViewData ViewData { get; set; }
     
-    protected override async Task OnParametersSetAsync()
+    private bool FirstInitial { get; set; }
+    
+    private string PageTitle => ViewSchema?.Context.Title;
+    
+    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
+   
+    protected override void OnAfterRender(bool firstRender)
     {
-        await base.OnParametersSetAsync();
-        if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
+        base.OnAfterRender(firstRender);
+        if (firstRender)
         {
-            this.entityKey = EntityKey;
-            await this.LoadViewSchemaAsync();
+            FirstInitial = true;
+            StateHasChanged();
         }
     }
 
-    private async void LocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        await this.LoadViewSchemaAsync();
-    }
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
-    private async Task LoadViewSchemaAsync()
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
+    
+    protected override async Task ReloadPageAsync()
     {
-        this.ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EntityKey);
-        this.StateHasChanged();
-        if (this.ViewSchema == null)
+        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.CreateForm, EntityKey);
+        StateHasChanged();
+        if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
+            return;
         }
+        
+        ViewData = await DataProvider.RetrieveFormViewDataAsync(EmPageFormType.CreateForm, EntityKey, null, GetQueryParameters(), ViewSchema);
+        StateHasChanged();
     }
-    
-    void IDisposable.Dispose()
-    {
-        NavigationManager.LocationChanged -= LocationChanged;
-    }
+
 }

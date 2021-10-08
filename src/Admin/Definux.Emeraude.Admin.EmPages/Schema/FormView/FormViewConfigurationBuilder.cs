@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using Definux.Emeraude.Admin.EmPages.Data.Requests;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Helpers;
+using Definux.Utilities.Extensions;
 using FluentValidation;
 
 namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
@@ -17,6 +22,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         where TEntity : class, IEntity, new()
         where TModel : class, IEmPageModel, new()
     {
+        private readonly List<FormViewItem> viewItems;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FormViewConfigurationBuilder{TEntity, TModel}"/> class.
         /// </summary>
@@ -24,10 +31,11 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         {
             this.PageActions = new List<EmPageAction>();
             this.Breadcrumbs = new List<EmPageBreadcrumb>();
+            this.viewItems = new List<FormViewItem>();
         }
 
         /// <inheritdoc/>
-        public IReadOnlyList<FormViewItem> ViewItems { get; }
+        public IReadOnlyList<FormViewItem> ViewItems => this.viewItems;
 
         /// <inheritdoc/>
         public IList<EmPageAction> PageActions { get; }
@@ -36,41 +44,48 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
         /// <summary>
-        /// Create command validator action.
+        /// Model validator action.
         /// </summary>
-        public Action<AbstractValidator<EmPageDataCreateCommand<TEntity, TModel>>> CreateCommandValidator { get; private set; }
-
-        /// <summary>
-        /// Edit command validator action.
-        /// </summary>
-        public Action<AbstractValidator<EmPageDataEditCommand<TEntity, TModel>>> EditCommandValidator { get; private set; }
+        public Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> ModelValidatorAction { get; private set; }
 
         /// <inheritdoc/>
         public IEmPageSchemaViewConfigurationBuilder<FormViewItem, TEntity, TModel> Use(
             Expression<Func<TModel, object>> property,
             Action<FormViewItem> viewItemAction)
         {
+            var memberInfo = ReflectionHelpers.GetCorrectPropertyMember(property);
+            FormViewItem viewItem = new FormViewItem();
+            viewItem.LoadSourceInfo(memberInfo as PropertyInfo);
+            viewItemAction.Invoke(viewItem);
+
+            var compatibleTypes = new[] { viewItem.Type, FormViewItemType.CreateEdit };
+            if (this.ViewItems.Any(x => x.SourceName == viewItem.SourceName && compatibleTypes.Contains(x.Type)))
+            {
+                throw new ArgumentException($"Property {viewItem.SourceName} cannot be registered more than once.");
+            }
+
+            if (string.IsNullOrWhiteSpace(viewItem.Title))
+            {
+                viewItem.Title = viewItem.SourceName.SplitWordsByCapitalLetters();
+            }
+
+            if (viewItem.Order == -1)
+            {
+                viewItem.Order = this.ViewItems.Count;
+            }
+
+            this.viewItems.Add(viewItem);
+
             return this;
         }
 
         /// <summary>
-        /// Configures create command validation rules
+        /// Configures model validation rules
         /// </summary>
-        /// <param name="validationAction"></param>
-        /// <typeparam name="TEntity">Domain entity mapped to the EmPage model.</typeparam>
-        public void ConfigureCreateCommandValidator(Action<AbstractValidator<EmPageDataCreateCommand<TEntity, TModel>>> validationAction)
+        /// <param name="validatorAction"></param>
+        public void ConfigureModelValidatorValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)
         {
-            this.CreateCommandValidator = validationAction;
-        }
-
-        /// <summary>
-        /// Configures edit command validation rules
-        /// </summary>
-        /// <param name="validationAction"></param>
-        /// <typeparam name="TEntity">Domain entity mapped to the EmPage model.</typeparam>
-        public void ConfigureEditCommandValidator(Action<AbstractValidator<EmPageDataEditCommand<TEntity, TModel>>> validationAction)
-        {
-            this.EditCommandValidator = validationAction;
+            this.ModelValidatorAction = validatorAction;
         }
     }
 }

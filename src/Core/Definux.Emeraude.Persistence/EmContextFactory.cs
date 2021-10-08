@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Definux.Emeraude.Application.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ namespace Definux.Emeraude.Persistence
             => this.dbContextFactory.CreateDbContext();
 
         /// <inheritdoc />
-        public async Task<DbContext> CreateDbContextAsync()
-            => await this.dbContextFactory.CreateDbContextAsync();
+        public async Task<DbContext> CreateDbContextAsync(CancellationToken cancellationToken = default)
+            => await this.dbContextFactory.CreateDbContextAsync(cancellationToken);
     }
 }

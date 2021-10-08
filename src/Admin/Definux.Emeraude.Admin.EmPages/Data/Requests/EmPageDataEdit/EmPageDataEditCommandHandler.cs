@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
@@ -10,20 +11,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
 {
-    /// <inheritdoc cref="IEmPageDataEditCommandHandler{TEditCommand,TEntity,TRequestModel}"/>
-    public class EmPageDataEditCommandHandler<TEntity, TRequestModel> : IEmPageDataEditCommandHandler<EmPageDataEditCommand<TEntity, TRequestModel>, TEntity, TRequestModel>
+    /// <inheritdoc cref="IEmPageDataEditCommandHandler{TEditCommand,TEntity,TModel}"/>
+    public class EmPageDataEditCommandHandler<TEntity, TModel> : IEmPageDataEditCommandHandler<EmPageDataEditCommand<TEntity, TModel>, TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, new()
+        where TModel : class, IEmPageModel, new()
     {
         private readonly IEmContext context;
         private readonly IMapper mapper;
         private readonly IEmLogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataEditCommandHandler{TEntity,TRequestModel}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataEditCommandHandler{TEntity,TModel}"/> class.
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="mapper"></param>
-        /// <param name="logger"></param>
         /// <param name="logger"></param>
         public EmPageDataEditCommandHandler(IEmContext context, IMapper mapper, IEmLogger logger)
         {
@@ -33,7 +34,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
         }
 
         /// <inheritdoc/>
-        public async Task<Guid?> Handle(EmPageDataEditCommand<TEntity, TRequestModel> request, CancellationToken cancellationToken)
+        public async Task<Guid?> Handle(EmPageDataEditCommand<TEntity, TModel> request, CancellationToken cancellationToken)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataEditCommandHandler<TEntity, TRequestModel>));
+                await this.logger.LogErrorAsync(ex, nameof(EmPageDataEditCommandHandler<TEntity, TModel>));
                 return null;
             }
         }

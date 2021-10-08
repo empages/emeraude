@@ -1,4 +1,7 @@
-﻿namespace Definux.Emeraude.Admin.EmPages.Schema
+﻿using System;
+using System.Collections.Generic;
+
+namespace Definux.Emeraude.Admin.EmPages.Schema
 {
     /// <summary>
     /// Implementation class of page breadcrumb.
@@ -24,5 +27,10 @@
         /// Target href of the breadcrumb.
         /// </summary>
         public string Href { get; set; }
+
+        /// <summary>
+        /// Additional parameters for other logical operations.
+        /// </summary>
+        public IDictionary<string, object> AdditionalParameters { get; set; }
     }
 }

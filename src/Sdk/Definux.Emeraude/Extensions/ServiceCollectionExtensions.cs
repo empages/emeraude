@@ -146,6 +146,7 @@ namespace Definux.Emeraude.Extensions
         public static void ApplyEmeraudeBaseOptions(this EmOptionsSetup setup)
         {
             setup.MainOptions.AddAssembly("Definux.Emeraude.Admin");
+            setup.MainOptions.AddAssembly("Definux.Emeraude.Admin.EmPages");
             setup.MainOptions.AddAssembly("Definux.Emeraude.ClientBuilder");
             setup.MainOptions.AddAssembly("Definux.Emeraude.Client");
             setup.MainOptions.AddAssembly("Definux.Emeraude.Application");

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
 {
     /// <summary>
-    /// Details view item of <see cref="IEmPageSchema{TModel}"/>.
+    /// Details view item of <see cref="IEmPageSchema{TEntity,TModel}"/>.
     /// </summary>
     public class DetailsViewItem : ViewItem, IValuePipedViewItem
     {

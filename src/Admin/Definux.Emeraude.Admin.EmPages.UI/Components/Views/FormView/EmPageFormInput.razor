@@ -1,0 +1,43 @@
+﻿<div class="form-group">
+    <label class="form-label">
+        @Model.Label
+    </label>
+    <DynamicComponent Type="Model.Component" Parameters="GetParameters()"></DynamicComponent>
+</div>
+
+@code {
+    [Parameter]
+    public EmPageFormInputModel Model { get; set; }
+
+    private EventCallback<ChangeEventArgs> ValueChangedCallback
+        => EventCallback.Factory.Create<ChangeEventArgs>(this, args =>
+        {
+            Model.Value = args.Value;
+            StateHasChanged();
+        });
+
+    private Dictionary<string, object> GetParameters()
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Value", Model.Value },
+            { "Property", Model.Property },
+            { "Type", Model.Type },
+            { "Label", Model.Label },
+            { "OnValueChanged", ValueChangedCallback }
+        };
+
+        if (Model.Parameters != null && Model.Parameters.Count > 0)
+        {
+            foreach (var parameter in Model.Parameters)
+            {
+                if (!parameters.ContainsKey(parameter.Key))
+                {
+                    parameters[parameter.Key] = parameter.Value;
+                }
+            }
+        }
+        
+        return parameters;
+    }
+}

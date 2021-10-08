@@ -19,9 +19,6 @@ namespace Definux.Emeraude.Admin.EmPages.User
                 Title = "Users",
             };
 
-            settings.UseDefaults();
-            settings.ModelActions.RemoveAt(1);
-
             settings
                 .ConfigureTableView(tableView =>
                 {
@@ -91,22 +88,9 @@ namespace Definux.Emeraude.Admin.EmPages.User
                             item.SetComponent<EmFlag>();
                         });
                 })
-                .ConfigureFormView(x =>
-                {
-                    x.ConfigureCreateCommandValidator(validator =>
-                    {
-                        validator.RuleFor(y => y.Model.Email)
-                            .Must(y => y.Contains("asd"))
-                            .WithMessage("nanana");
-                    });
+                .BuildDefaults();
 
-                    x.ConfigureEditCommandValidator(validator =>
-                    {
-                        validator.RuleFor(y => y.Model.Email)
-                            .Must(y => y.Contains("asd"))
-                            .WithMessage("nanana");
-                    });
-                });
+            settings.ModelActions.RemoveAt(1);
 
             return settings;
         }

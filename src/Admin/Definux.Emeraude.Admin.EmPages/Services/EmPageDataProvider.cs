@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Admin.EmPages.Schema.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
+using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
 using Definux.Emeraude.Admin.UI.Models;
 using Definux.Emeraude.Application.Logger;
@@ -139,6 +142,41 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
                     return result;
                 }
+            }
+
+            return emptyResult;
+        }
+
+        /// <inheritdoc/>
+        public async Task<EmPageFormViewData> RetrieveFormViewDataAsync(
+            EmPageFormType type,
+            string entityKey,
+            string entityId,
+            IDictionary<string, StringValues> query,
+            EmPageFormViewSchema schema)
+        {
+            var emptyResult = new EmPageFormViewData();
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+            if (schemaDescription.DataManagerType != null)
+            {
+                var result = new EmPageFormViewData();
+                var formViewItems = type switch
+                {
+                    EmPageFormType.CreateForm => schemaDescription.FormView.CreateFormViewItems,
+                    EmPageFormType.EditForm => schemaDescription.FormView.EditFormViewItems,
+                    _ => new List<FormViewItem>()
+                };
+
+                foreach (var formViewItem in formViewItems)
+                {
+                    result.Inputs.Add(new EmPageFormInputModel
+                    {
+                        Label = formViewItem.Title,
+                        Component = formViewItem.Component,
+                    });
+                }
+
+                return result;
             }
 
             return emptyResult;

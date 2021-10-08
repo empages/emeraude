@@ -1,4 +1,6 @@
-﻿namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
+﻿using System.Collections.Generic;
+
+namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
 {
     /// <summary>
     /// Schema implementation for form view.

@@ -4,9 +4,9 @@ using Definux.Emeraude.Domain.Entities;
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 {
     /// <inheritdoc cref="IEmPageDataFetchQuery{TEntity,TRequestModel}"/>
-    public class EmPageDataFetchQuery<TEntity, TRequestModel> : EmPageGenericEntityRequst<TEntity>, IEmPageDataFetchQuery<TEntity, TRequestModel>
+    public class EmPageDataFetchQuery<TEntity, TModel> : IEmPageDataFetchQuery<TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, IEmPageModel, new()
+        where TModel : class, IEmPageModel, new()
     {
         /// <inheritdoc/>
         public int Page { get; set; }

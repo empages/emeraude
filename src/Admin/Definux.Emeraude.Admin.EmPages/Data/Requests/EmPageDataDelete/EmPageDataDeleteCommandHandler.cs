@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
@@ -9,16 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
 {
-    /// <inheritdoc cref="IEmPageDataDeleteCommandHandler{TDeleteCommand,TEntity}"/>
-    public class EmPageDataDeleteCommandHandler<TEntity> : IEmPageDataDeleteCommandHandler<EmPageDataDeleteCommand<TEntity>, TEntity>
+    /// <inheritdoc cref="IEmPageDataDeleteCommandHandler{TDeleteCommand,TEntity, TModel}"/>
+    public class EmPageDataDeleteCommandHandler<TEntity, TModel> : IEmPageDataDeleteCommandHandler<EmPageDataDeleteCommand<TEntity, TModel>, TEntity, TModel>
         where TEntity : class, IEntity, new()
+        where TModel : class, IEmPageModel, new()
     {
         private readonly IEmContext context;
         private readonly IMapper mapper;
         private readonly IEmLogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataDeleteCommandHandler{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataDeleteCommandHandler{TEntity, TModel}"/> class.
         /// </summary>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
@@ -31,7 +33,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
         }
 
         /// <inheritdoc/>
-        public async Task<bool> Handle(EmPageDataDeleteCommand<TEntity> request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EmPageDataDeleteCommand<TEntity, TModel> request, CancellationToken cancellationToken)
         {
             try
             {
@@ -50,7 +52,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataDeleteCommandHandler<TEntity>));
+                await this.logger.LogErrorAsync(ex, nameof(EmPageDataDeleteCommandHandler<TEntity, TModel>));
                 return false;
             }
         }

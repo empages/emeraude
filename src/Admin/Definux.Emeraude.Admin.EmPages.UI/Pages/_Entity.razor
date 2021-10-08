@@ -38,27 +38,22 @@ else
     }
     
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => this.ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => this.ViewSchema?.NavbarActions ?? new List<ActionModel>();
+        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
     
     protected override async Task ReloadPageAsync()
     {
-        this.ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
-        if (this.ViewSchema == null)
+        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
+        if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
-        else
-        {
-            ViewData = await DataProvider.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
-        }
         
-        this.StateHasChanged();
-        ReloadBreadcrumbs();
-        ReloadNavigationActions();
+        ViewData = await DataProvider.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        StateHasChanged();
     }
 
 }

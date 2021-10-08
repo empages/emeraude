@@ -14,14 +14,13 @@ using Definux.Emeraude.Essentials.Helpers;
 using Definux.Emeraude.Essentials.Models;
 using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 {
     /// <inheritdoc/>
-    public class EmPageDataFetchQueryHandler<TEntity, TRequestModel> : IEmPageDataFetchQueryHandler<EmPageDataFetchQuery<TEntity, TRequestModel>, TEntity, TRequestModel>
+    public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQueryHandler<EmPageDataFetchQuery<TEntity, TModel>, TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, IEmPageModel, new()
+        where TModel : class, IEmPageModel, new()
     {
         private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
@@ -29,7 +28,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
         private readonly IEmPageService emPageService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryHandler{TEntity,TRequestModel}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryHandler{TEntity,TModel}"/> class.
         /// </summary>
         /// <param name="contextFactory"></param>
         /// <param name="mapper"></param>
@@ -48,10 +47,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
         }
 
         /// <inheritdoc/>
-        public async Task<PaginatedList<TRequestModel>> Handle(EmPageDataFetchQuery<TEntity, TRequestModel> request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<TModel>> Handle(EmPageDataFetchQuery<TEntity, TModel> request, CancellationToken cancellationToken)
         {
-            await using var context = await this.contextFactory.CreateDbContextAsync();
-            var result = new PaginatedList<TRequestModel>();
+            await using var context = await this.contextFactory.CreateDbContextAsync(cancellationToken);
+            var result = new PaginatedList<TModel>();
 
             try
             {
@@ -74,15 +73,15 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
                     .Take(request.PageSize)
                     .ToList();
 
-                var entitiesModels = this.mapper.Map<IEnumerable<TRequestModel>>(entities);
+                var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
 
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TEntity), typeof(TRequestModel));
+                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TEntity), typeof(TModel));
                 await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.TableView.ViewItems);
                 result.Items = entitiesModels;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataFetchQueryHandler<TEntity, TRequestModel>));
+                await this.logger.LogErrorAsync(ex, nameof(EmPageDataFetchQueryHandler<TEntity, TModel>));
             }
 
             return result;
@@ -106,7 +105,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
             return orderType;
         }
 
-        private Expression<Func<TEntity, bool>> BuildRequestExpression(EmPageDataFetchQuery<TEntity, TRequestModel> request)
+        private Expression<Func<TEntity, bool>> BuildRequestExpression(EmPageDataFetchQuery<TEntity, TModel> request)
         {
             var expressionList = new List<Expression<Func<TEntity, bool>>>();
 

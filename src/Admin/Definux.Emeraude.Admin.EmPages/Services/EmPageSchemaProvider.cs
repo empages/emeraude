@@ -7,6 +7,7 @@ using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Definux.Emeraude.Admin.UI.Models;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Options;
@@ -59,10 +60,6 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                     Name = tableViewItem.Title,
                     Order = tableViewItem.Order,
                 });
-
-                schema.PropertyComponentPair[tableViewItem.SourceName] = tableViewItem.Component;
-                schema.PropertyTypePair[tableViewItem.SourceName] = tableViewItem.SourceType;
-                schema.PropertyParametersPair[tableViewItem.SourceName] = tableViewItem.Parameters;
             }
 
             var actions = schemaDescription.ModelActions ?? new List<EmPageAction>();
@@ -104,26 +101,21 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 Title = schemaDescription.Title,
             });
 
-            foreach (var detailsViewItem in schemaDescription.DetailsView.ViewItems)
-            {
-                schema.PropertyComponentPair[detailsViewItem.SourceName] = detailsViewItem.Component;
-                schema.PropertyTypePair[detailsViewItem.SourceName] = detailsViewItem.SourceType;
-                schema.PropertyParametersPair[detailsViewItem.SourceName] = detailsViewItem.Parameters;
-            }
-
             this.MapViewSchema(schemaDescription.DetailsView, schema);
 
             return schema;
         }
 
         /// <inheritdoc/>
-        public async Task<EmPageFormViewSchema> GetFormViewSchemaAsync(string entityKey)
+        public async Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string entityKey)
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
 
-            if (!schemaDescription.FormView.IsActive)
+            switch (type)
             {
-                return null;
+                case EmPageFormType.CreateForm when !schemaDescription.FormView.IsCreateFormActive:
+                case EmPageFormType.EditForm when !schemaDescription.FormView.IsEditFormActive:
+                    return null;
             }
 
             var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext
@@ -131,6 +123,18 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 Key = schemaDescription.Key,
                 Title = schemaDescription.Title,
             });
+
+            this.MapViewSchema(schemaDescription.FormView, schema);
+
+            // Set built-in placeholders
+            var breadcrumbsWithPlaceholders = schema.Breadcrumbs.Where(x => x.IsUsingPlaceholder);
+            foreach (var breadcrumb in breadcrumbsWithPlaceholders)
+            {
+                if (EmPagesPlaceholders.TrySetFormAction(breadcrumb.Title, type, out var foundPlaceholderValue))
+                {
+                    breadcrumb.Title = foundPlaceholderValue;
+                }
+            }
 
             return schema;
         }
@@ -162,6 +166,13 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                     IsActive = breadcrumb.IsActive,
                     Order = breadcrumb.Order,
                 });
+            }
+
+            foreach (var viewItem in sourceDescription.ViewItems)
+            {
+                destinationSchema.PropertyComponentPair[viewItem.SourceName] = viewItem.Component;
+                destinationSchema.PropertyTypePair[viewItem.SourceName] = viewItem.SourceType;
+                destinationSchema.PropertyParametersPair[viewItem.SourceName] = viewItem.Parameters;
             }
         }
     }

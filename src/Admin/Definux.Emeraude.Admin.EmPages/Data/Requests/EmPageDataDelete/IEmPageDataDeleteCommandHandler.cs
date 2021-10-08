@@ -1,12 +1,14 @@
-﻿using Definux.Emeraude.Domain.Entities;
+﻿using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Domain.Entities;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
 {
     /// <inheritdoc/>
-    public interface IEmPageDataDeleteCommandHandler<TDeleteCommand, TEntity> : IRequestHandler<TDeleteCommand, bool>
+    public interface IEmPageDataDeleteCommandHandler<in TDeleteCommand, TEntity, TModel> : IRequestHandler<TDeleteCommand, bool>
         where TEntity : class, IEntity, new()
-        where TDeleteCommand : IEmPageDataDeleteCommand<TEntity>
+        where TModel : class, IEmPageModel, new()
+        where TDeleteCommand : IEmPageDataDeleteCommand<TEntity, TModel>
     {
     }
 }

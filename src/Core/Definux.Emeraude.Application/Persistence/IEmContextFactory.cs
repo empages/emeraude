@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Application.Persistence
@@ -17,7 +18,8 @@ namespace Definux.Emeraude.Application.Persistence
         /// <summary>
         /// Creates instance of database context.
         /// </summary>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<DbContext> CreateDbContextAsync();
+        Task<DbContext> CreateDbContextAsync(CancellationToken cancellationToken = default);
     }
 }

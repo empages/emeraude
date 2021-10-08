@@ -47,12 +47,18 @@ namespace Definux.Emeraude.Admin.UI.Pages
         }
 
         /// <inheritdoc/>
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             this.NavigationManager.LocationChanged += this.OnLocationChanged;
+            await base.OnInitializedAsync();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
             this.ReloadBreadcrumbs();
             this.ReloadNavigationActions();
-            return base.OnInitializedAsync();
         }
 
         /// <summary>

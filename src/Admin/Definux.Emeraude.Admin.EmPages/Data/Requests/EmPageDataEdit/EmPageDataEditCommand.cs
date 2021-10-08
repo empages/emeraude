@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
 {
-    /// <inheritdoc cref="IEmPageDataEditCommand{TEntity,TRequestModel}"/>
-    public class EmPageDataEditCommand<TEntity, TRequestModel> : EmPageGenericEntityRequst<TEntity>, IEmPageDataEditCommand<TEntity, TRequestModel>
+    /// <inheritdoc cref="IEmPageDataEditCommand{TEntity,TModel}"/>
+    public class EmPageDataEditCommand<TEntity, TModel> : IEmPageDataEditCommand<TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, new()
+        where TModel : class, IEmPageModel, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataEditCommand{TEntity,TRequestModel}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataEditCommand{TEntity,TModel}"/> class.
         /// </summary>
         /// <param name="entityId"></param>
         /// <param name="model"></param>
-        public EmPageDataEditCommand(Guid entityId, TRequestModel model)
+        public EmPageDataEditCommand(Guid entityId, TModel model)
         {
             this.EntityId = entityId;
             this.Model = model;
@@ -24,6 +25,6 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
         public Guid EntityId { get; set; }
 
         /// <inheritdoc/>
-        public TRequestModel Model { get; set; }
+        public TModel Model { get; set; }
     }
 }

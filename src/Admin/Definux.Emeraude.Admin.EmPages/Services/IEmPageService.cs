@@ -26,6 +26,16 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type entityType, Type modelType);
 
         /// <summary>
+        /// Finds registered schema description by the entity and model types.
+        /// The difference than <see cref="FindSchemaDescriptionAsync(Type,Type)"/> is that method
+        /// must be executed on places where the schema must be already defined because we assume schemas are already fetched.
+        /// </summary>
+        /// <param name="entityType"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        EmPageSchemaDescription FindSchemaDescriptionByContract(Type entityType, Type modelType);
+
+        /// <summary>
         /// Apply value pipes of the specified entity model.
         /// </summary>
         /// <param name="models"></param>

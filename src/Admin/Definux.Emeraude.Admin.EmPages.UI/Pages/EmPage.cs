@@ -46,8 +46,8 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
         protected override async Task OnInitializedAsync()
         {
             this.entityKey = this.EntityKey;
+            this.NavigationManager.LocationChanged += this.OnLocationChanged;
             await this.ReloadPageAsync();
-            await base.OnInitializedAsync();
         }
 
         /// <inheritdoc/>

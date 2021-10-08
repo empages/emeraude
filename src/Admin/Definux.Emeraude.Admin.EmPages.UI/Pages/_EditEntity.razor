@@ -1,59 +1,37 @@
 ﻿@page "/admin/{entityKey}/{entityId}/edit"
-@using Definux.Emeraude.Admin.EmPages.UI.Adapters
+@inherits EmPage
 @using Definux.Emeraude.Admin.UI.Extensions
-@implements IDisposable
-@inject IEmPageSchemaProvider SchemaProvider;
-@inject NavigationManager NavigationManager;
-<h3>@EntityKey @EntityId</h3>
 @if (ViewSchema != null)
 {
-    <EmPageFormView ViewSchema="ViewSchema"/>
+    <EmPageFormView ViewSchema="ViewSchema" ViewData="ViewData" />
 }
 
 @code {
-    private string entityKey;
     private EmPageFormViewSchema ViewSchema { get; set; }
     
-    [Parameter]
-    public string EntityKey { get; set; }
-
+    private EmPageFormViewData ViewData { get; set; }
+    
     [Parameter]
     public string EntityId { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        this.entityKey = EntityKey;
-        await this.LoadViewSchemaAsync();
-    }
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
     
-    protected override async Task OnParametersSetAsync()
+    protected override async Task ReloadPageAsync()
     {
-        await base.OnParametersSetAsync();
-        if (!(this.entityKey ?? string.Empty).Equals(EntityKey, StringComparison.OrdinalIgnoreCase))
-        {
-            this.entityKey = EntityKey;
-            await this.LoadViewSchemaAsync();
-        }
-    }
-
-    private async void LocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        await this.LoadViewSchemaAsync();
-    }
-
-    private async Task LoadViewSchemaAsync()
-    {
-        this.ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EntityKey);
-        this.StateHasChanged();
-        if (this.ViewSchema == null)
+        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.EditForm, EntityKey);
+        StateHasChanged();
+        if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
+            return;
         }
+        
+        ViewData = await DataProvider.RetrieveFormViewDataAsync(EmPageFormType.EditForm, EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        StateHasChanged();
     }
-    
-    void IDisposable.Dispose()
-    {
-        NavigationManager.LocationChanged -= LocationChanged;
-    }
+
 }

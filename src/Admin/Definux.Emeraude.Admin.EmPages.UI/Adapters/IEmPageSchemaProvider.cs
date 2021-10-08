@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
@@ -27,8 +28,9 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
         /// <summary>
         /// Gets form view schema of specified entity.
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="entityKey"></param>
         /// <returns></returns>
-        Task<EmPageFormViewSchema> GetFormViewSchemaAsync(string entityKey);
+        Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string entityKey);
     }
 }

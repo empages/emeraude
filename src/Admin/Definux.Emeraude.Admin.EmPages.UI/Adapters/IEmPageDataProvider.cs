@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
+using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
 using Microsoft.Extensions.Primitives;
 
@@ -36,5 +38,21 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
             string entityId,
             IDictionary<string, StringValues> query,
             EmPageDetailsViewSchema schema);
+
+        /// <summary>
+        /// Retrieves EmPage form view data.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="entityKey"></param>
+        /// <param name="entityId"></param>
+        /// <param name="query"></param>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        Task<EmPageFormViewData> RetrieveFormViewDataAsync(
+            EmPageFormType type,
+            string entityKey,
+            string entityId,
+            IDictionary<string, StringValues> query,
+            EmPageFormViewSchema schema);
     }
 }

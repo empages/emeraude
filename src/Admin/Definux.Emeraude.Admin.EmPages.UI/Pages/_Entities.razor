@@ -34,10 +34,10 @@ else
     }
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => this.ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => this.ViewSchema?.NavbarActions ?? new List<ActionModel>();
+        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
 
     private void ResetData()
     {
@@ -53,15 +53,11 @@ else
         if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
+            return;
         }
-        else
-        {
-            ViewData = await DataProvider.RetrieveTableViewDataAsync(EntityKey, GetQueryParameters(), ViewSchema);
-        }
-
+        
+        ViewData = await DataProvider.RetrieveTableViewDataAsync(EntityKey, GetQueryParameters(), ViewSchema);
         StateHasChanged();
-        ReloadBreadcrumbs();
-        ReloadNavigationActions();
     }
 
 }

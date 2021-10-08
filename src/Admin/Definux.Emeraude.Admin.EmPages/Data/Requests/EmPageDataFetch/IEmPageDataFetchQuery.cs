@@ -9,10 +9,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
     /// Generic query that returns all entities with or without filter.
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
-    /// <typeparam name="TRequestModel">Query response model.</typeparam>
-    public interface IEmPageDataFetchQuery<TEntity, TRequestModel> : IRequest<PaginatedList<TRequestModel>>
+    /// <typeparam name="TModel">EmPage model.</typeparam>
+    public interface IEmPageDataFetchQuery<TEntity, TModel> : IRequest<PaginatedList<TModel>>, IEmPageEntityRequest<TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, IEmPageModel, new()
+        where TModel : class, IEmPageModel, new()
     {
         /// <summary>
         /// Pagination page index. First index is 1.

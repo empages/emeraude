@@ -10,11 +10,11 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
     /// </summary>
     /// <typeparam name="TFetchQuery">Fetch query.</typeparam>
     /// <typeparam name="TEntity">Target entity.</typeparam>
-    /// <typeparam name="TRequestModel">Query response model.</typeparam>
-    public interface IEmPageDataFetchQueryHandler<in TFetchQuery, TEntity, TRequestModel> : IRequestHandler<TFetchQuery, PaginatedList<TRequestModel>>
+    /// <typeparam name="TModel">EmPage model.</typeparam>
+    public interface IEmPageDataFetchQueryHandler<in TFetchQuery, TEntity, TModel> : IRequestHandler<TFetchQuery, PaginatedList<TModel>>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, IEmPageModel, new()
-        where TFetchQuery : IEmPageDataFetchQuery<TEntity, TRequestModel>
+        where TModel : class, IEmPageModel, new()
+        where TFetchQuery : IEmPageDataFetchQuery<TEntity, TModel>
     {
     }
 }

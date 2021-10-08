@@ -1,8 +1,25 @@
 ﻿<EmPageView ViewSchema="ViewSchema">
-    <p>Form view</p>
+    <form onsubmit="@HandleFormSubmit">
+        @foreach (var input in ViewData.Inputs)
+        {
+            <EmPageFormInput Model="input"/>
+        }
+        <hr/>
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-primary me-auto mr-0">Save</button>
+        </div>
+    </form>
 </EmPageView>
 
 @code {
     [Parameter]
     public EmPageFormViewSchema ViewSchema { get; set; }
+    
+    [Parameter]
+    public EmPageFormViewData ViewData { get; set; }
+    
+    private void HandleFormSubmit()
+    {
+        Console.WriteLine("Form submit");   
+    }
 }

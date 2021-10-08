@@ -43,6 +43,10 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         }
 
         /// <inheritdoc/>
+        public EmPageSchemaDescription FindSchemaDescriptionByContract(Type entityType, Type modelType)
+            => this.schemaDescriptions?.FirstOrDefault(x => x.EntityType == entityType && x.ModelType == modelType);
+
+        /// <inheritdoc/>
         public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
         {
             var modelType = typeof(TEmPageModel);

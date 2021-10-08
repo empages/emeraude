@@ -4,13 +4,13 @@
 {
     foreach (var navigationAction in NavigationActions)
     {
-        string targetAttribute = navigationAction.OpenOnSeparatePage ? "_blank" : "_parent";
+        string targetAttribute = navigationAction.OpenOnSeparatePage ? "_blank" : "_self";
         <li class="nav-item p-1">
             @if (navigationAction.ActionHttpMethod == System.Net.Http.HttpMethod.Get)
             {
-                <a href="@navigationAction.ActionUrl" target="@targetAttribute" class="nav-link btn btn-secondary h-auto">
+                <NavLink href="@navigationAction.ActionUrl" target="@targetAttribute" class="nav-link btn btn-secondary h-auto">
                     @navigationAction.Title
-                </a>
+                </NavLink>
             }
             else if (navigationAction.ActionHttpMethod == System.Net.Http.HttpMethod.Post)
             {
@@ -26,7 +26,7 @@
 
 @code {
     private IEnumerable<ActionModel> NavigationActions { get; set; }
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

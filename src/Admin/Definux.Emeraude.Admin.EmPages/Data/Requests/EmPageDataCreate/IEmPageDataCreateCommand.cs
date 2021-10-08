@@ -1,4 +1,5 @@
 ﻿using System;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
 
@@ -8,14 +9,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate
     /// Generic command that create an entity.
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
-    /// <typeparam name="TRequestModel">Data transfer object of the target entity.</typeparam>
-    public interface IEmPageDataCreateCommand<TEntity, TRequestModel> : IRequest<Guid?>, IEmPageGenericNewEntityRequest<TEntity>
+    /// <typeparam name="TModel">EmPage model.</typeparam>
+    public interface IEmPageDataCreateCommand<TEntity, TModel> : IRequest<Guid?>, IEmPageEntityMutationalRequest<TEntity, TModel>
         where TEntity : class, IEntity, new()
-        where TRequestModel : class, new()
+        where TModel : class, IEmPageModel, new()
     {
-        /// <summary>
-        /// Request model of the command.
-        /// </summary>
-        TRequestModel Model { get; set; }
     }
 }
