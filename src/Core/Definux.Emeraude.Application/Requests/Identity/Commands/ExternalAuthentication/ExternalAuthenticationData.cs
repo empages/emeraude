@@ -1,14 +1,18 @@
-﻿using Definux.Emeraude.Interfaces.Requests;
-
-namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication
+﻿namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication
 {
-    /// <inheritdoc cref="IExternalLoginRequest"/>
-    public class ExternalAuthenticationData : IExternalLoginRequest
+    /// <summary>
+    /// Definition of external login request of Emeraude client authentication.
+    /// </summary>
+    public class ExternalAuthenticationData
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// External login provider.
+        /// </summary>
         public string Provider { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Access token of the login provider.
+        /// </summary>
         public string AccessToken { get; set; }
     }
 }

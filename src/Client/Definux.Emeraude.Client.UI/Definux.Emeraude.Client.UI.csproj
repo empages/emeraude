@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />

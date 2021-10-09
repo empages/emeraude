@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Resources;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Application.Logger;
-using Definux.Emeraude.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Localization.Services
 {
-    /// <inheritdoc cref="ILocalizer"/>
+    /// <inheritdoc cref="IEmLocalizer"/>
     public class Localizer : IEmLocalizer
     {
         private readonly ILocalizationContext context;

@@ -24,6 +24,10 @@
       <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot" />
+    </ItemGroup>
+
     <Import Project="..\..\..\Emeraude.targets" />
     
 </Project>

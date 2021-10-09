@@ -1,0 +1,53 @@
+﻿@using Definux.Emeraude.Essentials.Helpers
+@using Definux.Emeraude.Essentials.Extensions
+@using EnumValueItem = Definux.Emeraude.Essentials.Models.EnumValueItem
+@inherits EmFormElementBase
+
+<select class="form-select" id="@Id" name="@Name" placeholder="@Placeholder" value="@NumericValue" @onchange="EmitChangeAsync">
+    @if (EnumType.IsNullableType())
+    {
+        <option value="">-- None --</option>
+    }
+    @if (EnumValueItems != null)
+    {
+        foreach (var valueItem in EnumValueItems)
+        {
+            <option value="@valueItem.Value">@valueItem.Name</option>
+        }
+    }
+</select>
+
+@code {
+    [Parameter]
+    public Type EnumType { get; set; }
+    
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter]
+    public object Value { get; set; }
+
+    private int? NumericValue => EnumType.IsNullableType() ? (Value == null) ? null : Convert.ToInt32(Value) : Convert.ToInt32(Value);
+
+    private IEnumerable<EnumValueItem> EnumValueItems { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        EnumValueItems = EnumUtilities.GetEnumValueItems(EnumType);
+        StateHasChanged();
+    }
+
+    protected override Task EmitChangeAsync(ChangeEventArgs eventArgs)
+    {
+        eventArgs.Value = EnumUtilities.GetEnum(EnumType, eventArgs.Value);
+        return base.EmitChangeAsync(eventArgs);
+    }
+
+}

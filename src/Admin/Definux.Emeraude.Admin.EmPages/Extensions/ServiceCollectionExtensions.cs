@@ -7,8 +7,8 @@ using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit;
-using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataExists;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
+using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
@@ -38,7 +38,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
             services.RegisterEmPagesDataServices(assembliesList);
 
             services.AddScoped<IEmPageSchemaProvider, EmPageSchemaProvider>();
-            services.AddScoped<IEmPageDataProvider, EmPageDataProvider>();
+            services.AddScoped<IEmPageDataService, EmPageDataService>();
             services.AddScoped<IEmPageService, EmPageService>();
 
             services.RegisterAsScopedAllContractedTypes(
@@ -100,7 +100,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
                 services.AddTransient(managerType);
                 services.RegisterFetchQueries(entityType, modelType);
                 services.RegisterDetailsQueries(entityType, modelType);
-                services.RegisterExistsQueries(entityType);
+                services.RegisterRawModelQueries(entityType, modelType);
                 services.RegisterCreateCommands(entityType, modelType);
                 services.RegisterEditCommands(entityType, modelType);
                 services.RegisterDeleteCommands(entityType, modelType);
@@ -144,18 +144,19 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
             services.AddTransient(queryRequestHandlerType, queryHandler);
         }
 
-        private static void RegisterExistsQueries(
+        private static void RegisterRawModelQueries(
             this IServiceCollection services,
-            Type entityType)
+            Type entityType,
+            Type modelType)
         {
-            var queryType = typeof(EmPageDataExistsQuery<>)
-                .MakeGenericType(entityType);
+            var queryType = typeof(EmPageDataRawModelQuery<,>)
+                .MakeGenericType(entityType, modelType);
 
             var queryRequestHandlerType = typeof(IRequestHandler<,>)
-                .MakeGenericType(queryType, typeof(bool));
+                .MakeGenericType(queryType, modelType);
 
-            var queryHandler = typeof(EmPageDataExistsQueryHandler<>)
-                .MakeGenericType(entityType);
+            var queryHandler = typeof(EmPageDataRawModelQueryHandler<,>)
+                .MakeGenericType(entityType, modelType);
 
             services.AddTransient(queryRequestHandlerType, queryHandler);
         }

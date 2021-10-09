@@ -27,30 +27,30 @@ namespace Definux.Emeraude.Admin.EmPages.User
                     tableView
                         .Use(x => x.Email, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.Name, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.RegistrationDate, item =>
                         {
                             item.Title = "Registration";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.TwoFactorEnabled, item =>
                         {
                             item.Title = "2FA";
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         })
                         .Use(x => x.IsLockedOut, item =>
                         {
                             item.Title = "Locked Out";
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         })
                         .Use(x => x.EmailConfirmed, item =>
                         {
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         });
                 })
                 .ConfigureDetailsView(detailsView =>
@@ -58,34 +58,34 @@ namespace Definux.Emeraude.Admin.EmPages.User
                     detailsView
                         .Use(x => x.Id, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.Email, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.Name, item =>
                         {
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.RegistrationDate, item =>
                         {
                             item.Title = "Registration";
-                            item.SetComponent<EmText>();
+                            item.SetComponent<EmPageText>();
                         })
                         .Use(x => x.TwoFactorEnabled, item =>
                         {
                             item.Title = "2FA";
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         })
                         .Use(x => x.IsLockedOut, item =>
                         {
                             item.Title = "Locked Out";
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         })
                         .Use(x => x.EmailConfirmed, item =>
                         {
-                            item.SetComponent<EmFlag>();
+                            item.SetComponent<EmPageFlag>();
                         });
                 })
                 .BuildDefaults();

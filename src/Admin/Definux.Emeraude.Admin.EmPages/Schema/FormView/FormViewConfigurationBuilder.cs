@@ -83,7 +83,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         /// Configures model validation rules
         /// </summary>
         /// <param name="validatorAction"></param>
-        public void ConfigureModelValidatorValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)
+        public void ConfigureModelValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)
         {
             this.ModelValidatorAction = validatorAction;
         }

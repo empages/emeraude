@@ -1,0 +1,21 @@
+﻿@using System.Web
+@inherits EmPageBaseElement
+<span class="em-html">
+    @GetContent()
+</span>
+
+@code {
+    [Parameter]
+    public bool Encoded { get; set; }
+
+    public MarkupString GetContent()
+    {
+        string value = Value?.ToString();
+        if (Encoded)
+        {
+            value = HttpUtility.HtmlDecode(value);
+        }
+
+        return new MarkupString(value ?? string.Empty);
+    }
+}

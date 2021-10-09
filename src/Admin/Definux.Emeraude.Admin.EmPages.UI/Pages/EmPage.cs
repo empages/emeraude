@@ -28,9 +28,9 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
         [Inject]
         protected IEmPageSchemaProvider SchemaProvider { get; set; }
 
-        /// <inheritdoc cref="IEmPageDataProvider"/>
+        /// <inheritdoc cref="IEmPageDataService"/>
         [Inject]
-        protected IEmPageDataProvider DataProvider { get; set; }
+        protected IEmPageDataService DataService { get; set; }
 
         /// <summary>
         /// Gets query params of current page.

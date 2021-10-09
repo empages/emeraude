@@ -56,7 +56,7 @@ else
             return;
         }
         
-        ViewData = await DataProvider.RetrieveTableViewDataAsync(EntityKey, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveTableViewDataAsync(EntityKey, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

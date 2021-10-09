@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Persistence;
-using Definux.Emeraude.Interfaces.Services;
 
 namespace Definux.Emeraude.Persistence.Seed
 {
@@ -10,7 +9,7 @@ namespace Definux.Emeraude.Persistence.Seed
     public class DatabaseInitializerManager : IDatabaseInitializerManager
     {
         private readonly IServiceProvider serviceProvider;
-        private List<IDatabaseInitializer> databaseInitializers;
+        private readonly List<IDatabaseInitializer> databaseInitializers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseInitializerManager"/> class.

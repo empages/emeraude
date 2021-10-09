@@ -1,5 +1,4 @@
 ﻿@inject BreadcrumbsModule BreadcrumbsModule
-@using Definux.Emeraude.Admin.UI.Utilities
 @implements IDisposable
 @if (Breadcrumbs != null && Breadcrumbs.Any())
 {
@@ -19,13 +18,13 @@
                     if (breadcrumb.Order == orderMax)
                     {
                         <li aria-current="page">
-                            <p title="@breadcrumb.Title" class="@($"btn btn-secondary disabled my-0 p-1 me-2 cursor-normal text-light-gray {HtmlUtilities.BreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)}")">@breadcrumb.Title</p>
+                            <p title="@breadcrumb.Title" class="@($"btn btn-secondary disabled my-0 p-1 me-2 cursor-normal text-light-gray {GetBreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)}")">@breadcrumb.Title</p>
                         </li>
                     }
                     else
                     {
                         <li>
-                            <p title="@breadcrumb.Title" class="@($"btn btn-light disabled my-0 p-1 me-2 cursor-normal text-light-gray {HtmlUtilities.BreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)}")">@breadcrumb.Title</p>
+                            <p title="@breadcrumb.Title" class="@($"btn btn-light disabled my-0 p-1 me-2 cursor-normal text-light-gray {GetBreadcrumbOrderMaxClass(breadcrumb.Order, orderMax)}")">@breadcrumb.Title</p>
                         </li>
                     }
                 }
@@ -49,6 +48,11 @@
         StateHasChanged();
     }
 
+    private string GetBreadcrumbOrderMaxClass(int order, int orderMax)
+    {
+        return order == orderMax ? "current-breadcrumb" : string.Empty;
+    }
+    
     void IDisposable.Dispose()
     {
         BreadcrumbsModule.BreadcrumbsChanged -= BreadcrumbsChanged;

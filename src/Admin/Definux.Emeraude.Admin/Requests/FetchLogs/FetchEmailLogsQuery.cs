@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using AutoMapper;
-using Definux.Emeraude.Admin.UI.ViewModels.Logging;
+using Definux.Emeraude.Admin.UI.Models.Logging;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Logging;
@@ -11,10 +11,10 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
     /// <summary>
     /// Fetch activity logs.
     /// </summary>
-    public class FetchEmailLogsQuery : FetchLogsQuery<EmailsLogsViewModel>
+    public class FetchEmailLogsQuery : FetchLogsQuery<EmailsLogsModel>
     {
         /// <inheritdoc />
-        public class FetchEmailLogsQueryHandler : FetchLogsQueryHandler<FetchEmailLogsQuery, EmailsLogsViewModel, EmailLog, EmailLogViewModel>
+        public class FetchEmailLogsQueryHandler : FetchLogsQueryHandler<FetchEmailLogsQuery, EmailsLogsModel, EmailLog, EmailLogModel>
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="FetchEmailLogsQueryHandler"/> class.

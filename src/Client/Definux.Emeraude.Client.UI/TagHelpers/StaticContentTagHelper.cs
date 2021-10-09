@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Interfaces.Services;
+﻿using Definux.Emeraude.Application.Localization;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -14,7 +14,7 @@ namespace Definux.Emeraude.Client.UI.TagHelpers
         /// Initializes a new instance of the <see cref="StaticContentTagHelper"/> class.
         /// </summary>
         /// <param name="localizer"></param>
-        public StaticContentTagHelper(ILocalizer localizer)
+        public StaticContentTagHelper(IEmLocalizer localizer)
             : base(localizer)
         {
         }

@@ -52,7 +52,7 @@ else
             return;
         }
         
-        ViewData = await DataProvider.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

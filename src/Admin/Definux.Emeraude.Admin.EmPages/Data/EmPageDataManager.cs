@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
+using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel;
 using Definux.Emeraude.Admin.EmPages.Exceptions;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
@@ -37,14 +38,19 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <summary>
-        /// Disables <see cref="Fetch"/> action.
+        /// Disables <see cref="FetchAsync"/> operation.
         /// </summary>
-        protected bool DisableFetchAction { get; set; }
+        protected bool DisableFetchOperation { get; set; }
 
         /// <summary>
-        /// Disables <see cref="Details"/> action.
+        /// Disables <see cref="DetailsAsync"/> operation.
         /// </summary>
-        protected bool DisableDetailsAction { get; set; }
+        protected bool DisableDetailsOperation { get; set; }
+
+        /// <summary>
+        /// Disables <see cref="CreateAsync"/> operation.
+        /// </summary>
+        protected bool DisableCreateOperation { get; set; }
 
         /// <summary>
         /// <inheritdoc cref="IEmPageService"/>
@@ -56,10 +62,20 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// </summary>
         protected IEmPageService EmPageService { get; }
 
+        /// <summary>
+        /// Returns the identified EmPage model instance.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public virtual async Task<IEmPageModel> GetRawModelAsync(Guid entityId)
+        {
+            return await this.Mediator.Send(new EmPageDataRawModelQuery<TEntity, TModel>(entityId));
+        }
+
         /// <inheritdoc />
         public virtual async Task<TableViewDataRequestResult> FetchAsync(EmPageDataFetchQueryRequest request)
         {
-            if (this.DisableFetchAction)
+            if (this.DisableFetchOperation)
             {
                 throw new EmPageDisabledOperationException($"Fetch is disabled for {this.GetType().FullName}");
             }
@@ -77,7 +93,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <inheritdoc />
         public virtual async Task<EmPageModelResponse> DetailsAsync(Guid id)
         {
-            if (this.DisableDetailsAction)
+            if (this.DisableDetailsOperation)
             {
                 throw new EmPageDisabledOperationException($"Details is disabled for {this.GetType().FullName}");
             }
@@ -95,8 +111,21 @@ namespace Definux.Emeraude.Admin.EmPages.Data
             return modelResponse;
         }
 
+        /// <inheritdoc />
+        public virtual async Task<Guid?> CreateAsync(IEmPageModel model)
+        {
+            if (this.DisableCreateOperation)
+            {
+                throw new EmPageDisabledOperationException($"Create is disabled for {this.GetType().FullName}");
+            }
+
+            var entityId = await this.CreateEntityAsync(model as TModel);
+
+            return entityId;
+        }
+
         /// <summary>
-        /// Method that return the instance of <see cref="IEmPageDataFetchQuery{TEntity,TRequestModel}"/> for current entity and view-model.
+        /// Method that return the instance of <see cref="IEmPageDataFetchQuery{TEntity,TRequestModel}"/> for current entity and model.
         /// </summary>
         /// <param name="fetchQuery"></param>
         /// <returns></returns>
@@ -112,7 +141,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <summary>
-        /// Fetch action executor.
+        /// Fetch operation executor.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -122,7 +151,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <summary>
-        /// Method that return the instance of <see cref="IEmPageDataDetailsQuery{TEntity,TRequestModel}"/> for current entity and view-model.
+        /// Method that return the instance of <see cref="IEmPageDataDetailsQuery{TEntity,TRequestModel}"/> for current entity and model.
         /// </summary>
         /// <param name="entityId"></param>
         /// <returns></returns>
@@ -132,13 +161,33 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <summary>
-        /// Details action executor.
+        /// Details operation executor.
         /// </summary>
         /// <param name="entityId"></param>
         /// <returns></returns>
         protected virtual async Task<TModel> GetEntityDetailsAsync(Guid entityId)
         {
             return await this.Mediator.Send(this.GetDetailsQuery(entityId));
+        }
+
+        /// <summary>
+        /// Method that return the instance of <see cref="IEmPageDataCreateCommand{TEntity, TRequestModel}"/> for current entity and model.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected virtual IEmPageDataCreateCommand<TEntity, TModel> GetCreateCommand(TModel model)
+        {
+            return new EmPageDataCreateCommand<TEntity, TModel>(model);
+        }
+
+        /// <summary>
+        /// Create operation executor.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected virtual async Task<Guid?> CreateEntityAsync(TModel model)
+        {
+            return await this.Mediator.Send(this.GetCreateCommand(model));
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Definux.Emeraude.Admin.Models;
-using Definux.Emeraude.Admin.UI.ViewModels.Logging;
+using Definux.Emeraude.Admin.UI.Models.Logging;
 using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Identity.Entities;
 
@@ -16,16 +16,16 @@ namespace Definux.Emeraude.Admin.Mapping.Profiles
         /// </summary>
         public AdminModelsProfile()
         {
-            this.CreateMap<ActivityLog, ActivityLogViewModel>()
+            this.CreateMap<ActivityLog, ActivityLogModel>()
                 .ReverseMap();
 
-            this.CreateMap<ErrorLog, ErrorLogViewModel>()
+            this.CreateMap<ErrorLog, ErrorLogModel>()
                 .ReverseMap();
 
-            this.CreateMap<EmailLog, EmailLogViewModel>()
+            this.CreateMap<EmailLog, EmailLogModel>()
                 .ReverseMap();
 
-            this.CreateMap<TempFileLog, TempFileLogViewModel>()
+            this.CreateMap<TempFileLog, TempFileLogModel>()
                 .ReverseMap();
 
             this.CreateMap<User, EntitySelectModel>()

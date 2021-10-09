@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Definux.Emeraude.Admin.UI.ViewModels.Logging;
+using Definux.Emeraude.Admin.UI.Models.Logging;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Logging;
@@ -25,9 +25,9 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
         /// <typeparam name="TLoggerEntityViewModel">Target logger entity view model.</typeparam>
         public abstract class FetchLogsQueryHandler<TRequest, TResult, TLoggerEntity, TLoggerEntityViewModel> : IRequestHandler<TRequest, TResult>
             where TRequest : FetchLogsQuery<TResult>
-            where TResult : LogEntitiesViewModel<TLoggerEntityViewModel>, new()
+            where TResult : LogEntitiesModel<TLoggerEntityViewModel>, new()
             where TLoggerEntity : class, ILoggerEntity
-            where TLoggerEntityViewModel : LogEntityViewModel
+            where TLoggerEntityViewModel : LogEntityModel
         {
             private readonly ILoggerContext loggerContext;
             private readonly IEmContext entityContext;
@@ -122,7 +122,7 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
                         var involvedUser = involvedUsers.FirstOrDefault(x => x.Id == userId);
                         if (involvedUser != null)
                         {
-                            logs[i].InvolvedUser = new LogUserViewModel
+                            logs[i].InvolvedUser = new LogUserModel
                             {
                                 Id = involvedUser.Id,
                                 Email = involvedUser.Email,

@@ -1,0 +1,59 @@
+﻿@inherits EmFormElementBase
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<div class="html-editor">
+    <div id="@EditorId"></div>
+    <input 
+        type="hidden"
+        name="@Name"
+        id="@HiddenInputId"
+        value="@Value"
+        @oninput="HandleOnInputEventAsync"
+        @onchange="HandleOnChangeEventAsync">
+</div>
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public string Value { get; set; }
+
+    private string EditorId => $"html-editor-{this.Name}";
+
+    private string HiddenInputId => $"{EditorId}-hidden-input";
+    
+    private IJSObjectReference module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>(
+                "import",
+                "/_content/Definux.Emeraude.Admin.UI/modules/trumbowyg.js");
+            
+            await module.InvokeVoidAsync("initEditor", EditorId, HiddenInputId, Value);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+    
+    private async Task HandleOnChangeEventAsync(ChangeEventArgs eventArgs)
+    {
+        await EmitChangeAsync(eventArgs);
+    }
+
+    private async Task HandleOnInputEventAsync(ChangeEventArgs eventArgs)
+    {
+        await EmitChangeAsync(eventArgs);
+    }
+}

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.UI.Adapters;
-using Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus;
+using Definux.Emeraude.Admin.UI.Models;
 using Definux.Emeraude.Admin.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Definux.Emeraude.Interfaces.Services;
+using Definux.Emeraude.Application.Localization;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -17,7 +17,7 @@ namespace Definux.Emeraude.Client.UI.TagHelpers
         /// Initializes a new instance of the <see cref="TranslationTagHelper"/> class.
         /// </summary>
         /// <param name="localizer"></param>
-        public TranslationTagHelper(ILocalizer localizer)
+        public TranslationTagHelper(IEmLocalizer localizer)
         {
             this.Localizer = localizer;
             this.Arguments = new AttributeDictionary();
@@ -58,8 +58,8 @@ namespace Definux.Emeraude.Client.UI.TagHelpers
         [HtmlAttributeName("delimiter-end")]
         public string ArgumentsDelimiterEnd { get; set; } = "]]";
 
-        /// <inheritdoc cref="ILocalizer"/>
-        protected ILocalizer Localizer { get; private set; }
+        /// <inheritdoc cref="IEmLocalizer"/>
+        protected IEmLocalizer Localizer { get; private set; }
 
         /// <inheritdoc/>
         public override void Process(TagHelperContext context, TagHelperOutput output)

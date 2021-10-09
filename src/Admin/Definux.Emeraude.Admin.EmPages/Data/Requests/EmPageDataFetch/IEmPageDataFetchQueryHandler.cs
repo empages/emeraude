@@ -6,7 +6,7 @@ using MediatR;
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 {
     /// <summary>
-    /// Interface that wraps get all request handler.
+    /// Interface that wraps fetch request handler.
     /// </summary>
     /// <typeparam name="TFetchQuery">Fetch query.</typeparam>
     /// <typeparam name="TEntity">Target entity.</typeparam>

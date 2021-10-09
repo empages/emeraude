@@ -1,0 +1,9 @@
+﻿@inherits EmPageBaseFormElement
+
+<div class="em-html-input">
+    <EmHtmlEditor Name="@Property" Value="@(Value?.ToString() ?? string.Empty)" OnValueChanged="EmitChangeAsync"></EmHtmlEditor>
+</div>
+
+@code {
+
+}

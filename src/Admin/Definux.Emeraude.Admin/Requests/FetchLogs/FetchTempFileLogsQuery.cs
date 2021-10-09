@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Definux.Emeraude.Admin.UI.ViewModels.Logging;
+using Definux.Emeraude.Admin.UI.Models.Logging;
 using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Logging;
@@ -14,10 +14,10 @@ namespace Definux.Emeraude.Admin.Requests.FetchLogs
     /// <summary>
     /// Fetch activity logs.
     /// </summary>
-    public class FetchTempFileLogsQuery : FetchLogsQuery<TempFilesLogsViewModel>
+    public class FetchTempFileLogsQuery : FetchLogsQuery<TempFilesLogsModel>
     {
         /// <inheritdoc />
-        public class FetchTempFileLogsQueryHandler : FetchLogsQueryHandler<FetchTempFileLogsQuery, TempFilesLogsViewModel, TempFileLog, TempFileLogViewModel>
+        public class FetchTempFileLogsQueryHandler : FetchLogsQueryHandler<FetchTempFileLogsQuery, TempFilesLogsModel, TempFileLog, TempFileLogModel>
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="FetchTempFileLogsQueryHandler"/> class.

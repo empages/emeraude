@@ -1,5 +1,4 @@
 ﻿using System;
-using Definux.Emeraude.Interfaces.Services;
 
 namespace Definux.Emeraude.Application.Persistence
 {

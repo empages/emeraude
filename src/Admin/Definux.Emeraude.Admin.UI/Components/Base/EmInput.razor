@@ -1,0 +1,28 @@
+﻿@inherits EmFormElementBase
+
+<input 
+    type="@Type" 
+    class="form-control" 
+    id="@Id" 
+    name="@Name"
+    placeholder="@Placeholder" 
+    value="@Value" 
+    @oninput="EmitChangeAsync" 
+    @onchange="EmitChangeAsync" />
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter]
+    public string Type { get; set; } = "text";
+
+    [Parameter]
+    public object Value { get; set; }
+}

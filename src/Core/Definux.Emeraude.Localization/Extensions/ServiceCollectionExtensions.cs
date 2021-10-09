@@ -1,7 +1,6 @@
 ﻿using System;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Interfaces.Services;
 using Definux.Emeraude.Localization.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +37,6 @@ namespace Definux.Emeraude.Localization.Extensions
 
             services.AddScoped<ICurrentLanguageProvider, CurrentLanguageProvider>();
             services.AddScoped<ILocalizationContext, LocalizationContext>();
-            services.AddScoped<ILocalizer, Localizer>();
             services.AddScoped<IEmLocalizer, Localizer>();
             services.AddScoped<ILanguageStore, LanguageStore>();
             services.AddScoped<ILanguagesResourceManager, LanguagesResourceManager>();

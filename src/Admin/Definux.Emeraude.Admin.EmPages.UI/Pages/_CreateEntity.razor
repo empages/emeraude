@@ -49,7 +49,7 @@ else
             return;
         }
         
-        ViewData = await DataProvider.RetrieveFormViewDataAsync(EmPageFormType.CreateForm, EntityKey, null, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveFormViewDataAsync(EmPageFormType.CreateForm, EntityKey, null, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

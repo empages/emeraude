@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "@mdi/font": "^6.1.95",
-    "bootstrap": "^5.1.1"
+    "bootstrap": "^5.1.1",
+    "jquery": "^3.6.0",
+    "trumbowyg": "^2.23.0",
+    "moment": "^2.29.1"
   },
   "scripts": {
     "assets": "gulp"

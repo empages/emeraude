@@ -1,8 +1,17 @@
-﻿<div class="form-group">
-    <label class="form-label">
+﻿<div class="form-group mb-3" data-em-order="@Model.Order">
+    <label class="form-label" for="@Model.Property">
         @Model.Label
     </label>
     <DynamicComponent Type="Model.Component" Parameters="GetParameters()"></DynamicComponent>
+    @if (Model.ValidationErrors.Any())
+    {
+        foreach (var error in Model.ValidationErrors)
+        {
+            <div class="invalid-feedback d-block">
+                @error
+            </div>
+        }
+    }
 </div>
 
 @code {

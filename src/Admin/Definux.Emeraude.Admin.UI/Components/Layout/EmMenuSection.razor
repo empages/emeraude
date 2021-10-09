@@ -1,6 +1,4 @@
-﻿@using Definux.Emeraude.Admin.UI.ViewModels.Layout.AdminMenus
-
-<li class="@($"{RenderIf("active", MenuSection.IsActive)} nav-item main-nav-item")">
+﻿<li class="@($"{RenderIf("active", MenuSection.IsActive)} nav-item main-nav-item")">
     @if (MenuSection.Dropdown)
     {
         <NavLink

@@ -27,16 +27,16 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         /// <summary>
         /// <inheritdoc cref="SetComponent{TComponent}"/>
         /// </summary>
-        /// <typeparam name="TComponent">Component type that must be instance of <see cref="EmBaseFormElement"/> if view item is not set to readonly via <see cref="Readonly"/>.</typeparam>
-        /// <exception cref="InvalidCastException">Throws when the view item is not set to readonly via <see cref="Readonly"/> and component type is not <see cref="EmBaseFormElement"/>.</exception>
+        /// <typeparam name="TComponent">Component type that must be instance of <see cref="EmPageBaseFormElement"/> if view item is not set to readonly via <see cref="Readonly"/>.</typeparam>
+        /// <exception cref="InvalidCastException">Throws when the view item is not set to readonly via <see cref="Readonly"/> and component type is not <see cref="EmPageBaseFormElement"/>.</exception>
         public override void SetComponent<TComponent>()
         {
             if (!this.Readonly)
             {
                 var tempInstance = Activator.CreateInstance<TComponent>();
-                if (!(tempInstance is EmBaseFormElement))
+                if (!(tempInstance is EmPageBaseFormElement))
                 {
-                    throw new InvalidCastException("The provided component type cannot be casted to EmBaseFormElement.");
+                    throw new InvalidCastException("The provided component type cannot be casted to EmPageBaseFormElement.");
                 }
             }
 

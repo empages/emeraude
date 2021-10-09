@@ -8,6 +8,14 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
     public class EmPageFormInputModel : EmPageViewItemContextModel
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="EmPageFormInputModel"/> class.
+        /// </summary>
+        public EmPageFormInputModel()
+        {
+            this.ValidationErrors = new List<string>();
+        }
+
+        /// <summary>
         /// Label of the input.
         /// </summary>
         public string Label { get; set; }
@@ -25,6 +33,6 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
         /// <summary>
         /// List of all errors from the validation process.
         /// </summary>
-        public IEnumerable<string> ValidationErrors { get; set; }
+        public List<string> ValidationErrors { get; set; }
     }
 }

@@ -51,6 +51,6 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// </summary>
         /// <typeparam name="TComponent">Type of the component.</typeparam>
         void SetComponent<TComponent>()
-            where TComponent : EmBaseElement, new();
+            where TComponent : EmPageBaseElement, new();
     }
 }

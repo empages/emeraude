@@ -5,7 +5,6 @@ using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
 using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Interfaces.Requests;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,18 +14,26 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
     /// <summary>
     /// Command for client user registration.
     /// </summary>
-    public class RegisterCommand : IRequest<RegisterRequestResult>, IRegisterRequest
+    public class RegisterCommand : IRequest<RegisterRequestResult>
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Name of the user.
+        /// </summary>
         public string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Email of the user.
+        /// </summary>
         public string Email { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Password of the user.
+        /// </summary>
         public string Password { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Confirmed password of the user.
+        /// </summary>
         public string ConfirmedPassword { get; set; }
 
         /// <inheritdoc/>

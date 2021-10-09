@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
-using Definux.Emeraude.Interfaces.Models;
 using Definux.Emeraude.Resources;
 
 namespace Definux.Emeraude.Application.Models
 {
-    /// <inheritdoc cref="IDateModel"/>
-    public struct DateModel : IDateModel
+    /// <summary>
+    /// Simplified date model for request/response purposes.
+    /// </summary>
+    public struct DateModel
     {
         /// <summary>
         /// Gets default date model.
@@ -26,16 +27,24 @@ namespace Definux.Emeraude.Application.Models
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Year of the date.
+        /// </summary>
         public int Year { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Month of the date.
+        /// </summary>
         public int Month { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Day of the date.
+        /// </summary>
         public int Day { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets whether the model is valid or not.
+        /// </summary>
         public bool IsValid => this.Year > 0 && this.Month > 0 && this.Day > 0;
 
         /// <summary>
@@ -77,7 +86,10 @@ namespace Definux.Emeraude.Application.Models
             return parsed;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Converts current model to <see cref="DateTime"/>.
+        /// </summary>
+        /// <returns></returns>
         public DateTime ToDateTime() => this.IsValid ? new DateTime(this.Year, this.Month, this.Day) : default;
 
         /// <inheritdoc />

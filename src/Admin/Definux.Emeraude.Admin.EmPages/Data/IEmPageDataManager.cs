@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
+using Definux.Emeraude.Admin.EmPages.Schema;
 
 namespace Definux.Emeraude.Admin.EmPages.Data
 {
@@ -9,6 +10,13 @@ namespace Definux.Emeraude.Admin.EmPages.Data
     /// </summary>
     public interface IEmPageDataManager
     {
+        /// <summary>
+        /// Get instance of EmPage model.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        Task<IEmPageModel> GetRawModelAsync(Guid entityId);
+
         /// <summary>
         /// Fetch operation.
         /// </summary>
@@ -22,5 +30,12 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <param name="id"></param>
         /// <returns></returns>
         Task<EmPageModelResponse> DetailsAsync(Guid id);
+
+        /// <summary>
+        /// Create operation.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<Guid?> CreateAsync(IEmPageModel model);
     }
 }

@@ -1,0 +1,30 @@
+﻿@inherits EmFormElementBase
+
+<textarea 
+    class="form-control" 
+    name="@Name"
+    id="@Id" 
+    placeholder="@Placeholder"
+    rows="4"
+    @oninput="EmitChangeAsync" 
+    @onchange="EmitChangeAsync">
+    @Value
+</textarea>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter]
+    public object Value { get; set; }
+
+    [Parameter]
+    public int Rows { get; set; } = 4;
+
+}

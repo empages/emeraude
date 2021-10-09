@@ -45,7 +45,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
 
         /// <inheritdoc/>
         public virtual void SetComponent<TComponent>()
-            where TComponent : EmBaseElement, new()
+            where TComponent : EmPageBaseElement, new()
         {
             this.Component = typeof(TComponent);
         }
