@@ -8,14 +8,14 @@ namespace Definux.Emeraude.Admin.EmPages.User
     /// <summary>
     /// EmPage user schema.
     /// </summary>
-    public class UserEmPageSchema : IEmPageSchema<Identity.Entities.User, UserEmPageModel>
+    public class UserEmPageSchema : IEmPageSchema<UserEmPageModel>
     {
         /// <inheritdoc/>
-        public async Task<EmPageSchemaSettings<Identity.Entities.User, UserEmPageModel>> SetupAsync()
+        public async Task<EmPageSchemaSettings<UserEmPageModel>> SetupAsync()
         {
-            var settings = new EmPageSchemaSettings<Identity.Entities.User, UserEmPageModel>
+            var settings = new EmPageSchemaSettings<UserEmPageModel>
             {
-                Key = "users",
+                Route = "users",
                 Title = "Users",
             };
 

@@ -7,6 +7,7 @@ using Definux.Emeraude.Resources;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
@@ -17,6 +18,17 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public class ClientManagementController : ClientController
     {
         private const string ChangeEmailRoute = "/confirm-change-email";
+
+        private readonly ILogger<ClientManagementController> logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientManagementController"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        public ClientManagementController(ILogger<ClientManagementController> logger)
+        {
+            this.logger = logger;
+        }
 
         /// <summary>
         /// Confirms change email request.
@@ -44,7 +56,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
             catch (Exception ex)
             {
-                await this.Logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during change email confirmation action");
             }
 
             return await this.RedirectToExecutionResultAsync(

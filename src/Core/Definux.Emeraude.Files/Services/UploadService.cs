@@ -3,118 +3,88 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
-using Definux.Emeraude.Application.Logger;
-using Definux.Emeraude.Domain.Logging;
 using Definux.Emeraude.Files.Extensions;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Files.Services
 {
     /// <inheritdoc cref="IUploadService"/>
     public class UploadService : IUploadService
     {
-        private readonly ILoggerContext loggerContext;
-        private readonly IEmLogger logger;
+        private readonly ILogger<UploadService> logger;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IRootsService rootsService;
+        private readonly ITemporaryFilesService temporaryFilesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadService"/> class.
         /// </summary>
-        /// <param name="loggerContext"></param>
         /// <param name="logger"></param>
         /// <param name="hostingEnvironment"></param>
         /// <param name="rootsService"></param>
+        /// <param name="temporaryFilesService"></param>
         public UploadService(
-            ILoggerContext loggerContext,
-            IEmLogger logger,
+            ILogger<UploadService> logger,
             IHostingEnvironment hostingEnvironment,
-            IRootsService rootsService)
+            IRootsService rootsService,
+            ITemporaryFilesService temporaryFilesService)
         {
-            this.loggerContext = loggerContext;
             this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
             this.rootsService = rootsService;
+            this.temporaryFilesService = temporaryFilesService;
         }
 
         /// <inheritdoc/>
-        public async Task<TempFileLog> UploadFileAsync(IFormFile formFile)
+        public async Task<string> UploadFileAsync(IFormFile formFile)
         {
             try
             {
-                string saveDirectory = this.hostingEnvironment.GetTempUploadDirectory();
-                string resultFileName = FilesFunctions.GetUniqueFileName();
-                string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                string relativeSaveDirectory = Path.Combine(Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
-                string fileFullPath = Path.Combine(saveDirectory, $"{resultFileName}.{resultFileExtension}");
-                string fileRelativePath = Path.Combine(relativeSaveDirectory, $"{resultFileName}.{resultFileExtension}");
+                var saveDirectory = this.hostingEnvironment.GetTempUploadDirectory();
+                var resultFileName = FilesFunctions.GetUniqueFileName();
+                var resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
+                var fileFullPath = Path.Combine(saveDirectory, $"{resultFileName}.{resultFileExtension}");
 
-                using (FileStream stream = System.IO.File.Create(fileFullPath))
-                {
-                    formFile.CopyTo(stream);
-                    stream.Flush();
-                }
+                await using var stream = File.Create(fileFullPath);
+                await formFile.CopyToAsync(stream);
+                stream.Flush();
 
-                TempFileLog fileEntity = new TempFileLog
-                {
-                    Name = resultFileName,
-                    Path = fileRelativePath,
-                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
-                };
-                fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
+                this.temporaryFilesService.SaveFile(resultFileName);
 
-                this.loggerContext.TempFileLogs.Add(fileEntity);
-                await this.loggerContext.SaveChangesAsync();
-
-                return fileEntity;
+                return resultFileName;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An unexpected error occured during upload file");
                 return default;
             }
         }
 
         /// <inheritdoc/>
-        public async Task<TempFileLog> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
+        public async Task<string> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
         {
             try
             {
-                string rootDirectory = publicRoot ? this.rootsService.PublicRootDirectory : this.rootsService.PrivateRootDirectory;
-                string fullSaveDirectory = Path.Combine(rootDirectory, saveDirectory);
-                string rootFolderName = publicRoot ? Folders.PublicRootFolderName : Folders.PrivateRootFolderName;
-                string resultFileName = FilesFunctions.GetUniqueFileName();
-                string resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                string relativeSaveDirectory = Path.Combine(rootFolderName, saveDirectory);
-                string fileFullPath = Path.Combine(fullSaveDirectory, $"{resultFileName}.{resultFileExtension}");
-                string fileRelativePath = Path.Combine(relativeSaveDirectory, $"{resultFileName}.{resultFileExtension}");
+                var rootDirectory = publicRoot ? this.rootsService.PublicRootDirectory : this.rootsService.PrivateRootDirectory;
+                var fullSaveDirectory = Path.Combine(rootDirectory, saveDirectory);
+                var resultFileName = FilesFunctions.GetUniqueFileName();
+                var resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
+                var fileFullPath = Path.Combine(fullSaveDirectory, $"{resultFileName}.{resultFileExtension}");
 
-                using (FileStream stream = System.IO.File.Create(fileFullPath))
-                {
-                    formFile.CopyTo(stream);
-                    stream.Flush();
-                }
+                await using var stream = File.Create(fileFullPath);
+                await formFile.CopyToAsync(stream);
+                stream.Flush();
 
-                TempFileLog fileEntity = new TempFileLog
-                {
-                    Name = resultFileName,
-                    Path = fileRelativePath,
-                    FileExtension = FilesFunctions.GetFileExtension(resultFileExtension),
-                    Applied = true,
-                };
-                fileEntity.FileType = FilesFunctions.GetFileType(fileEntity.FileExtension);
+                this.temporaryFilesService.SaveFile(resultFileName);
 
-                this.loggerContext.TempFileLogs.Add(fileEntity);
-                await this.loggerContext.SaveChangesAsync();
-
-                return fileEntity;
+                return resultFileName;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An unexpected error occured during upload file");
                 return default;
             }
         }

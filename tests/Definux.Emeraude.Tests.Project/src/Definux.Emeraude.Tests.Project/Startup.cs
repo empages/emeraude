@@ -1,11 +1,8 @@
-using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Emails.Extensions;
 using Definux.Emeraude.Extensions;
 using Definux.Emeraude.Tests.Project.Adapters;
 using Definux.Emeraude.Tests.Project.Application.Interfaces.Persistence;
 using Definux.Emeraude.Tests.Project.Application.Mapping;
-using Definux.Emeraude.Tests.Project.Infrastructure.Emails;
 using Definux.Emeraude.Tests.Project.Infrastructure.Extensions;
 using Definux.Emeraude.Tests.Project.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -29,8 +26,7 @@ namespace Definux.Emeraude.Tests.Project
                 setup.MainOptions.InfrastructureAssembly = "Definux.Emeraude.Tests.Project.Infrastructure";
                 
                 setup.PersistenceOptions.ContextProvider = DatabaseContextProvider.InMemoryDatabase;
-                setup.LoggerOptions.ContextProvider = DatabaseContextProvider.InMemoryDatabase;
-                
+
                 setup.ApplicationsOptions.AddMappingProfile<MainAssemblyMappingProfile>();
                 setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project");
                 setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project.Application");
@@ -40,7 +36,6 @@ namespace Definux.Emeraude.Tests.Project
                 
                 setup.MainOptions.TestMode = true;
                 setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
-                setup.EmailOptions.EmailSenderImplementationType = typeof(CustomEmailSender);
                 
                 setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude");
                 setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude.Tests.Project");

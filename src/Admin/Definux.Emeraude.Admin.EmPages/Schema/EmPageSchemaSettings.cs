@@ -16,35 +16,33 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
     /// <summary>
     /// Settings implementation for entity EmPage schema.
     /// </summary>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class EmPageSchemaSettings<TEntity, TModel> : IEmPageSchemaSettings
-        where TEntity : class, IEntity, new()
+    public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
         where TModel : class, IEmPageModel, new()
     {
-        private readonly TableViewConfigurationBuilder<TEntity, TModel> tableViewConfigurationBuilder;
-        private readonly DetailsViewConfigurationBuilder<TEntity, TModel> detailsViewConfigurationBuilder;
-        private readonly FormViewConfigurationBuilder<TEntity, TModel> formViewConfigurationBuilder;
+        private readonly TableViewConfigurationBuilder<TModel> tableViewConfigurationBuilder;
+        private readonly DetailsViewConfigurationBuilder<TModel> detailsViewConfigurationBuilder;
+        private readonly FormViewConfigurationBuilder<TModel> formViewConfigurationBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageSchemaSettings{TEntity, TModel}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageSchemaSettings{TModel}"/> class.
         /// </summary>
         public EmPageSchemaSettings()
         {
-            this.tableViewConfigurationBuilder = new TableViewConfigurationBuilder<TEntity, TModel>();
-            this.detailsViewConfigurationBuilder = new DetailsViewConfigurationBuilder<TEntity, TModel>();
-            this.formViewConfigurationBuilder = new FormViewConfigurationBuilder<TEntity, TModel>();
+            this.tableViewConfigurationBuilder = new TableViewConfigurationBuilder<TModel>();
+            this.detailsViewConfigurationBuilder = new DetailsViewConfigurationBuilder<TModel>();
+            this.formViewConfigurationBuilder = new FormViewConfigurationBuilder<TModel>();
 
             this.ModelActions = new List<EmPageAction>();
         }
 
         /// <summary>
-        /// Entity key used for identification of specified entity in plural format. Example: 'dogs'. This key will be used as a route as well.
+        /// Model route used for identification (normally in in plural format). Example: 'dogs'.
         /// </summary>
-        public string Key { get; set; }
+        public string Route { get; set; }
 
         /// <summary>
-        /// Title of the entity in plural format.
+        /// Title of the model in plural format.
         /// </summary>
         public string Title { get; set; }
 
@@ -91,7 +89,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             {
                 Title = this.Title,
                 IsActive = true,
-                Href = $"/admin/{this.Key}",
+                Href = $"/admin/{this.Route}",
             });
 
             this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
@@ -105,7 +103,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             {
                 Title = this.Title,
                 IsActive = true,
-                Href = $"/admin/{this.Key}",
+                Href = $"/admin/{this.Route}",
             });
 
             this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
@@ -131,8 +129,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// </summary>
         /// <param name="configurationBuilderAction"></param>
         /// <returns></returns>
-        public EmPageSchemaSettings<TEntity, TModel> ConfigureTableView(
-            Action<TableViewConfigurationBuilder<TEntity, TModel>> configurationBuilderAction)
+        public EmPageSchemaSettings<TModel> ConfigureTableView(
+            Action<TableViewConfigurationBuilder<TModel>> configurationBuilderAction)
         {
             configurationBuilderAction.Invoke(this.tableViewConfigurationBuilder);
             return this;
@@ -143,8 +141,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// </summary>
         /// <param name="configurationBuilderAction"></param>
         /// <returns></returns>
-        public EmPageSchemaSettings<TEntity, TModel> ConfigureDetailsView(
-            Action<DetailsViewConfigurationBuilder<TEntity, TModel>> configurationBuilderAction)
+        public EmPageSchemaSettings<TModel> ConfigureDetailsView(
+            Action<DetailsViewConfigurationBuilder<TModel>> configurationBuilderAction)
         {
             configurationBuilderAction.Invoke(this.detailsViewConfigurationBuilder);
             return this;
@@ -155,8 +153,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// </summary>
         /// <param name="configurationBuilderAction"></param>
         /// <returns></returns>
-        public EmPageSchemaSettings<TEntity, TModel> ConfigureFormView(
-            Action<FormViewConfigurationBuilder<TEntity, TModel>> configurationBuilderAction)
+        public EmPageSchemaSettings<TModel> ConfigureFormView(
+            Action<FormViewConfigurationBuilder<TModel>> configurationBuilderAction)
         {
             configurationBuilderAction.Invoke(this.formViewConfigurationBuilder);
             return this;
@@ -170,15 +168,13 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                 .FirstOrDefault(x =>
                     !x.IsAbstract &&
                     x.BaseType != null &&
-                    x.BaseType?.GetGenericArguments().ElementAt(0) == typeof(TEntity) &&
-                    x.BaseType?.GetGenericArguments().ElementAt(1) == typeof(TModel));
+                    x.BaseType?.GetGenericArguments().ElementAt(0) == typeof(TModel));
 
             var description = new EmPageSchemaDescription()
             {
-                Key = this.Key,
+                Route = this.Route,
                 Title = this.Title,
                 ModelType = typeof(TModel),
-                EntityType = typeof(TEntity),
                 DataManagerType = dataManagerType,
                 ModelActions = this.ModelActions,
                 TableView = new TableViewDescription

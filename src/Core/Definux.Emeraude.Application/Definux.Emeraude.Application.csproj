@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\Definux.Emeraude.Interfaces\Definux.Emeraude.Interfaces.csproj" />
+    <ProjectReference Include="..\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Resources\Definux.Emeraude.Resources.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
   </ItemGroup>
@@ -39,6 +39,10 @@
     <Reference Include="Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.0-rc.1.21452.15\ref\net6.0\Microsoft.Extensions.Http.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Requests\Files\Commands\Shared" />
   </ItemGroup>
 
   <Import Project="..\..\..\Emeraude.targets" />

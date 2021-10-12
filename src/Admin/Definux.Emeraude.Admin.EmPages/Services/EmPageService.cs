@@ -29,22 +29,22 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         }
 
         /// <inheritdoc />
-        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string key)
+        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string route)
         {
             await this.LoadSchemasIfEmptyAsync();
-            return this.schemaDescriptions?.FirstOrDefault(x => x.Key?.Equals(key, StringComparison.OrdinalIgnoreCase) ?? false);
+            return this.schemaDescriptions?.FirstOrDefault(x => x.Route?.Equals(route, StringComparison.OrdinalIgnoreCase) ?? false);
         }
 
         /// <inheritdoc/>
-        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type entityType, Type modelType)
+        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type modelType)
         {
             await this.LoadSchemasIfEmptyAsync();
-            return this.schemaDescriptions?.FirstOrDefault(x => x.EntityType == entityType && x.ModelType == modelType);
+            return this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
         }
 
         /// <inheritdoc/>
-        public EmPageSchemaDescription FindSchemaDescriptionByContract(Type entityType, Type modelType)
-            => this.schemaDescriptions?.FirstOrDefault(x => x.EntityType == entityType && x.ModelType == modelType);
+        public EmPageSchemaDescription FindSchemaDescriptionByContract(Type modelType)
+            => this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
 
         /// <inheritdoc/>
         public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
@@ -81,7 +81,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
         private async Task<IEnumerable<EmPageSchemaDescription>> FindAllSchemasDescriptionsAsync()
         {
-            var schemaType = typeof(IEmPageSchema<,>);
+            var schemaType = typeof(IEmPageSchema<>);
 
             var schemasImplementationsTypes = this.mainOptions.Assemblies
                 .SelectMany(x => x

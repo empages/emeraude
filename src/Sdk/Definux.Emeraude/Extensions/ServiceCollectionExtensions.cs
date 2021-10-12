@@ -17,17 +17,13 @@ using Definux.Emeraude.Client.Mapping;
 using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.ClientBuilder.Options;
-using Definux.Emeraude.ClientBuilder.ScaffoldModules;
-using Definux.Emeraude.ClientBuilder.Services;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Emails.Extensions;
 using Definux.Emeraude.Files.Extensions;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Identity.Options;
 using Definux.Emeraude.Localization.Extensions;
-using Definux.Emeraude.Logger.Extensions;
 using Definux.Emeraude.Persistence;
 using Definux.Emeraude.Persistence.Extensions;
 using Definux.Emeraude.Persistence.Seed;
@@ -35,7 +31,6 @@ using Definux.Emeraude.Presentation.ActionFilters;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Converters;
 using Definux.Emeraude.Presentation.ModelBinders;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Extensions;
 using FluentValidation.AspNetCore;
 using IdentityServer4;
@@ -43,15 +38,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -106,11 +98,7 @@ namespace Definux.Emeraude.Extensions
 
             services.RegisterEmeraudeIdentity();
 
-            services.RegisterEmeraudeLogger(configuration, setup.LoggerOptions, setup.MainOptions);
-
             services.RegisterEmeraudeLocalization(setup.MainOptions);
-
-            services.RegisterEmailInfrastructure(setup.EmailOptions);
 
             services.RegisterEmeraudeSystemFilesManagement(setup.FilesOptions);
 
@@ -180,6 +168,7 @@ namespace Definux.Emeraude.Extensions
         private static void AddCqrsBehaviours(this IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggingBehavior<,>));
         }
 
         private static AuthenticationBuilder AddEmeraudeAuthentication(this IServiceCollection services, EmIdentityOptions identityOptions)
@@ -224,8 +213,6 @@ namespace Definux.Emeraude.Extensions
                 options.ViewLocationFormats.Add("/Views/Client/{1}/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Views/Client/Shared/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Views/Client/{0}.cshtml");
-                options.ViewLocationFormats.Add("/Views/Emails/{1}/{0}.cshtml");
-                options.ViewLocationFormats.Add("/Views/Emails/Shared/{0}.cshtml");
 
                 options.AreaViewLocationFormats.Clear();
                 options.AreaViewLocationFormats.Add("/Views/{2}/{1}/{0}.cshtml");
@@ -241,7 +228,6 @@ namespace Definux.Emeraude.Extensions
         {
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
             {
-                configuration.AddProfile<AdminModelsProfile>();
                 configuration.AddProfile<AdminAssemblyMappingProfile>();
                 configuration.AddProfile<ClientAssemblyMappingProfile>();
                 configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();

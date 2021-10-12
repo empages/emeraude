@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails
 {
@@ -18,7 +18,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails
     {
         private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataDetailsQueryHandler<TEntity, TModel>> logger;
         private readonly IEmPageService emPageService;
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails
         public EmPageDataDetailsQueryHandler(
             IEmContextFactory contextFactory,
             IMapper mapper,
-            IEmLogger logger,
+            ILogger<EmPageDataDetailsQueryHandler<TEntity, TModel>> logger,
             IEmPageService emPageService)
         {
             this.contextFactory = contextFactory;
@@ -53,14 +53,14 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails
 
                 var requestModel = this.mapper.Map<TModel>(entity);
 
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TEntity), typeof(TModel));
+                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
                 await this.emPageService.ApplyValuePipesAsync(new[] { requestModel }, schemaDescription.DetailsView.ViewItems);
 
                 return requestModel;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataDetailsQueryHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage details query fails");
                 return null;
             }
         }

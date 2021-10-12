@@ -13,9 +13,9 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <summary>
         /// Get instance of EmPage model.
         /// </summary>
-        /// <param name="entityId"></param>
+        /// <param name="modelId"></param>
         /// <returns></returns>
-        Task<IEmPageModel> GetRawModelAsync(Guid entityId);
+        Task<IEmPageModel> GetRawModelAsync(string modelId);
 
         /// <summary>
         /// Fetch operation.
@@ -27,15 +27,15 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <summary>
         /// Details operation.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="modelId"></param>
         /// <returns></returns>
-        Task<EmPageModelResponse> DetailsAsync(Guid id);
+        Task<EmPageModelResponse> DetailsAsync(string modelId);
 
         /// <summary>
         /// Create operation.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<Guid?> CreateAsync(IEmPageModel model);
+        Task<string> CreateAsync(IEmPageModel model);
     }
 }

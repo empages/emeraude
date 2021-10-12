@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
-using Definux.Emeraude.Application.Logger;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Identity.EventHandlers
 {
@@ -11,7 +11,7 @@ namespace Definux.Emeraude.Identity.EventHandlers
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IEmLogger logger;
+        private readonly ILogger<IdentityEventManager> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityEventManager"/> class.
@@ -19,7 +19,7 @@ namespace Definux.Emeraude.Identity.EventHandlers
         /// <param name="serviceProvider"></param>
         /// <param name="httpContextAccessor"></param>
         /// <param name="logger"></param>
-        public IdentityEventManager(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IEmLogger logger)
+        public IdentityEventManager(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, ILogger<IdentityEventManager> logger)
         {
             this.serviceProvider = serviceProvider;
             this.httpContextAccessor = httpContextAccessor;
@@ -123,7 +123,7 @@ namespace Definux.Emeraude.Identity.EventHandlers
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during identity event triggering");
             }
         }
 

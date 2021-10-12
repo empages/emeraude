@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.Controllers
 {
@@ -31,6 +32,7 @@ namespace Definux.Emeraude.Admin.Controllers
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IUserClaimsService userClaimsService;
         private readonly IUserManager userManager;
+        private readonly ILogger<AdminAuthenticationController> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminAuthenticationController"/> class.
@@ -38,16 +40,17 @@ namespace Definux.Emeraude.Admin.Controllers
         /// <param name="userClaimsService"></param>
         /// <param name="hostingEnvironment"></param>
         /// <param name="userManager"></param>
+        /// <param name="logger"></param>
         public AdminAuthenticationController(
             IUserClaimsService userClaimsService,
             IWebHostEnvironment hostingEnvironment,
-            IUserManager userManager)
+            IUserManager userManager,
+            ILogger<AdminAuthenticationController> logger)
         {
             this.userClaimsService = userClaimsService;
             this.hostingEnvironment = hostingEnvironment;
             this.userManager = userManager;
-
-            this.HideActivityLogParameters = true;
+            this.logger = logger;
         }
 
         private IActionResult AdminIndexActionResult => this.LocalRedirect("/admin");
@@ -136,7 +139,7 @@ namespace Definux.Emeraude.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
-                        await this.Logger.LogErrorAsync(ex);
+                        this.logger.LogError(ex, "An error occured during admin email/password authentication");
                     }
                 }
             }
@@ -212,7 +215,7 @@ namespace Definux.Emeraude.Admin.Controllers
             }
             catch (Exception ex)
             {
-                await this.Logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during admin two factor authentication");
             }
 
             return this.View(model);

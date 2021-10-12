@@ -1,4 +1,4 @@
-﻿@page "/admin/{entityKey}/{entityId}"
+﻿@page "/admin/{route}/{modelId}"
 @using Definux.Emeraude.Admin.EmPages.UI.Adapters
 @using Definux.Emeraude.Admin.UI.Extensions
 @inherits EmPage
@@ -19,7 +19,7 @@ else
     private EmPageDetailsViewData ViewData { get; set; }
     
     [Parameter]
-    public string EntityId { get; set; }
+    public string ModelId { get; set; }
 
     private bool FirstInitial { get; set; }
     
@@ -45,14 +45,14 @@ else
     
     protected override async Task ReloadPageAsync()
     {
-        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(EntityKey);
+        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(Route);
         if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
         
-        ViewData = await DataService.RetrieveDetailsViewDataAsync(EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveDetailsViewDataAsync(Route, ModelId, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

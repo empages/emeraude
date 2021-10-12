@@ -1,4 +1,4 @@
-﻿@page "/admin/{entityKey}/create"
+﻿@page "/admin/{route}/create"
 @inherits EmPage
 @using Definux.Emeraude.Admin.UI.Extensions
 <PageTitle>@PageTitle | Emeraude</PageTitle>
@@ -41,7 +41,7 @@ else
     
     protected override async Task ReloadPageAsync()
     {
-        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.CreateForm, EntityKey);
+        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.CreateForm, Route);
         StateHasChanged();
         if (ViewSchema == null)
         {
@@ -49,7 +49,7 @@ else
             return;
         }
         
-        ViewData = await DataService.RetrieveFormViewDataAsync(EmPageFormType.CreateForm, EntityKey, null, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveFormViewDataAsync(EmPageFormType.CreateForm, Route, null, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

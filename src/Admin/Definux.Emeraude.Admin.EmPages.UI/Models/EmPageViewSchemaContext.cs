@@ -6,12 +6,12 @@
     public class EmPageViewSchemaContext
     {
         /// <summary>
-        /// Key of the entity schema.
+        /// Route of the model schema.
         /// </summary>
-        public string Key { get; set; }
+        public string Route { get; set; }
 
         /// <summary>
-        /// Title of the entity schema.
+        /// Title of the model schema.
         /// </summary>
         public string Title { get; set; }
     }

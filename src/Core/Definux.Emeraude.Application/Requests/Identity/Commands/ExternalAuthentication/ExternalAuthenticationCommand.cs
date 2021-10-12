@@ -5,11 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using ClaimTypes = System.Security.Claims.ClaimTypes;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication
@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
         /// <inheritdoc/>
         public class ExternalAuthenticationCommandHandler : IRequestHandler<ExternalAuthenticationCommand, ExternalAuthenticationRequestResult>
         {
-            private readonly IEmLogger logger;
+            private readonly ILogger<ExternalAuthenticationCommandHandler> logger;
             private readonly IUserManager userManager;
             private readonly IUserAvatarService userAvatarService;
             private readonly IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory;
@@ -86,7 +86,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
             /// <param name="externalProviderAuthenticatorFactory"></param>
             /// <param name="eventManager"></param>
             public ExternalAuthenticationCommandHandler(
-                IEmLogger logger,
+                ILogger<ExternalAuthenticationCommandHandler> logger,
                 IUserManager userManager,
                 IUserAvatarService userAvatarService,
                 IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory,
@@ -166,7 +166,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Get external user fails");
                 }
 
                 return externalUser;
@@ -182,7 +182,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Add external provider to user fails");
                 }
             }
 
@@ -209,7 +209,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Register user via external provider user fails");
                     return default;
                 }
             }

@@ -10,18 +10,16 @@ using Definux.Utilities.Extensions;
 namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
 {
     /// <summary>
-    /// Details implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Entity, Model}"/>.
+    /// Details implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Model}"/>.
     /// </summary>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class DetailsViewConfigurationBuilder<TEntity, TModel> : IEmPageSchemaViewConfigurationBuilder<DetailsViewItem, TEntity, TModel>
-        where TEntity : class, IEntity, new()
+    public class DetailsViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<DetailsViewItem, TModel>
         where TModel : class, IEmPageModel, new()
     {
         private readonly List<DetailsViewItem> viewItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DetailsViewConfigurationBuilder{TEntity, TModel}"/> class.
+        /// Initializes a new instance of the <see cref="DetailsViewConfigurationBuilder{TModel}"/> class.
         /// </summary>
         public DetailsViewConfigurationBuilder()
         {
@@ -40,7 +38,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
         public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
         /// <inheritdoc/>
-        public IEmPageSchemaViewConfigurationBuilder<DetailsViewItem, TEntity, TModel> Use(
+        public IEmPageSchemaViewConfigurationBuilder<DetailsViewItem, TModel> Use(
             Expression<Func<TModel, object>> property,
             Action<DetailsViewItem> viewItemAction)
         {

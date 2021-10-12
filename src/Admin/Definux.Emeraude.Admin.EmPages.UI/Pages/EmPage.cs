@@ -16,13 +16,13 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
     /// </summary>
     public abstract class EmPage : AdminPage
     {
-        private string entityKey;
+        private string route;
 
         /// <summary>
-        /// Entity key of the page.
+        /// Route of the page.
         /// </summary>
         [Parameter]
-        public string EntityKey { get; set; }
+        public string Route { get; set; }
 
         /// <inheritdoc cref="IEmPageSchemaProvider"/>
         [Inject]
@@ -45,7 +45,7 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            this.entityKey = this.EntityKey;
+            this.route = this.Route;
             this.NavigationManager.LocationChanged += this.OnLocationChanged;
             await this.ReloadPageAsync();
         }
@@ -54,9 +54,9 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
-            if (!(this.entityKey ?? string.Empty).Equals(this.EntityKey, StringComparison.OrdinalIgnoreCase))
+            if (!(this.route ?? string.Empty).Equals(this.Route, StringComparison.OrdinalIgnoreCase))
             {
-                this.entityKey = this.EntityKey;
+                this.route = this.Route;
                 await this.ReloadPageAsync();
             }
         }

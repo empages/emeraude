@@ -14,18 +14,16 @@ using FluentValidation;
 namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
 {
     /// <summary>
-    /// Form implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Entity, Model}"/>.
+    /// Form implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Model}"/>.
     /// </summary>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class FormViewConfigurationBuilder<TEntity, TModel> : IEmPageSchemaViewConfigurationBuilder<FormViewItem, TEntity, TModel>
-        where TEntity : class, IEntity, new()
+    public class FormViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel>
         where TModel : class, IEmPageModel, new()
     {
         private readonly List<FormViewItem> viewItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormViewConfigurationBuilder{TEntity, TModel}"/> class.
+        /// Initializes a new instance of the <see cref="FormViewConfigurationBuilder{TModel}"/> class.
         /// </summary>
         public FormViewConfigurationBuilder()
         {
@@ -49,7 +47,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.FormView
         public Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> ModelValidatorAction { get; private set; }
 
         /// <inheritdoc/>
-        public IEmPageSchemaViewConfigurationBuilder<FormViewItem, TEntity, TModel> Use(
+        public IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel> Use(
             Expression<Func<TModel, object>> property,
             Action<FormViewItem> viewItemAction)
         {

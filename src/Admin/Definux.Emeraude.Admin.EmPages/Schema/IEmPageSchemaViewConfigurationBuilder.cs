@@ -9,11 +9,9 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
     /// Contract for configuration builder of schema view implementation.
     /// </summary>
     /// <typeparam name="TViewItem">View item.</typeparam>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public interface IEmPageSchemaViewConfigurationBuilder<out TViewItem, TEntity, TModel>
+    public interface IEmPageSchemaViewConfigurationBuilder<out TViewItem, TModel>
         where TViewItem : class, IViewItem, new()
-        where TEntity : class, IEntity, new()
         where TModel : class, IEmPageModel, new()
     {
         /// <summary>
@@ -37,7 +35,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// <param name="property"></param>
         /// <param name="viewItemAction"></param>
         /// <returns></returns>
-        IEmPageSchemaViewConfigurationBuilder<TViewItem, TEntity, TModel> Use(
+        IEmPageSchemaViewConfigurationBuilder<TViewItem, TModel> Use(
             Expression<Func<TModel, object>> property,
             Action<TViewItem> viewItemAction);
     }

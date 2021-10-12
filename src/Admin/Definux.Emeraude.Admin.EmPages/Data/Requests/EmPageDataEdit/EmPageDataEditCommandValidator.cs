@@ -20,7 +20,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
         /// <param name="emPageService"></param>
         public EmPageDataEditCommandValidator(IEmPageService emPageService)
         {
-            var currentSchema = emPageService.FindSchemaDescriptionByContract(typeof(TEntity), typeof(TModel));
+            var currentSchema = emPageService.FindSchemaDescriptionByContract(typeof(TModel));
             var modelValidator = new EmPageModelValidator<TModel>();
             currentSchema.FormView.ApplyModelValidationRules(EmPageMutationalRequestType.Edit, modelValidator);
             this.RuleFor(x => x.Model)

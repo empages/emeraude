@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Domain.Entities;
@@ -14,6 +13,7 @@ using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Identity.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -27,7 +27,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly IUserClaimsService userClaimsService;
         private readonly EmIdentityOptions identityOptions;
         private readonly JsonWebTokenOptions jwtOptions;
-        private readonly IEmLogger logger;
+        private readonly ILogger<UserTokensService> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserTokensService"/> class.
@@ -44,7 +44,7 @@ namespace Definux.Emeraude.Identity.Services
             IUserClaimsService userClaimsService,
             IOptions<JsonWebTokenOptions> jsonWebTokenOptions,
             IEmOptionsProvider optionsProvider,
-            IEmLogger logger)
+            ILogger<UserTokensService> logger)
         {
             this.userManager = userManager;
             this.context = context;
@@ -76,7 +76,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during building JWT token for a user");
                 return null;
             }
         }
@@ -92,7 +92,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during building JWT token for a external user");
                 return null;
             }
         }

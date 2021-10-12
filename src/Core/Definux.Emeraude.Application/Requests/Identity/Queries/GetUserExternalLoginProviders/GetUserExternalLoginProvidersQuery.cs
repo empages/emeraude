@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternalLoginProviders
 {
@@ -21,7 +21,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternal
         public class GetUserExternalLoginProvidersQueryHandler : IRequestHandler<GetUserExternalLoginProvidersQuery, GetUserExternalLoginProvidersResult>
         {
             private readonly IUserManager userManager;
-            private readonly IEmLogger logger;
+            private readonly ILogger<GetUserExternalLoginProvidersQueryHandler> logger;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="GetUserExternalLoginProvidersQueryHandler"/> class.
@@ -30,7 +30,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternal
             /// <param name="logger"></param>
             public GetUserExternalLoginProvidersQueryHandler(
                 IUserManager userManager,
-                IEmLogger logger)
+                ILogger<GetUserExternalLoginProvidersQueryHandler> logger)
             {
                 this.userManager = userManager;
                 this.logger = logger;
@@ -63,7 +63,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternal
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Get user external login providers query fails");
                     return result;
                 }
             }

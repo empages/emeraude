@@ -1,29 +1,24 @@
 using System;
+using System.Threading.Tasks;
 using Definux.Emeraude;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace Definux.Emeraude.Tests.Project
 {
-    public class Program : EmStartup
+    public class Program : EmProgram
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            RunEmeraude(CreateHostBuilder(args));
+            await RunEmeraudeAsync(CreateHostBuilder(args));
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            bool useKestrel = false;
-
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    if (useKestrel)
-                    {
-                        webBuilder.UseKestrel();
-                    }
-
+                    webBuilder.UseKestrel();
                     webBuilder.UseStaticWebAssets();
                     webBuilder.UseStartup<Startup>();
                 });

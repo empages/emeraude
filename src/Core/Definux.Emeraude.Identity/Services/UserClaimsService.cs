@@ -5,11 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Identity.Services
 {
@@ -18,7 +18,7 @@ namespace Definux.Emeraude.Identity.Services
     {
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
-        private readonly IEmLogger logger;
+        private readonly ILogger<UserClaimsService> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserClaimsService"/> class.
@@ -29,7 +29,7 @@ namespace Definux.Emeraude.Identity.Services
         public UserClaimsService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            IEmLogger logger)
+            ILogger<UserClaimsService> logger)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -50,7 +50,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during checking user for administration permission");
                 return false;
             }
         }
@@ -70,7 +70,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting user claims from cookie");
                 return default;
             }
         }
@@ -89,7 +89,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting user claims for JWT");
                 return default;
             }
         }

@@ -6,6 +6,7 @@ using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
@@ -48,7 +49,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
             catch (Exception ex)
             {
-                await this.Logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during confirm email action");
             }
 
             return await this.RedirectToExecutionResultAsync(

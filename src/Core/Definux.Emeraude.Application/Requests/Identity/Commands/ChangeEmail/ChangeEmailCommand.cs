@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
-using Definux.Emeraude.Application.Persistence;
 using Definux.Utilities.Objects;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
 {
@@ -39,7 +38,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
         public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, SimpleResult>
         {
             private readonly IUserManager userManager;
-            private readonly IEmLogger logger;
+            private readonly ILogger<ChangeEmailCommandHandler> logger;
             private readonly ICurrentUserProvider currentUserProvider;
 
             /// <summary>
@@ -48,7 +47,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
             /// <param name="userManager"></param>
             /// <param name="logger"></param>
             /// <param name="currentUserProvider"></param>
-            public ChangeEmailCommandHandler(IUserManager userManager, IEmLogger logger, ICurrentUserProvider currentUserProvider)
+            public ChangeEmailCommandHandler(IUserManager userManager, ILogger<ChangeEmailCommandHandler> logger, ICurrentUserProvider currentUserProvider)
             {
                 this.userManager = userManager;
                 this.logger = logger;
@@ -66,7 +65,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Change user email command fails");
                     return SimpleResult.UnsuccessfulResult;
                 }
             }

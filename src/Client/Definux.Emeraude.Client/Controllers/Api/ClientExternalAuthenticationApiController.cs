@@ -7,6 +7,7 @@ using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
@@ -53,7 +54,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             }
             catch (Exception ex)
             {
-                await this.Logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during external authentication");
                 this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
             }
 

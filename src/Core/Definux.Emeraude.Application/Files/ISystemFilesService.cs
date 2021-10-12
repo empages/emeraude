@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Definux.Emeraude.Domain.Logging;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Definux.Emeraude.Application.Files
 {
@@ -37,71 +36,41 @@ namespace Definux.Emeraude.Application.Files
         IEnumerable<SystemItem> ScanPrivateDirectory();
 
         /// <summary>
-        /// Get system file by file bath.
+        /// Get system file by file path.
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        Task<SystemFileResult> GetFileAsync(string filePath);
+        SystemFileResult GetFile(string filePath);
 
         /// <summary>
-        /// Get file (<see cref="TempFileLog"/>) by temp file log id (async execution).
+        /// Get temporary file stored in the memory cache.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<TempFileLog> GetFileByIdAsync(int id);
+        string GetTemporaryFile(Guid id);
 
         /// <summary>
-        /// Get file (<see cref="TempFileLog"/>) by temp file log id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        TempFileLog GetFileById(int id);
-
-        /// <summary>
-        /// Get files (<see cref="TempFileLog"/>) by temp file log ids.
+        /// Get temporary files stored in the memory cache.
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        IEnumerable<TempFileLog> GetFilesByIds(IEnumerable<int> ids);
+        IEnumerable<string> GetTemporaryFiles(IEnumerable<Guid> ids);
 
         /// <summary>
-        /// Get files (<see cref="TempFileLog"/>) by temp file log ids (async execution).
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        Task<IEnumerable<TempFileLog>> GetFilesByIdsAsync(IEnumerable<int> ids);
-
-        /// <summary>
-        /// Apply temp file (<see cref="TempFileLog"/>) into specified private root directory (async execution).
-        /// </summary>
-        /// <param name="fileId"></param>
-        /// <param name="targetDirectory"></param>
-        /// <returns></returns>
-        Task<TempFileLog> ApplyTempFileToPrivateDirectoryAsync(int fileId, string targetDirectory);
-
-        /// <summary>
-        /// Apply temp file (<see cref="TempFileLog"/>) into specified public root directory (async execution).
-        /// </summary>
-        /// <param name="fileId"></param>
-        /// <param name="targetDirectory"></param>
-        /// <returns></returns>
-        Task<TempFileLog> ApplyTempFileToPublicDirectoryAsync(int fileId, string targetDirectory);
-
-        /// <summary>
-        /// Apply temp files (<see cref="TempFileLog"/>) into specified private root directory (async execution).
+        /// Apply temporary files into specified private root directory (async execution).
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="targetDirectory"></param>
         /// <returns></returns>
-        Task<bool> ApplyTempFilesToPrivateDirectoryAsync(IEnumerable<int> ids, string targetDirectory);
+        bool MoveTemporaryFilesToPrivateDirectory(IEnumerable<Guid> ids, string targetDirectory);
 
         /// <summary>
-        /// Apply temp files (<see cref="TempFileLog"/>) into specified public root directory (async execution).
+        /// Apply temporary files into specified public root directory (async execution).
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="targetDirectory"></param>
         /// <returns></returns>
-        Task<bool> ApplyTempFilesToPublicDirectoryAsync(IEnumerable<int> ids, string targetDirectory);
+        bool MoveTemporaryFilesToPublicDirectory(IEnumerable<Guid> ids, string targetDirectory);
 
         /// <summary>
         /// Create folder.
@@ -110,13 +79,5 @@ namespace Definux.Emeraude.Application.Files
         /// <param name="folderPath"></param>
         /// <returns></returns>
         bool CreateFolder(string folderName, string folderPath);
-
-        /// <summary>
-        /// Create folder.
-        /// </summary>
-        /// <param name="folderName"></param>
-        /// <param name="folderPath"></param>
-        /// <returns></returns>
-        Task<bool> CreateFolderAsync(string folderName, string folderPath);
     }
 }

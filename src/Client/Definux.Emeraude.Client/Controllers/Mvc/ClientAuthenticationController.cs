@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
 {
@@ -25,6 +26,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         private readonly UrlEncoder urlEncoder;
         private readonly SignInManager<User> signInManager;
         private readonly IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory;
+        private readonly ILogger<ClientAuthenticationController> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientAuthenticationController"/> class.
@@ -33,18 +35,19 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         /// <param name="urlEncoder"></param>
         /// <param name="signInManager"></param>
         /// <param name="externalProviderAuthenticatorFactory"></param>
+        /// <param name="logger"></param>
         public ClientAuthenticationController(
             IUserClaimsService userClaimsService,
             UrlEncoder urlEncoder,
             SignInManager<User> signInManager,
-            IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory)
+            IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory,
+            ILogger<ClientAuthenticationController> logger)
         {
             this.userClaimsService = userClaimsService;
             this.urlEncoder = urlEncoder;
             this.signInManager = signInManager;
             this.externalProviderAuthenticatorFactory = externalProviderAuthenticatorFactory;
-
-            this.HideActivityLogParameters = true;
+            this.logger = logger;
         }
 
         private AuthenticationProperties AuthenticationProperties

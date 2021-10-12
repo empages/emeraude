@@ -3,11 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.EmPages.Schema;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
-using Definux.Utilities.Functions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
 {
@@ -16,19 +15,19 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
         where TEntity : class, IEntity, new()
         where TModel : class, IEmPageModel, new()
     {
-        private readonly IEmContext context;
+        private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataEditCommandHandler<TEntity, TModel>> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageDataEditCommandHandler{TEntity,TModel}"/> class.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="contextFactory"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public EmPageDataEditCommandHandler(IEmContext context, IMapper mapper, IEmLogger logger)
+        public EmPageDataEditCommandHandler(IEmContextFactory contextFactory, IMapper mapper, ILogger<EmPageDataEditCommandHandler<TEntity, TModel>> logger)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.mapper = mapper;
             this.logger = logger;
         }
@@ -36,9 +35,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
         /// <inheritdoc/>
         public async Task<Guid?> Handle(EmPageDataEditCommand<TEntity, TModel> request, CancellationToken cancellationToken)
         {
+            await using var context = await this.contextFactory.CreateDbContextAsync(cancellationToken);
             try
             {
-                var dbSet = this.context.Set<TEntity>();
+                var dbSet = context.Set<TEntity>();
                 var currentEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == request.EntityId, cancellationToken);
 
                 if (currentEntity != null)
@@ -47,7 +47,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
 
                     currentEntity.Id = request.EntityId;
                     dbSet.Update(currentEntity);
-                    await this.context.SaveChangesAsync(cancellationToken);
+                    await context.SaveChangesAsync(cancellationToken);
 
                     return request.EntityId;
                 }
@@ -56,7 +56,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataEdit
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataEditCommandHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage edit command fails");
                 return null;
             }
         }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Objects;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvatar
 {
@@ -28,14 +27,14 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvat
         public class ChangeUserAvatarCommandHandler : IRequestHandler<ChangeUserAvatarCommand, SimpleResult>
         {
             private readonly IUserAvatarService userAvatarService;
-            private readonly IEmLogger logger;
+            private readonly ILogger<ChangeUserAvatarCommandHandler> logger;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ChangeUserAvatarCommandHandler"/> class.
             /// </summary>
             /// <param name="userAvatarService"></param>
             /// <param name="logger"></param>
-            public ChangeUserAvatarCommandHandler(IUserAvatarService userAvatarService, IEmLogger logger)
+            public ChangeUserAvatarCommandHandler(IUserAvatarService userAvatarService, ILogger<ChangeUserAvatarCommandHandler> logger)
             {
                 this.userAvatarService = userAvatarService;
                 this.logger = logger;
@@ -63,7 +62,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserAvat
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Change user avatar command fails");
                     return SimpleResult.UnsuccessfulResult;
                 }
             }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Options;
 using Definux.Emeraude.Files.Extensions;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Files.Services
 {
@@ -15,7 +13,7 @@ namespace Definux.Emeraude.Files.Services
     public class FoldersInitializer : IFoldersInitializer
     {
         private readonly EmFilesOptions options;
-        private readonly IEmLogger logger;
+        private readonly ILogger<FoldersInitializer> logger;
         private readonly IHostingEnvironment hostingEnvironment;
 
         /// <summary>
@@ -26,7 +24,7 @@ namespace Definux.Emeraude.Files.Services
         /// <param name="hostingEnvironment"></param>
         public FoldersInitializer(
             IEmOptionsProvider optionsProvider,
-            IEmLogger logger,
+            ILogger<FoldersInitializer> logger,
             IHostingEnvironment hostingEnvironment)
         {
             this.options = optionsProvider.GetFilesOptions();
@@ -35,7 +33,7 @@ namespace Definux.Emeraude.Files.Services
         }
 
         /// <inheritdoc/>
-        public async Task InitFoldersAsync()
+        public void InitFolders()
         {
             try
             {
@@ -50,7 +48,7 @@ namespace Definux.Emeraude.Files.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during startup folders initialization");
             }
         }
 

@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
@@ -12,6 +11,7 @@ using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Identity.Services
 {
@@ -23,7 +23,7 @@ namespace Definux.Emeraude.Identity.Services
         private readonly IWebHostEnvironment hostEnvironment;
         private readonly ISystemFilesService systemFilesService;
         private readonly IRootsService rootsService;
-        private readonly IEmLogger logger;
+        private readonly ILogger<UserAvatarService> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAvatarService"/> class.
@@ -40,7 +40,7 @@ namespace Definux.Emeraude.Identity.Services
             IWebHostEnvironment hostEnvironment,
             ISystemFilesService systemFilesService,
             IRootsService rootsService,
-            IEmLogger logger)
+            ILogger<UserAvatarService> logger)
         {
             this.context = context;
             this.userManager = userManager;
@@ -66,7 +66,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during applying avatar to a user");
             }
         }
 
@@ -87,7 +87,7 @@ namespace Definux.Emeraude.Identity.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        stream.CopyTo(fileStream);
+                        await stream.CopyToAsync(fileStream);
 
                         return $"/{Folders.UploadFolderName}/{Folders.ImagesFolderName}/{avatarNameWithExtension}";
                     }
@@ -97,7 +97,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during applying avatar to a user");
                 return null;
             }
         }
@@ -116,14 +116,14 @@ namespace Definux.Emeraude.Identity.Services
                 using (Stream stream = new MemoryStream(avatarFileByteArray))
                 using (FileStream fileStream = System.IO.File.Create(targetFilePath))
                 {
-                    stream.CopyTo(fileStream);
+                    await stream.CopyToAsync(fileStream);
 
                     return $"/{Folders.UploadFolderName}/{Folders.ImagesFolderName}/{avatarNameWithExtension}";
                 }
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during creating user avatar");
                 return null;
             }
         }

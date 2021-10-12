@@ -31,11 +31,11 @@
     <ProjectReference Include="..\Definux.Emeraude.Admin.EmPages.UI\Definux.Emeraude.Admin.EmPages.UI.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.EmPages\Definux.Emeraude.Admin.EmPages.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
-    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder.UI\Definux.Emeraude.ClientBuilder.UI.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Requests" />
     <Folder Include="Services" />
   </ItemGroup>
 

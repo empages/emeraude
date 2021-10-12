@@ -4,19 +4,19 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Identity.Services
 {
     /// <inheritdoc cref="IRoleManager"/>
     public class RoleManager : IRoleManager
     {
-        private readonly IEmLogger logger;
+        private readonly ILogger<RoleManager> logger;
         private readonly RoleManager<Role> roleManager;
         private readonly UserManager<User> userManager;
         private readonly IEmContext context;
@@ -32,7 +32,7 @@ namespace Definux.Emeraude.Identity.Services
             RoleManager<Role> roleManager,
             UserManager<User> userManager,
             IEmContext context,
-            IEmLogger logger)
+            ILogger<RoleManager> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -49,7 +49,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting roles");
                 return new Dictionary<Guid, string>();
             }
         }
@@ -90,7 +90,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during creating role");
                 return false;
             }
         }
@@ -112,7 +112,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during deleting role");
                 return false;
             }
         }
@@ -131,13 +131,13 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting user roles");
                 return new Dictionary<Guid, string>();
             }
         }
 
         /// <inheritdoc/>
-        public async Task<bool> UnassignAllRolesFromUserAsync(IUser user)
+        public async Task<bool> RemoveAllRolesFromUserAsync(IUser user)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during removing the roles of user");
                 return false;
             }
         }
@@ -169,7 +169,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during roles assignment to the user");
                 return false;
             }
         }

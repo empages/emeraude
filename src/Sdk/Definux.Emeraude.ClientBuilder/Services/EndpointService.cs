@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.ClientBuilder.Attributes;
 using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Models;
@@ -12,14 +11,14 @@ using Definux.Emeraude.Presentation.Attributes;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.ClientBuilder.Services
 {
     /// <inheritdoc cref="IEndpointService"/>
     public class EndpointService : IEndpointService
     {
-        private readonly IEmLogger logger;
+        private readonly ILogger<EndpointService> logger;
         private readonly EmClientBuilderOptions clientBuilderOptions;
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
         /// </summary>
         /// <param name="optionsProvider"></param>
         /// <param name="logger"></param>
-        public EndpointService(IEmOptionsProvider optionsProvider, IEmLogger logger)
+        public EndpointService(IEmOptionsProvider optionsProvider, ILogger<EndpointService> logger)
         {
             this.clientBuilderOptions = optionsProvider.GetClientBuilderOptions();
             this.logger = logger;
@@ -64,7 +63,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during building the endpoints from Client Builder");
                 return new List<Endpoint>();
             }
         }
@@ -115,8 +114,7 @@ namespace Definux.Emeraude.ClientBuilder.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
-                this.logger.LogErrorWithoutAnException($"{endpointMethodInfo.Name} ({controllerType.FullName})", "Error on creating endpoint from controller action.");
+                this.logger.LogError(ex, "Error on creating endpoint from controller ({FullName}) action ({Name})", endpointMethodInfo.Name, controllerType.FullName);
                 return null;
             }
         }

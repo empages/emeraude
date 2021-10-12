@@ -13,9 +13,8 @@ using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
 using Definux.Emeraude.Admin.UI.Models;
 using Definux.Emeraude.Application.Exceptions;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Essentials.Helpers;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 namespace Definux.Emeraude.Admin.EmPages.Services
@@ -25,7 +24,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
     {
         private readonly IEmPageService emPageService;
         private readonly IServiceProvider serviceProvider;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataService> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageDataService"/> class.
@@ -36,7 +35,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         public EmPageDataService(
             IEmPageService emPageService,
             IServiceProvider serviceProvider,
-            IEmLogger logger)
+            ILogger<EmPageDataService> logger)
         {
             this.emPageService = emPageService;
             this.serviceProvider = serviceProvider;
@@ -114,8 +113,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             if (schemaDescription.DataManagerType != null)
             {
                 var dataManager = this.GetDataManagerInstance(schemaDescription);
-                Guid.TryParse(entityId, out var parsedEntityId);
-                var requestResult = await dataManager.DetailsAsync(parsedEntityId);
+                var requestResult = await dataManager.DetailsAsync(entityId);
                 if (requestResult != null)
                 {
                     var result = new EmPageDetailsViewData();
@@ -171,8 +169,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                         break;
                     case EmPageFormType.EditForm:
                         formViewItems = schemaDescription.FormView.EditFormViewItems;
-                        Guid.TryParse(entityId, out var parsedEntityId);
-                        model = await dataManager.GetRawModelAsync(parsedEntityId);
+                        model = await dataManager.GetRawModelAsync(entityId);
                         break;
                 }
 
@@ -205,7 +202,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             var response = new EmPageFormSubmissionResponse();
             try
             {
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(schema.Context.Key);
+                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(schema.Context.Route);
                 var model = this.BuildModel(formViewData.Inputs, schemaDescription.ModelType);
                 var dataManage = this.GetDataManagerInstance(schemaDescription);
                 response.MutatedModelId = (await dataManage.CreateAsync(model))?.ToString();

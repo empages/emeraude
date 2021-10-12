@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.EmPages.Schema;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
 {
@@ -15,19 +15,19 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
         where TEntity : class, IEntity, new()
         where TModel : class, IEmPageModel, new()
     {
-        private readonly IEmContext context;
+        private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataDeleteCommandHandler<TEntity, TModel>> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageDataDeleteCommandHandler{TEntity, TModel}"/> class.
         /// </summary>
+        /// <param name="contextFactory"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        /// <param name="logger"></param>
-        public EmPageDataDeleteCommandHandler(IEmContext context, IMapper mapper, IEmLogger logger)
+        public EmPageDataDeleteCommandHandler(IEmContextFactory contextFactory, IMapper mapper, ILogger<EmPageDataDeleteCommandHandler<TEntity, TModel>> logger)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.mapper = mapper;
             this.logger = logger;
         }
@@ -35,15 +35,16 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
         /// <inheritdoc/>
         public async Task<bool> Handle(EmPageDataDeleteCommand<TEntity, TModel> request, CancellationToken cancellationToken)
         {
+            await using var context = await this.contextFactory.CreateDbContextAsync(cancellationToken);
             try
             {
-                var dbSet = this.context.Set<TEntity>();
+                var dbSet = context.Set<TEntity>();
                 var currentEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == request.EntityId, cancellationToken);
 
                 if (currentEntity != null)
                 {
                     dbSet.Remove(currentEntity);
-                    await this.context.SaveChangesAsync(cancellationToken);
+                    await context.SaveChangesAsync(cancellationToken);
 
                     return true;
                 }
@@ -52,7 +53,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDelete
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataDeleteCommandHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage delete command fails");
                 return false;
             }
         }

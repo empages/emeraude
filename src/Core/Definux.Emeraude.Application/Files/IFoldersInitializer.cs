@@ -10,7 +10,6 @@ namespace Definux.Emeraude.Application.Files
         /// <summary>
         /// Creates all folders that don't exist in the application.
         /// </summary>
-        /// <returns></returns>
-        Task InitFoldersAsync();
+        void InitFolders();
     }
 }

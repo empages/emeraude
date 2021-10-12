@@ -1,8 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
-using Definux.Emeraude.Application.Requests.Files.Commands.Shared;
-using Definux.Emeraude.Domain.Logging;
+using Definux.Emeraude.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -52,22 +51,18 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
         public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, UploadResult>
         {
             private readonly IFilesValidationProvider validationProvider;
-            private readonly ISystemFilesService systemFilesService;
             private readonly IUploadService uploadService;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="UploadFileCommandHandler"/> class.
             /// </summary>
             /// <param name="validationProvider"></param>
-            /// <param name="systemFilesService"></param>
             /// <param name="uploadService"></param>
             public UploadFileCommandHandler(
                 IFilesValidationProvider validationProvider,
-                ISystemFilesService systemFilesService,
                 IUploadService uploadService)
             {
                 this.validationProvider = validationProvider;
-                this.systemFilesService = systemFilesService;
                 this.uploadService = uploadService;
             }
 
@@ -75,29 +70,22 @@ namespace Definux.Emeraude.Application.Requests.Files.Commands.UploadFile
             public async Task<UploadResult> Handle(UploadFileCommand request, CancellationToken cancellationToken)
             {
                 var validationResult = this.validationProvider.ValidateFormFile(request.FormFile);
-                if (validationResult.Succeeded)
+                if (!validationResult.Succeeded)
                 {
-                    TempFileLog uploadedFile;
-                    if (string.IsNullOrEmpty(request.SaveDirectory))
-                    {
-                        uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile);
-                    }
-                    else
-                    {
-                        uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile, request.SaveDirectory, request.PublicRoot);
-                    }
-
-                    if (uploadedFile != null)
-                    {
-                        return UploadResult.SuccessResult(uploadedFile.Id);
-                    }
-                    else
-                    {
-                        return UploadResult.ErrorResult("File has not been uploaded.");
-                    }
+                    return UploadResult.ValidationErrorResult(validationResult.Message);
                 }
 
-                return UploadResult.ValidationErrorResult(validationResult.Message);
+                string uploadedFile;
+                if (string.IsNullOrEmpty(request.SaveDirectory))
+                {
+                    uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile);
+                }
+                else
+                {
+                    uploadedFile = await this.uploadService.UploadFileAsync(request.FormFile, request.SaveDirectory, request.PublicRoot);
+                }
+
+                return uploadedFile != null ? UploadResult.SuccessResult(uploadedFile) : UploadResult.ErrorResult("File has not been uploaded.");
             }
         }
     }

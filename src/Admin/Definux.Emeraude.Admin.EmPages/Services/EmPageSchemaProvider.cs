@@ -9,8 +9,8 @@ using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
 using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Definux.Emeraude.Admin.UI.Models;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Configuration.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Services
 {
@@ -20,7 +20,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
     public class EmPageSchemaProvider : IEmPageSchemaProvider
     {
         private readonly IEmPageService emPageService;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageSchemaProvider> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageSchemaProvider"/> class.
@@ -31,16 +31,16 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         public EmPageSchemaProvider(
             IEmOptionsProvider optionsProvider,
             IEmPageService emPageService,
-            IEmLogger logger)
+            ILogger<EmPageSchemaProvider> logger)
         {
             this.emPageService = emPageService;
             this.logger = logger;
         }
 
         /// <inheritdoc/>
-        public async Task<EmPageTableViewSchema> GetTableViewSchemaAsync(string entityKey)
+        public async Task<EmPageTableViewSchema> GetTableViewSchemaAsync(string route)
         {
-            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
 
             if (!schemaDescription.TableView.IsActive)
             {
@@ -49,7 +49,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
             var schema = new EmPageTableViewSchema(new EmPageViewSchemaContext
             {
-                Key = schemaDescription.Key,
+                Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
             });
 
@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                     schema.RowActions.Add(new ActionModel
                     {
                         Title = action.Name,
-                        ActionUrl = action.BuildActionUrlFormat(entityKey),
+                        ActionUrl = action.BuildActionUrlFormat(route),
                         Order = action.Order,
                         ActionHttpMethod = action.Method,
                         OpenOnSeparatePage = action.SingleContext,
@@ -86,9 +86,9 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         }
 
         /// <inheritdoc/>
-        public async Task<EmPageDetailsViewSchema> GetDetailsViewSchemaAsync(string entityKey)
+        public async Task<EmPageDetailsViewSchema> GetDetailsViewSchemaAsync(string route)
         {
-            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
 
             if (!schemaDescription.DetailsView.IsActive)
             {
@@ -97,7 +97,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
             var schema = new EmPageDetailsViewSchema(new EmPageViewSchemaContext
             {
-                Key = schemaDescription.Key,
+                Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
             });
 
@@ -107,9 +107,9 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         }
 
         /// <inheritdoc/>
-        public async Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string entityKey)
+        public async Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string route)
         {
-            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(entityKey);
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
 
             switch (type)
             {
@@ -120,7 +120,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
             var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext
             {
-                Key = schemaDescription.Key,
+                Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
             });
 
@@ -149,7 +149,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 destinationSchema.NavbarActions.Add(new ActionModel
                 {
                     Title = pageAction.Name,
-                    ActionUrl = pageAction.BuildActionUrlFormat(destinationSchema.Context.Key),
+                    ActionUrl = pageAction.BuildActionUrlFormat(destinationSchema.Context.Route),
                     Order = pageAction.Order,
                     ActionHttpMethod = pageAction.Method,
                     OpenOnSeparatePage = pageAction.SingleContext,

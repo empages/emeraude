@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Definux.Emeraude.Admin.EmPages.Schema;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
 {
@@ -20,7 +19,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
     {
         private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataRawModelQueryHandler<TEntity, TModel>> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageDataRawModelQueryHandler{TEntity,TModel}"/> class.
@@ -28,7 +27,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
         /// <param name="contextFactory"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public EmPageDataRawModelQueryHandler(IEmContextFactory contextFactory, IMapper mapper, IEmLogger logger)
+        public EmPageDataRawModelQueryHandler(IEmContextFactory contextFactory, IMapper mapper, ILogger<EmPageDataRawModelQueryHandler<TEntity, TModel>> logger)
         {
             this.contextFactory = contextFactory;
             this.mapper = mapper;
@@ -50,7 +49,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataRawModelQueryHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage raw model query fails");
                 return default;
             }
         }

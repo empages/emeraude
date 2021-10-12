@@ -1,4 +1,4 @@
-﻿@page "/admin/{entityKey}"
+﻿@page "/admin/{route}"
 @using Definux.Emeraude.Admin.UI.Extensions
 @inherits EmPage
 
@@ -49,14 +49,14 @@ else
     protected override async Task ReloadPageAsync()
     {
         ResetData();
-        ViewSchema = await SchemaProvider.GetTableViewSchemaAsync(EntityKey);
+        ViewSchema = await SchemaProvider.GetTableViewSchemaAsync(Route);
         if (ViewSchema == null)
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
         
-        ViewData = await DataService.RetrieveTableViewDataAsync(EntityKey, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveTableViewDataAsync(Route, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 

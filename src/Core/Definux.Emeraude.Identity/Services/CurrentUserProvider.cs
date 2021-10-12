@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Utilities.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Identity.Services
 {
@@ -14,7 +14,7 @@ namespace Definux.Emeraude.Identity.Services
     public class CurrentUserProvider : ICurrentUserProvider
     {
         private readonly UserManager<User> userManager;
-        private readonly IEmLogger logger;
+        private readonly ILogger<CurrentUserProvider> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentUserProvider"/> class.
@@ -25,7 +25,7 @@ namespace Definux.Emeraude.Identity.Services
         public CurrentUserProvider(
             IHttpContextAccessor httpAccessor,
             UserManager<User> userManager,
-            IEmLogger logger)
+            ILogger<CurrentUserProvider> logger)
         {
             this.CurrentUserId = httpAccessor.GetCurrentUserId();
             if (!this.CurrentUserId.HasValue)
@@ -54,7 +54,7 @@ namespace Definux.Emeraude.Identity.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting current user");
                 return default;
             }
         }

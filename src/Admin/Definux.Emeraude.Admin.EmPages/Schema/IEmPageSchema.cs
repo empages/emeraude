@@ -6,16 +6,14 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
     /// <summary>
     /// Contract for EmPages schemas.
     /// </summary>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public interface IEmPageSchema<TEntity, TModel>
-        where TEntity : class, IEntity, new()
+    public interface IEmPageSchema<TModel>
         where TModel : class, IEmPageModel, new()
     {
         /// <summary>
         /// Configures all features and utilities of the current schema.
         /// </summary>
         /// <returns></returns>
-        Task<EmPageSchemaSettings<TEntity, TModel>> SetupAsync();
+        Task<EmPageSchemaSettings<TModel>> SetupAsync();
     }
 }

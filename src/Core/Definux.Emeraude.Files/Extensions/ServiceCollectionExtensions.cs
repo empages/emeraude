@@ -20,6 +20,7 @@ namespace Definux.Emeraude.Files.Extensions
             this IServiceCollection services,
             EmFilesOptions options)
         {
+            services.AddSingleton<ITemporaryFilesService, TemporaryFilesService>();
             services.AddScoped<ISystemFilesService, SystemFilesService>();
             services.AddScoped<IFilesValidationProvider, FilesValidationProvider>();
             services.AddScoped<IFoldersInitializer, FoldersInitializer>();

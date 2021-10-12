@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Domain.Logging;
 using Microsoft.AspNetCore.Http;
 
 namespace Definux.Emeraude.Application.Files
@@ -14,7 +13,7 @@ namespace Definux.Emeraude.Application.Files
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns></returns>
-        Task<TempFileLog> UploadFileAsync(IFormFile formFile);
+        Task<string> UploadFileAsync(IFormFile formFile);
 
         /// <summary>
         /// Upload file in specified directory.
@@ -23,6 +22,6 @@ namespace Definux.Emeraude.Application.Files
         /// <param name="saveDirectory"></param>
         /// <param name="publicRoot"></param>
         /// <returns></returns>
-        Task<TempFileLog> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false);
+        Task<string> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false);
     }
 }

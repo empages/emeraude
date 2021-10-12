@@ -39,11 +39,11 @@ namespace Definux.Emeraude.Application.Identity
         Task<Dictionary<Guid, string>> GetUserRolesAsync(IUser user);
 
         /// <summary>
-        /// Unassign all roles from a user.
+        /// Removes all roles from a user.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<bool> UnassignAllRolesFromUserAsync(IUser user);
+        Task<bool> RemoveAllRolesFromUserAsync(IUser user);
 
         /// <summary>
         /// Assign specified roles to a user.

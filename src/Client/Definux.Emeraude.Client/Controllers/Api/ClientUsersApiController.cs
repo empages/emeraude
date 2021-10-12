@@ -38,7 +38,6 @@ namespace Definux.Emeraude.Client.Controllers.Api
             ICurrentUserProvider currentUserProvider)
         {
             this.currentUserProvider = currentUserProvider;
-            this.HideActivityLogParameters = true;
         }
 
         /// <summary>

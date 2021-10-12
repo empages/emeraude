@@ -10,18 +10,16 @@ using Definux.Utilities.Extensions;
 namespace Definux.Emeraude.Admin.EmPages.Schema.TableView
 {
     /// <summary>
-    /// Table implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{TViewItem,TEntity,TModel}"/>
+    /// Table implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{TViewItem,TModel}"/>
     /// </summary>
-    /// <typeparam name="TEntity">Domain entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class TableViewConfigurationBuilder<TEntity, TModel> : IEmPageSchemaViewConfigurationBuilder<TableViewItem, TEntity, TModel>
-        where TEntity : class, IEntity, new()
+    public class TableViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<TableViewItem, TModel>
         where TModel : class, IEmPageModel, new()
     {
         private readonly List<TableViewItem> viewItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableViewConfigurationBuilder{TEntity, TModel}"/> class.
+        /// Initializes a new instance of the <see cref="TableViewConfigurationBuilder{TModel}"/> class.
         /// </summary>
         public TableViewConfigurationBuilder()
         {
@@ -48,7 +46,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.TableView
         public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
         /// <inheritdoc/>
-        public IEmPageSchemaViewConfigurationBuilder<TableViewItem, TEntity, TModel> Use(
+        public IEmPageSchemaViewConfigurationBuilder<TableViewItem, TModel> Use(
             Expression<Func<TModel, object>> property,
             Action<TableViewItem> viewItemAction)
         {

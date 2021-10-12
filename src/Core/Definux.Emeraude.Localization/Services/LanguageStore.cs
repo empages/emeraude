@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Domain.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Localization.Services
 {
@@ -15,14 +15,14 @@ namespace Definux.Emeraude.Localization.Services
     public class LanguageStore : ILanguageStore
     {
         private readonly ILocalizationContext context;
-        private readonly IEmLogger logger;
+        private readonly ILogger<LanguageStore> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageStore"/> class.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger"></param>
-        public LanguageStore(ILocalizationContext context, IEmLogger logger)
+        public LanguageStore(ILocalizationContext context, ILogger<LanguageStore> logger)
         {
             this.context = context;
             this.logger = logger;
@@ -40,7 +40,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting all languages codes");
                 return null;
             }
         }
@@ -50,14 +50,14 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                var languages = await this.context.Languages.AsQueryable().ToListAsync();
+                var languages = await this.context.Languages.ToListAsync();
                 string[] languageCodes = languages.Select(x => x.Code).ToArray();
 
                 return languageCodes;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting all languages codes");
                 return null;
             }
         }
@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting default language");
                 return default;
             }
         }
@@ -85,7 +85,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting default language");
                 return default;
             }
         }
@@ -103,7 +103,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting translation keys");
                 return null;
             }
         }
@@ -117,7 +117,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting languages");
                 return null;
             }
         }
@@ -131,7 +131,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting languages");
                 return null;
             }
         }
@@ -152,7 +152,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting translations dictionary");
                 return null;
             }
         }

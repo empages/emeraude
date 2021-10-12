@@ -21,21 +21,16 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             this.FormView = new FormViewDescription();
         }
 
-        /// <inheritdoc cref="EmPageSchemaSettings{TEntity,TModel}.Key"/>
-        public string Key { get; set; }
+        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Route"/>
+        public string Route { get; set; }
 
-        /// <inheritdoc cref="EmPageSchemaSettings{TEntity, TModel}.Title"/>
+        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Title"/>
         public string Title { get; set; }
 
         /// <summary>
         /// Type of the schema linked model.
         /// </summary>
         public Type ModelType { get; set; }
-
-        /// <summary>
-        /// Type of the domain entity.
-        /// </summary>
-        public Type EntityType { get; set; }
 
         /// <summary>
         /// Type of the schema linked data manager.

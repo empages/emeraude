@@ -12,25 +12,25 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
     public interface IEmPageSchemaProvider
     {
         /// <summary>
-        /// Gets table view schema of specified entity.
+        /// Gets table view schema of specified model.
         /// </summary>
-        /// <param name="entityKey"></param>
+        /// <param name="route"></param>
         /// <returns></returns>
-        Task<EmPageTableViewSchema> GetTableViewSchemaAsync(string entityKey);
+        Task<EmPageTableViewSchema> GetTableViewSchemaAsync(string route);
 
         /// <summary>
-        /// Gets details view schema of specified entity.
+        /// Gets details view schema of specified model.
         /// </summary>
-        /// <param name="entityKey"></param>
+        /// <param name="route"></param>
         /// <returns></returns>
-        Task<EmPageDetailsViewSchema> GetDetailsViewSchemaAsync(string entityKey);
+        Task<EmPageDetailsViewSchema> GetDetailsViewSchemaAsync(string route);
 
         /// <summary>
-        /// Gets form view schema of specified entity.
+        /// Gets form view schema of specified model.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="entityKey"></param>
+        /// <param name="route"></param>
         /// <returns></returns>
-        Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string entityKey);
+        Task<EmPageFormViewSchema> GetFormViewSchemaAsync(EmPageFormType type, string route);
     }
 }

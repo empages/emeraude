@@ -4,9 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
 {
@@ -27,7 +26,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             private readonly IUserManager userManager;
             private readonly IUserAvatarService userAvatarService;
             private readonly IRootsService rootsService;
-            private readonly IEmLogger logger;
+            private readonly ILogger<GetUserAvatarQueryHandler> logger;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="GetUserAvatarQueryHandler"/> class.
@@ -42,7 +41,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                 IUserManager userManager,
                 IUserAvatarService userAvatarService,
                 IRootsService rootsService,
-                IEmLogger logger)
+                ILogger<GetUserAvatarQueryHandler> logger)
             {
                 this.systemFilesService = systemFilesService;
                 this.userManager = userManager;
@@ -63,7 +62,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                     {
                         string userAvatarRelativePath = this.userAvatarService.GetUserAvatarRelativePath(user);
                         string avatarPath = this.rootsService.GetPathFromPublicRoot(userAvatarRelativePath.Substring(1));
-                        var avatarFileResult = await this.systemFilesService.GetFileAsync(avatarPath);
+                        var avatarFileResult = this.systemFilesService.GetFile(avatarPath);
                         if (avatarFileResult == null)
                         {
                             result = this.GetDefaultAvatarResult();
@@ -82,7 +81,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Get user avatar query fails");
                     return this.GetDefaultAvatarResult();
                 }
             }

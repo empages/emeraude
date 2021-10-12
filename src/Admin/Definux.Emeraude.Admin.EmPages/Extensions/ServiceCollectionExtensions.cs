@@ -51,7 +51,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
 
         private static void RegisterEmPageSchemas(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            var schemaType = typeof(IEmPageSchema<,>);
+            var schemaType = typeof(IEmPageSchema<>);
 
             var schemasImplementationsTypes = assemblies
                 .SelectMany(x => x
@@ -70,15 +70,19 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
         private static void RegisterEmPagesDataServices(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
             var managerTypes = new List<Type>();
+            var entityDataStrategiesTypes = new List<Type>();
 
             foreach (var assembly in assemblies)
             {
                 var assemblyManagerTypes = assembly
                     .GetTypes()
-                    .Where(x => x
-                        .GetInterfaces()
-                        .Any(xx => xx == typeof(IEmPageDataManager)) && !x.IsInterface && !x.IsAbstract);
+                    .Where(x => !x.IsInterface && !x.IsAbstract && x.GetInterfaces().Any(xx => xx == typeof(IEmPageDataManager)));
                 managerTypes.AddRange(assemblyManagerTypes);
+
+                var assemblyEntityDataStrategiesTypes = assembly
+                    .GetTypes()
+                    .Where(x => !x.IsInterface && !x.IsAbstract && x.GetInterfaces().Any(xx => xx == typeof(IEmPageEntityDataStrategy)));
+                entityDataStrategiesTypes.AddRange(assemblyEntityDataStrategiesTypes);
             }
 
             if (!managerTypes.Any())
@@ -88,16 +92,21 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
 
             foreach (var managerType in managerTypes)
             {
-                var genericTypeArguments = managerType.BaseType?.GetTypeInfo().GenericTypeArguments;
+                services.AddTransient(managerType);
+            }
+
+            foreach (var strategyType in entityDataStrategiesTypes)
+            {
+                var genericTypeArguments = strategyType.BaseType?.GetTypeInfo().GenericTypeArguments;
                 if (!(genericTypeArguments?.Length > 1))
                 {
                     continue;
                 }
 
-                var entityType = managerType.BaseType.GetTypeInfo().GenericTypeArguments[0];
-                var modelType = managerType.BaseType.GetTypeInfo().GenericTypeArguments[1];
+                var entityType = strategyType.BaseType.GetTypeInfo().GenericTypeArguments[0];
+                var modelType = strategyType.BaseType.GetTypeInfo().GenericTypeArguments[1];
 
-                services.AddTransient(managerType);
+                services.AddTransient(strategyType);
                 services.RegisterFetchQueries(entityType, modelType);
                 services.RegisterDetailsQueries(entityType, modelType);
                 services.RegisterRawModelQueries(entityType, modelType);

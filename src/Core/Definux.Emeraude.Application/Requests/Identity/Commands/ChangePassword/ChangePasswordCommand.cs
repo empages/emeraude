@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
 {
@@ -36,14 +36,14 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
         public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordRequestResult>
         {
             private readonly IUserManager userManager;
-            private readonly IEmLogger logger;
+            private readonly ILogger<ChangePasswordCommandHandler> logger;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ChangePasswordCommandHandler"/> class.
             /// </summary>
             /// <param name="userManager"></param>
             /// <param name="logger"></param>
-            public ChangePasswordCommandHandler(IUserManager userManager, IEmLogger logger)
+            public ChangePasswordCommandHandler(IUserManager userManager, ILogger<ChangePasswordCommandHandler> logger)
             {
                 this.userManager = userManager;
                 this.logger = logger;
@@ -66,7 +66,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Change user password command fails");
                     return new ChangePasswordRequestResult();
                 }
             }

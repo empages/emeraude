@@ -7,6 +7,7 @@ using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Client.Controllers.Api
@@ -20,6 +21,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
         private readonly IUserClaimsService userClaimsService;
         private readonly IUserTokensService userTokensService;
         private readonly IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory;
+        private readonly ILogger<ClientAuthenticationApiController> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientAuthenticationApiController"/> class.
@@ -27,15 +29,17 @@ namespace Definux.Emeraude.Client.Controllers.Api
         /// <param name="userClaimsService"></param>
         /// <param name="userTokensService"></param>
         /// <param name="externalProviderAuthenticatorFactory"></param>
+        /// <param name="logger"></param>
         public ClientAuthenticationApiController(
             IUserClaimsService userClaimsService,
             IUserTokensService userTokensService,
-            IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory)
+            IExternalProviderAuthenticatorFactory externalProviderAuthenticatorFactory,
+            ILogger<ClientAuthenticationApiController> logger)
         {
             this.userClaimsService = userClaimsService;
             this.userTokensService = userTokensService;
             this.externalProviderAuthenticatorFactory = externalProviderAuthenticatorFactory;
-            this.HideActivityLogParameters = true;
+            this.logger = logger;
         }
 
         /// <inheritdoc/>

@@ -1,5 +1,4 @@
 ﻿using Definux.Emeraude.Admin.UI;
-using Definux.Emeraude.ClientBuilder.UI;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace Definux.Emeraude.Admin.Extensions
@@ -17,8 +16,6 @@ namespace Definux.Emeraude.Admin.Extensions
         public static ApplicationPartManager AddAdminUIApplicationParts(this ApplicationPartManager applicationPartManager)
         {
             applicationPartManager.ApplicationParts.Add(AdminUIAssemblyPart.AssemblyPart);
-
-            // applicationPartManager.ApplicationParts.Add(AdminClientBuilderUIAssemblyPart.AssemblyPart);
 
             return applicationPartManager;
         }

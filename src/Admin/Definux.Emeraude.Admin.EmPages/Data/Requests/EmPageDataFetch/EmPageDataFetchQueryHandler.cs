@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Helpers;
 using Definux.Emeraude.Essentials.Models;
 using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 {
@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
     {
         private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger;
         private readonly IEmPageService emPageService;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
         public EmPageDataFetchQueryHandler(
             IEmContextFactory contextFactory,
             IMapper mapper,
-            IEmLogger logger,
+            ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger,
             IEmPageService emPageService)
         {
             this.contextFactory = contextFactory;
@@ -75,13 +75,13 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 
                 var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
 
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TEntity), typeof(TModel));
+                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
                 await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.TableView.ViewItems);
                 result.Items = entitiesModels;
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataFetchQueryHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage fetch query fails");
             }
 
             return result;

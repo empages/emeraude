@@ -9,7 +9,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public interface IEmPageEntityRequest<TEntity, TModel>
+    public interface IEmPageEntityRequest<TEntity, TModel> : IEmPageRequest<TModel>
         where TEntity : class, IEntity, new()
         where TModel : class, IEmPageModel, new()
     {

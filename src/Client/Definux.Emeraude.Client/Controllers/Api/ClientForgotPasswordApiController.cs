@@ -6,6 +6,7 @@ using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
 using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Client.Controllers.Api
 {
@@ -30,15 +31,12 @@ namespace Definux.Emeraude.Client.Controllers.Api
             {
                 var requestResult = await this.Mediator.Send(request);
 
-                if (requestResult.Succeeded)
+                if (!requestResult.Succeeded)
                 {
-                    return this.Ok();
+                    this.logger.LogError("Invalid email {Email} from reset password form", request.Email);
                 }
-                else
-                {
-                    await this.Logger.LogErrorAsync(new ArgumentException($"Invalid email ({request.Email}) from reset password form."));
-                    return this.Ok();
-                }
+
+                return this.Ok();
             }
             catch (ValidationException ex)
             {

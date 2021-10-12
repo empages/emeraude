@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Definux.Emeraude.Admin.EmPages.Schema;
-using Definux.Emeraude.Application.Logger;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate
 {
@@ -16,7 +16,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate
     {
         private readonly IEmContextFactory contextFactory;
         private readonly IMapper mapper;
-        private readonly IEmLogger logger;
+        private readonly ILogger<EmPageDataCreateCommandHandler<TEntity, TModel>> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageDataCreateCommandHandler{TEntity,TModel}"/> class.
@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate
         /// <param name="contextFactory"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public EmPageDataCreateCommandHandler(IEmContextFactory contextFactory, IMapper mapper, IEmLogger logger)
+        public EmPageDataCreateCommandHandler(IEmContextFactory contextFactory, IMapper mapper, ILogger<EmPageDataCreateCommandHandler<TEntity, TModel>> logger)
         {
             this.contextFactory = contextFactory;
             this.mapper = mapper;
@@ -46,7 +46,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex, nameof(EmPageDataCreateCommandHandler<TEntity, TModel>));
+                this.logger.LogError(ex, "EmPage create command fails");
                 return null;
             }
         }

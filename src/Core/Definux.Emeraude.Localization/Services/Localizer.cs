@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Application.Logger;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Localization.Services
 {
@@ -11,7 +11,7 @@ namespace Definux.Emeraude.Localization.Services
     public class Localizer : IEmLocalizer
     {
         private readonly ILocalizationContext context;
-        private readonly IEmLogger logger;
+        private readonly ILogger<Localizer> logger;
         private readonly ICurrentLanguageProvider currentLanguageProvider;
         private readonly ILanguagesResourceManager languagesResourceManager;
 
@@ -24,7 +24,7 @@ namespace Definux.Emeraude.Localization.Services
         /// <param name="languagesResourceManager"></param>
         public Localizer(
             ILocalizationContext context,
-            IEmLogger logger,
+            ILogger<Localizer> logger,
             ICurrentLanguageProvider currentLanguageProvider,
             ILanguagesResourceManager languagesResourceManager)
         {
@@ -52,7 +52,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting static content");
                 return key;
             }
         }
@@ -71,7 +71,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting static content");
                 return key;
             }
         }
@@ -91,7 +91,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting static content");
                 return key;
             }
         }
@@ -110,7 +110,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting static content");
                 return key;
             }
         }
@@ -125,7 +125,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting translation");
                 return key;
             }
         }
@@ -139,7 +139,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex);
+                this.logger.LogError(ex, "An error occured during getting translation");
                 return key;
             }
         }
@@ -154,7 +154,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting translation");
                 return key;
             }
         }
@@ -168,7 +168,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception ex)
             {
-                await this.logger.LogErrorAsync(ex);
+                this.logger.LogError(ex, "An error occured during getting translation");
                 return key;
             }
         }

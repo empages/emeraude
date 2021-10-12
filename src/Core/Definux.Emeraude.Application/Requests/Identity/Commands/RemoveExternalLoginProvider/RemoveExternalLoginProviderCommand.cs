@@ -3,10 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Objects;
 using MediatR;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternalLoginProvider
 {
@@ -34,14 +33,14 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternal
         public class ResetTwoFactorAuthenticationCommandHandler : IRequestHandler<RemoveExternalLoginProviderCommand, SimpleResult>
         {
             private readonly IUserManager userManager;
-            private readonly IEmLogger logger;
+            private readonly ILogger<ResetTwoFactorAuthenticationCommandHandler> logger;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ResetTwoFactorAuthenticationCommandHandler"/> class.
             /// </summary>
             /// <param name="userManager"></param>
             /// <param name="logger"></param>
-            public ResetTwoFactorAuthenticationCommandHandler(IUserManager userManager, IEmLogger logger)
+            public ResetTwoFactorAuthenticationCommandHandler(IUserManager userManager, ILogger<ResetTwoFactorAuthenticationCommandHandler> logger)
             {
                 this.userManager = userManager;
                 this.logger = logger;
@@ -68,7 +67,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternal
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Reset two factor authentication command fails");
                     return SimpleResult.UnsuccessfulResult;
                 }
             }

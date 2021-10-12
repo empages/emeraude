@@ -3,13 +3,9 @@ using Definux.Emeraude.Application;
 using Definux.Emeraude.Client;
 using Definux.Emeraude.ClientBuilder.Options;
 using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Emails;
-using Definux.Emeraude.Emails.Options;
 using Definux.Emeraude.Files;
-using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Options;
 using Definux.Emeraude.Localization;
-using Definux.Emeraude.Logger;
 using Definux.Emeraude.Persistence;
 
 namespace Definux.Emeraude
@@ -37,14 +33,8 @@ namespace Definux.Emeraude
         /// <inheritdoc cref="EmIdentityOptions" />
         public EmIdentityOptions IdentityOptions { get; set; } = new ();
 
-        /// <inheritdoc cref="EmLoggerOptions" />
-        public EmLoggerOptions LoggerOptions { get; set; } = new ();
-
         /// <inheritdoc cref="EmLocalizationOptions" />
         public EmLocalizationOptions LocalizationOptions { get; set; } = new ();
-
-        /// <inheritdoc cref="EmEmailOptions" />
-        public EmEmailOptions EmailOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmFilesOptions" />
         public EmFilesOptions FilesOptions { get; set; } = new ();

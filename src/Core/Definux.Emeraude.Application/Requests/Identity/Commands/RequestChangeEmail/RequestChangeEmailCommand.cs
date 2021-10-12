@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Application.Logger;
 using Definux.Utilities.Extensions;
 using Definux.Utilities.Objects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail
 {
@@ -53,7 +53,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeE
         public class RequestChangeEmailCommandHandler : IRequestHandler<RequestChangeEmailCommand, SimpleResult>
         {
             private readonly IUserManager userManager;
-            private readonly IEmLogger logger;
+            private readonly ILogger<RequestChangeEmailCommandHandler> logger;
             private readonly ICurrentLanguageProvider currentLanguageProvider;
             private readonly IIdentityEventManager identityEventManager;
             private readonly IHttpContextAccessor httpContextAccessor;
@@ -70,7 +70,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeE
             /// <param name="urlEncoder"></param>
             public RequestChangeEmailCommandHandler(
                 IUserManager userManager,
-                IEmLogger logger,
+                ILogger<RequestChangeEmailCommandHandler> logger,
                 ICurrentLanguageProvider currentLanguageProvider,
                 IIdentityEventManager identityEventManager,
                 IHttpContextAccessor httpContextAccessor,
@@ -110,7 +110,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeE
                 }
                 catch (Exception ex)
                 {
-                    await this.logger.LogErrorAsync(ex);
+                    this.logger.LogError(ex, "Request change email command fails");
                     return SimpleResult.UnsuccessfulResult;
                 }
             }

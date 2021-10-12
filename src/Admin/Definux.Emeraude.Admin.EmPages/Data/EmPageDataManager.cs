@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataCreate;
-using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataDetails;
+using Definux.Emeraude.Admin.EmPages.Data.Requests;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
-using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel;
 using Definux.Emeraude.Admin.EmPages.Exceptions;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Models;
 using Definux.Emeraude.Resources;
-using FluentValidation;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.EmPages.Data
@@ -20,22 +16,30 @@ namespace Definux.Emeraude.Admin.EmPages.Data
     /// <summary>
     /// <inheritdoc cref="IEmPageDataManager"/>
     /// </summary>
-    /// <typeparam name="TEntity">Entity from the domain model.</typeparam>
     /// <typeparam name="TModel">EmPage model for the selected entity.</typeparam>
-    public abstract class EmPageDataManager<TEntity, TModel> : IEmPageDataManager
-        where TEntity : class, IEntity, new()
+    public abstract class EmPageDataManager<TModel> : IEmPageDataManager
         where TModel : class, IEmPageModel, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataManager{TEntity, TModel}"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataManager{TModel}"/> class.
         /// </summary>
+        /// <param name="dataStrategy"></param>
         /// <param name="mediator"></param>
         /// <param name="emPageService"></param>
-        protected EmPageDataManager(IMediator mediator, IEmPageService emPageService)
+        protected EmPageDataManager(
+            IEmPageDataStrategy<TModel> dataStrategy,
+            IMediator mediator,
+            IEmPageService emPageService)
         {
+            this.DataStrategy = dataStrategy;
             this.Mediator = mediator;
             this.EmPageService = emPageService;
         }
+
+        /// <summary>
+        /// Data strategy that defines the data accessors and mutators of the manager.
+        /// </summary>
+        protected IEmPageDataStrategy<TModel> DataStrategy { get; set; }
 
         /// <summary>
         /// Disables <see cref="FetchAsync"/> operation.
@@ -63,13 +67,15 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         protected IEmPageService EmPageService { get; }
 
         /// <summary>
-        /// Returns the identified EmPage model instance.
+        /// Raw model operation executor.
         /// </summary>
-        /// <param name="entityId"></param>
+        /// <param name="modelId"></param>
         /// <returns></returns>
-        public virtual async Task<IEmPageModel> GetRawModelAsync(Guid entityId)
+        public virtual async Task<IEmPageModel> GetRawModelAsync(string modelId)
         {
-            return await this.Mediator.Send(new EmPageDataRawModelQuery<TEntity, TModel>(entityId));
+            this.TriggerDataStrategyGuard();
+            var rawModelQuery = this.DataStrategy.BuildRawModelQuery(modelId);
+            return await this.ExecuteDataStrategyRequestAsync<TModel>(rawModelQuery);
         }
 
         /// <inheritdoc />
@@ -91,7 +97,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <inheritdoc />
-        public virtual async Task<EmPageModelResponse> DetailsAsync(Guid id)
+        public virtual async Task<EmPageModelResponse> DetailsAsync(string modelId)
         {
             if (this.DisableDetailsOperation)
             {
@@ -99,10 +105,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data
             }
 
             var schema = await this.GetSchemaAsync();
-            var model = await this.GetEntityDetailsAsync(id);
+            var model = await this.GetEntityDetailsAsync(modelId);
             if (model == null)
             {
-                throw new EmPageNotFoundException($"Details for entity with ID: {id} of {this.GetType().FullName} are not found.");
+                throw new EmPageNotFoundException($"Details for model with ID: {modelId} of {this.GetType().FullName} are not found.");
             }
 
             var modelResponse = new EmPageModelResponse(model);
@@ -112,32 +118,16 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         }
 
         /// <inheritdoc />
-        public virtual async Task<Guid?> CreateAsync(IEmPageModel model)
+        public virtual async Task<string> CreateAsync(IEmPageModel model)
         {
             if (this.DisableCreateOperation)
             {
                 throw new EmPageDisabledOperationException($"Create is disabled for {this.GetType().FullName}");
             }
 
-            var entityId = await this.CreateEntityAsync(model as TModel);
+            var modelId = await this.CreateModelAsync(model as TModel);
 
-            return entityId;
-        }
-
-        /// <summary>
-        /// Method that return the instance of <see cref="IEmPageDataFetchQuery{TEntity,TRequestModel}"/> for current entity and model.
-        /// </summary>
-        /// <param name="fetchQuery"></param>
-        /// <returns></returns>
-        protected virtual IEmPageDataFetchQuery<TEntity, TModel> GetFetchQuery(EmPageDataFetchQueryRequest fetchQuery)
-        {
-            return new EmPageDataFetchQuery<TEntity, TModel>
-            {
-                SearchQuery = fetchQuery.SearchQuery,
-                Page = fetchQuery.Page,
-                OrderBy = fetchQuery.OrderBy,
-                OrderType = fetchQuery.OrderType,
-            };
+            return modelId;
         }
 
         /// <summary>
@@ -147,37 +137,21 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <returns></returns>
         protected virtual async Task<PaginatedList<TModel>> FetchEntitiesAsync(EmPageDataFetchQueryRequest request)
         {
-            return await this.Mediator.Send(this.GetFetchQuery(request));
-        }
-
-        /// <summary>
-        /// Method that return the instance of <see cref="IEmPageDataDetailsQuery{TEntity,TRequestModel}"/> for current entity and model.
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        protected virtual IEmPageDataDetailsQuery<TEntity, TModel> GetDetailsQuery(Guid entityId)
-        {
-            return new EmPageDataDetailsQuery<TEntity, TModel>(entityId);
+            this.TriggerDataStrategyGuard();
+            var fetchQuery = this.DataStrategy.BuildFetchQuery(request);
+            return await this.ExecuteDataStrategyRequestAsync<PaginatedList<TModel>>(fetchQuery);
         }
 
         /// <summary>
         /// Details operation executor.
         /// </summary>
-        /// <param name="entityId"></param>
+        /// <param name="modelId"></param>
         /// <returns></returns>
-        protected virtual async Task<TModel> GetEntityDetailsAsync(Guid entityId)
+        protected virtual async Task<TModel> GetEntityDetailsAsync(string modelId)
         {
-            return await this.Mediator.Send(this.GetDetailsQuery(entityId));
-        }
-
-        /// <summary>
-        /// Method that return the instance of <see cref="IEmPageDataCreateCommand{TEntity, TRequestModel}"/> for current entity and model.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        protected virtual IEmPageDataCreateCommand<TEntity, TModel> GetCreateCommand(TModel model)
-        {
-            return new EmPageDataCreateCommand<TEntity, TModel>(model);
+            this.TriggerDataStrategyGuard();
+            var detailsQuery = this.DataStrategy.BuildDetailsQuery(modelId);
+            return await this.ExecuteDataStrategyRequestAsync<TModel>(detailsQuery);
         }
 
         /// <summary>
@@ -185,9 +159,11 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected virtual async Task<Guid?> CreateEntityAsync(TModel model)
+        protected virtual async Task<string> CreateModelAsync(TModel model)
         {
-            return await this.Mediator.Send(this.GetCreateCommand(model));
+            this.TriggerDataStrategyGuard();
+            var createCommand = this.DataStrategy.BuildCreateCommand(model);
+            return await this.ExecuteDataStrategyRequestAsync<string>(createCommand);
         }
 
         /// <summary>
@@ -196,12 +172,22 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <returns></returns>
         protected virtual List<string> GetOrderProperties()
         {
-            return typeof(TEntity)
-                .GetProperties()
-                .Where(x => (DefaultValues.OrderTypes.Contains(x.PropertyType) || x.PropertyType.IsEnum) && x.GetSetMethod() != null)
-                .Select(x => x.Name)
-                .Where(x => x != nameof(IEntity.Id))
-                .ToList();
+            return new List<string>
+            {
+                nameof(IEmPageModel.Id),
+            };
+        }
+
+        /// <summary>
+        /// Executes data strategy request and cast the response.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <typeparam name="TResponse">Response type of the request.</typeparam>
+        /// <returns></returns>
+        protected async Task<TResponse> ExecuteDataStrategyRequestAsync<TResponse>(IEmPageRequest<TModel> request)
+        {
+            var response = await this.Mediator.Send(request);
+            return (TResponse)response;
         }
 
         /// <summary>
@@ -209,7 +195,19 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// </summary>
         /// <returns></returns>
         protected async Task<EmPageSchemaDescription> GetSchemaAsync()
-            => await this.EmPageService.FindSchemaDescriptionAsync(typeof(TEntity), typeof(TModel));
+            => await this.EmPageService.FindSchemaDescriptionAsync(typeof(TModel));
+
+        /// <summary>
+        /// Guard that is checking whether the <see cref="DataStrategy"/> has implementation.
+        /// </summary>
+        /// <exception cref="EmPageUndefinedDataStrategyException"><inheritdoc cref="EmPageUndefinedDataStrategyException"/></exception>
+        protected void TriggerDataStrategyGuard()
+        {
+            if (this.DataStrategy == null)
+            {
+                throw new EmPageUndefinedDataStrategyException($"{this.GetType().FullName} has no defined data strategy.");
+            }
+        }
 
         private string InterceptOrderProperty(string property)
         {

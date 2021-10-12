@@ -1,4 +1,4 @@
-﻿@page "/admin/{entityKey}/{entityId}/edit"
+﻿@page "/admin/{route}/{modelId}/edit"
 @inherits EmPage
 @using Definux.Emeraude.Admin.UI.Extensions
 @if (Loaded)
@@ -12,7 +12,7 @@ else
 
 @code {
     [Parameter]
-    public string EntityId { get; set; }
+    public string ModelId { get; set; }
     
     private EmPageFormViewSchema ViewSchema { get; set; }
     
@@ -42,7 +42,7 @@ else
     
     protected override async Task ReloadPageAsync()
     {
-        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.EditForm, EntityKey);
+        ViewSchema = await SchemaProvider.GetFormViewSchemaAsync(EmPageFormType.EditForm, Route);
         StateHasChanged();
         if (ViewSchema == null)
         {
@@ -50,7 +50,7 @@ else
             return;
         }
         
-        ViewData = await DataService.RetrieveFormViewDataAsync(EmPageFormType.EditForm, EntityKey, EntityId, GetQueryParameters(), ViewSchema);
+        ViewData = await DataService.RetrieveFormViewDataAsync(EmPageFormType.EditForm, Route, ModelId, GetQueryParameters(), ViewSchema);
         StateHasChanged();
     }
 
