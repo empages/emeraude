@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail
@@ -14,10 +14,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail
         public ConfirmEmailCommandValidator()
         {
             this.RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat);
+                .ValidateEmailAddress();
         }
     }
 }

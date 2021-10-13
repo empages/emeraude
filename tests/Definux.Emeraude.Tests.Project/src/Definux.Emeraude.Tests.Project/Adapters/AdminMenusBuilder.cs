@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Models;
-using Definux.Emeraude.Admin.Utilities;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Definux.Emeraude.Tests.Project.Adapters
 {
@@ -18,7 +16,7 @@ namespace Definux.Emeraude.Tests.Project.Adapters
                     {
                         Title = "Client Login",
                         Route = "/login",
-                        Icon = $"mdi {MaterialDesignIcons.Account}",
+                        Icon = "mdi mdi-account",
                         Blank = true
                     }
                 },
@@ -27,20 +25,10 @@ namespace Definux.Emeraude.Tests.Project.Adapters
                     new ()
                     {
                         Title = "Dashboard",
-                        Icon = $"mdi {MaterialDesignIcons.Television}",
+                        Icon = "mdi mdi-television",
                         Children = new List<SidebarNavigationLinkItem>()
                         {
                             new ("Index", "/admin"),
-                        }
-                    },
-                    new ()
-                    {
-                        Title = "Roots",
-                        Icon = $"mdi {MaterialDesignIcons.FolderOpen}",
-                        Children = new List<SidebarNavigationLinkItem>()
-                        {
-                            new ("Public Root", "/admin/roots/public", "/admin/roots/public/{*}"),
-                            new ("Private Root", "/admin/roots/private", "/admin/roots/private/{*}")
                         }
                     }
                 }

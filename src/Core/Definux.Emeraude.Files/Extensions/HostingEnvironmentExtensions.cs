@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using System.Linq;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Definux.Emeraude.Files.Extensions
@@ -17,7 +16,7 @@ namespace Definux.Emeraude.Files.Extensions
         /// <returns></returns>
         public static string GetTempUploadDirectory(this IHostingEnvironment hostingEnvironment)
         {
-            return Path.Combine(hostingEnvironment.ContentRootPath, Folders.PrivateRootFolderName, Folders.UploadFolderName, Folders.TempFolderName);
+            return Path.Combine(hostingEnvironment.ContentRootPath, EmFolders.PrivateRootFolderName, EmFolders.UploadFolderName, EmFolders.TempFolderName);
         }
     }
 }

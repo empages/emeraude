@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Options;
 using Definux.Utilities.Extensions;
 using IdentityServer4;
@@ -33,7 +34,7 @@ namespace Definux.Emeraude.Identity.ExternalProviders.Facebook
             externalUser.EmailAddress = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             externalUser.Picture = new ProfilePicture();
             externalUser.Picture.Data = new ProfilePictureData();
-            externalUser.Picture.Data.Url = principal.Claims.FirstOrDefault(x => x.Type == Definux.Emeraude.Configuration.Authorization.ClaimTypes.Picture)?.Value;
+            externalUser.Picture.Data.Url = principal.Claims.FirstOrDefault(x => x.Type == EmClaimTypes.Picture)?.Value;
 
             return externalUser;
         }
@@ -80,7 +81,7 @@ namespace Definux.Emeraude.Identity.ExternalProviders.Facebook
                             .GetProperty("url")
                             .ToString();
 
-                        identity.AddClaim(new Claim(Configuration.Authorization.ClaimTypes.Picture, profileImage));
+                        identity.AddClaim(new Claim(EmClaimTypes.Picture, profileImage));
                         return Task.CompletedTask;
                     },
                 };

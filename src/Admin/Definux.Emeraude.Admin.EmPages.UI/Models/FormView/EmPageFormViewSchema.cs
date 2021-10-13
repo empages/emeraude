@@ -11,7 +11,7 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
         /// Initializes a new instance of the <see cref="EmPageFormViewSchema"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageFormViewSchema(EmPageViewSchemaContext context)
+        public EmPageFormViewSchema(EmPageViewContext context)
             : base(context)
         {
         }

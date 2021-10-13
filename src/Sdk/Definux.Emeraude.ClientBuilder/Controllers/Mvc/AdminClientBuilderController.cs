@@ -1,11 +1,9 @@
 ﻿using Definux.Emeraude.Application.Exceptions;
-using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Shared;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 
@@ -16,7 +14,7 @@ namespace Definux.Emeraude.ClientBuilder.Controllers.Mvc
     /// </summary>
     [Area("Admin")]
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.AdminAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.AdminAuthenticationScheme)]
     public sealed class AdminClientBuilderController : Controller
     {
         private readonly IEmOptionsProvider optionsProvider;

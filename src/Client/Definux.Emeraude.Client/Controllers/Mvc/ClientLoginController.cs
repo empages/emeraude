@@ -2,12 +2,9 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
-using Definux.Emeraude.Client.Attributes;
-using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Localization.Extensions;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -16,8 +13,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientAuthenticationController : ClientController
     {
         private const string LoginRoute = "/login";
-        private const string LoginTitle = "LOGIN_PAGE_TITLE";
-        private const string LoginDescription = "LOGIN_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Login action for GET request.
@@ -27,9 +22,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
-        [MetaTag(MainMetaTags.Title, LoginTitle, true)]
-        [MetaTag(MainMetaTags.Description, LoginDescription, true)]
-        [Canonical]
         public IActionResult Login(string returnUrl = null)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -60,9 +52,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(LoginRoute)]
         [LanguageRoute(LoginRoute)]
         [ValidateAntiForgeryToken]
-        [MetaTag(MainMetaTags.Title, LoginTitle, true)]
-        [MetaTag(MainMetaTags.Description, LoginDescription, true)]
-        [Canonical]
         public async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
         {
             if (this.User.Identity.IsAuthenticated)
@@ -90,7 +79,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, Messages.YourEmailOrPasswordIsIncorrect);
+                    this.ModelState.AddModelError(string.Empty, Strings.TheEmailAddressOrPasswordIsIncorrect);
                 }
             }
             catch (ValidationException ex)
@@ -99,7 +88,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.YourLoginAttemptHasFailed);
+                this.ModelState.AddModelError(string.Empty, Strings.YourLoginAttemptHasFailed);
             }
 
             this.ViewData["ReturnUrl"] = returnUrl;

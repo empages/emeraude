@@ -7,7 +7,6 @@ namespace Definux.Emeraude.Essentials.Enumerations
     /// </summary>
     public enum StringCaseType
     {
-        [EnumName("asd")]
         CamelCase = 1,
         PascalCase = 2,
         KebapCase = 3,

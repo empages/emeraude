@@ -29,9 +29,25 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
+    <ProjectReference Include="..\..\Sdk\Definux.Emeraude.ClientBuilder\Definux.Emeraude.ClientBuilder.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Client.UI\Definux.Emeraude.Client.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <Import Project="..\..\..\Emeraude.targets" />

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Essentials.Base;
+using Definux.Emeraude.Essentials.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Definux.Emeraude.Admin.Extensions
@@ -16,13 +17,13 @@ namespace Definux.Emeraude.Admin.Extensions
         /// <returns></returns>
         public static AuthorizationOptions ApplyEmeraudeAdminAuthorizationPolicies(this AuthorizationOptions options)
         {
-            foreach (ApplicationPermission permission in AdminPermissions.AllPermissions)
+            foreach (ApplicationPermission permission in EmPermissions.AllPermissions)
             {
                 options.AddPolicy(permission.Name, policy =>
                 {
-                    policy.AuthenticationSchemes.Add(AuthenticationDefaults.AdminAuthenticationScheme);
+                    policy.AuthenticationSchemes.Add(EmAuthenticationDefaults.AdminAuthenticationScheme);
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim(ClaimTypes.Permission, permission.Value);
+                    policy.RequireClaim(EmClaimTypes.Permission, permission.Value);
                 });
             }
 

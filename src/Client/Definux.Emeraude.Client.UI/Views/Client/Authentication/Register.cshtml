@@ -1,46 +1,46 @@
 @model Definux.Emeraude.Application.Requests.Identity.Commands.Register.RegisterCommand
 @{
     Layout = "_AuthLayout";
-    ViewData.SetTitle(Localizer[Titles.Register]);
+    ViewData.SetTitle("Register");
     var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/Authentication/Register.cshtml", "https://emeraude.dev/client");
 }
 
 <partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />
 
 <partial name="_ExternalLoginForm" />
-<form action="/register" method="post" class="auth-form">
-    <t element="h5" class="text-center">@Titles.Register</t>
+<form action="@Url.RegisterAction()" method="post" class="auth-form">
+    <t element="h5" class="text-center">Register</t>
     @if (Html.HasNonModelError())
     {
         <div class="alert alert-danger mb-2">
-            <t>@Html.NonModelError()</t>
+            <span>@Html.NonModelError()</span>
         </div>
     }
     @Html.AntiForgeryToken()
     <div class="form-group mb-1">
-        <t element="label">@Properties.Name</t>
-        <input type="text" class="form-control" asp-for="Name" placeholder="@Localizer.TranslateKey(Properties.Name)" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Name))</t>
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name" placeholder="Name" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.Name))</span>
     </div>
     <div class="form-group mb-1">
-        <t element="label">@Properties.Email</t>
-        <input type="email" class="form-control" asp-for="Email" placeholder="@Localizer[Properties.Email]" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Email))</t>
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.Email))</span>
     </div>
     <div class="form-group mb-1">
-        <t element="label">@Properties.Password</t>
-        <input type="password" class="form-control" asp-for="Password" placeholder="@Localizer[Properties.Password]" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Password))</t>
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.Password))</span>
     </div>
     <div class="form-group mb-1">
-        <t element="label">@Properties.ConfirmedPassword</t>
-        <input type="password" class="form-control" asp-for="ConfirmedPassword" placeholder="@Localizer[Properties.ConfirmedPassword]" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.ConfirmedPassword))</t>
+        <label class="form-control">Confirmed Password</label>
+        <input type="password" class="form-control" asp-for="ConfirmedPassword" placeholder="Confirmed Password" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.ConfirmedPassword))</span>
     </div>
     <div class="d-block w-100 my-3">
-        <t element="button" class="btn btn-primary w-100" type="submit">@ActionsTexts.RegisterSubmit</t>
+        <button class="btn btn-primary w-100" type="submit">Register</button>
     </div>
     <div class="d-block w-100 text-center">
-        <a class="text-small" href="@Url.LoginAction(ViewData)"><t>@ActionsTexts.AlreadyHaveAProfile</t>?</a>
+        <a class="text-small" href="@Url.LoginAction(ViewData)">Already have a profile?</a>
     </div>
 </form>

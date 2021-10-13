@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Resources;
-using Microsoft.AspNetCore.Hosting;
+using Definux.Emeraude.Essentials.Base;
+using Microsoft.Extensions.Logging;
 
 namespace Definux.Emeraude.Localization.Services
 {
@@ -17,6 +16,7 @@ namespace Definux.Emeraude.Localization.Services
         private readonly ILanguageStore languageStore;
         private readonly IRootsService rootsService;
         private readonly ISystemFilesService systemFilesService;
+        private readonly ILogger<LanguagesResourceManager> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguagesResourceManager"/> class.
@@ -24,26 +24,29 @@ namespace Definux.Emeraude.Localization.Services
         /// <param name="languageStore"></param>
         /// <param name="rootsService"></param>
         /// <param name="systemFilesService"></param>
+        /// <param name="logger"></param>
         public LanguagesResourceManager(
             ILanguageStore languageStore,
             IRootsService rootsService,
-            ISystemFilesService systemFilesService)
+            ISystemFilesService systemFilesService,
+            ILogger<LanguagesResourceManager> logger)
         {
             this.languageStore = languageStore;
             this.rootsService = rootsService;
             this.systemFilesService = systemFilesService;
+            this.logger = logger;
         }
 
         /// <inheritdoc />
         public void BuildResources()
         {
             var languages = this.languageStore.GetLanguages();
-            this.systemFilesService.CreateFolder(Folders.ResourcesFolderName, this.rootsService.PrivateRootDirectory);
+            this.systemFilesService.CreateFolder(EmFolders.ResourcesFolderName, this.rootsService.PrivateRootDirectory);
 
             foreach (var language in languages)
             {
                 var translations = this.languageStore.GetLanguageTranslationDictionary(language.Id);
-                string languageTranslationsResourcesPath = this.rootsService.GetPathFromPrivateRoot(Folders.ResourcesFolderName, string.Format(ResourceNameFormat, language.Code));
+                string languageTranslationsResourcesPath = this.rootsService.GetPathFromPrivateRoot(EmFolders.ResourcesFolderName, string.Format(ResourceNameFormat, language.Code));
                 using (ResourceWriter resourceWriter = new ResourceWriter(languageTranslationsResourcesPath))
                 {
                     foreach (var (key, value) in translations)
@@ -59,7 +62,7 @@ namespace Definux.Emeraude.Localization.Services
         {
             try
             {
-                using var resourceReader = new ResourceReader(this.rootsService.GetPathFromPrivateRoot(Folders.ResourcesFolderName, string.Format(ResourceNameFormat, languageCode)));
+                using var resourceReader = new ResourceReader(this.rootsService.GetPathFromPrivateRoot(EmFolders.ResourcesFolderName, string.Format(ResourceNameFormat, languageCode)));
                 resourceReader.GetResourceData(translationKey, out _, out var translationBytes);
                 using var memoryStream = new MemoryStream(translationBytes);
                 using var binaryReader = new BinaryReader(memoryStream);
@@ -67,6 +70,7 @@ namespace Definux.Emeraude.Localization.Services
             }
             catch (Exception)
             {
+                this.logger.LogWarning("There is not found {Language} translation for key: '{TranslationKey}'", languageCode, translationKey);
                 return null;
             }
         }

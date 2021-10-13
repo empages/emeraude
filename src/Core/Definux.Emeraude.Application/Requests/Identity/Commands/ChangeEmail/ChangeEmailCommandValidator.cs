@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
@@ -14,10 +14,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail
         public ChangeEmailCommandValidator()
         {
             this.RuleFor(x => x.NewEmail)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat);
+                .ValidateEmailAddress();
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿@page "/admin/{route}/{modelId}/{*featureRoute}"
+@inherits EmPage
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+
+
+@code {
+    [Parameter]
+    public string ModelId { get; set; }
+    
+    [Parameter]
+    public string FeatureRoute { get; set; }
+
+    private EmPageDetailsViewSchema ViewSchema { get; set; }
+
+    private EmPageDetailsFeature Feature => ViewSchema?.Features.FirstOrDefault(x => x.Context.Route.Equals(FirstSegment, StringComparison.OrdinalIgnoreCase));
+    
+    private string[] FeatureSegments => FeatureRoute?.Split('/') ?? new string[0];
+
+    private string FirstSegment => FeatureSegments.FirstOrDefault();
+    
+    private string PageTitle => $"{Feature?.Context.Title} | {ViewSchema?.Context.Title}";
+
+    protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
+        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+
+    protected override IEnumerable<ActionModel> ConfigureNavigationActions()
+        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
+    
+    protected override async Task ReloadPageAsync()
+    {
+        if (string.IsNullOrWhiteSpace(FirstSegment))
+        {
+            NavigationManager.NavigateToNotFoundPage();
+            return;
+        }
+
+        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(Route);
+        if (ViewSchema == null || Feature == null)
+        {
+            NavigationManager.NavigateToNotFoundPage();
+            return;
+        }
+        
+        StateHasChanged();
+    }
+
+    private IDictionary<string, object> BuildParameters()
+    {
+        return new Dictionary<string, object>
+        {
+            { "Route", FeatureSegments?[0] }
+        };
+    }
+}

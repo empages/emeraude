@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Localization.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -64,7 +64,7 @@ namespace Definux.Emeraude.Presentation.Controllers
         {
             if (!this.IgnoreMaintenanceMode && this.OptionsProvider.GetMainOptions().MaintenanceMode)
             {
-                var adminAuthenticationResult = await this.HttpContext.AuthenticateAsync(AuthenticationDefaults.AdminAuthenticationScheme);
+                var adminAuthenticationResult = await this.HttpContext.AuthenticateAsync(EmAuthenticationDefaults.AdminAuthenticationScheme);
                 if (!adminAuthenticationResult.Succeeded)
                 {
                     context.Result = this.LocalRedirect("/maintenance");

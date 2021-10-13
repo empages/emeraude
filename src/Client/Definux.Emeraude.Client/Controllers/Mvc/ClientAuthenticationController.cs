@@ -4,8 +4,8 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Client.Extensions;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -76,7 +76,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 return this.BadRequest();
             }
 
-            await this.HttpContext.SignOutAsync(AuthenticationDefaults.ClientAuthenticationScheme);
+            await this.HttpContext.SignOutAsync(EmAuthenticationDefaults.ClientAuthenticationScheme);
 
             return this.RedirectToDefault();
         }
@@ -95,28 +95,17 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 context.Result = this.NotFound();
             }
 
-            this.AddTranslatedValueIntoViewData(LoginTitle, LoginTitle);
-            this.AddTranslatedValueIntoViewData(LoginDescription, LoginDescription);
-            this.AddTranslatedValueIntoViewData(RegisterTitle, RegisterTitle);
-            this.AddTranslatedValueIntoViewData(RegisterDescription, RegisterDescription);
-            this.AddTranslatedValueIntoViewData(ForgotPasswordTitle, ForgotPasswordTitle);
-            this.AddTranslatedValueIntoViewData(ForgotPasswordDescription, ForgotPasswordDescription);
-            this.AddTranslatedValueIntoViewData(ResetPasswordTitle, ResetPasswordTitle);
-            this.AddTranslatedValueIntoViewData(ResetPasswordDescription, ResetPasswordDescription);
-            this.AddTranslatedValueIntoViewData(ConfirmEmailTitle, ConfirmEmailTitle);
-            this.AddTranslatedValueIntoViewData(ConfirmEmailDescription, ConfirmEmailDescription);
-
             return base.OnActionExecutionAsync(context, next);
         }
 
         private async Task SignInAsync(IUser user)
         {
             var claims = await this.userClaimsService.GetUserClaimsForCookieAsync(user.Id);
-            var claimsIdentity = new ClaimsIdentity(claims, AuthenticationDefaults.ClientAuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, EmAuthenticationDefaults.ClientAuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             await this.HttpContext.SignInAsync(
-                AuthenticationDefaults.ClientAuthenticationScheme,
+                EmAuthenticationDefaults.ClientAuthenticationScheme,
                 claimsPrincipal,
                 this.AuthenticationProperties);
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Identity;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternalLoginProvider
@@ -19,11 +16,11 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RemoveExternal
         {
             this.RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage(Messages.PasswordIsARequiredField);
+                .WithMessage(Strings.PasswordIsRequired);
 
             this.RuleFor(x => x.Provider)
                 .NotEmpty()
-                .WithMessage(Messages.ExternalLoginProviderIsRequired);
+                .WithMessage(Strings.ExternalLoginProviderIsRequired);
         }
     }
 }

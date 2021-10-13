@@ -1,5 +1,5 @@
-﻿using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
+using Definux.Emeraude.Application.Identity;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail
@@ -16,12 +16,9 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeE
         public RequestChangeEmailCommandValidator(IUserManager userManager)
         {
             this.RuleFor(x => x.NewEmail)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat)
+                .ValidateEmailAddress()
                 .MustAsync(async (x, c) => await userManager.FindUserByEmailAsync(x) == null)
-                .WithMessage(Messages.UserWithThatEmailExists);
+                .WithMessage(Strings.UserWithThatEmailAddressExists);
         }
     }
 }

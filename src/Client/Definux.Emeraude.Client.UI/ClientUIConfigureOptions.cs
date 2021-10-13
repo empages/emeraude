@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Configuration.Abstractions;
+﻿using Definux.Emeraude.Configuration.Options;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Definux.Emeraude.Client.UI

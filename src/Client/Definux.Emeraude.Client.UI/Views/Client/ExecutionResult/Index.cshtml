@@ -1,6 +1,7 @@
 ﻿@model IndexViewModel
 @{
     Layout = "_BaseLayout";
+    ViewData.SetTitle(Model.Title);
     var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/ExecutionResult/Index.cshtml", "https://emeraude.dev/client");
 }
 <partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />

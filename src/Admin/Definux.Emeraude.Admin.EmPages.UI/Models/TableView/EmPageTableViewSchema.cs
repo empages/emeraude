@@ -13,7 +13,7 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.TableView
         /// Initializes a new instance of the <see cref="EmPageTableViewSchema"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageTableViewSchema(EmPageViewSchemaContext context)
+        public EmPageTableViewSchema(EmPageViewContext context)
             : base(context)
         {
             this.HeadModel = new EmPageTableHeadModel();

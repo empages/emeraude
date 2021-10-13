@@ -1,26 +1,29 @@
 ﻿@using Definux.Emeraude.Admin.EmPages.UI.Adapters
 @inject IEmPageDataService DataService
 
-<EmPageView ViewSchema="ViewSchema">
-    @if (ViewData.NonMappedFormErrors.Any())
+<EmPageView ViewSchema="ViewSchema" HasViewData="@(ViewData != null)">
+    @if (ViewData != null)
     {
-        foreach (var error in ViewData.NonMappedFormErrors)
+        if (ViewData.NonMappedFormErrors.Any())
         {
-            <div class="alert alert-danger p-2" role="alert">
-                @error
+            foreach (var error in ViewData.NonMappedFormErrors)
+            {
+                <div class="alert alert-danger p-2" role="alert">
+                    @error
+                </div>
+            }
+        }
+        <form onsubmit="@HandleFormSubmitAsync">
+            @foreach (var input in ViewData.Inputs)
+            {
+                <EmPageFormInput Model="input"/>
+            }
+            <hr/>
+            <div class="form-group mb-0">
+                <button type="submit" class="btn btn-primary me-auto mr-0">Save</button>
             </div>
-        }
+        </form>
     }
-    <form onsubmit="@HandleFormSubmitAsync">
-        @foreach (var input in ViewData.Inputs)
-        {
-            <EmPageFormInput Model="input"/>
-        }
-        <hr/>
-        <div class="form-group mb-0">
-            <button type="submit" class="btn btn-primary me-auto mr-0">Save</button>
-        </div>
-    </form>
 </EmPageView>
 
 @code {

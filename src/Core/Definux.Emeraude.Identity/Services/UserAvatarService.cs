@@ -6,8 +6,8 @@ using Definux.Emeraude.Application.Files;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Entities;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -75,7 +75,7 @@ namespace Definux.Emeraude.Identity.Services
         {
             try
             {
-                string targetFileDirectoryPath = this.rootsService.GetPathFromPublicRoot(Folders.UploadFolderName, Folders.ImagesFolderName);
+                string targetFileDirectoryPath = this.rootsService.GetPathFromPublicRoot(EmFolders.UploadFolderName, EmFolders.ImagesFolderName);
                 string avatarName = FilesFunctions.GetUniqueFileName();
                 string avatarNameWithExtension = $"{avatarName}.jpg";
                 string targetFilePath = Path.Combine(targetFileDirectoryPath, avatarNameWithExtension);
@@ -89,7 +89,7 @@ namespace Definux.Emeraude.Identity.Services
                     {
                         await stream.CopyToAsync(fileStream);
 
-                        return $"/{Folders.UploadFolderName}/{Folders.ImagesFolderName}/{avatarNameWithExtension}";
+                        return $"/{EmFolders.UploadFolderName}/{EmFolders.ImagesFolderName}/{avatarNameWithExtension}";
                     }
                 }
 
@@ -107,8 +107,8 @@ namespace Definux.Emeraude.Identity.Services
         {
             try
             {
-                string avatarRelativePath = Path.Combine(Folders.UploadFolderName, Folders.ImagesFolderName);
-                string targetFileDirectoryPath = Path.Combine(this.hostEnvironment.ContentRootPath, Folders.PublicRootFolderName, avatarRelativePath);
+                string avatarRelativePath = Path.Combine(EmFolders.UploadFolderName, EmFolders.ImagesFolderName);
+                string targetFileDirectoryPath = Path.Combine(this.hostEnvironment.ContentRootPath, EmFolders.PublicRootFolderName, avatarRelativePath);
                 string avatarName = FilesFunctions.GetUniqueFileName();
                 string avatarNameWithExtension = $"{avatarName}.jpg";
                 string targetFilePath = Path.Combine(targetFileDirectoryPath, avatarNameWithExtension);
@@ -118,7 +118,7 @@ namespace Definux.Emeraude.Identity.Services
                 {
                     await stream.CopyToAsync(fileStream);
 
-                    return $"/{Folders.UploadFolderName}/{Folders.ImagesFolderName}/{avatarNameWithExtension}";
+                    return $"/{EmFolders.UploadFolderName}/{EmFolders.ImagesFolderName}/{avatarNameWithExtension}";
                 }
             }
             catch (Exception ex)

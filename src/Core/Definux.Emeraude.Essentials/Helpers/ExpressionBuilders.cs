@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Essentials.Enumerations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Definux.Emeraude.Essentials.Helpers
@@ -12,6 +12,30 @@ namespace Definux.Emeraude.Essentials.Helpers
     /// </summary>
     public static class ExpressionBuilders
     {
+        /// <summary>
+        /// Order types of properties.
+        /// </summary>
+        private static readonly Type[] OrderTypes = new Type[]
+        {
+            typeof(Guid),
+            typeof(Guid?),
+            typeof(DateTime),
+            typeof(DateTime?),
+            typeof(TimeSpan),
+            typeof(TimeSpan?),
+            typeof(bool),
+            typeof(short),
+            typeof(ushort),
+            typeof(int),
+            typeof(uint),
+            typeof(long),
+            typeof(ulong),
+            typeof(float),
+            typeof(double),
+            typeof(decimal),
+            typeof(string),
+        };
+
         /// <summary>
         /// Extract filter expression for entity by search string.
         /// </summary>
@@ -25,7 +49,7 @@ namespace Definux.Emeraude.Essentials.Helpers
                 searchQuery = searchQuery.Trim();
             }
 
-            var allowedTypes = DefaultValues.OrderTypes;
+            var allowedTypes = OrderTypes;
             Type entityType = typeof(TEntity);
             var searchingProperties = entityType
                 .GetProperties()

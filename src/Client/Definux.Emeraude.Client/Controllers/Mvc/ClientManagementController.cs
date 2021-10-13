@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ChangeEmail;
-using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Locales.Attributes;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     /// <summary>
     /// Client controller for MVC user management.
     /// </summary>
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.ClientAuthenticationScheme)]
     public class ClientManagementController : ClientController
     {
         private const string ChangeEmailRoute = "/confirm-change-email";
@@ -61,10 +60,10 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             return await this.RedirectToExecutionResultAsync(
                 requestResult.Succeeded,
-                Titles.ChangeEmailSuccess,
-                Titles.ChangeEmailFailed,
-                Messages.ChangedEmailSuccessMessage,
-                Messages.ChangedEmailFailedMessage,
+                Strings.SuccessfulChangeEmailConfirmation,
+                Strings.ChangeEmailConfirmationFailed,
+                Strings.ChangeEmailAddressConfirmationHasBeenSuccessful,
+                Strings.ChangeEmailAddressConfirmationHasBeenFailed,
                 "change-email");
         }
     }

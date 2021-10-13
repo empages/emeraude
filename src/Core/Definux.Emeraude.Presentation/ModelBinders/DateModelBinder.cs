@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Models;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Definux.Emeraude.Presentation.ModelBinders
@@ -48,7 +45,7 @@ namespace Definux.Emeraude.Presentation.ModelBinders
                 return Task.CompletedTask;
             }
 
-            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Incorrect DateModel format. Use following format in the request '{SystemFormats.DateModelFormat}'");
+            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Incorrect DateModel format. Use following format in the request '{DateModel.DateModelFormat}'");
             return Task.CompletedTask;
         }
     }

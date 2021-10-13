@@ -4,7 +4,6 @@ using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Register;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Api
@@ -36,7 +35,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                    this.ModelState.AddModelError(string.Empty, Strings.UserCannotBeRegistered);
                 }
             }
             catch (ValidationException ex)
@@ -45,7 +44,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                this.ModelState.AddModelError(string.Empty, Strings.UserCannotBeRegistered);
             }
 
             return this.BadRequestWithModelErrors();

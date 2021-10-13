@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthentication;
-using Definux.Emeraude.Client.Extensions;
 using Definux.Emeraude.Identity.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -49,13 +47,13 @@ namespace Definux.Emeraude.Client.Controllers.Api
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                    this.ModelState.AddModelError(string.Empty, Strings.YourRequestCannotBeExecuted);
                 }
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "An error occured during external authentication");
-                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Strings.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

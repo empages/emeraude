@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Files.Commands.UploadImage;
 using Definux.Emeraude.Application.Requests.Files.Commands.UploadVideo;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Files;
 using Definux.Emeraude.Files.Extensions;
 using Definux.Emeraude.Presentation.Controllers;
@@ -18,8 +18,8 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// Client API upload controller.
     /// </summary>
     [Route("/api/client/upload/")]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.BearerAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.ClientAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.BearerAuthenticationScheme)]
     public sealed class ClientUploadApiController : EmApiController
     {
         private readonly EmFilesOptions filesOptions;

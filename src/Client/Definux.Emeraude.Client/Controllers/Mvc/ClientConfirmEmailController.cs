@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ConfirmEmail;
-using Definux.Emeraude.Client.Attributes;
-using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,8 +11,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientAuthenticationController : ClientController
     {
         private const string ConfirmEmailRoute = "/confirm-email";
-        private const string ConfirmEmailTitle = "CONFIRM_EMAIL_PAGE_TITLE";
-        private const string ConfirmEmailDescription = "CONFIRM_EMAIL_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Confirm email action.
@@ -26,9 +21,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(ConfirmEmailRoute)]
         [LanguageRoute(ConfirmEmailRoute)]
-        [MetaTag(MainMetaTags.Title, ConfirmEmailTitle, true)]
-        [MetaTag(MainMetaTags.Description, ConfirmEmailDescription, true)]
-        [Canonical]
         public async Task<IActionResult> ConfirmEmail([FromQuery]string email, [FromQuery]string token)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -54,10 +46,10 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
 
             return await this.RedirectToExecutionResultAsync(
                 requestResult.Succeeded,
-                Titles.ConfirmEmailSuccess,
-                Titles.ConfirmEmailFailed,
-                Messages.ConfirmedEmailSuccecssMessage,
-                Messages.ConfirmedEmailFailedMessage,
+                Strings.SuccessfulEmailConfirmation,
+                Strings.EmailConfirmationFailed,
+                Strings.EmailAddressConfirmationHasBeenSuccessful,
+                Strings.EmailAddressConfirmationHasBeenFailed,
                 "confirm-email");
         }
     }

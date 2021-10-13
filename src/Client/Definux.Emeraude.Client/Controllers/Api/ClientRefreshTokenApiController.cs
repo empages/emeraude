@@ -4,10 +4,7 @@ using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.RefreshAccessToken;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Api
@@ -40,7 +37,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Strings.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

@@ -13,28 +13,16 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models
         /// Initializes a new instance of the <see cref="EmPageViewSchema"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageViewSchema(EmPageViewSchemaContext context)
+        public EmPageViewSchema(EmPageViewContext context)
         {
-            this.NavbarActions = new List<ActionModel>();
-            this.Breadcrumbs = new List<BreadcrumbItemModel>();
             this.PropertyComponentPair = new Dictionary<string, Type>();
             this.PropertyTypePair = new Dictionary<string, Type>();
             this.PropertyParametersPair = new Dictionary<string, IDictionary<string, object>>();
             this.Context = context;
         }
 
-        /// <inheritdoc cref="EmPageViewSchemaContext"/>
-        public EmPageViewSchemaContext Context { get; set; }
-
-        /// <summary>
-        /// Actions placed in the navbar.
-        /// </summary>
-        public IList<ActionModel> NavbarActions { get; }
-
-        /// <summary>
-        /// Breadcrumbs list.
-        /// </summary>
-        public IList<BreadcrumbItemModel> Breadcrumbs { get; set; }
+        /// <inheritdoc cref="EmPageViewContext"/>
+        public EmPageViewContext Context { get; set; }
 
         /// <summary>
         /// Component type for over the main.

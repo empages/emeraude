@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Persistence;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
@@ -46,8 +46,8 @@ namespace Definux.Emeraude.Persistence.Seed
         {
             if (!await this.context.Set<Role>().AsQueryable().AnyAsync())
             {
-                await this.EnsureRoleAsync(ApplicationRoles.Admin, AdminPermissions.GetAllPermissionValues());
-                await this.EnsureRoleAsync(ApplicationRoles.User, new string[] { });
+                await this.EnsureRoleAsync(EmRoles.Admin, EmPermissions.GetAllPermissionValues());
+                await this.EnsureRoleAsync(EmRoles.User, new string[] { });
                 if (this.identityOptions.AdditionalRoles != null && this.identityOptions.AdditionalRoles.Count > 0)
                 {
                     foreach (var role in this.identityOptions.AdditionalRoles)
@@ -63,13 +63,13 @@ namespace Definux.Emeraude.Persistence.Seed
                     EmIdentityConstants.DefaultEmeraudeAdminEmail,
                     EmIdentityConstants.DefaultEmeraudeAdminPassword,
                     EmIdentityConstants.DefaultEmeraudeAdminName,
-                    new string[] { ApplicationRoles.Admin });
+                    new string[] { EmRoles.Admin });
 
                 await this.CreateUserAsync(
                     EmIdentityConstants.DefaultEmeraudeUserEmail,
                     EmIdentityConstants.DefaultEmeraudeUserPassword,
                     EmIdentityConstants.DefaultEmeraudeUserName,
-                    new string[] { ApplicationRoles.User });
+                    new string[] { EmRoles.User });
             }
         }
 

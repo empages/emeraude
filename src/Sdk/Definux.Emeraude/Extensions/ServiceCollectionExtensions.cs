@@ -17,8 +17,8 @@ using Definux.Emeraude.Client.Mapping;
 using Definux.Emeraude.ClientBuilder.Extensions;
 using Definux.Emeraude.ClientBuilder.Mapping.Profiles;
 using Definux.Emeraude.ClientBuilder.Options;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Files.Extensions;
 using Definux.Emeraude.Identity.Entities;
 using Definux.Emeraude.Identity.Extensions;
@@ -178,10 +178,10 @@ namespace Definux.Emeraude.Extensions
             var authenticationBuilder = services
                 .AddAuthentication(options =>
                 {
-                    options.DefaultSignInScheme = AuthenticationDefaults.ClientAuthenticationScheme;
-                    options.DefaultAuthenticateScheme = AuthenticationDefaults.ClientAuthenticationScheme;
-                    options.DefaultChallengeScheme = AuthenticationDefaults.ClientAuthenticationScheme;
-                    options.DefaultScheme = AuthenticationDefaults.ClientAuthenticationScheme;
+                    options.DefaultSignInScheme = EmAuthenticationDefaults.ClientAuthenticationScheme;
+                    options.DefaultAuthenticateScheme = EmAuthenticationDefaults.ClientAuthenticationScheme;
+                    options.DefaultChallengeScheme = EmAuthenticationDefaults.ClientAuthenticationScheme;
+                    options.DefaultScheme = EmAuthenticationDefaults.ClientAuthenticationScheme;
                 })
                 .AddCookie(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 

@@ -6,8 +6,8 @@ using AutoMapper;
 using Definux.Emeraude.Client.Adapters;
 using Definux.Emeraude.Client.UI.Adapters;
 using Definux.Emeraude.Client.UI.Extensions;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Locales.Constraints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +36,6 @@ namespace Definux.Emeraude.Client.Extensions
             services.AddScoped<IExternalAuthenticationProvidersCollection, ExternalAuthenticationProvidersCollection>();
 
             services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
-            services.AddScoped<IHtmlMetaTagsBuilder, HtmlMetaTagsBuilder>();
         }
 
         /// <summary>
@@ -47,12 +46,12 @@ namespace Definux.Emeraude.Client.Extensions
         public static AuthenticationBuilder AddClientCookie(this AuthenticationBuilder builder)
         {
             builder
-                .AddCookie(AuthenticationDefaults.ClientAuthenticationScheme, options =>
+                .AddCookie(EmAuthenticationDefaults.ClientAuthenticationScheme, options =>
                 {
                     options.LoginPath = "/login";
                     options.LogoutPath = "/";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                    options.Cookie.Name = AuthenticationDefaults.ClientCookieName;
+                    options.Cookie.Name = EmAuthenticationDefaults.ClientCookieName;
                 });
 
             return builder;

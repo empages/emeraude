@@ -1,5 +1,4 @@
-﻿using Definux.Emeraude.Resources;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserName
 {
@@ -15,7 +14,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangeUserName
         {
             this.RuleFor(x => x.NewName)
                 .NotEmpty()
-                .WithMessage(Messages.NameIsARequiedField);
+                .WithMessage(Strings.NameIsRequired);
         }
     }
 }

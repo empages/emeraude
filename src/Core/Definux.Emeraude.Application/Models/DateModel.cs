@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Essentials.Base;
 
 namespace Definux.Emeraude.Application.Models
 {
@@ -9,6 +9,11 @@ namespace Definux.Emeraude.Application.Models
     /// </summary>
     public struct DateModel
     {
+        /// <summary>
+        /// Default date model format used by Emeraude.
+        /// </summary>
+        public const string DateModelFormat = "yyyy-MM-dd";
+
         /// <summary>
         /// Gets default date model.
         /// </summary>
@@ -96,7 +101,7 @@ namespace Definux.Emeraude.Application.Models
         public override string ToString()
         {
             var defaultDate = default(DateTime);
-            string result = defaultDate.ToString(SystemFormats.DateModelFormat);
+            string result = defaultDate.ToString(DateModelFormat);
             if (this.IsValid)
             {
                 result = $"{this.Year:0000}-{this.Month:00}-{this.Day:00}";

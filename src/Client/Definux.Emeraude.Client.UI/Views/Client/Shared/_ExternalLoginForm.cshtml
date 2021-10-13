@@ -2,7 +2,7 @@
 @if (OptionsProvider.GetOptionValue<bool>("IdentityOptions:HasExternalAuthentication"))
 {
     @inject IExternalAuthenticationProvidersCollection ExternalAuthenticationProvidersCollection
-    <h6 class="text-center">@Titles.ContinueWith</h6>
+    <h6 class="text-center">Continue With</h6>
     <div>
         <form action="@Url.ExternalLoginAction(ViewData)" method="post" class="auth-form">
             @Html.AntiForgeryToken()

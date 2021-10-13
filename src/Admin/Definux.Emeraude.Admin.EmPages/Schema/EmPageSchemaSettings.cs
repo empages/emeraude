@@ -60,20 +60,21 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         {
             this.ModelActions.Add(new EmPageAction()
             {
+                Order = 0,
                 Name = "Details",
                 RelativeUrlFormat = "/{0}",
             });
 
             this.ModelActions.Add(new EmPageAction()
             {
-                Order = 1,
+                Order = 10,
                 Name = "Edit",
                 RelativeUrlFormat = "/{0}/edit",
             });
 
             this.ModelActions.Add(new EmPageAction()
             {
-                Order = 2,
+                Order = 20,
                 Name = "Delete",
                 RelativeUrlFormat = "/{0}",
                 Method = HttpMethod.Delete,
@@ -188,6 +189,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                     ViewItems = this.detailsViewConfigurationBuilder.ViewItems,
                     PageActions = this.detailsViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
                     Breadcrumbs = this.detailsViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
+                    Features = this.detailsViewConfigurationBuilder.Features,
                 },
                 FormView = new FormViewDescription
                 {

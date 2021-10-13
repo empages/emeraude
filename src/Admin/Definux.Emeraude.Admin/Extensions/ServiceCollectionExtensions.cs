@@ -7,8 +7,8 @@ using Definux.Emeraude.Admin.UI;
 using Definux.Emeraude.Admin.UI.Adapters;
 using Definux.Emeraude.Admin.UI.Extensions;
 using Definux.Emeraude.Admin.UI.Store;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,12 +49,12 @@ namespace Definux.Emeraude.Admin.Extensions
         /// <returns></returns>
         public static AuthenticationBuilder AddAdminCookie(this AuthenticationBuilder builder)
         {
-            builder.AddCookie(AuthenticationDefaults.AdminAuthenticationScheme, options =>
+            builder.AddCookie(EmAuthenticationDefaults.AdminAuthenticationScheme, options =>
             {
                 options.LoginPath = "/admin/login";
                 options.LogoutPath = "/";
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
-                options.Cookie.Name = AuthenticationDefaults.AdminCookieName;
+                options.Cookie.Name = EmAuthenticationDefaults.AdminCookieName;
             });
 
             return builder;

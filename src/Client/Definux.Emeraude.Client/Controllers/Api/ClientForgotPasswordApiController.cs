@@ -4,7 +4,6 @@ using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -44,7 +43,7 @@ namespace Definux.Emeraude.Client.Controllers.Api
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.YourRequestCannotBeExecuted);
+                this.ModelState.AddModelError(string.Empty, Strings.YourRequestCannotBeExecuted);
             }
 
             return this.BadRequestWithModelErrors();

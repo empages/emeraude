@@ -1,5 +1,5 @@
-﻿using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
+using Definux.Emeraude.Application.Identity;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
@@ -17,23 +17,20 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
         {
             this.RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat)
+                .ValidateEmailAddress()
                 .DependentRules(() =>
                 {
                     this.RuleFor(x => x)
                         .Cascade(CascadeMode.Stop)
                         .MustAsync(async (x, c) => await userManager.IsEmailConfirmedAsync(x.Email))
-                        .WithMessage(Messages.YourProfileEmailIsNotConfirmed)
+                        .WithMessage(Strings.YourProfileEmailAddressIsNotConfirmed)
                         .When(x => !string.IsNullOrEmpty(x.Password))
                         .WhenAsync(async (x, c) => await userManager.CheckPasswordAsync(x.Email, x.Password));
                 });
 
             this.RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage(Messages.PasswordIsARequiredField);
+                .WithMessage(Strings.PasswordIsRequired);
         }
     }
 }

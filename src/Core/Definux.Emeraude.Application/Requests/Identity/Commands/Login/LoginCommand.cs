@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Essentials.Base;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -50,7 +50,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
                     Result = SignInResult.Failed,
                 };
 
-                if (!await this.userManager.IsInRoleAsync(user, ApplicationRoles.Admin) && !await this.userManager.IsInRoleAsync(user, ApplicationRoles.User))
+                if (!await this.userManager.IsInRoleAsync(user, EmRoles.Admin) && !await this.userManager.IsInRoleAsync(user, EmRoles.User))
                 {
                     result.Result = SignInResult.NotAllowed;
                 }
@@ -61,7 +61,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Login
 
                 if (result.Result == SignInResult.Failed && await this.userManager.CheckPasswordAsync(user, request.Password))
                 {
-                    if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, ApplicationRoles.Admin))
+                    if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, EmRoles.Admin))
                     {
                         result.Result = SignInResult.TwoFactorRequired;
                     }

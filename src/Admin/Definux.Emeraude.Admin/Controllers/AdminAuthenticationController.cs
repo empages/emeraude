@@ -6,8 +6,8 @@ using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Login;
 using Definux.Emeraude.Application.Requests.Identity.Commands.LoginWithTwoFactorAuthentication;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Presentation.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Emeraude.Presentation.Extensions;
@@ -228,10 +228,10 @@ namespace Definux.Emeraude.Admin.Controllers
         [HttpGet]
         [HttpPost]
         [Route("/admin/logout")]
-        [Authorize(Policy = AdminPermissions.AccessAdministrationPolicy)]
+        [Authorize(Policy = EmPermissions.AccessAdministrationPolicy)]
         public async Task<IActionResult> Logout()
         {
-            await this.HttpContext.SignOutAsync(AuthenticationDefaults.AdminAuthenticationScheme);
+            await this.HttpContext.SignOutAsync(EmAuthenticationDefaults.AdminAuthenticationScheme);
 
             return this.RedirectToAction(nameof(this.Login));
         }
@@ -239,11 +239,11 @@ namespace Definux.Emeraude.Admin.Controllers
         private async Task SignInAsync(IUser user)
         {
             var claims = await this.userClaimsService.GetUserClaimsForCookieAsync(user.Id);
-            var claimsIdentity = new ClaimsIdentity(claims, AuthenticationDefaults.AdminAuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, EmAuthenticationDefaults.AdminAuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             await this.HttpContext.SignInAsync(
-                AuthenticationDefaults.AdminAuthenticationScheme,
+                EmAuthenticationDefaults.AdminAuthenticationScheme,
                 claimsPrincipal,
                 this.AuthenticationProperties);
         }

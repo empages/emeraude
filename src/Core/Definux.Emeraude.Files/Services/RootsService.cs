@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Definux.Emeraude.Application.Files;
-using Definux.Emeraude.Resources;
+using Definux.Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Definux.Emeraude.Files.Services
@@ -26,7 +26,7 @@ namespace Definux.Emeraude.Files.Services
         /// <inheritdoc/>
         public string PrivateRootDirectory => Path.Combine(
             this.hostingEnvironment.ContentRootPath,
-            Folders.PrivateRootFolderName);
+            EmFolders.PrivateRootFolderName);
 
         /// <inheritdoc/>
         public string GetPathFromPublicRoot(params string[] paths)

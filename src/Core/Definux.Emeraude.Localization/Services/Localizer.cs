@@ -144,35 +144,6 @@ namespace Definux.Emeraude.Localization.Services
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<string> TranslateKeyAsync(string key)
-        {
-            try
-            {
-                string languageCode = (await this.currentLanguageProvider.GetCurrentLanguageAsync())?.Code;
-                return this.TranslateKeyAction(key, languageCode);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translation");
-                return key;
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<string> TranslateKeyAsync(string key, string languageCode)
-        {
-            try
-            {
-                return this.TranslateKeyAction(key, languageCode);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translation");
-                return key;
-            }
-        }
-
         private string TranslateKeyAction(string key, string languageCode)
         {
             string value = this.languagesResourceManager.GetTranslationResource(key, languageCode);

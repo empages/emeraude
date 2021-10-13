@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Definux.Emeraude.Presentation.Attributes;
+using Definux.Emeraude.ClientBuilder.Attributes;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Functions;
 using Definux.Utilities.Objects;

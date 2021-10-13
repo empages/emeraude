@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -196,7 +196,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ExternalAuthen
                     if (registerResult.Succeeded)
                     {
                         await this.AddExternalProviderToUserAsync(user.Id, externalUser);
-                        await this.userManager.AddToRoleAsync(user, ApplicationRoles.User);
+                        await this.userManager.AddToRoleAsync(user, EmRoles.User);
 
                         // apply avatar
                         var avatarUrl = await this.userAvatarService.CreateAvatarFromUrlAsync(externalUser.PictureUrl);

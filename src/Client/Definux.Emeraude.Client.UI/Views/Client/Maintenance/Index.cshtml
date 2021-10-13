@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "_BaseLayout";
+    ViewData.SetTitle("Maintenance Mode");
     var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/Maintenance/Index.cshtml", "https://emeraude.dev/client");
 }
 <partial name="_EmeraudeClientPredefinedMessage" model="predefinedViewMessageModel" />
@@ -7,7 +8,7 @@
 <div class="row">
     <div class="col-1 d-flex">
         <div class="my-auto">
-            <img class="w-100" src="~/client/images/logo.svg" />
+            <img class="w-100" alt="logo" src="~/client/images/logo.svg" />
         </div>
     </div>
     <div class="col-11 d-flex">

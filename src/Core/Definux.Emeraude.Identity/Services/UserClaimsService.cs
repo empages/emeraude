@@ -5,8 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Configuration.Authorization;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -43,8 +43,8 @@ namespace Definux.Emeraude.Identity.Services
             {
                 var user = await this.userManager.FindByEmailAsync(email);
                 var userClaims = await this.GetAllUserClaimsAsync(user);
-                string claimType = Configuration.Authorization.ClaimTypes.Permission;
-                string claimValue = AdminPermissions.AccessAdministration;
+                string claimType = EmClaimTypes.Permission;
+                string claimValue = EmPermissions.AccessAdministration;
 
                 return userClaims != null && userClaims.Any(x => x.Type == claimType && x.Value == claimValue);
             }

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
 {
@@ -13,27 +13,20 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ResetPassword
         /// <summary>
         /// Initializes a new instance of the <see cref="ResetPasswordCommandValidator"/> class.
         /// </summary>
-        public ResetPasswordCommandValidator()
+        /// <param name="identityOptionsAccessor"></param>
+        public ResetPasswordCommandValidator(IOptions<IdentityOptions> identityOptionsAccessor)
         {
+            var identityOptions = identityOptionsAccessor.Value;
+
             this.RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat);
+                .ValidateEmailAddress();
 
             this.RuleFor(x => x.Password)
-                .NotEmpty()
-                .WithMessage(Messages.PasswordIsARequiredField)
-                .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
-                .WithMessage(string.Format(Messages.PasswordMustBeAtLeastSymbols, EmIdentityConstants.PasswordRequiredLength))
-                .Must(x => x.Any(y => char.IsLetter(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Letter)
-                .Must(x => x.Any(y => char.IsDigit(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit);
+                .ValidatePassword(identityOptions.Password);
 
             this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.Password)
-                .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword);
+                .WithMessage(Strings.ConfirmedPasswordDoesNotMatchThePassword);
         }
     }
 }

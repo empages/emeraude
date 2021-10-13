@@ -1,19 +1,22 @@
-﻿<EmPageView ViewSchema="ViewSchema">
-<table class="table table-striped">
-    <tbody>
-    @foreach (var field in ViewData.Fields)
-    {
-        <tr>
-            <td>
-                <strong>@field.Title:</strong>
-            </td>
-            <td class="white-space-normal">
-                <DynamicComponent Type="field.Component" Parameters="GetParameters(field)"></DynamicComponent>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+﻿<EmPageView ViewSchema="ViewSchema" HasViewData="@(ViewData != null)">
+    <table class="table table-striped">
+        <tbody>
+        @if (ViewData != null)
+        {
+            foreach (var field in ViewData.Fields)
+            {
+                <tr>
+                    <td>
+                        <strong>@field.Title:</strong>
+                    </td>
+                    <td class="white-space-normal">
+                        <DynamicComponent Type="field.Component" Parameters="GetParameters(field)"></DynamicComponent>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
 </EmPageView>
 
 @code {
@@ -22,7 +25,7 @@
 
     [Parameter]
     public EmPageDetailsViewData ViewData { get; set; }
-    
+
     private Dictionary<string, object> GetParameters(EmPageDetailsFieldModel fieldModel)
     {
         var parameters = new Dictionary<string, object>

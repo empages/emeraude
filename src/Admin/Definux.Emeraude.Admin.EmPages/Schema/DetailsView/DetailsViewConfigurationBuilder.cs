@@ -26,6 +26,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
             this.viewItems = new List<DetailsViewItem>();
             this.PageActions = new List<EmPageAction>();
             this.Breadcrumbs = new List<EmPageBreadcrumb>();
+            this.Features = new List<EmPageFeature>();
         }
 
         /// <inheritdoc/>
@@ -36,6 +37,25 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
 
         /// <inheritdoc/>
         public IList<EmPageBreadcrumb> Breadcrumbs { get; }
+
+        /// <summary>
+        /// List of all features for specified details view.
+        /// </summary>
+        public IList<EmPageFeature> Features { get; }
+
+        /// <summary>
+        /// Includes feature
+        /// </summary>
+        /// <param name="featureAction"></param>
+        /// <returns></returns>
+        public DetailsViewConfigurationBuilder<TModel> IncludeFeature(Action<EmPageFeature> featureAction)
+        {
+            var feature = new EmPageFeature();
+            featureAction.Invoke(feature);
+            this.Features.Add(feature);
+
+            return this;
+        }
 
         /// <inheritdoc/>
         public IEmPageSchemaViewConfigurationBuilder<DetailsViewItem, TModel> Use(

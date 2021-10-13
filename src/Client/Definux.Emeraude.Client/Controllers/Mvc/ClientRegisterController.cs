@@ -2,11 +2,9 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.Register;
-using Definux.Emeraude.Client.Attributes;
 using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Client.Controllers.Mvc
@@ -15,8 +13,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientAuthenticationController : ClientController
     {
         private const string RegisterRoute = "/register";
-        private const string RegisterTitle = "REGISTER_PAGE_TITLE";
-        private const string RegisterDescription = "REGISTER_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Register action for GET request.
@@ -25,9 +21,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
-        [MetaTag(MainMetaTags.Title, RegisterTitle, true)]
-        [MetaTag(MainMetaTags.Description, RegisterDescription, true)]
-        [Canonical]
         public IActionResult Register()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -49,9 +42,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(RegisterRoute)]
         [LanguageRoute(RegisterRoute)]
         [ValidateAntiForgeryToken]
-        [MetaTag(MainMetaTags.Title, RegisterTitle, true)]
-        [MetaTag(MainMetaTags.Description, RegisterDescription, true)]
-        [Canonical]
         public async Task<IActionResult> Register(RegisterCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -66,13 +56,13 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 if (requestResult.Result.Succeeded)
                 {
                     return await this.RedirectToSucceededExecutionResultAsync(
-                        Titles.RegisterSuccess,
-                        Messages.RegistrationSuccessMessage,
+                        Strings.RegistrationHasBeenSuccessful,
+                        Strings.PleaseConfirmYourEmailAddressToCompleteTheRegistration,
                         "register");
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                    this.ModelState.AddModelError(string.Empty, Strings.UserCannotBeRegistered);
                 }
             }
             catch (ValidationException ex)
@@ -81,7 +71,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.UserCannotBeRegistered);
+                this.ModelState.AddModelError(string.Empty, Strings.UserCannotBeRegistered);
             }
 
             return this.RegisterView(request);

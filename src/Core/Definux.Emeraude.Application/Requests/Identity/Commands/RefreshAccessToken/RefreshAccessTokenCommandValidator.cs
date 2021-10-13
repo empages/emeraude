@@ -1,5 +1,4 @@
-﻿using Definux.Emeraude.Resources;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.RefreshAccessToken
 {
@@ -15,7 +14,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.RefreshAccessT
         {
             this.RuleFor(x => x.RefreshToken)
                 .NotEmpty()
-                .WithMessage(Messages.RefreshTokenIsRequiredField);
+                .WithMessage(Strings.RefreshTokenIsRequired);
         }
     }
 }

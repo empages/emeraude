@@ -1,43 +1,21 @@
 ﻿@page "/admin/{route}/create"
 @inherits EmPage
-@using Definux.Emeraude.Admin.UI.Extensions
-<PageTitle>@PageTitle | Emeraude</PageTitle>
 
-@if (Loaded)
-{
-    <EmPageFormView ViewSchema="ViewSchema" ViewData="ViewData"/>
-}
-else
-{
-    <LoadingIndicator/>
-}
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+<EmPageFormView ViewSchema="ViewSchema" ViewData="ViewData"/>
 
 @code {
     private EmPageFormViewSchema ViewSchema { get; set; }
     
     private EmPageFormViewData ViewData { get; set; }
-    
-    private bool FirstInitial { get; set; }
-    
+
     private string PageTitle => ViewSchema?.Context.Title;
-    
-    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
-   
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            FirstInitial = true;
-            StateHasChanged();
-        }
-    }
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
+        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
     
     protected override async Task ReloadPageAsync()
     {

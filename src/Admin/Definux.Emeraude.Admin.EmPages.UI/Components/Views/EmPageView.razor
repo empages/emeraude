@@ -1,22 +1,29 @@
 ﻿<div id="entity-view">
-    @if (ViewSchema.ComponentTypeForOverTheMain != null)
+    @if (Loaded)
     {
-        <div id="component-for-over-the-main" class="additional-component mb-3">
-            <DynamicComponent Type="ViewSchema.ComponentTypeForOverTheMain"/> 
-        </div>
-    }
-    <div class="card">
-        <div class="card-body">
-            <div id="main-entity-view-content">
-                @ChildContent
+        if (ViewSchema.ComponentTypeForOverTheMain != null)
+        {
+            <div id="component-for-over-the-main" class="additional-component mb-3">
+                <DynamicComponent Type="ViewSchema.ComponentTypeForOverTheMain"/>
+            </div>
+        }
+        <div class="card">
+            <div class="card-body">
+                <div id="main-entity-view-content">
+                    @ChildContent
+                </div>
             </div>
         </div>
-    </div>
-    @if (ViewSchema.ComponentTypeForBelowTheMain != null)
+        if (ViewSchema.ComponentTypeForBelowTheMain != null)
+        {
+            <div id="component-for-below-the-main" class="additional-component mt-3">
+                <DynamicComponent Type="ViewSchema.ComponentTypeForBelowTheMain"/>
+            </div>
+        }
+    }
+    else
     {
-        <div id="component-for-below-the-main" class="additional-component mt-3">
-            <DynamicComponent Type="ViewSchema.ComponentTypeForBelowTheMain"/> 
-        </div>
+        <LoadingIndicator/>
     }
 </div>
 
@@ -25,5 +32,22 @@
     public EmPageViewSchema ViewSchema { get; set; }
     
     [Parameter]
+    public bool HasViewData { get; set; }
+    
+    [Parameter]
     public RenderFragment ChildContent { get; set; }
+    
+    private bool FirstInitial { get; set; }
+    
+    private bool Loaded => FirstInitial && ViewSchema != null && HasViewData;
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            FirstInitial = true;
+            StateHasChanged();
+        }
+    }
 }

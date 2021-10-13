@@ -17,8 +17,8 @@ namespace Definux.Emeraude.Domain.Abstractions
             }
 
             var other = (ValueObject)obj;
-            var thisValues = this.GetEqualityComponents().GetEnumerator();
-            var otherValues = other.GetEqualityComponents().GetEnumerator();
+            using var thisValues = this.GetEqualityComponents().GetEnumerator();
+            using var otherValues = other.GetEqualityComponents().GetEnumerator();
 
             while (thisValues.MoveNext() && otherValues.MoveNext())
             {
@@ -62,7 +62,7 @@ namespace Definux.Emeraude.Domain.Abstractions
         }
 
         /// <summary>
-        /// Checo for lack of equality between two value objects.
+        /// Check for lack of equality between two value objects.
         /// </summary>
         /// <param name="left"></param>
         /// <param name="right"></param>

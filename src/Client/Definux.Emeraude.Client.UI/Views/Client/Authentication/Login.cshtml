@@ -1,7 +1,7 @@
 @model Definux.Emeraude.Application.Requests.Identity.Commands.Login.LoginCommand
 @{
     Layout = "_AuthLayout";
-    ViewData.SetTitle(Localizer[Titles.Login]);
+    ViewData.SetTitle("Login");
     var predefinedViewMessageModel = new PredefinedViewMessageModel("Views/Client/Authentication/Login.cshtml", "https://emeraude.dev/client");
 }
 
@@ -9,29 +9,29 @@
 
 <partial name="_ExternalLoginForm" />
 <form action="@Url.LoginAction(ViewData)" method="post" class="auth-form">
-    <t element="h5" class="text-center">@Titles.Login</t>
+    <h5 class="text-center">Login</h5>
     @if (Html.HasNonModelError())
     {
         <div class="alert alert-danger mb-2">
-            <t>@Html.NonModelError()</t>
+            <span>@Html.NonModelError()</span>
         </div>
     }
     @Html.AntiForgeryToken()
     <div class="form-group mb-1">
-        <t element="label">@Properties.Email</t>
-        <input type="email" class="form-control" asp-for="Email" placeholder="@Localizer[Properties.Email]" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Email))</t>
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.Email))</span>
     </div>
     <div class="form-group mb-1">
-        <t element="label">@Properties.Password</t>
-        <input type="password" class="form-control" asp-for="Password" placeholder="@Localizer[Properties.Password]" />
-        <t class="text-danger text-small" strip-html="true">@Html.ValidationMessage(nameof(Model.Password))</t>
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+        <span class="text-danger text-small">@Html.ValidationMessage(nameof(Model.Password))</span>
     </div>
-    <a class="link" href="@Url.ForgotPasswordAction()"><t>@ActionsTexts.ForgotPassword</t>?</a>
+    <a class="link" href="@Url.ForgotPasswordAction()">Forgot password?</a>
     <div class="d-block w-100 my-3">
-        <t element="button" class="btn btn-primary w-100" type="submit">@ActionsTexts.LoginSubmit</t>
+        <button class="btn btn-primary w-100" type="submit">Login</button>
     </div>
     <div class="d-block w-100 text-center">
-        <a class="link" href="@Url.RegisterAction()"><t>@ActionsTexts.DontHaveAProfile</t>?</a>
+        <a class="link" href="@Url.RegisterAction()">Don't have a profile?</a>
     </div>
 </form>

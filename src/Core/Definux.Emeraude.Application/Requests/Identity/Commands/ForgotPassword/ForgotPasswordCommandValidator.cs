@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
 using FluentValidation;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
@@ -14,11 +14,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword
         public ForgotPasswordCommandValidator()
         {
             this.RuleFor(x => x.Email)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat);
+                .ValidateEmailAddress();
         }
     }
 }

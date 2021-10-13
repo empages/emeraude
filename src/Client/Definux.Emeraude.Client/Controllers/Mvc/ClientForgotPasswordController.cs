@@ -2,11 +2,8 @@
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Exceptions;
 using Definux.Emeraude.Application.Requests.Identity.Commands.ForgotPassword;
-using Definux.Emeraude.Client.Attributes;
-using Definux.Emeraude.Client.Models;
 using Definux.Emeraude.Locales.Attributes;
 using Definux.Emeraude.Presentation.Extensions;
-using Definux.Emeraude.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,8 +13,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
     public sealed partial class ClientAuthenticationController : ClientController
     {
         private const string ForgotPasswordRoute = "/forgot-password";
-        private const string ForgotPasswordTitle = "FORGOT_PASSWORD_PAGE_TITLE";
-        private const string ForgotPasswordDescription = "FORGOT_PASSWORD_PAGE_DESCRIPTION";
 
         /// <summary>
         /// Forgot password action for GET request.
@@ -26,9 +21,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [HttpGet]
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
-        [MetaTag(MainMetaTags.Title, ForgotPasswordTitle, true)]
-        [MetaTag(MainMetaTags.Description, ForgotPasswordDescription, true)]
-        [Canonical]
         public IActionResult ForgotPassword()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -50,9 +42,6 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
         [Route(ForgotPasswordRoute)]
         [LanguageRoute(ForgotPasswordRoute)]
         [ValidateAntiForgeryToken]
-        [MetaTag(MainMetaTags.Title, ForgotPasswordTitle, true)]
-        [MetaTag(MainMetaTags.Description, ForgotPasswordDescription, true)]
-        [Canonical]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand request)
         {
             if (this.User.Identity.IsAuthenticated)
@@ -69,8 +58,8 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
                 }
 
                 return await this.RedirectToSucceededExecutionResultAsync(
-                    Titles.ForgotPasswordSuccess,
-                    Messages.ForgotPasswordSuccessMessage,
+                    Strings.SuccessfulResetPasswordRequestHasBeenMade,
+                    Strings.ALinkForResetPasswordHasBeenSentToYou,
                     "forgot-password");
             }
             catch (ValidationException ex)
@@ -79,7 +68,7 @@ namespace Definux.Emeraude.Client.Controllers.Mvc
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, Messages.YourPasswordCannotBeReset);
+                this.ModelState.AddModelError(string.Empty, Strings.YourPasswordCannotBeReset);
             }
 
             return this.ForgotPasswordView(request);

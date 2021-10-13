@@ -13,14 +13,6 @@ namespace Definux.Emeraude.Client
     public class EmClientOptions : IEmOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmClientOptions"/> class.
-        /// </summary>
-        public EmClientOptions()
-        {
-            this.DefaultMetaTags = new MetaTagsModel();
-        }
-
-        /// <summary>
         /// Flag that turn on/off the provided client MVC authentication. The default value is true.
         /// </summary>
         public bool HasClientMvcAuthentication { get; set; } = true;
@@ -39,11 +31,6 @@ namespace Definux.Emeraude.Client
         /// Implementation type of <see cref="ISitemapComposition"/>.
         /// </summary>
         public Type SitemapCompositionType { get; private set; }
-
-        /// <summary>
-        /// Default meta tags model.
-        /// </summary>
-        public MetaTagsModel DefaultMetaTags { get; set; }
 
         /// <summary>
         /// Set sitemap composition type.

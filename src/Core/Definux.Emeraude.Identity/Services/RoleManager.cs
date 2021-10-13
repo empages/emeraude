@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +77,7 @@ namespace Definux.Emeraude.Identity.Services
 
                     foreach (string claim in claims.Distinct())
                     {
-                        result = await this.roleManager.AddClaimAsync(role, new Claim(Definux.Emeraude.Configuration.Authorization.ClaimTypes.Permission, claim));
+                        result = await this.roleManager.AddClaimAsync(role, new Claim(EmClaimTypes.Permission, claim));
 
                         if (!result.Succeeded)
                         {

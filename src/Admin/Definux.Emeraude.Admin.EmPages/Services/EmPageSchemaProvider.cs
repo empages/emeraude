@@ -47,7 +47,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 return null;
             }
 
-            var schema = new EmPageTableViewSchema(new EmPageViewSchemaContext
+            var schema = new EmPageTableViewSchema(new EmPageViewContext
             {
                 Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
@@ -95,13 +95,25 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 return null;
             }
 
-            var schema = new EmPageDetailsViewSchema(new EmPageViewSchemaContext
+            var schema = new EmPageDetailsViewSchema(new EmPageViewContext
             {
                 Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
             });
 
             this.MapViewSchema(schemaDescription.DetailsView, schema);
+
+            foreach (var feature in schemaDescription.DetailsView.Features)
+            {
+                schema.Features.Add(new EmPageDetailsFeature
+                {
+                    Context = new EmPageViewContext
+                    {
+                        Route = feature.Route,
+                        Title = feature.Title,
+                    },
+                });
+            }
 
             return schema;
         }
@@ -118,7 +130,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                     return null;
             }
 
-            var schema = new EmPageFormViewSchema(new EmPageViewSchemaContext
+            var schema = new EmPageFormViewSchema(new EmPageViewContext
             {
                 Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
@@ -127,7 +139,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             this.MapViewSchema(schemaDescription.FormView, schema);
 
             // Set built-in placeholders
-            var breadcrumbsWithPlaceholders = schema.Breadcrumbs.Where(x => x.IsUsingPlaceholder);
+            var breadcrumbsWithPlaceholders = schema.Context.Breadcrumbs.Where(x => x.IsUsingPlaceholder);
             foreach (var breadcrumb in breadcrumbsWithPlaceholders)
             {
                 if (EmPagesPlaceholders.TrySetFormAction(breadcrumb.Title, type, out var foundPlaceholderValue))
@@ -146,7 +158,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         {
             foreach (var pageAction in sourceDescription.PageActions)
             {
-                destinationSchema.NavbarActions.Add(new ActionModel
+                destinationSchema.Context.NavbarActions.Add(new ActionModel
                 {
                     Title = pageAction.Name,
                     ActionUrl = pageAction.BuildActionUrlFormat(destinationSchema.Context.Route),
@@ -159,7 +171,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
             foreach (var breadcrumb in sourceDescription.Breadcrumbs)
             {
-                destinationSchema.Breadcrumbs.Add(new BreadcrumbItemModel
+                destinationSchema.Context.Breadcrumbs.Add(new BreadcrumbItemModel
                 {
                     Title = breadcrumb.Title,
                     ActionUrl = breadcrumb.Href,

@@ -90,7 +90,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar
             {
                 return new GetUserAvatarResult
                 {
-                    Avatar = this.ConvertStreamToAvatarValue(new MemoryStream(Resources.Images.default_avatar)),
+                    Avatar = this.ConvertStreamToAvatarValue(new MemoryStream()),
                     IsDefault = true,
                 };
             }

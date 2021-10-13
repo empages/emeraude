@@ -10,8 +10,8 @@ using Definux.Emeraude.Application.Requests.Identity.Commands.RequestChangeEmail
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserAvatar;
 using Definux.Emeraude.Application.Requests.Identity.Queries.GetUserExternalLoginProviders;
 using Definux.Emeraude.Client.Models;
-using Definux.Emeraude.Configuration.Authorization;
-using Definux.Emeraude.Presentation.Attributes;
+using Definux.Emeraude.ClientBuilder.Attributes;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Presentation.Controllers;
 using Definux.Utilities.Objects;
 using Microsoft.AspNetCore.Authorization;
@@ -23,8 +23,8 @@ namespace Definux.Emeraude.Client.Controllers.Api
     /// Client API user utilities controller.
     /// </summary>
     [Route("/api/users/")]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.ClientAuthenticationScheme)]
-    [Authorize(AuthenticationSchemes = AuthenticationDefaults.BearerAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.ClientAuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.BearerAuthenticationScheme)]
     [ApiEndpointsController]
     public sealed class ClientUsersApiController : EmApiController
     {

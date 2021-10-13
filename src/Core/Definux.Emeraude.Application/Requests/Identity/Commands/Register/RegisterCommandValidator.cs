@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using Definux.Emeraude.Application.Extensions;
 using Definux.Emeraude.Application.Identity;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Resources;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
 {
@@ -15,40 +15,33 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
         /// Initializes a new instance of the <see cref="RegisterCommandValidator"/> class.
         /// </summary>
         /// <param name="userManager">User Manager provided from Emeraude Identity.</param>
-        public RegisterCommandValidator(IUserManager userManager)
+        /// <param name="identityOptionsAccessor"></param>
+        public RegisterCommandValidator(IUserManager userManager, IOptions<IdentityOptions> identityOptionsAccessor)
         {
+            var identityOptions = identityOptionsAccessor.Value;
+
             this.RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(Messages.EmailIsARequiredField)
-                .EmailAddress()
-                .WithMessage(Messages.EnteredEmailIsInTheWrongFormat)
+                .ValidateEmailAddress()
                 .DependentRules(() =>
                 {
                     this.RuleFor(x => x)
                         .Cascade(CascadeMode.Stop)
                         .MustAsync(async (x, c) => await userManager.FindUserByEmailAsync(x.Email) == null)
-                        .WithMessage(Messages.UserCannotBeRegistered);
+                        .WithMessage(Strings.UserCannotBeRegistered);
                 });
 
             this.RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithMessage(Messages.NameIsARequiedField);
+                .WithMessage(Strings.NameIsRequired);
 
             this.RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(Messages.PasswordIsARequiredField)
-                .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
-                .WithMessage(string.Format(Messages.PasswordMustBeAtLeastSymbols, EmIdentityConstants.PasswordRequiredLength))
-                .Must(x => x.Any(y => char.IsLetter(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Letter)
-                .Must(x => x.Any(y => char.IsDigit(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit);
+                .ValidatePassword(identityOptions.Password);
 
             this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.Password)
-                .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword)
+                .WithMessage(Strings.ConfirmedPasswordDoesNotMatchThePassword)
                 .When(x => !string.IsNullOrEmpty(x.Password));
         }
     }

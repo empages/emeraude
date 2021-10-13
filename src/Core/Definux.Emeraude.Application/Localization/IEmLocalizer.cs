@@ -22,21 +22,6 @@ namespace Definux.Emeraude.Application.Localization
         string TranslateKey(string key);
 
         /// <summary>
-        /// Translate key by using the current language (async execution).
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        Task<string> TranslateKeyAsync(string key);
-
-        /// <summary>
-        /// Translate key by using the specified language (async execution).
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="languageCode"></param>
-        /// <returns></returns>
-        Task<string> TranslateKeyAsync(string key, string languageCode);
-
-        /// <summary>
         /// Translate key by using the specified language.
         /// </summary>
         /// <param name="key"></param>

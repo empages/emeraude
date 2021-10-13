@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Resources;
+﻿using Definux.Emeraude.Application.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
 {
@@ -13,28 +13,25 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.ChangePassword
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangePasswordCommandValidator"/> class.
         /// </summary>
-        public ChangePasswordCommandValidator()
+        /// <param name="identityOptionsAccessor"></param>
+        public ChangePasswordCommandValidator(IOptions<IdentityOptions> identityOptionsAccessor)
         {
+            var identityOptions = identityOptionsAccessor.Value;
+
             this.RuleFor(x => x.CurrentPassword)
                 .NotEmpty()
-                .WithMessage(Messages.CurrentPasswordIsARequiredField);
+                .WithMessage(Strings.CurrentPasswordIsRequired);
 
             this.RuleFor(x => x.NewPassword)
                 .NotEmpty()
-                .WithMessage(Messages.PasswordIsARequiredField);
+                .WithMessage(Strings.PasswordIsRequired);
 
             this.RuleFor(x => x.NewPassword)
-                .MinimumLength(EmIdentityConstants.PasswordRequiredLength)
-                .WithMessage(string.Format(Messages.PasswordMustBeAtLeastSymbols, EmIdentityConstants.PasswordRequiredLength))
-                .Must(x => x.Any(y => char.IsLetter(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Letter)
-                .Must(x => x.Any(y => char.IsDigit(y)))
-                .WithMessage(Messages.PasswordHaveToContainsAtLeast1Digit)
-                .When(x => !string.IsNullOrEmpty(x.NewPassword));
+                .ValidatePassword(identityOptions.Password);
 
             this.RuleFor(x => x.ConfirmedPassword)
                 .Equal(x => x.NewPassword)
-                .WithMessage(Messages.ConfirmedPasswordDoesNotMatchThePassword)
+                .WithMessage(Strings.ConfirmedPasswordDoesNotMatchThePassword)
                 .When(x => !string.IsNullOrEmpty(x.NewPassword));
         }
     }

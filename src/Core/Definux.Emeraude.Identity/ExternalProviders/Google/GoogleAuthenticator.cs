@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Definux.Emeraude.Application.Identity;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Emeraude.Identity.Options;
 using Definux.Utilities.Extensions;
 using IdentityServer4;
@@ -31,7 +32,7 @@ namespace Definux.Emeraude.Identity.ExternalProviders.Google
             externalUser.FirstName = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value;
             externalUser.LastName = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
             externalUser.EmailAddress = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            externalUser.Picture = principal.Claims.FirstOrDefault(x => x.Type == Configuration.Authorization.ClaimTypes.Picture)?.Value;
+            externalUser.Picture = principal.Claims.FirstOrDefault(x => x.Type == EmClaimTypes.Picture)?.Value;
 
             return externalUser;
         }
@@ -68,7 +69,7 @@ namespace Definux.Emeraude.Identity.ExternalProviders.Google
                 options.Scope.Add("profile");
                 options.Events.OnCreatingTicket = (context) =>
                 {
-                    var claim = new Claim(Configuration.Authorization.ClaimTypes.Picture, context.User.GetProperty("picture").GetString());
+                    var claim = new Claim(EmClaimTypes.Picture, context.User.GetProperty("picture").GetString());
                     context.Identity.AddClaim(claim);
 
                     return Task.CompletedTask;

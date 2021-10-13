@@ -1,43 +1,21 @@
 ﻿@page "/admin/{route}"
-@using Definux.Emeraude.Admin.UI.Extensions
 @inherits EmPage
 
 <PageTitle>@PageTitle | Emeraude</PageTitle>
-@if (Loaded)
-{
-    <EmPageTableView ViewSchema="ViewSchema" ViewData="ViewData" />
-}
-else
-{
-    <LoadingIndicator/>
-}
+<EmPageTableView ViewSchema="ViewSchema" ViewData="ViewData" />
 
 @code {
     private EmPageTableViewSchema ViewSchema { get; set; }
     
     private EmPageTableViewData ViewData { get; set; }
     
-    private bool FirstInitial { get; set; }
-    
-    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
-
     private string PageTitle => ViewSchema?.Context.Title;
-    
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            FirstInitial = true;
-            StateHasChanged();
-        }
-    }
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
+        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
 
     private void ResetData()
     {

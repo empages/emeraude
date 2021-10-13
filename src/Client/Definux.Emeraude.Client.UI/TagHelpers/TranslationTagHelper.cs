@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Definux.Emeraude.Application.Localization;
+using Definux.Emeraude.Essentials.Helpers;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -39,6 +40,13 @@ namespace Definux.Emeraude.Client.UI.TagHelpers
         /// </summary>
         [HtmlAttributeName("strip-html")]
         public bool StripHtml { get; set; }
+
+        /// <summary>
+        /// This flag push the execution to convert tag content to key format. That means if you
+        /// apply content 'DogName' or 'Dog name' instead of 'DOG_NAME', the tag helper will convert
+        /// the content to 'DOG_NAME' internally.
+        /// </summary>
+        public bool Convert { get; set; }
 
         /// <summary>
         /// Arguments used for the placeholders in the translation. Usage args-param="parameter".
@@ -83,6 +91,11 @@ namespace Definux.Emeraude.Client.UI.TagHelpers
             if (this.StripHtml)
             {
                 key = this.StripHtmlTags(key);
+            }
+
+            if (this.Convert)
+            {
+                key = StringUtilities.ConvertToKey(key);
             }
 
             string translation = this.Localizer.TranslateKey(key);

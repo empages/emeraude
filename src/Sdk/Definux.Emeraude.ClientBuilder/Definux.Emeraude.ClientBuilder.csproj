@@ -29,7 +29,7 @@
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
     <ProjectReference Include="..\..\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
-    <ProjectReference Include="..\..\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
+    <ProjectReference Include="..\..\Core\Definux.Emeraude.Presentation\Definux.Emeraude.Presentation.csproj" />
     <ProjectReference Include="..\..\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
   </ItemGroup>
 

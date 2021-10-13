@@ -1,17 +1,8 @@
 ﻿@page "/admin/{route}/{modelId}"
-@using Definux.Emeraude.Admin.EmPages.UI.Adapters
-@using Definux.Emeraude.Admin.UI.Extensions
 @inherits EmPage
-<PageTitle>@PageTitle | Emeraude</PageTitle>
 
-@if (Loaded)
-{
-    <EmPageDetailsView ViewSchema="ViewSchema" ViewData="ViewData"/>
-}
-else
-{
-    <LoadingIndicator/>
-}
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+<EmPageDetailsView ViewSchema="ViewSchema" ViewData="ViewData"/>
 
 @code {
     private EmPageDetailsViewSchema ViewSchema { get; set; }
@@ -21,27 +12,13 @@ else
     [Parameter]
     public string ModelId { get; set; }
 
-    private bool FirstInitial { get; set; }
-    
     private string PageTitle => ViewSchema?.Context.Title;
-    
-    private bool Loaded => FirstInitial && ViewSchema != null && ViewData != null;
-   
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            FirstInitial = true;
-            StateHasChanged();
-        }
-    }
-    
+
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => ViewSchema?.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => ViewSchema?.NavbarActions ?? new List<ActionModel>();
+        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
     
     protected override async Task ReloadPageAsync()
     {

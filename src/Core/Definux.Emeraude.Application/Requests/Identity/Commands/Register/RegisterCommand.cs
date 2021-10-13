@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Definux.Emeraude.Application.EventHandlers;
 using Definux.Emeraude.Application.Identity;
 using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Configuration.Authorization;
+using Definux.Emeraude.Essentials.Base;
 using Definux.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -76,7 +76,7 @@ namespace Definux.Emeraude.Application.Requests.Identity.Commands.Register
                 result.Result = await this.userManager.CreateAsync(user, request.Password);
                 if (result.Result.Succeeded)
                 {
-                    await this.userManager.AddToRoleAsync(user, ApplicationRoles.User);
+                    await this.userManager.AddToRoleAsync(user, EmRoles.User);
 
                     var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
                     string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";

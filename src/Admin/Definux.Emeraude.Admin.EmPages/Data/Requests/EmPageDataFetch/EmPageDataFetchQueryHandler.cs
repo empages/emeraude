@@ -9,9 +9,9 @@ using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
 using Definux.Emeraude.Application.Persistence;
 using Definux.Emeraude.Domain.Entities;
+using Definux.Emeraude.Essentials.Enumerations;
 using Definux.Emeraude.Essentials.Helpers;
 using Definux.Emeraude.Essentials.Models;
-using Definux.Emeraude.Resources;
 using Definux.Utilities.Functions;
 using Microsoft.Extensions.Logging;
 

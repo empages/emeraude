@@ -6,9 +6,7 @@ using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Exceptions;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.Services;
-using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Models;
-using Definux.Emeraude.Resources;
 using MediatR;
 
 namespace Definux.Emeraude.Admin.EmPages.Data
