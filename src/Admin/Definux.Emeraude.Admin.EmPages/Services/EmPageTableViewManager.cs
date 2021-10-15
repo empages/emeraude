@@ -5,6 +5,7 @@ using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
+using Definux.Emeraude.Admin.EmPages.UI.Components.Views.TableView;
 using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
 using Definux.Emeraude.Admin.UI.Models;
@@ -106,7 +107,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 fieldIndex++;
             }
 
-            rowModel.Actions.AddRange(model.RowActions);
+            rowModel.Actions.AddRange(model.RowActions.Select(this.BuildRowAction));
             this.SetDataRelatedPlaceholders(rowModel.Actions, item);
 
             return rowModel;
@@ -121,6 +122,17 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 Type = model.PropertyTypePair[field.Property],
                 Component = model.PropertyComponentPair[field.Property],
                 Parameters = model.PropertyParametersPair[field.Property],
+            };
+
+        private ActionModel BuildRowAction(ActionModel action) =>
+            new ()
+            {
+                Title = action.Title,
+                ActionUrl = action.ActionUrl,
+                Order = action.Order,
+                OpenOnSeparatePage = action.OpenOnSeparatePage,
+                ActionHttpMethod = action.ActionHttpMethod,
+                ConfirmationMessage = action.ConfirmationMessage,
             };
     }
 }
