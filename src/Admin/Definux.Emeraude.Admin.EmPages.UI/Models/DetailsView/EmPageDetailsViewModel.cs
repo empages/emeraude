@@ -5,21 +5,27 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView
     /// <summary>
     /// Schema implementation for table view.
     /// </summary>
-    public class EmPageDetailsViewSchema : EmPageViewSchema
+    public class EmPageDetailsViewModel : EmPageViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDetailsViewSchema"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDetailsViewModel"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageDetailsViewSchema(EmPageViewContext context)
+        public EmPageDetailsViewModel(EmPageViewContext context)
             : base(context)
         {
             this.Features = new List<EmPageDetailsFeature>();
+            this.Fields = new List<EmPageDetailsFieldModel>();
         }
 
         /// <summary>
         /// List of all details feature of current EmPage.
         /// </summary>
         public IList<EmPageDetailsFeature> Features { get; set; }
+
+        /// <summary>
+        /// Fields of the details view.
+        /// </summary>
+        public List<EmPageDetailsFieldModel> Fields { get; set; }
     }
 }

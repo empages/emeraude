@@ -29,8 +29,8 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         public string Href { get; set; }
 
         /// <summary>
-        /// Additional parameters for other logical operations.
+        /// Flag that will mark breadcrumb for hide evaluation if operation supports it.
         /// </summary>
-        public IDictionary<string, object> AdditionalParameters { get; set; }
+        public bool HideContextually { get; set; }
     }
 }

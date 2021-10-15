@@ -3,14 +3,16 @@
 namespace Definux.Emeraude.Admin.EmPages.UI.Models.FormView
 {
     /// <summary>
-    /// Data implementation for form view.
+    /// Model implementation for form view.
     /// </summary>
-    public class EmPageFormViewData
+    public class EmPageFormViewModel : EmPageViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageFormViewData"/> class.
+        /// Initializes a new instance of the <see cref="EmPageFormViewModel"/> class.
         /// </summary>
-        public EmPageFormViewData()
+        /// <param name="context"></param>
+        public EmPageFormViewModel(EmPageViewContext context)
+            : base(context)
         {
             this.Inputs = new List<EmPageFormInputModel>();
             this.NonMappedFormErrors = new List<string>();

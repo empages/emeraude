@@ -37,8 +37,7 @@ namespace Definux.Emeraude.Admin.EmPages.Extensions
             services.RegisterEmPageSchemas(assembliesList);
             services.RegisterEmPagesDataServices(assembliesList);
 
-            services.AddScoped<IEmPageSchemaProvider, EmPageSchemaProvider>();
-            services.AddScoped<IEmPageDataService, EmPageDataService>();
+            services.AddScoped<IEmPageManager, EmPageManager>();
             services.AddScoped<IEmPageService, EmPageService>();
 
             services.RegisterAsScopedAllContractedTypes(

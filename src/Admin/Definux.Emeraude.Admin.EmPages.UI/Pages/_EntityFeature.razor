@@ -10,37 +10,46 @@
     [Parameter]
     public string FeatureRoute { get; set; }
 
-    private EmPageDetailsViewSchema ViewSchema { get; set; }
-
-    private EmPageDetailsFeature Feature => ViewSchema?.Features.FirstOrDefault(x => x.Context.Route.Equals(FirstSegment, StringComparison.OrdinalIgnoreCase));
+    private EmPageDetailsViewModel ViewModel { get; set; }
+    
+    private EmPageDetailsFeature Feature => ViewModel?.Features.FirstOrDefault(x => x.Context.Route.Equals(FirstSegment, StringComparison.OrdinalIgnoreCase));
     
     private string[] FeatureSegments => FeatureRoute?.Split('/') ?? new string[0];
 
     private string FirstSegment => FeatureSegments.FirstOrDefault();
     
-    private string PageTitle => $"{Feature?.Context.Title} | {ViewSchema?.Context.Title}";
+    private string PageTitle => $"{Feature?.Context.Title} | {ViewModel?.Context.Title}";
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => Feature?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
+        => Feature?.Context.NavbarActions ?? new List<ActionModel>();
+    
+    private void ResetData()
+    {
+        ViewModel = null;
+        StateHasChanged();
+    }
     
     protected override async Task ReloadPageAsync()
     {
+        ResetData();
+
         if (string.IsNullOrWhiteSpace(FirstSegment))
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
 
-        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(Route);
-        if (ViewSchema == null || Feature == null)
+        var viewModel = await EmPageManager.RetrieveDetailsViewModelAsync(Route, ModelId, GetQueryParameters());
+        if (viewModel == null)
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
-        
+
+        ViewModel = viewModel;
         StateHasChanged();
     }
 

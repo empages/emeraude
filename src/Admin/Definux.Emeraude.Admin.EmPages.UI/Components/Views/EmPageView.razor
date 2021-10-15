@@ -1,10 +1,10 @@
 ﻿<div id="entity-view">
     @if (Loaded)
     {
-        if (ViewSchema.ComponentTypeForOverTheMain != null)
+        if (ViewModel.ComponentTypeForOverTheMain != null)
         {
             <div id="component-for-over-the-main" class="additional-component mb-3">
-                <DynamicComponent Type="ViewSchema.ComponentTypeForOverTheMain"/>
+                <DynamicComponent Type="ViewModel.ComponentTypeForOverTheMain"/>
             </div>
         }
         <div class="card">
@@ -14,10 +14,10 @@
                 </div>
             </div>
         </div>
-        if (ViewSchema.ComponentTypeForBelowTheMain != null)
+        if (ViewModel.ComponentTypeForBelowTheMain != null)
         {
             <div id="component-for-below-the-main" class="additional-component mt-3">
-                <DynamicComponent Type="ViewSchema.ComponentTypeForBelowTheMain"/>
+                <DynamicComponent Type="ViewModel.ComponentTypeForBelowTheMain"/>
             </div>
         }
     }
@@ -29,17 +29,14 @@
 
 @code {
     [Parameter]
-    public EmPageViewSchema ViewSchema { get; set; }
-    
-    [Parameter]
-    public bool HasViewData { get; set; }
-    
+    public EmPageViewModel ViewModel { get; set; }
+
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
     private bool FirstInitial { get; set; }
     
-    private bool Loaded => FirstInitial && ViewSchema != null && HasViewData;
+    private bool Loaded => FirstInitial && ViewModel != null;
     
     protected override void OnAfterRender(bool firstRender)
     {

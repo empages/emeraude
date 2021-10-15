@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using Definux.Emeraude.Admin.EmPages.Data;
@@ -8,7 +9,6 @@ using Definux.Emeraude.Admin.EmPages.Schema.DetailsView;
 using Definux.Emeraude.Admin.EmPages.Schema.FormView;
 using Definux.Emeraude.Admin.EmPages.Schema.TableView;
 using Definux.Emeraude.Admin.EmPages.UI.Utilities;
-using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Helpers;
 
 namespace Definux.Emeraude.Admin.EmPages.Schema
@@ -53,65 +53,93 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         public IList<EmPageAction> ModelActions { get; }
 
         /// <summary>
-        /// Set defaults of the current schema. It must be executed as a last method of the schema because it is
+        /// Set defaults breadcrumbs of the current schema. It must be executed as a last method of the schema because it is
         /// using the already defined setup.
         /// </summary>
-        public void BuildDefaults()
+        /// <param name="optionsAction"></param>
+        /// <returns></returns>
+        public EmPageSchemaSettings<TModel> ApplyDefaultBreadcrumbs(Action<EmPageBuilderDefaultBreadcrumbsOptions> optionsAction = null)
+        {
+            var defaultOptions = new EmPageBuilderDefaultBreadcrumbsOptions();
+            optionsAction?.Invoke(defaultOptions);
+
+            string tableBreadcrumb = defaultOptions.TableBreadcrumbTitle ?? this.Title;
+
+            this.tableViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = tableBreadcrumb,
+            });
+
+            this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = tableBreadcrumb,
+                IsActive = true,
+                Href = $"/admin/{this.Route}",
+            });
+
+            this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = defaultOptions.DetailsBreadcrumbTitle,
+                Order = 1,
+                IsActive = false,
+            });
+
+            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = tableBreadcrumb,
+                IsActive = true,
+                Href = $"/admin/{this.Route}",
+            });
+
+            var formCurrentBreadcrumb = new EmPageBreadcrumb
+            {
+                Title = defaultOptions.CurrentBreadcrumbTitle,
+                Order = 1,
+                IsActive = true,
+                Href = $"/admin/{this.Route}/{this.GetModelPlaceholder(x => x.Id)}",
+                HideContextually = true,
+            };
+
+            this.formViewConfigurationBuilder.Breadcrumbs.Add(formCurrentBreadcrumb);
+
+            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            {
+                Title = defaultOptions.FormBreadcrumbTitle,
+                Order = 2,
+                IsActive = false,
+            });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set defaults actions of the current schema. It must be executed as a last method of the schema because it is
+        /// using the already defined setup.
+        /// </summary>
+        /// <returns></returns>
+        public EmPageSchemaSettings<TModel> ApplyDefaultActions()
         {
             this.ModelActions.Add(new EmPageAction()
             {
                 Order = 0,
                 Name = "Details",
-                RelativeUrlFormat = "/{0}",
+                RelativeUrlFormat = $"/{this.GetModelPlaceholder(x => x.Id)}",
             });
 
             this.ModelActions.Add(new EmPageAction()
             {
                 Order = 10,
                 Name = "Edit",
-                RelativeUrlFormat = "/{0}/edit",
+                RelativeUrlFormat = $"/{this.GetModelPlaceholder(x => x.Id)}/edit",
             });
 
             this.ModelActions.Add(new EmPageAction()
             {
                 Order = 20,
                 Name = "Delete",
-                RelativeUrlFormat = "/{0}",
+                RelativeUrlFormat = $"/{this.GetModelPlaceholder(x => x.Id)}",
                 Method = HttpMethod.Delete,
                 ConfirmationMessage = "Are you sure you want to delete this entity?",
-            });
-
-            this.tableViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = this.Title,
-            });
-
-            this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = this.Title,
-                IsActive = true,
-                Href = $"/admin/{this.Route}",
-            });
-
-            this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = "Details",
-                Order = 1,
-                IsActive = false,
-            });
-
-            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = this.Title,
-                IsActive = true,
-                Href = $"/admin/{this.Route}",
-            });
-
-            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = EmPagesPlaceholders.FormAction,
-                Order = 1,
-                IsActive = false,
             });
 
             if (this.formViewConfigurationBuilder.ViewItems.Any(x => x.Type == FormViewItemType.CreateEdit || x.Type == FormViewItemType.EditOnly))
@@ -120,9 +148,11 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                 {
                     Order = 1,
                     Name = "Edit",
-                    RelativeUrlFormat = "/{0}/edit",
+                    RelativeUrlFormat = $"/{this.GetModelPlaceholder(x => x.Id)}/edit",
                 });
             }
+
+            return this;
         }
 
         /// <summary>
@@ -202,6 +232,16 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             description.FormView.SetModelValidatorAction(this.formViewConfigurationBuilder.ModelValidatorAction);
 
             return description;
+        }
+
+        /// <summary>
+        /// Gets model property placeholder.
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public string GetModelPlaceholder(Expression<Func<TModel, object>> property)
+        {
+            return EmPagesPlaceholders.GetModelPlaceholder(property);
         }
     }
 }

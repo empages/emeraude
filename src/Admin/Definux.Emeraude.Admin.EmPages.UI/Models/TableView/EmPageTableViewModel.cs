@@ -5,19 +5,20 @@ using Definux.Emeraude.Admin.UI.Models;
 namespace Definux.Emeraude.Admin.EmPages.UI.Models.TableView
 {
     /// <summary>
-    /// Schema implementation for table view.
+    /// Model implementation for table view.
     /// </summary>
-    public class EmPageTableViewSchema : EmPageViewSchema
+    public class EmPageTableViewModel : EmPageViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageTableViewSchema"/> class.
+        /// Initializes a new instance of the <see cref="EmPageTableViewModel"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageTableViewSchema(EmPageViewContext context)
+        public EmPageTableViewModel(EmPageViewContext context)
             : base(context)
         {
             this.HeadModel = new EmPageTableHeadModel();
             this.RowActions = new List<ActionModel>();
+            this.Rows = new List<EmPageTableRowModel>();
         }
 
         /// <summary>
@@ -34,5 +35,15 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.TableView
         /// Collection of all actions that will be applied to each entity.
         /// </summary>
         public IList<ActionModel> RowActions { get; set; }
+
+        /// <summary>
+        /// Rows of the table.
+        /// </summary>
+        public List<EmPageTableRowModel> Rows { get; }
+
+        /// <summary>
+        /// Pagination model related to the current view.
+        /// </summary>
+        public PaginationModel PaginationModel { get; set; }
     }
 }

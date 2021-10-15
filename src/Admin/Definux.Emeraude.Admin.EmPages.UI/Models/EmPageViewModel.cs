@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using Definux.Emeraude.Admin.UI.Models;
 
 namespace Definux.Emeraude.Admin.EmPages.UI.Models
 {
     /// <summary>
-    /// Abstract class that defines the general entities view schema implementation.
+    /// Main EmPage model in the context of UI.
     /// </summary>
-    public abstract class EmPageViewSchema
+    public abstract class EmPageViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageViewSchema"/> class.
+        /// Initializes a new instance of the <see cref="EmPageViewModel"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public EmPageViewSchema(EmPageViewContext context)
+        protected EmPageViewModel(EmPageViewContext context)
         {
             this.PropertyComponentPair = new Dictionary<string, Type>();
             this.PropertyTypePair = new Dictionary<string, Type>();

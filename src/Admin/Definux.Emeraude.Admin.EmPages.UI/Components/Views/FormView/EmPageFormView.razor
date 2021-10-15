@@ -1,12 +1,12 @@
 ﻿@using Definux.Emeraude.Admin.EmPages.UI.Adapters
-@inject IEmPageDataService DataService
+@inject IEmPageManager EmPageManager
 
-<EmPageView ViewSchema="ViewSchema" HasViewData="@(ViewData != null)">
-    @if (ViewData != null)
+<EmPageView ViewModel="ViewModel">
+    @if (ViewModel != null)
     {
-        if (ViewData.NonMappedFormErrors.Any())
+        if (ViewModel.NonMappedFormErrors.Any())
         {
-            foreach (var error in ViewData.NonMappedFormErrors)
+            foreach (var error in ViewModel.NonMappedFormErrors)
             {
                 <div class="alert alert-danger p-2" role="alert">
                     @error
@@ -14,7 +14,7 @@
             }
         }
         <form onsubmit="@HandleFormSubmitAsync">
-            @foreach (var input in ViewData.Inputs)
+            @foreach (var input in ViewModel.Inputs)
             {
                 <EmPageFormInput Model="input"/>
             }
@@ -28,17 +28,14 @@
 
 @code {
     [Parameter]
-    public EmPageFormViewSchema ViewSchema { get; set; }
-    
-    [Parameter]
-    public EmPageFormViewData ViewData { get; set; }
-    
+    public EmPageFormViewModel ViewModel { get; set; }
+
     [Parameter]
     public EmPageFormType Type { get; set; }
     
     private async Task HandleFormSubmitAsync()
     {
-        await DataService.SubmitFormViewDataAsync(Type, ViewSchema, ViewData);
+        await EmPageManager.SubmitFormViewModelAsync(Type, ViewModel);
         StateHasChanged();
     }
 }

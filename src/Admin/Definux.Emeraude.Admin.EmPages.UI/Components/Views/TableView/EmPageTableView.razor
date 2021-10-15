@@ -1,18 +1,15 @@
 ﻿<div id="entity-table-view">
-    <EmPageView ViewSchema="ViewSchema" HasViewData="@(ViewData != null)">
-        @if (ViewData != null)
+    <EmPageView ViewModel="ViewModel">
+        @if (ViewModel != null)
         {
             <EmPageTableFilter/>
-            <EmPageTable HeadModel="ViewSchema.HeadModel" ViewData="ViewData" HasActions="ViewSchema.HasActions"/>
-            <EmPageTablePagination PaginationModel="ViewData.PaginationModel"/>
+            <EmPageTable Rows="@(ViewModel?.Rows ?? new List<EmPageTableRowModel>())" HeadModel="ViewModel.HeadModel" HasActions="ViewModel.HasActions"/>
+            <EmPageTablePagination PaginationModel="ViewModel.PaginationModel"/>
         }
     </EmPageView>
 </div>
 
 @code {
     [Parameter]
-    public EmPageTableViewSchema ViewSchema { get; set; }
-    
-    [Parameter]
-    public EmPageTableViewData ViewData { get; set; }
+    public EmPageTableViewModel ViewModel { get; set; }
 }

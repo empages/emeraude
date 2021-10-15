@@ -2,35 +2,39 @@
 @inherits EmPage
 
 <PageTitle>@PageTitle | Emeraude</PageTitle>
-<EmPageDetailsView ViewSchema="ViewSchema" ViewData="ViewData"/>
+<EmPageDetailsView ViewModel="ViewModel"/>
 
 @code {
-    private EmPageDetailsViewSchema ViewSchema { get; set; }
+    private EmPageDetailsViewModel ViewModel { get; set; }
 
-    private EmPageDetailsViewData ViewData { get; set; }
-    
     [Parameter]
     public string ModelId { get; set; }
 
-    private string PageTitle => ViewSchema?.Context.Title;
+    private string PageTitle => ViewModel?.Context.Title;
 
     protected override IEnumerable<BreadcrumbItemModel> ConfigureBreadcrumbs()
-        => ViewSchema?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
+        => ViewModel?.Context.Breadcrumbs ?? new List<BreadcrumbItemModel>();
 
     protected override IEnumerable<ActionModel> ConfigureNavigationActions()
-        => ViewSchema?.Context.NavbarActions ?? new List<ActionModel>();
+        => ViewModel?.Context.NavbarActions ?? new List<ActionModel>();
+    
+    private void ResetData()
+    {
+        ViewModel = null;
+        StateHasChanged();
+    }
     
     protected override async Task ReloadPageAsync()
     {
-        ViewSchema = await SchemaProvider.GetDetailsViewSchemaAsync(Route);
-        if (ViewSchema == null)
+        ResetData();
+        var viewModel = await EmPageManager.RetrieveDetailsViewModelAsync(Route, ModelId, GetQueryParameters());
+        if (viewModel == null)
         {
             NavigationManager.NavigateToNotFoundPage();
             return;
         }
-        
-        ViewData = await DataService.RetrieveDetailsViewDataAsync(Route, ModelId, GetQueryParameters(), ViewSchema);
+
+        ViewModel = viewModel;
         StateHasChanged();
     }
-
 }

@@ -1,9 +1,9 @@
-﻿<EmPageView ViewSchema="ViewSchema" HasViewData="@(ViewData != null)">
+﻿<EmPageView ViewModel="ViewModel">
     <table class="table table-striped">
         <tbody>
-        @if (ViewData != null)
+        @if (ViewModel != null)
         {
-            foreach (var field in ViewData.Fields)
+            foreach (var field in ViewModel.Fields)
             {
                 <tr>
                     <td>
@@ -21,10 +21,7 @@
 
 @code {
     [Parameter]
-    public EmPageDetailsViewSchema ViewSchema { get; set; }
-
-    [Parameter]
-    public EmPageDetailsViewData ViewData { get; set; }
+    public EmPageDetailsViewModel ViewModel { get; set; }
 
     private Dictionary<string, object> GetParameters(EmPageDetailsFieldModel fieldModel)
     {

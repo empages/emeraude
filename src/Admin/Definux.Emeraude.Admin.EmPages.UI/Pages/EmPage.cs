@@ -24,13 +24,9 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Pages
         [Parameter]
         public string Route { get; set; }
 
-        /// <inheritdoc cref="IEmPageSchemaProvider"/>
+        /// <inheritdoc cref="IEmPageManager"/>
         [Inject]
-        protected IEmPageSchemaProvider SchemaProvider { get; set; }
-
-        /// <inheritdoc cref="IEmPageDataService"/>
-        [Inject]
-        protected IEmPageDataService DataService { get; set; }
+        protected IEmPageManager EmPageManager { get; set; }
 
         /// <summary>
         /// Gets query params of current page.
