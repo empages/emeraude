@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Helpers;
 using Definux.Utilities.Extensions;
 
@@ -26,7 +25,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
             this.viewItems = new List<DetailsViewItem>();
             this.PageActions = new List<EmPageAction>();
             this.Breadcrumbs = new List<EmPageBreadcrumb>();
-            this.Features = new List<EmPageFeature>();
+            this.Features = new List<EmPageFeature<TModel>>();
         }
 
         /// <inheritdoc/>
@@ -41,16 +40,16 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
         /// <summary>
         /// List of all features for specified details view.
         /// </summary>
-        public IList<EmPageFeature> Features { get; }
+        public IList<EmPageFeature<TModel>> Features { get; }
 
         /// <summary>
         /// Includes feature
         /// </summary>
         /// <param name="featureAction"></param>
         /// <returns></returns>
-        public DetailsViewConfigurationBuilder<TModel> IncludeFeature(Action<EmPageFeature> featureAction)
+        public DetailsViewConfigurationBuilder<TModel> IncludeFeature(Action<EmPageFeature<TModel>> featureAction)
         {
-            var feature = new EmPageFeature();
+            var feature = new EmPageFeature<TModel>();
             featureAction.Invoke(feature);
             this.Features.Add(feature);
 

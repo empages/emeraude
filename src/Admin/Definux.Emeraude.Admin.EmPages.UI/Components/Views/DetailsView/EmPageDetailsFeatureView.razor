@@ -1,0 +1,16 @@
+﻿@using Definux.Emeraude.Admin.EmPages.UI.Adapters
+@inherits EmPageFeature
+@inject IEmPageManager EmPageManager
+
+<EmPageDetailsView ViewModel="ViewModel"/>
+
+@code {
+    private EmPageDetailsViewModel ViewModel { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        ViewModel = await EmPageManager.RetrieveFeatureDetailsViewModelAsync(Feature);
+    }
+
+}

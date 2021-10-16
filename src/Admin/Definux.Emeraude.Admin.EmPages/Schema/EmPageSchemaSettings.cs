@@ -219,7 +219,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
                     ViewItems = this.detailsViewConfigurationBuilder.ViewItems,
                     PageActions = this.detailsViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
                     Breadcrumbs = this.detailsViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
-                    Features = this.detailsViewConfigurationBuilder.Features,
+                    Features = this.detailsViewConfigurationBuilder.Features.Select(x => x.ToDescription()).ToList(),
                 },
                 FormView = new FormViewDescription
                 {

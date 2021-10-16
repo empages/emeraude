@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Domain.Entities;
 using MediatR;
@@ -17,6 +18,11 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
         /// <summary>
         /// Id of the entity.
         /// </summary>
-        public Guid EntityId { get; set; }
+        Guid EntityId { get; set; }
+
+        /// <summary>
+        /// Expression for finding an entity.
+        /// </summary>
+        Expression<Func<TEntity, bool>> FilterExpression { get; set; }
     }
 }

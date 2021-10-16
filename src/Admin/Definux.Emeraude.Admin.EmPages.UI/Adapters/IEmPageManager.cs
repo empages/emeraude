@@ -31,9 +31,16 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
         /// <param name="query"></param>
         /// <returns></returns>
         Task<EmPageDetailsViewModel> RetrieveDetailsViewModelAsync(
-        string route,
-        string modelId,
-        IDictionary<string, StringValues> query);
+            string route,
+            string modelId,
+            IDictionary<string, StringValues> query);
+
+        /// <summary>
+        /// Retrieves details view model for the context of feature.
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <returns></returns>
+        Task<EmPageDetailsViewModel> RetrieveFeatureDetailsViewModelAsync(EmPageDetailsFeatureModel feature);
 
         /// <summary>
         /// Retrieves form view model.

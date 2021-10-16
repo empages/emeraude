@@ -10,6 +10,6 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
         /// <summary>
         /// List of all features for specified details view.
         /// </summary>
-        public IList<EmPageFeature> Features { get; set; }
+        public IList<EmPageFeatureDescription> Features { get; set; }
     }
 }

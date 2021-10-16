@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Admin.EmPages.Schema.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
 using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
@@ -18,9 +20,13 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         /// <inheritdoc cref="RetrieveDetailsViewModelAsync"/>
         public async Task<EmPageDetailsViewModel> RetrieveDetailsViewModelAsync(string route, string modelId, IDictionary<string, StringValues> query)
         {
-            // Retrieve schema
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
             if (!schemaDescription.DetailsView.IsActive)
+            {
+                return null;
+            }
+
+            if (schemaDescription.DataManagerType == null)
             {
                 return null;
             }
@@ -31,42 +37,58 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 Title = schemaDescription.Title,
             });
 
+            var dataManager = this.GetDataManagerInstance(schemaDescription);
+            var rawModel = await dataManager.GetRawModelAsync(modelId);
+
             this.MapToViewModel(schemaDescription.DetailsView, model);
 
             foreach (var feature in schemaDescription.DetailsView.Features)
             {
-                model.Features.Add(this.BuildFeature(feature));
+                var detailsFeature = this.BuildFeature(feature);
+                var featureSchema = this.emPageService.FindSchemaDescriptionByContract(feature.EmPageBasedLinkConfiguration?.Item2?.DeclaringType);
+                detailsFeature.RawModelRetriever = this.BuildFeatureRawModelRetriever(feature, rawModel);
+                detailsFeature.EmPageRoute = featureSchema?.Route;
+                model.Features.Add(detailsFeature);
             }
 
-            // Retrieve data
-            if (schemaDescription.DataManagerType != null)
+            this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel);
+            this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel);
+            if (model.Features.Any())
             {
-                var dataManager = this.GetDataManagerInstance(schemaDescription);
-                var rawModel = await dataManager.GetRawModelAsync(modelId);
-                this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel);
-                this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel);
-                if (model.Features.Any())
+                foreach (var feature in model.Features)
                 {
-                    foreach (var feature in model.Features)
-                    {
-                        this.SetDataRelatedPlaceholders(feature.Context.Breadcrumbs, rawModel);
-                    }
+                    this.SetDataRelatedPlaceholders(feature.Context.Breadcrumbs, rawModel);
                 }
+            }
 
-                var requestResult = await dataManager.DetailsAsync(modelId);
-                if (requestResult != null)
+            var detailsResult = await dataManager.DetailsAsync(modelId);
+            if (detailsResult != null)
+            {
+                foreach (var field in detailsResult.Fields)
                 {
-                    foreach (var field in requestResult.Fields)
+                    if (model.PropertyComponentPair.ContainsKey(field.Property))
                     {
-                        if (model.PropertyComponentPair.ContainsKey(field.Property))
-                        {
-                            model.Fields.Add(this.BuildField(schemaDescription, field, model));
-                        }
+                        model.Fields.Add(this.BuildField(schemaDescription, field, model));
                     }
                 }
             }
 
             return model;
+        }
+
+        /// <inheritdoc cref="RetrieveFeatureDetailsViewModelAsync"/>
+        public async Task<EmPageDetailsViewModel> RetrieveFeatureDetailsViewModelAsync(EmPageDetailsFeatureModel feature)
+        {
+            var rawModel = await feature.RawModelRetriever() as IEmPageModel;
+            if (rawModel == null)
+            {
+                return null;
+            }
+
+            return await this.RetrieveDetailsViewModelAsync(
+                feature.EmPageRoute,
+                rawModel.Id,
+                new Dictionary<string, StringValues>());
         }
 
         private EmPageDetailsFieldModel BuildField(
@@ -91,15 +113,17 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             };
         }
 
-        private EmPageDetailsFeature BuildFeature(Schema.EmPageFeature feature)
+        private EmPageDetailsFeatureModel BuildFeature(EmPageFeatureDescription feature)
         {
-            var detailsFeature = new EmPageDetailsFeature
+            var detailsFeature = new EmPageDetailsFeatureModel
             {
                 Context = new EmPageViewContext
                 {
                     Route = feature.Route,
                     Title = feature.Title,
                 },
+                RouteSegmentsAmount = feature.RouteSegmentsAmount,
+                Component = feature.FeatureComponentType,
             };
 
             foreach (var pageAction in feature.PageActions)
@@ -113,6 +137,28 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             }
 
             return detailsFeature;
+        }
+
+        private Func<Task<object>> BuildFeatureRawModelRetriever(EmPageFeatureDescription feature, IEmPageModel model)
+        {
+            if (feature.EmPageBasedLinkConfiguration == null ||
+                feature.EmPageBasedLinkConfiguration.Item1 == null ||
+                feature.EmPageBasedLinkConfiguration.Item2 == null)
+            {
+                return () => null;
+            }
+
+            var targetModelType = feature.EmPageBasedLinkConfiguration.Item2.DeclaringType;
+            var schemaDescription = this.emPageService.FindSchemaDescriptionByContract(targetModelType);
+            var dataManager = this.GetDataManagerInstance(schemaDescription);
+            var property = feature.EmPageBasedLinkConfiguration.Item2;
+            var value = feature.EmPageBasedLinkConfiguration.Item1.GetValue(model);
+            var filter = new EmPageDataFilter
+            {
+                [property] = value,
+            };
+
+            return async () => await dataManager.GetRawModelAsync(filter);
         }
     }
 }

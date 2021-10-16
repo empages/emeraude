@@ -14,14 +14,14 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView
         public EmPageDetailsViewModel(EmPageViewContext context)
             : base(context)
         {
-            this.Features = new List<EmPageDetailsFeature>();
+            this.Features = new List<EmPageDetailsFeatureModel>();
             this.Fields = new List<EmPageDetailsFieldModel>();
         }
 
         /// <summary>
         /// List of all details feature of current EmPage.
         /// </summary>
-        public IList<EmPageDetailsFeature> Features { get; set; }
+        public IList<EmPageDetailsFeatureModel> Features { get; set; }
 
         /// <summary>
         /// Fields of the details view.

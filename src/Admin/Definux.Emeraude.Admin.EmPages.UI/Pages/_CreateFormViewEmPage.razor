@@ -1,0 +1,10 @@
+﻿@page "/admin/{route}/create"
+@inherits EmPage<EmPageFormViewModel>
+
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+<EmPageFormView ViewModel="ViewModel" />
+
+@code {
+    protected override async Task<EmPageFormViewModel> RetrieveViewModelAsync() =>
+        await EmPageManager.RetrieveFormViewModelAsync(EmPageFormType.CreateForm, Route, null, GetQueryParameters());
+}

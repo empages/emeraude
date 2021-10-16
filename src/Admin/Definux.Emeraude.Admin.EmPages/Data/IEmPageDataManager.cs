@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
@@ -18,11 +19,18 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         Task<IEmPageModel> GetRawModelAsync(string modelId);
 
         /// <summary>
+        /// Get instance of EmPage model.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        Task<IEmPageModel> GetRawModelAsync(EmPageDataFilter filter);
+
+        /// <summary>
         /// Fetch operation.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task<TableViewDataRequestResult> FetchAsync(EmPageDataFetchQueryRequest request);
+        Task<TableViewDataRequestResult> FetchAsync(EmPageDataFetchQueryBody request);
 
         /// <summary>
         /// Details operation.

@@ -48,8 +48,15 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 modelType,
                 inputs.ToDictionary(k => k.Property, v => v.Value)) as IEmPageModel;
 
-        private IEmPageDataManager GetDataManagerInstance(EmPageSchemaDescription schemaDescription) =>
-            this.serviceProvider.GetService(schemaDescription.DataManagerType) as IEmPageDataManager;
+        private IEmPageDataManager GetDataManagerInstance(EmPageSchemaDescription schemaDescription)
+        {
+            if (schemaDescription == null)
+            {
+                throw new ArgumentNullException(nameof(schemaDescription));
+            }
+
+            return this.serviceProvider.GetService(schemaDescription.DataManagerType) as IEmPageDataManager;
+        }
 
         private void SetDataRelatedPlaceholders(IEnumerable<BreadcrumbItemModel> breadcrumbs, IEmPageModel model)
         {

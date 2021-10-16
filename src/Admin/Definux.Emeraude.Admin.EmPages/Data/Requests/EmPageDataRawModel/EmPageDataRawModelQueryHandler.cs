@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -41,9 +42,15 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataRawModel
 
             try
             {
+                Expression<Func<TEntity, bool>> filterExpression = x => x.Id == request.EntityId;
+                if (request.FilterExpression != null)
+                {
+                    filterExpression = request.FilterExpression;
+                }
+
                 return await context
                     .Set<TEntity>()
-                    .Where(x => x.Id == request.EntityId)
+                    .Where(filterExpression)
                     .ProjectTo<TModel>(this.mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(cancellationToken);
             }

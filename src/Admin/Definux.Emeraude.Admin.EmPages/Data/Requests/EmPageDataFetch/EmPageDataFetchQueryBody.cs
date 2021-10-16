@@ -8,13 +8,13 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
     /// <summary>
     /// Fetch query context.
     /// </summary>
-    public class EmPageDataFetchQueryRequest
+    public class EmPageDataFetchQueryBody
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryRequest"/> class.
+        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryBody"/> class.
         /// </summary>
         /// <param name="query"></param>
-        public EmPageDataFetchQueryRequest(IDictionary<string, StringValues> query)
+        public EmPageDataFetchQueryBody(IDictionary<string, StringValues> query)
         {
             this.LoadParameters(query);
         }
@@ -38,6 +38,11 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
         /// Order type.
         /// </summary>
         public string OrderType { get; set; }
+
+        /// <summary>
+        /// EmPage data filter instance.
+        /// </summary>
+        public EmPageDataFilter Filter { get; set; }
 
         private void LoadParameters(IDictionary<string, StringValues> query)
         {

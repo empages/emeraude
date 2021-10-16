@@ -1,4 +1,5 @@
-﻿using Definux.Emeraude.Admin.EmPages.Data.Requests;
+﻿using System.Reflection;
+using Definux.Emeraude.Admin.EmPages.Data.Requests;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
 
@@ -14,6 +15,13 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <summary>
         /// Build raw model query.
         /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        IEmPageRequest<TModel> BuildRawModelQuery(EmPageDataFilter filter);
+
+        /// <summary>
+        /// Build raw model query.
+        /// </summary>
         /// <param name="modelId"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildRawModelQuery(string modelId);
@@ -21,9 +29,9 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// <summary>
         /// Build fetch query.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="body"></param>
         /// <returns></returns>
-        IEmPageRequest<TModel> BuildFetchQuery(EmPageDataFetchQueryRequest request);
+        IEmPageRequest<TModel> BuildFetchQuery(EmPageDataFetchQueryBody body);
 
         /// <summary>
         /// Build details query.

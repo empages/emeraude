@@ -1,4 +1,6 @@
-﻿using Definux.Emeraude.Admin.EmPages.Schema;
+﻿using System;
+using System.Linq.Expressions;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Domain.Entities;
 
 namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
@@ -24,5 +26,8 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
 
         /// <inheritdoc/>
         public string OrderType { get; set; }
+
+        /// <inheritdoc/>
+        public Expression<Func<TEntity, bool>> FilterExpression { get; set; }
     }
 }

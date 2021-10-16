@@ -55,6 +55,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
             try
             {
                 var requestExpression = this.BuildRequestExpression(request);
+                if (request.FilterExpression != null)
+                {
+                    requestExpression = ExpressionFunctions.AndAlso(requestExpression, request.FilterExpression);
+                }
 
                 result.AllItemsCount = context
                     .Set<TEntity>()

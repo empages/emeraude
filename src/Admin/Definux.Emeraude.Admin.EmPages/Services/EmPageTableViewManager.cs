@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
@@ -59,7 +60,8 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             if (schemaDescription.DataManagerType != null)
             {
                 var dataManager = this.GetDataManagerInstance(schemaDescription);
-                var requestResult = await dataManager.FetchAsync(new EmPageDataFetchQueryRequest(query));
+                var fetchQuery = new EmPageDataFetchQueryBody(query);
+                var requestResult = await dataManager.FetchAsync(fetchQuery);
                 if (requestResult != null)
                 {
                     foreach (var item in requestResult.Items)

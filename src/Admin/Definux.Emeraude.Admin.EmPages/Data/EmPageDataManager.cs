@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data.Requests;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
@@ -64,11 +65,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// </summary>
         protected IEmPageService EmPageService { get; }
 
-        /// <summary>
-        /// Raw model operation executor.
-        /// </summary>
-        /// <param name="modelId"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public virtual async Task<IEmPageModel> GetRawModelAsync(string modelId)
         {
             this.TriggerDataStrategyGuard();
@@ -76,8 +73,16 @@ namespace Definux.Emeraude.Admin.EmPages.Data
             return await this.ExecuteDataStrategyRequestAsync<TModel>(rawModelQuery);
         }
 
+        /// <inheritdoc/>
+        public async Task<IEmPageModel> GetRawModelAsync(EmPageDataFilter filter)
+        {
+            this.TriggerDataStrategyGuard();
+            var rawModelQuery = this.DataStrategy.BuildRawModelQuery(filter);
+            return await this.ExecuteDataStrategyRequestAsync<TModel>(rawModelQuery);
+        }
+
         /// <inheritdoc />
-        public virtual async Task<TableViewDataRequestResult> FetchAsync(EmPageDataFetchQueryRequest request)
+        public virtual async Task<TableViewDataRequestResult> FetchAsync(EmPageDataFetchQueryBody request)
         {
             if (this.DisableFetchOperation)
             {
@@ -133,7 +138,7 @@ namespace Definux.Emeraude.Admin.EmPages.Data
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        protected virtual async Task<PaginatedList<TModel>> FetchEntitiesAsync(EmPageDataFetchQueryRequest request)
+        protected virtual async Task<PaginatedList<TModel>> FetchEntitiesAsync(EmPageDataFetchQueryBody request)
         {
             this.TriggerDataStrategyGuard();
             var fetchQuery = this.DataStrategy.BuildFetchQuery(request);

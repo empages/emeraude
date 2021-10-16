@@ -1,4 +1,6 @@
-﻿using Definux.Emeraude.Admin.EmPages.Schema;
+﻿using System;
+using System.Linq.Expressions;
+using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Domain.Entities;
 using Definux.Emeraude.Essentials.Models;
 using MediatR;
@@ -33,5 +35,10 @@ namespace Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch
         /// Order type.
         /// </summary>
         public string OrderType { get; set; }
+
+        /// <summary>
+        /// Expression for finding an entity.
+        /// </summary>
+        Expression<Func<TEntity, bool>> FilterExpression { get; set; }
     }
 }

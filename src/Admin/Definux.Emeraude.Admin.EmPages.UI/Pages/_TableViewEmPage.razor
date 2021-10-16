@@ -1,0 +1,10 @@
+﻿@page "/admin/{route}"
+@inherits EmPage<EmPageTableViewModel>
+
+<PageTitle>@PageTitle | Emeraude</PageTitle>
+<EmPageTableView ViewModel="ViewModel" />
+
+@code {
+    protected override async Task<EmPageTableViewModel> RetrieveViewModelAsync() =>
+        await EmPageManager.RetrieveTableViewModelAsync(Route, GetQueryParameters());
+}
