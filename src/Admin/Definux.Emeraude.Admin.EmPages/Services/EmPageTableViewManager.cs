@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
-using Definux.Emeraude.Admin.EmPages.UI.Components.Views.TableView;
 using Definux.Emeraude.Admin.EmPages.UI.Models;
+using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Definux.Emeraude.Admin.UI.Models;
 using Microsoft.Extensions.Primitives;
 
@@ -20,11 +20,14 @@ namespace Definux.Emeraude.Admin.EmPages.Services
     public partial class EmPageManager
     {
         /// <inheritdoc cref="RetrieveTableViewModelAsync"/>
-        public async Task<EmPageTableViewModel> RetrieveTableViewModelAsync(string route, IDictionary<string, StringValues> query)
+        public async Task<EmPageTableViewModel> RetrieveTableViewModelAsync(
+            string route,
+            IDictionary<string, StringValues> query,
+            EmPageDataFilter filter = null,
+            bool featureMode = false)
         {
-            // Retrieve schema
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
-            if (!schemaDescription.TableView.IsActive)
+            if (!schemaDescription.TableView.IsActive || (!featureMode && schemaDescription.UseAsFeature))
             {
                 return null;
             }
@@ -56,11 +59,14 @@ namespace Definux.Emeraude.Admin.EmPages.Services
 
             this.MapToViewModel(schemaDescription.TableView, model);
 
-            // Retrieve data
             if (schemaDescription.DataManagerType != null)
             {
                 var dataManager = this.GetDataManagerInstance(schemaDescription);
-                var fetchQuery = new EmPageDataFetchQueryBody(query);
+                var fetchQuery = new EmPageDataFetchQueryBody(query)
+                {
+                    Filter = filter,
+                };
+
                 var requestResult = await dataManager.FetchAsync(fetchQuery);
                 if (requestResult != null)
                 {
@@ -75,6 +81,12 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             }
 
             return model;
+        }
+
+        /// <inheritdoc cref="RetrieveFeatureTableViewModelAsync"/>
+        public async Task<EmPageTableViewModel> RetrieveFeatureTableViewModelAsync(EmPageDetailsFeatureModel feature, IDictionary<string, StringValues> query)
+        {
+            return await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
         }
 
         private ActionModel BuildRowAction(EmPageAction action, string route)

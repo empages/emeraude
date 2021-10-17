@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
@@ -8,6 +7,7 @@ using Definux.Emeraude.Admin.EmPages.Schema.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
 using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Microsoft.Extensions.Primitives;
 
 namespace Definux.Emeraude.Admin.EmPages.Services
@@ -18,7 +18,12 @@ namespace Definux.Emeraude.Admin.EmPages.Services
     public partial class EmPageManager
     {
         /// <inheritdoc cref="RetrieveDetailsViewModelAsync"/>
-        public async Task<EmPageDetailsViewModel> RetrieveDetailsViewModelAsync(string route, string modelId, IDictionary<string, StringValues> query)
+        public async Task<EmPageDetailsViewModel> RetrieveDetailsViewModelAsync(
+            string route,
+            string modelId,
+            IDictionary<string, StringValues> query,
+            EmPageDataFilter filter = null,
+            bool featureMode = false)
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
             if (!schemaDescription.DetailsView.IsActive)
@@ -46,7 +51,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             {
                 var detailsFeature = this.BuildFeature(feature);
                 var featureSchema = this.emPageService.FindSchemaDescriptionByContract(feature.EmPageBasedLinkConfiguration?.Item2?.DeclaringType);
-                detailsFeature.RawModelRetriever = this.BuildFeatureRawModelRetriever(feature, rawModel);
+                detailsFeature.Filter = this.BuildFeatureFilter(feature, rawModel);
                 detailsFeature.EmPageRoute = featureSchema?.Route;
                 model.Features.Add(detailsFeature);
             }
@@ -74,21 +79,6 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             }
 
             return model;
-        }
-
-        /// <inheritdoc cref="RetrieveFeatureDetailsViewModelAsync"/>
-        public async Task<EmPageDetailsViewModel> RetrieveFeatureDetailsViewModelAsync(EmPageDetailsFeatureModel feature)
-        {
-            var rawModel = await feature.RawModelRetriever() as IEmPageModel;
-            if (rawModel == null)
-            {
-                return null;
-            }
-
-            return await this.RetrieveDetailsViewModelAsync(
-                feature.EmPageRoute,
-                rawModel.Id,
-                new Dictionary<string, StringValues>());
         }
 
         private EmPageDetailsFieldModel BuildField(
@@ -139,13 +129,13 @@ namespace Definux.Emeraude.Admin.EmPages.Services
             return detailsFeature;
         }
 
-        private Func<Task<object>> BuildFeatureRawModelRetriever(EmPageFeatureDescription feature, IEmPageModel model)
+        private EmPageDataFilter BuildFeatureFilter(EmPageFeatureDescription feature, IEmPageModel model)
         {
             if (feature.EmPageBasedLinkConfiguration == null ||
                 feature.EmPageBasedLinkConfiguration.Item1 == null ||
                 feature.EmPageBasedLinkConfiguration.Item2 == null)
             {
-                return () => null;
+                return new EmPageDataFilter();
             }
 
             var targetModelType = feature.EmPageBasedLinkConfiguration.Item2.DeclaringType;
@@ -158,7 +148,7 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                 [property] = value,
             };
 
-            return async () => await dataManager.GetRawModelAsync(filter);
+            return filter;
         }
     }
 }

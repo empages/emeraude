@@ -1,0 +1,26 @@
+﻿@inherits EmPageViewFeature
+
+<EmPageTableView ViewModel="ViewModel"/>
+
+@code {
+    private EmPageTableViewModel ViewModel { get; set; }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        EmPageTableViewModel viewModel = null;
+        if (RouteType == EmPageRouteType.Table)
+        {
+            viewModel = await EmPageManager.RetrieveFeatureTableViewModelAsync(Feature, GetQueryParameters());
+        }
+
+        if (viewModel == null)
+        {
+            NavigationManager.NavigateToNotFoundPage();
+            return;
+        }
+        
+        ViewModel = viewModel;
+    }
+}

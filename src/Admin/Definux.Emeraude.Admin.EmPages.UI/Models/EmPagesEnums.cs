@@ -8,4 +8,15 @@
         CreateForm = 1,
         EditForm = 2,
     }
+
+    /// <summary>
+    /// Type of the EmPage routes.
+    /// </summary>
+    public enum EmPageRouteType
+    {
+        Table = 1,
+        Details = 2,
+        Create = 3,
+        Edit = 4,
+    }
 }

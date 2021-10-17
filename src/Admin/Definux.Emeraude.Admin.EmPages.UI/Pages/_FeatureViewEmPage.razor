@@ -40,18 +40,13 @@
         }
 
         await base.ReloadPageAsync();
-
-        if (Feature.RouteSegmentsAmount + 1 != FeatureSegments.Length)
-        {
-            NavigationManager.NavigateToNotFoundPage();
-        }
     }
 
     private IDictionary<string, object> BuildParameters()
     {
         return new Dictionary<string, object>
         {
-            { nameof(EmPageFeature.FeatureRouteSegments), FeatureSegments },
+            { nameof(EmPageFeature.FeatureRouteSegments), FeatureSegments.Skip(1).ToArray() },
             { nameof(EmPageFeature.DetailsViewModel), ViewModel },
             { nameof(EmPageFeature.Feature), Feature },
         };

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 
 namespace Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView
 {
@@ -27,8 +30,8 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView
         public string EmPageRoute { get; set; }
 
         /// <summary>
-        /// Retriever function that returns raw model based on the feature configuration.
+        /// Filter that defines the rules based on the details view.
         /// </summary>
-        public Func<Task<object>> RawModelRetriever { get; set; }
+        public EmPageDataFilter Filter { get; set; }
     }
 }

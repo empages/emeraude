@@ -23,6 +23,11 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Utilities
         public const string ModelProperty = "[[Model:{0}]]";
 
         /// <summary>
+        /// Placeholder that is replaced with parent model property.
+        /// </summary>
+        public const string ParentModelProperty = "[[ParentModel:{0}]]";
+
+        /// <summary>
         /// Gets model property placeholder.
         /// </summary>
         /// <param name="property"></param>
@@ -32,6 +37,16 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Utilities
         {
             var propertyInfo = ReflectionHelpers.GetCorrectPropertyMember(property) as PropertyInfo;
             return string.Format(ModelProperty, propertyInfo?.Name ?? "Id");
+        }
+
+        /// <summary>
+        /// Replace placeholder source from model to parent model.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string MovePlaceholdersToParentModel(string content)
+        {
+            return content?.Replace("[[Model:", "[[ParentModel:");
         }
 
         /// <summary>
@@ -73,22 +88,21 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Utilities
         public static bool TryApplyModelPropertiesPlaceholders(
             string content,
             IDictionary<string, object> fields,
-            out string convertedContent)
-        {
-            bool succeeded = false;
-            convertedContent = content;
-            foreach (var (name, value) in fields)
-            {
-                string currentPlaceholder = string.Format(ModelProperty, name);
-                if (content.Contains(currentPlaceholder))
-                {
-                    convertedContent = convertedContent.Replace(currentPlaceholder, value?.ToString());
-                    succeeded = true;
-                }
-            }
+            out string convertedContent) =>
+            TrySpecifiedModelPropertiesPlaceholders(content, fields, ModelProperty, out convertedContent);
 
-            return succeeded;
-        }
+        /// <summary>
+        /// Applies parent model properties from placeholder if exists.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="fields"></param>
+        /// <param name="convertedContent"></param>
+        /// <returns></returns>
+        public static bool TryApplyParentModelPropertiesPlaceholders(
+            string content,
+            IDictionary<string, object> fields,
+            out string convertedContent) =>
+            TrySpecifiedModelPropertiesPlaceholders(content, fields, ParentModelProperty, out convertedContent);
 
         /// <summary>
         /// Get form action from placeholder if exists.
@@ -120,6 +134,27 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Utilities
                     resultPlaceholder = placeholder;
                     return false;
             }
+        }
+
+        private static bool TrySpecifiedModelPropertiesPlaceholders(
+            string content,
+            IDictionary<string, object> fields,
+            string modelProperty,
+            out string convertedContent)
+        {
+            bool succeeded = false;
+            convertedContent = content;
+            foreach (var (name, value) in fields)
+            {
+                string currentPlaceholder = string.Format(ModelProperty, name);
+                if (content.Contains(currentPlaceholder))
+                {
+                    convertedContent = convertedContent.Replace(currentPlaceholder, value?.ToString());
+                    succeeded = true;
+                }
+            }
+
+            return succeeded;
         }
     }
 }

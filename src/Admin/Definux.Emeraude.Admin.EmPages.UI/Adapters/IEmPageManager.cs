@@ -4,6 +4,7 @@ using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Admin.EmPages.UI.Models.DetailsView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Models.TableView;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Microsoft.Extensions.Primitives;
 
 namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
@@ -18,10 +19,14 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
         /// </summary>
         /// <param name="route"></param>
         /// <param name="query"></param>
+        /// <param name="filter"></param>
+        /// <param name="featureMode"></param>
         /// <returns></returns>
         Task<EmPageTableViewModel> RetrieveTableViewModelAsync(
             string route,
-            IDictionary<string, StringValues> query);
+            IDictionary<string, StringValues> query,
+            EmPageDataFilter filter = null,
+            bool featureMode = false);
 
         /// <summary>
         /// Retrieves details view model.
@@ -29,18 +34,25 @@ namespace Definux.Emeraude.Admin.EmPages.UI.Adapters
         /// <param name="route"></param>
         /// <param name="modelId"></param>
         /// <param name="query"></param>
+        /// <param name="filter"></param>
+        /// <param name="featureMode"></param>
         /// <returns></returns>
         Task<EmPageDetailsViewModel> RetrieveDetailsViewModelAsync(
             string route,
             string modelId,
-            IDictionary<string, StringValues> query);
+            IDictionary<string, StringValues> query,
+            EmPageDataFilter filter = null,
+            bool featureMode = false);
 
         /// <summary>
-        /// Retrieves details view model for the context of feature.
+        /// Retrieves table view model for the context of feature.
         /// </summary>
         /// <param name="feature"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
-        Task<EmPageDetailsViewModel> RetrieveFeatureDetailsViewModelAsync(EmPageDetailsFeatureModel feature);
+        Task<EmPageTableViewModel> RetrieveFeatureTableViewModelAsync(
+            EmPageDetailsFeatureModel feature,
+            IDictionary<string, StringValues> query);
 
         /// <summary>
         /// Retrieves form view model.

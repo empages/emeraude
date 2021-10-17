@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Reflection;
 using Definux.Emeraude.Admin.EmPages.Exceptions;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Essentials.Extensions;
 using Definux.Emeraude.Essentials.Helpers;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +20,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
     public class EmPageBasedFeatureConfigurationBuilder<TBaseModel, TTargetModel, TComponent>
         where TBaseModel : class, IEmPageModel, new()
         where TTargetModel : class, IEmPageModel, new()
-        where TComponent : UI.Components.Views.DetailsView.EmPageFeature, new()
+        where TComponent : EmPageFeature, new()
     {
         private readonly IDictionary<PropertyInfo, PropertyInfo> modelToComponentMap;
 

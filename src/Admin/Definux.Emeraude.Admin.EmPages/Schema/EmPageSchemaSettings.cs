@@ -47,6 +47,11 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         public string Title { get; set; }
 
         /// <summary>
+        /// Flag that indicates whether the schema is used with separate context or it is a feature of other parent schema.
+        /// </summary>
+        public bool UseAsFeature { get; set; }
+
+        /// <summary>
         /// Defines model actions that can be executed.
         /// </summary>
         /// <returns></returns>
@@ -65,30 +70,33 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
 
             string tableBreadcrumb = defaultOptions.TableBreadcrumbTitle ?? this.Title;
 
-            this.tableViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+            if (!this.UseAsFeature)
             {
-                Title = tableBreadcrumb,
-            });
+                this.tableViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+                {
+                    Title = tableBreadcrumb,
+                });
 
-            this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = tableBreadcrumb,
-                IsActive = true,
-                Href = $"/admin/{this.Route}",
-            });
+                this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+                {
+                    Title = tableBreadcrumb,
+                    IsActive = true,
+                    Href = $"/admin/{this.Route}",
+                });
+
+                this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+                {
+                    Title = tableBreadcrumb,
+                    IsActive = true,
+                    Href = $"/admin/{this.Route}",
+                });
+            }
 
             this.detailsViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
             {
                 Title = defaultOptions.DetailsBreadcrumbTitle,
                 Order = 1,
                 IsActive = false,
-            });
-
-            this.formViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
-            {
-                Title = tableBreadcrumb,
-                IsActive = true,
-                Href = $"/admin/{this.Route}",
             });
 
             var formCurrentBreadcrumb = new EmPageBreadcrumb
@@ -205,6 +213,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             {
                 Route = this.Route,
                 Title = this.Title,
+                UseAsFeature = this.UseAsFeature,
                 ModelType = typeof(TModel),
                 DataManagerType = dataManagerType,
                 ModelActions = this.ModelActions,
@@ -230,6 +239,11 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
             };
 
             description.FormView.SetModelValidatorAction(this.formViewConfigurationBuilder.ModelValidatorAction);
+
+            foreach (var feature in description.DetailsView.Features)
+            {
+                feature.ParentViewDescription = description.DetailsView;
+            }
 
             return description;
         }

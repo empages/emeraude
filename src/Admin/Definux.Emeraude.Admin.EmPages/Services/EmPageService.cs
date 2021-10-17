@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Admin.EmPages.UI.Utilities;
 using Definux.Emeraude.Configuration.Extensions;
 using Definux.Emeraude.Configuration.Options;
+using Definux.Utilities.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Definux.Emeraude.Admin.EmPages.Services
@@ -105,6 +107,40 @@ namespace Definux.Emeraude.Admin.EmPages.Services
                     if (schemaDescription != null)
                     {
                         foundSchemaDescriptions.Add(schemaDescription);
+                    }
+                }
+            }
+
+            foreach (var schemaDescription in foundSchemaDescriptions)
+            {
+                if (schemaDescription.UseAsFeature)
+                {
+                    schemaDescription.ParentSchema =
+                        foundSchemaDescriptions.FirstOrDefault(x => x.DetailsView.Features.Any(y => y.Route == schemaDescription.Route));
+
+                    var newBreadcrumbIndex = 0;
+                    var parentSchemaFeatureBreadcrumbs =
+                        schemaDescription.ParentSchema.DetailsView.Features.First(x =>
+                            x.Route == schemaDescription.Route).Breadcrumbs;
+
+                    foreach (var parentDetailsViewBreadcrumb in parentSchemaFeatureBreadcrumbs)
+                    {
+                        var currentParentBreadcrumb = new EmPageBreadcrumb
+                        {
+                            Title = parentDetailsViewBreadcrumb.Title,
+                            Href = parentDetailsViewBreadcrumb.Href,
+                            IsActive = true,
+                            HideContextually = parentDetailsViewBreadcrumb.HideContextually,
+                            Order = parentDetailsViewBreadcrumb.Order - 1000,
+                        };
+
+                        currentParentBreadcrumb.Title = EmPagesPlaceholders.MovePlaceholdersToParentModel(currentParentBreadcrumb.Title);
+                        currentParentBreadcrumb.Href = EmPagesPlaceholders.MovePlaceholdersToParentModel(currentParentBreadcrumb.Href);
+
+                        schemaDescription.TableView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
+                        schemaDescription.DetailsView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
+                        schemaDescription.FormView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
+                        newBreadcrumbIndex++;
                     }
                 }
             }

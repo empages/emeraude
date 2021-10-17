@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Definux.Emeraude.Admin.EmPages.Data;
 using Definux.Emeraude.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Definux.Emeraude.Admin.EmPages.Schema;
+using Definux.Emeraude.Admin.EmPages.Schema.DetailsView;
 using Definux.Emeraude.Admin.EmPages.Schema.FormView;
 using Definux.Emeraude.Admin.EmPages.UI.Adapters;
 using Definux.Emeraude.Admin.EmPages.UI.Models;

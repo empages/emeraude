@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 
 namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
 {
@@ -62,7 +63,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
         /// <param name="builderAction"></param>
         /// <typeparam name="TComponent">Component type.</typeparam>
         public void SetComponent<TComponent>(Action<FeatureComponentConfigurationBuilder<TComponent, TModel>> builderAction)
-            where TComponent : UI.Components.Views.DetailsView.EmPageFeature, new()
+            where TComponent : EmPageFeature, new()
         {
             this.FeatureComponentType = typeof(TComponent);
             var featureComponentBuilder = new FeatureComponentConfigurationBuilder<TComponent, TModel>();

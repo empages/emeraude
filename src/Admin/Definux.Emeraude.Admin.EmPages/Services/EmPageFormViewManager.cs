@@ -23,6 +23,11 @@ namespace Definux.Emeraude.Admin.EmPages.Services
         {
             // Retrieve schema
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
+            if (!schemaDescription.FormView.IsActive || schemaDescription.UseAsFeature)
+            {
+                return null;
+            }
+
             switch (type)
             {
                 case EmPageFormType.CreateForm when !schemaDescription.FormView.IsCreateFormActive:

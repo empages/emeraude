@@ -27,6 +27,14 @@ namespace Definux.Emeraude.Admin.EmPages.Schema
         /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Title"/>
         public string Title { get; set; }
 
+        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.UseAsFeature"/>
+        public bool UseAsFeature { get; set; }
+
+        /// <summary>
+        /// Parent schema in case <see cref="UseAsFeature"/> is true.
+        /// </summary>
+        public EmPageSchemaDescription ParentSchema { get; set; }
+
         /// <summary>
         /// Type of the schema linked model.
         /// </summary>

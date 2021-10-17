@@ -47,5 +47,10 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
 
         /// <inheritdoc cref="FeatureComponentConfigurationBuilder{TComponent,TModel}.EmPageBasedLinkConfiguration"/>
         public Tuple<PropertyInfo, PropertyInfo> EmPageBasedLinkConfiguration { get; set; }
+
+        /// <summary>
+        /// Description for parent view of current feature.
+        /// </summary>
+        public DetailsViewDescription ParentViewDescription { get; set; }
     }
 }

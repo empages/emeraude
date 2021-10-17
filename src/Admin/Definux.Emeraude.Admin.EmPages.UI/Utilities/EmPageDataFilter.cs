@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Definux.Emeraude.Admin.EmPages.Data
+namespace Definux.Emeraude.Admin.EmPages.UI.Utilities
 {
     /// <summary>
     /// Utility that wraps property and value in single pair instance for the purposes of filtration.

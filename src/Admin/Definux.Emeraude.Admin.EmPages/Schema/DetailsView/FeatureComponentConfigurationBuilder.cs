@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Reflection;
 using Definux.Emeraude.Admin.EmPages.Exceptions;
+using Definux.Emeraude.Admin.EmPages.UI.Models;
 using Definux.Emeraude.Essentials.Extensions;
 using Definux.Emeraude.Essentials.Helpers;
 using Microsoft.AspNetCore.Components;
@@ -16,7 +17,7 @@ namespace Definux.Emeraude.Admin.EmPages.Schema.DetailsView
     /// <typeparam name="TComponent">Component type.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>
     public class FeatureComponentConfigurationBuilder<TComponent, TModel>
-        where TComponent : UI.Components.Views.DetailsView.EmPageFeature, new()
+        where TComponent : EmPageFeature, new()
         where TModel : class, IEmPageModel, new()
     {
         private readonly IDictionary<int, PropertyInfo> routeSegmentToParameterMap;

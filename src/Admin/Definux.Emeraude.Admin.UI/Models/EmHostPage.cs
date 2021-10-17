@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Definux.Emeraude.Admin.EmPages.UI.Models
+namespace Definux.Emeraude.Admin.UI.Models
 {
     /// <summary>
     /// Page model that defines the fallback Host page.
