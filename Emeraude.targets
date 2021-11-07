@@ -1,5 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
+	    <TargetFramework>net6.0</TargetFramework>
+		<LangVersion>preview</LangVersion>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Copyright>2021 Definux</Copyright>
 		<Company>Definux</Company>
@@ -15,20 +17,27 @@
 		<PackageIconUrl />
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<CodeAnalysisRuleSet>../../../Definux.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>../../Definux.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 	
 	<ItemGroup>
-		<None Include="..\..\..\art\logo_128.jpg">
+		<None Include="..\..\art\logo_128.jpg">
 		  <Pack>True</Pack>
 		  <!--suppress CheckTagEmptyBody -->
 			<PackagePath></PackagePath>
 		</None>
-		<None Include="..\..\..\LICENSE">
+		<None Include="..\..\LICENSE">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>
 		</None>
   	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
 	<PropertyGroup>
 		<GenerateDocs>False</GenerateDocs>

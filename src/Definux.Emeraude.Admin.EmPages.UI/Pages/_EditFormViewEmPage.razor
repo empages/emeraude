@@ -1,0 +1,13 @@
+﻿@* @page "/admin/{route}/{modelId}/edit" *@
+@* @inherits EmPage<EmPageFormViewModel> *@
+@* *@
+@* <PageTitle>@PageTitle | Emeraude</PageTitle> *@
+@* <EmPageFormView ViewModel="ViewModel"/> *@
+@* *@
+@* @code { *@
+@*     [Parameter] *@
+@*     public string ModelId { get; set; } *@
+@* *@
+@*     protected override async Task<EmPageFormViewModel> RetrieveViewModelAsync() => *@
+@*         await EmPageManager.RetrieveFormViewModelAsync(EmPageFormType.EditForm, Route, ModelId, GetQueryParameters()); *@
+@* } *@

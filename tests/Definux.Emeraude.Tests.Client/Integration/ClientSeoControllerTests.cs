@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Definux.Emeraude.Client.Requests.Seo.Queries.GetSitemap;
+using Definux.Emeraude.Application.Consumer.Requests.Seo.Queries.GetSitemap;
 using Definux.Emeraude.Tests.Base;
 using FluentAssertions;
 using Xunit;

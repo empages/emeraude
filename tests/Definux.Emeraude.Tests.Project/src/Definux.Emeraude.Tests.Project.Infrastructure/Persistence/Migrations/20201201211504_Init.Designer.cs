@@ -21,7 +21,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.Role", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.RoleClaim", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +74,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("RoleClaims");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.User", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserClaim", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,7 +177,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("UserClaims");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserLogin", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -198,7 +198,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("UserLogins");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserRole", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -213,7 +213,7 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserToken", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserToken", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -232,51 +232,51 @@ namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.RoleClaim", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.RoleClaim", b =>
                 {
-                    b.HasOne("Definux.Emeraude.Identity.Entities.Role", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserClaim", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserClaim", b =>
                 {
-                    b.HasOne("Definux.Emeraude.Identity.Entities.User", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserLogin", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserLogin", b =>
                 {
-                    b.HasOne("Definux.Emeraude.Identity.Entities.User", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserRole", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserRole", b =>
                 {
-                    b.HasOne("Definux.Emeraude.Identity.Entities.Role", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Definux.Emeraude.Identity.Entities.User", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Definux.Emeraude.Identity.Entities.UserToken", b =>
+            modelBuilder.Entity("Definux.Emeraude.Infrastructure.Identity.Entities.UserToken", b =>
                 {
-                    b.HasOne("Definux.Emeraude.Identity.Entities.User", null)
+                    b.HasOne("Definux.Emeraude.Infrastructure.Identity.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

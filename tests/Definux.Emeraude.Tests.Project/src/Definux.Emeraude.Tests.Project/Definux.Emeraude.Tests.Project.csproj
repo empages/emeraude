@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Localization\Definux.Emeraude.Localization.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Application.Consumer\Definux.Emeraude.Application.Consumer.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Infrastructure.Localization\Definux.Emeraude.Infrastructure.Localization.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude\Definux.Emeraude.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Application\Definux.Emeraude.Tests.Project.Application.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Infrastructure\Definux.Emeraude.Tests.Project.Infrastructure.csproj" />
   </ItemGroup>

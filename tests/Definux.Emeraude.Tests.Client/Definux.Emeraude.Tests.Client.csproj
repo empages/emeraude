@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Client\Definux.Emeraude.Client\Definux.Emeraude.Client.csproj" />
+    <ProjectReference Include="..\..\src\Definux.Emeraude.Application.Consumer\Definux.Emeraude.Application.Consumer.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Base\Definux.Emeraude.Tests.Base.csproj" />
   </ItemGroup>
 

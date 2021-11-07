@@ -10,10 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Domain\Definux.Emeraude.Domain.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Identity\Definux.Emeraude.Identity.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Core\Definux.Emeraude.Persistence\Definux.Emeraude.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Application\Definux.Emeraude.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Contracts\Definux.Emeraude.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Infrastructure.Identity\Definux.Emeraude.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Infrastructure.Persistence\Definux.Emeraude.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Application\Definux.Emeraude.Tests.Project.Application.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Domain\Definux.Emeraude.Tests.Project.Domain.csproj" />
   </ItemGroup>

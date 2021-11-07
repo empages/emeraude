@@ -1,0 +1,37 @@
+﻿@* @using Definux.Emeraude.Application.Admin.EmPages.UI.Adapters *@
+@* @using Definux.Emeraude.Application.Admin.EmPages.UI.Utilities *@
+@* @inherits EmPageFeature *@
+@* @inject IEmPageManager EmPageManager *@
+@* *@
+@* <EmPageTableView ViewModel="ViewModel"/> *@
+@* *@
+@* @code { *@
+@*     protected EmPageRouteType? RouteType { get; set; } *@
+@*      *@
+@*     protected string[] UnusedSegments { get; set; } *@
+@*      *@
+@*     private EmPageFeatureRoute FeatureRoute => new (FeatureRouteSegments); *@
+@*      *@
+@*     private EmPageTableViewModel ViewModel { get; set; } *@
+@*      *@
+@*     protected override async Task OnParametersSetAsync() *@
+@*     { *@
+@*         await base.OnParametersSetAsync(); *@
+@*         this.RouteType = FeatureRoute.GetRouteType(out var segmentsForInception); *@
+@*         this.UnusedSegments = segmentsForInception; *@
+@*          *@
+@*         EmPageTableViewModel viewModel = null; *@
+@*         if (RouteType == EmPageRouteType.Table) *@
+@*         { *@
+@*             viewModel = await EmPageManager.RetrieveFeatureTableViewModelAsync(Feature, GetQueryParameters()); *@
+@*         } *@
+@* *@
+@*         if (viewModel == null) *@
+@*         { *@
+@*             NavigationManager.NavigateToNotFoundPage(); *@
+@*             return; *@
+@*         } *@
+@*          *@
+@*         ViewModel = viewModel; *@
+@*     } *@
+@* } *@

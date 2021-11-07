@@ -1,5 +1,6 @@
 ﻿using System;
 using Definux.Emeraude.Application.Persistence;
+using Definux.Emeraude.Infrastructure.Persistence.Seed;
 using Definux.Emeraude.Tests.Project;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

@@ -1,0 +1,48 @@
+﻿@* <EmPageView ViewModel="ViewModel"> *@
+@*     <table class="table table-striped"> *@
+@*         <tbody> *@
+@*         @if (ViewModel != null) *@
+@*         { *@
+@*             foreach (var field in ViewModel.Fields) *@
+@*             { *@
+@*                 <tr> *@
+@*                     <td> *@
+@*                         <strong>@field.Title:</strong> *@
+@*                     </td> *@
+@*                     <td class="white-space-normal"> *@
+@*                         <DynamicComponent Type="field.Component" Parameters="GetParameters(field)"></DynamicComponent> *@
+@*                     </td> *@
+@*                 </tr> *@
+@*             } *@
+@*         } *@
+@*         </tbody> *@
+@*     </table> *@
+@* </EmPageView> *@
+@* *@
+@* @code { *@
+@*     [Parameter] *@
+@*     public EmPageDetailsViewModel ViewModel { get; set; } *@
+@* *@
+@*     private Dictionary<string, object> GetParameters(EmPageDetailsFieldModel fieldModel) *@
+@*     { *@
+@*         var parameters = new Dictionary<string, object> *@
+@*         { *@
+@*             {"Value", fieldModel.Value}, *@
+@*             {"Property", fieldModel.Property}, *@
+@*             {"Type", fieldModel.Type} *@
+@*         }; *@
+@* *@
+@*         if (fieldModel.Parameters != null && fieldModel.Parameters.Count > 0) *@
+@*         { *@
+@*             foreach (var parameter in fieldModel.Parameters) *@
+@*             { *@
+@*                 if (!parameters.ContainsKey(parameter.Key)) *@
+@*                 { *@
+@*                     parameters[parameter.Key] = parameter.Value; *@
+@*                 } *@
+@*             } *@
+@*         } *@
+@*          *@
+@*         return parameters; *@
+@*     } *@
+@* } *@

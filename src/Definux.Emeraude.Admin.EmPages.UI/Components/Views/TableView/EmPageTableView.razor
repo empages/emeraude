@@ -1,0 +1,15 @@
+﻿@* <div id="entity-table-view"> *@
+@*     <EmPageView ViewModel="ViewModel"> *@
+@*         @if (ViewModel != null) *@
+@*         { *@
+@*             <EmPageTableFilter/> *@
+@*             <EmPageTable Rows="@(ViewModel?.Rows ?? new List<EmPageTableRowModel>())" HeadModel="ViewModel.HeadModel" HasActions="ViewModel.HasActions"/> *@
+@*             <EmPageTablePagination PaginationModel="ViewModel.PaginationModel"/> *@
+@*         } *@
+@*     </EmPageView> *@
+@* </div> *@
+@* *@
+@* @code { *@
+@*     [Parameter] *@
+@*     public EmPageTableViewModel ViewModel { get; set; } *@
+@* } *@

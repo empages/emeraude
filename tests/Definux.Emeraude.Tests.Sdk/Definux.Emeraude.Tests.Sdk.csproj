@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Sdk\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
-    <ProjectReference Include="..\..\src\Sdk\Definux.Emeraude\Definux.Emeraude.csproj" />
+    <ProjectReference Include="..\..\src\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\..\src\Definux.Emeraude\Definux.Emeraude.csproj" />
   </ItemGroup>
 
 </Project>

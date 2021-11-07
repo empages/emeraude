@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Localization;
-using Definux.Emeraude.Client.Adapters;
-using Definux.Emeraude.Client.Models;
+using Definux.Emeraude.Application.Consumer.Adapters;
+using Definux.Emeraude.Application.Consumer.Models;
+using Definux.Emeraude.Infrastructure.Localization.Services;
 
 namespace Definux.Emeraude.Tests.Project.Adapters
 {

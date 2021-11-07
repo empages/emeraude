@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+    
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Definux.Utilities.Functions" Version="1.0.40" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0-rc.1.21452.15" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Definux.Emeraude.Configuration\Definux.Emeraude.Configuration.csproj" />
+      <ProjectReference Include="..\Definux.Emeraude.Admin.UI\Definux.Emeraude.Admin.UI.csproj" />
+      <ProjectReference Include="..\Definux.Emeraude.Essentials\Definux.Emeraude.Essentials.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Adapters" />
+      <Folder Include="wwwroot" />
+    </ItemGroup>
+
+    <Import Project="..\..\Emeraude.targets" />
+    
+</Project>
