@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Tests.Base;
+using Emeraude.Configuration.Options;
+using Emeraude.Tests.Base;
 using Xunit;
 
 namespace Definux.Emeraude.Tests.Admin.Integration

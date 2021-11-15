@@ -1,6 +1,6 @@
-﻿using Definux.Emeraude.Configuration.Exceptions;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Tests.Sdk.Fakes;
+﻿using Emeraude.Configuration.Exceptions;
+using Emeraude.Configuration.Options;
+using Emeraude.Tests.Sdk.Fakes;
 using FluentAssertions;
 using Xunit;
 

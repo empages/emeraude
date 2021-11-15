@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    <ItemGroup>
+      <Folder Include="Requests" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />
+      <ProjectReference Include="..\Emeraude.Infrastructure.Localization\Emeraude.Infrastructure.Localization.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <Import Project="..\..\Emeraude.targets" />
+    
+</Project>

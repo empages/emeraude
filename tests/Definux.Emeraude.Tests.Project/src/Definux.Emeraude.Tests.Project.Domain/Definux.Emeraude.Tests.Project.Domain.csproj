@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Contracts\Definux.Emeraude.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude.Contracts\Emeraude.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using System;
-using Definux.Emeraude.Tests.Project;
+using Emeraude.Tests.Project;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 

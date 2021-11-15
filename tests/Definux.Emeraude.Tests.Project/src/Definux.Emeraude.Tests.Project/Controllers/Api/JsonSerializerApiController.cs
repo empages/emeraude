@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Tests.Project.Application.Models;
+﻿using Emeraude.Tests.Project.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Definux.Emeraude.Tests.Project.Controllers.Api

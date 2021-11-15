@@ -1,6 +1,6 @@
-﻿using Definux.Emeraude.Application.Models;
-using Definux.Emeraude.Tests.Base;
-using Definux.Emeraude.Tests.Core.Fakes;
+﻿using Emeraude.Application.Models;
+using Emeraude.Tests.Base;
+using Emeraude.Tests.Core.Fakes;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Xunit;

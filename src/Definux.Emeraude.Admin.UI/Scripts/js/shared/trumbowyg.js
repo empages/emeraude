@@ -1,1 +1,0 @@
-﻿$.trumbowyg.svgPath = '/_em/admin/images/icons/html-editor-icons.svg';

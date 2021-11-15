@@ -1,10 +1,10 @@
-using Definux.Emeraude.Infrastructure.Persistence;
-using Definux.Emeraude.Tests.Project.Application.Interfaces.Persistence;
+using Emeraude.Infrastructure.Persistence;
+using Emeraude.Tests.Project.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection;
-using Definux.Emeraude.Infrastructure.Persistence.Context;
+using Emeraude.Infrastructure.Persistence.Context;
 
 namespace Definux.Emeraude.Tests.Project.Infrastructure.Persistence
 {

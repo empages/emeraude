@@ -1,5 +1,5 @@
 ﻿using System.Net.Http;
-using Definux.Emeraude.Tests.Base;
+using Emeraude.Tests.Base;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 

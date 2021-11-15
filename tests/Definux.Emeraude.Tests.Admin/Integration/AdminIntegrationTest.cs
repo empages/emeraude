@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Tests.Base;
+using Emeraude.Configuration.Options;
+using Emeraude.Tests.Base;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
 using Xunit;

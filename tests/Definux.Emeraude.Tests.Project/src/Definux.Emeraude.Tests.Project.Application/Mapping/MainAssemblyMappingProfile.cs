@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Mapping;
+using Emeraude.Application.Mapping;
 using System.Reflection;
 
 namespace Definux.Emeraude.Tests.Project.Application.Mapping

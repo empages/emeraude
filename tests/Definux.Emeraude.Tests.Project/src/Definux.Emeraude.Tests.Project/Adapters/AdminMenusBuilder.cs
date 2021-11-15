@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Definux.Emeraude.Admin.Adapters;
-using Definux.Emeraude.Admin.Models;
-using Definux.Emeraude.Admin.UI.Models;
+using Emeraude.Admin.Adapters;
+using Emeraude.Admin.Models;
+using Emeraude.Admin.UI.Models;
 
 namespace Definux.Emeraude.Tests.Project.Adapters
 {

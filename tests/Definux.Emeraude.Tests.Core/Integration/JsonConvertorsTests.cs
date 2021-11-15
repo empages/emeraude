@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Definux.Emeraude.Application.Models;
-using Definux.Emeraude.Tests.Base;
-using Definux.Emeraude.Tests.Project.Application.Models;
+using Emeraude.Application.Models;
+using Emeraude.Tests.Base;
+using Emeraude.Tests.Project.Application.Models;
 using FluentAssertions;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;

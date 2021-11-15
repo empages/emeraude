@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Contracts\Definux.Emeraude.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude.Contracts\Emeraude.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude.Infrastructure.Persistence\Emeraude.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Domain\Definux.Emeraude.Tests.Project.Domain.csproj" />
   </ItemGroup>
 

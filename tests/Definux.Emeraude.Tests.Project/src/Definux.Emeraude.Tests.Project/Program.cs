@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Definux.Emeraude;
+using Emeraude;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

@@ -1,4 +1,4 @@
-using Definux.Emeraude.Application.Persistence;
+using Emeraude.Infrastructure.Persistence.Context;
 
 namespace Definux.Emeraude.Tests.Project.Application.Interfaces.Persistence
 {

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Emeraude.Application.Admin.EmPages\Emeraude.Application.Admin.EmPages.csproj" />
+      <ProjectReference Include="..\Emeraude.Application.Admin\Emeraude.Application.Admin.csproj" />
+      <ProjectReference Include="..\Emeraude.Application.ClientBuilder\Emeraude.Application.ClientBuilder.csproj" />
+      <ProjectReference Include="..\Emeraude.Application.Identity\Emeraude.Application.Identity.csproj" />
+      <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
+      <ProjectReference Include="..\Emeraude.Configuration\Emeraude.Configuration.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <Import Project="..\..\Emeraude.targets" />
+    
+</Project>

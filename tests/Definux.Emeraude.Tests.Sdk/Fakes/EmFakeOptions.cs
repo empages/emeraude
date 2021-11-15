@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Configuration.Options;
+﻿using Emeraude.Configuration.Options;
 
 namespace Definux.Emeraude.Tests.Sdk.Fakes
 {

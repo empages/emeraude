@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.40" />
+    <PackageReference Include="Definux.Utilities.Objects" Version="1.0.40" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
+    <ProjectReference Include="..\Emeraude.Configuration\Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\Emeraude.Contracts\Emeraude.Contracts.csproj" />
+    <ProjectReference Include="..\Emeraude.Essentials\Emeraude.Essentials.csproj" />
+    <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\Emeraude.Infrastructure.Persistence\Emeraude.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\Emeraude.Presentation\Emeraude.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Shared\ClientBuilderMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ClientBuilderMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Shared\ClientBuilderMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClientBuilderMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Api" />
+  </ItemGroup>
+
+  <Import Project="..\..\Emeraude.targets" />
+
+</Project>

@@ -1,4 +1,4 @@
-﻿using Definux.Emeraude.Application.Emails;
+﻿using Emeraude.Application.Emails;
 
 namespace Definux.Emeraude.Tests.Project.Application.Emails
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Application.Emails;
-using Definux.Emeraude.Tests.Base;
-using Definux.Emeraude.Tests.Project.Application.Emails;
+using Emeraude.Application.Emails;
+using Emeraude.Tests.Base;
+using Emeraude.Tests.Project.Application.Emails;
 using Xunit;
 
 namespace Definux.Emeraude.Tests.Core.Integration

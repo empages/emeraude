@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Definux.Emeraude.Presentation.Converters;
+using Emeraude.Presentation.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

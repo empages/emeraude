@@ -1,10 +1,10 @@
-using Definux.Emeraude.Configuration.Options;
-using Definux.Emeraude.Extensions;
-using Definux.Emeraude.Tests.Project.Adapters;
-using Definux.Emeraude.Tests.Project.Application.Interfaces.Persistence;
-using Definux.Emeraude.Tests.Project.Application.Mapping;
-using Definux.Emeraude.Tests.Project.Infrastructure.Extensions;
-using Definux.Emeraude.Tests.Project.Infrastructure.Persistence;
+using Emeraude.Configuration.Options;
+using Emeraude.Extensions;
+using Emeraude.Tests.Project.Adapters;
+using Emeraude.Tests.Project.Application.Interfaces.Persistence;
+using Emeraude.Tests.Project.Application.Mapping;
+using Emeraude.Tests.Project.Infrastructure.Extensions;
+using Emeraude.Tests.Project.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,24 +21,24 @@ namespace Definux.Emeraude.Tests.Project
             {
                 setup.ApplyEmeraudeBaseOptions();
 
-                setup.MainOptions.DomainAssembly = "Definux.Emeraude.Tests.Project.Domain";
-                setup.MainOptions.ApplicationAssembly = "Definux.Emeraude.Tests.Project.Application";
-                setup.MainOptions.InfrastructureAssembly = "Definux.Emeraude.Tests.Project.Infrastructure";
+                setup.MainOptions.DomainAssembly = "Emeraude.Tests.Project.Domain";
+                setup.MainOptions.ApplicationAssembly = "Emeraude.Tests.Project.Application";
+                setup.MainOptions.InfrastructureAssembly = "Emeraude.Tests.Project.Infrastructure";
                 
                 setup.PersistenceOptions.ContextProvider = DatabaseContextProvider.InMemoryDatabase;
 
                 setup.ApplicationsOptions.AddMappingProfile<MainAssemblyMappingProfile>();
-                setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project");
-                setup.MainOptions.AddAssembly("Definux.Emeraude.Tests.Project.Application");
-                setup.MainOptions.ProjectName = "Definux.Emeraude.Tests.Project";
+                setup.MainOptions.AddAssembly("Emeraude.Tests.Project");
+                setup.MainOptions.AddAssembly("Emeraude.Tests.Project.Application");
+                setup.MainOptions.ProjectName = "Emeraude.Tests.Project";
 
                 setup.AdminOptions.SetAdminMenusBuilder<AdminMenusBuilder>();
                 
                 setup.MainOptions.TestMode = true;
                 setup.ClientOptions.SetSitemapComposition<SitemapComposition>();
                 
-                setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude");
-                setup.ClientBuilderOptions.AddAssembly("Definux.Emeraude.Tests.Project");
+                setup.ClientBuilderOptions.AddAssembly("Emeraude");
+                setup.ClientBuilderOptions.AddAssembly("Emeraude.Tests.Project");
             });
 
             services.RegisterInfrastructureServices();

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Emeraude.Application.General\Emeraude.Application.General.csproj" />
+    <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
+    <ProjectReference Include="..\Emeraude.Configuration\Emeraude.Configuration.csproj" />
+    <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\Emeraude.Infrastructure.Localization\Emeraude.Infrastructure.Localization.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\Emeraude.targets" />
+
+</Project>

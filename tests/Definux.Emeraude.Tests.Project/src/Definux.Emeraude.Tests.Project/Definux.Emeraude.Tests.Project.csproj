@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Admin\Definux.Emeraude.Admin\Definux.Emeraude.Admin.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Application.Consumer\Definux.Emeraude.Application.Consumer.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude.Infrastructure.Localization\Definux.Emeraude.Infrastructure.Localization.csproj" />
-    <ProjectReference Include="..\..\..\..\src\Definux.Emeraude\Definux.Emeraude.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude.Application.Consumer\Emeraude.Application.Consumer.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude.Infrastructure.Localization\Emeraude.Infrastructure.Localization.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Emeraude\Emeraude.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Application\Definux.Emeraude.Tests.Project.Application.csproj" />
     <ProjectReference Include="..\Definux.Emeraude.Tests.Project.Infrastructure\Definux.Emeraude.Tests.Project.Infrastructure.csproj" />
   </ItemGroup>
