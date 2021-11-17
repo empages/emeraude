@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Emeraude.Application.Admin.EmPages.Components;
+using Emeraude.Application.Admin.EmPages.Shared;
 
 namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
 {
@@ -25,7 +27,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
         public string Title { get; set; }
 
         /// <inheritdoc cref="EmPageFeature{TModel}.FeatureComponentType"/>
-        public Type FeatureComponentType { get; set; }
+        public EmPageComponent FeatureComponentType { get; set; }
 
         /// <inheritdoc cref="EmPageFeature{TModel}.RouteSegmentsAmount"/>
         public int RouteSegmentsAmount { get; set; }

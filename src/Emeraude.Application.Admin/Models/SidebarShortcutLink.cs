@@ -1,9 +1,9 @@
 ﻿namespace Emeraude.Application.Admin.Models
 {
     /// <summary>
-    /// Model that defines the sidebar essential link.
+    /// Model that defines the sidebar shortcut link.
     /// </summary>
-    public class SidebarEssentialLink
+    public class SidebarShortcutLink
     {
         /// <summary>
         /// Route of the link.
@@ -14,10 +14,5 @@
         /// Title of the link.
         /// </summary>
         public string Title { get; set; }
-
-        /// <summary>
-        /// Icon of the link.
-        /// </summary>
-        public string Icon { get; set; }
     }
 }

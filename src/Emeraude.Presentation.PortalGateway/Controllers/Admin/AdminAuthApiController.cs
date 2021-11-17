@@ -20,7 +20,12 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
     public sealed class AdminAuthApiController : EmPortalGatewayApiController
     {
         private const string PostAuthenticationPurpose = "AccessAdministration";
+
+#if DEBUG
+        private readonly TimeSpan accessTokenExpiration = TimeSpan.FromDays(1);
+#else
         private readonly TimeSpan accessTokenExpiration = TimeSpan.FromHours(1);
+#endif
 
         private readonly IUserClaimsService claimsService;
         private readonly IUserTokensService userTokensService;

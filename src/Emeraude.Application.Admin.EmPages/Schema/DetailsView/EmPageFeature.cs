@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using Emeraude.Application.Admin.EmPages.Components;
 using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Essentials.Helpers;
@@ -39,7 +40,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
         /// <summary>
         /// Type of the component that will contains the content and logic.
         /// </summary>
-        public Type FeatureComponentType { get; private set; }
+        public EmPageComponent FeatureComponentType { get; private set; }
 
         /// <summary>
         /// Amount of segments that will be taken from the page route.

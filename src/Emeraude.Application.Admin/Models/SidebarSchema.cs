@@ -13,7 +13,7 @@ namespace Emeraude.Application.Admin.Models
         public SidebarSchema()
         {
             this.Sections = new List<SidebarMenuSection>();
-            this.EssentialLinks = new List<SidebarEssentialLink>();
+            this.ShortcutsLinks = new List<SidebarShortcutLink>();
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace Emeraude.Application.Admin.Models
         public IList<SidebarMenuSection> Sections { get; set; }
 
         /// <summary>
-        /// List of all insight items from the admin menu.
+        /// List of all shortcuts from the admin menu.
         /// </summary>
-        public IList<SidebarEssentialLink> EssentialLinks { get; set; }
+        public IList<SidebarShortcutLink> ShortcutsLinks { get; set; }
     }
 }

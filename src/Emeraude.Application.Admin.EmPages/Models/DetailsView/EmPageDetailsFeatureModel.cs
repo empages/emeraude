@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.Json.Serialization;
+using Emeraude.Application.Admin.EmPages.Components;
 using Emeraude.Application.Admin.EmPages.Utilities;
 
 namespace Emeraude.Application.Admin.EmPages.Models.DetailsView
@@ -16,7 +18,7 @@ namespace Emeraude.Application.Admin.EmPages.Models.DetailsView
         /// <summary>
         /// Feature component.
         /// </summary>
-        public Type Component { get; set; }
+        public EmPageComponent Component { get; set; }
 
         /// <inheritdoc cref="EmPageViewContext"/>
         public EmPageViewContext Context { get; set; }
@@ -24,6 +26,7 @@ namespace Emeraude.Application.Admin.EmPages.Models.DetailsView
         /// <summary>
         /// Filter that defines the rules based on the details view.
         /// </summary>
+        [JsonIgnore]
         public EmPageDataFilter Filter { get; set; }
     }
 }
