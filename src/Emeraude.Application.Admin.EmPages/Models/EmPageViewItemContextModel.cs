@@ -34,6 +34,6 @@ namespace Emeraude.Application.Admin.EmPages.Models
         /// <summary>
         /// Additional parameters for component customization.
         /// </summary>
-        public IEnumerable<Parameter> Parameters { get; set; }
+        public object Parameters { get; set; }
     }
 }

@@ -44,5 +44,11 @@ namespace Emeraude.Application.Admin.EmPages.Components
         /// Flag that indicates whether the source type is nullable or not.
         /// </summary>
         public bool IsNullable => Nullable.GetUnderlyingType(this.SourceType) != null;
+
+        /// <summary>
+        /// Gets parameters object based on the component.
+        /// </summary>
+        /// <returns></returns>
+        public virtual object GetParametersObject() => new { };
     }
 }

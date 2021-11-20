@@ -122,9 +122,8 @@ namespace Emeraude.Application.Admin.EmPages.Services
 
             foreach (var viewItem in sourceDescription.ViewItems)
             {
-                var itemParameters = viewItem.Parameters.Select(x => new Parameter { Name = x.Key, Value = x.Value });
                 model.PropertyComponentMap.Add(new PropertyMap<EmPageComponent>(viewItem.SourceName, viewItem.Component));
-                model.PropertyParametersMap.Add(new PropertyMap<IEnumerable<Parameter>>(viewItem.SourceName, itemParameters));
+                model.PropertyParametersMap.Add(new PropertyMap<object>(viewItem.SourceName, viewItem.Parameters));
                 model.PropertyOrderMap.Add(new PropertyMap<int>(viewItem.SourceName, viewItem.Order));
 
                 if (viewItem.SourceType.IsEnum && !model.ModelEnumerations.ContainsKey(viewItem.SourceType.FullName))

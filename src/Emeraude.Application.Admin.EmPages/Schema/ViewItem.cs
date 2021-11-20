@@ -15,7 +15,6 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// </summary>
         protected ViewItem()
         {
-            this.Parameters = new Dictionary<string, object>();
         }
 
         /// <inheritdoc/>
@@ -28,7 +27,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         public EmPageComponent Component { get; private set; }
 
         /// <inheritdoc/>
-        public IDictionary<string, object> Parameters { get; }
+        public object Parameters { get; private set; }
 
         /// <inheritdoc/>
         public string SourceName { get; private set; }
@@ -51,6 +50,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
             componentAction?.Invoke(component);
             this.Component = component;
             this.Component.SourceType = this.SourceType;
+            this.Parameters = this.Component.GetParametersObject();
         }
     }
 }

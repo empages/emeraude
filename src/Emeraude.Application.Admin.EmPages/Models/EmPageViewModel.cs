@@ -16,7 +16,7 @@ namespace Emeraude.Application.Admin.EmPages.Models
         protected EmPageViewModel(EmPageViewContext context)
         {
             this.PropertyComponentMap = new List<PropertyMap<EmPageComponent>>();
-            this.PropertyParametersMap = new List<PropertyMap<IEnumerable<Parameter>>>();
+            this.PropertyParametersMap = new List<PropertyMap<object>>();
             this.PropertyOrderMap = new List<PropertyMap<int>>();
             this.ModelEnumerations = new Dictionary<string, IEnumerable<EnumValueItem>>();
             this.Context = context;
@@ -33,7 +33,7 @@ namespace Emeraude.Application.Admin.EmPages.Models
         /// <summary>
         /// Pair that contains corresponding parameters for each property of the model.
         /// </summary>
-        public IList<PropertyMap<IEnumerable<Parameter>>> PropertyParametersMap { get; }
+        public IList<PropertyMap<object>> PropertyParametersMap { get; }
 
         /// <summary>
         /// Pair that contains enumerations per type name for all properties of the model.

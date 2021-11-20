@@ -28,7 +28,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// <summary>
         /// Additional custom parameters for the purposes of rendering.
         /// </summary>
-        public IDictionary<string, object> Parameters { get; }
+        public object Parameters { get; }
 
         /// <summary>
         /// Name of the view item source.
