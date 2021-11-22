@@ -17,7 +17,8 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
     /// Admin authentication API controller.
     /// </summary>
     [Route("/_em/api/admin/auth/")]
-    public sealed class AdminAuthApiController : EmPortalGatewayApiController
+    [NonController]
+    public class AdminAuthApiController : EmPortalGatewayApiController, IAdminAuthApiController
     {
         private const string PostAuthenticationPurpose = "AccessAdministration";
 
@@ -53,7 +54,7 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginCommand request)
+        public virtual async Task<IActionResult> Login([FromBody]AdminAuthLoginRequest request)
         {
             if (this.User.Identity?.IsAuthenticated ?? true)
             {
@@ -68,7 +69,11 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
 
             try
             {
-                var requestResult = await this.Mediator.Send(request);
+                var requestResult = await this.Mediator.Send(new LoginCommand
+                {
+                    Email = request.Email,
+                    Password = request.Password,
+                });
                 if (requestResult.Result.RequiresTwoFactor)
                 {
                     var postAuthenticationToken = await this.userManager.GenerateUserTokenAsync(
@@ -114,9 +119,9 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("login-2fa")]
-        public async Task<IActionResult> LoginWithTwoFactorAuthentication(
+        public virtual async Task<IActionResult> LoginWithTwoFactorAuthentication(
             [FromHeader(Name = EmPostAuthenticationTokenProvider.ProviderKey)]string postAuthenticationToken,
-            [FromBody]LoginWithTwoFactorAuthenticationRequest request)
+            [FromBody]AdminAuthLoginWithTwoFactorRequest request)
         {
             if (this.User.Identity?.IsAuthenticated ?? true)
             {
@@ -179,7 +184,7 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         /// <returns></returns>
         [HttpPost("check")]
         [Authorize(Policy = EmPermissions.AccessAdministrationPolicy)]
-        public async Task<IActionResult> CheckAuthorization()
+        public virtual async Task<IActionResult> CheckAuthorization()
         {
             return this.Ok();
         }

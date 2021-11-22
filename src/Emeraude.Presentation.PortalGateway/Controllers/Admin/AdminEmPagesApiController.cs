@@ -30,20 +30,20 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         }
 
         /// <summary>
-        /// Gets table view model.
+        /// Gets index view model.
         /// </summary>
         /// <param name="route"></param>
         /// <returns></returns>
-        [HttpGet("table/{route}")]
-        public async Task<IActionResult> GetTableViewModel(string route)
+        [HttpGet("index/{route}")]
+        public async Task<IActionResult> GetIndexViewModel(string route)
         {
-            var tableViewModel = await this.emPageManager.RetrieveTableViewModelAsync(route, this.GetQuery());
-            if (tableViewModel == null)
+            var viewModel = await this.emPageManager.RetrieveIndexViewModelAsync(route, this.GetQuery());
+            if (viewModel == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(tableViewModel);
+            return this.Ok(viewModel);
         }
 
         /// <summary>
@@ -55,13 +55,13 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         [HttpGet("details/{route}/{modelId}")]
         public async Task<IActionResult> GetDetailsViewModel(string route, string modelId)
         {
-            var detailsViewModel = await this.emPageManager.RetrieveDetailsViewModelAsync(route, modelId, this.GetQuery());
-            if (detailsViewModel == null)
+            var viewModel = await this.emPageManager.RetrieveDetailsViewModelAsync(route, modelId, this.GetQuery());
+            if (viewModel == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(detailsViewModel);
+            return this.Ok(viewModel);
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
         public async Task<IActionResult> GetFormViewModel(string route, string modelId = null)
         {
             var type = string.IsNullOrWhiteSpace(modelId) ? EmPageFormType.CreateForm : EmPageFormType.EditForm;
-            var formViewModel = await this.emPageManager.RetrieveFormViewModelAsync(type, route, modelId, this.GetQuery());
-            if (formViewModel == null)
+            var viewModel = await this.emPageManager.RetrieveFormViewModelAsync(type, route, modelId, this.GetQuery());
+            if (viewModel == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(formViewModel);
+            return this.Ok(viewModel);
         }
 
         /// <summary>
@@ -108,13 +108,13 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
                 return this.NotFound();
             }
 
-            var featureTableViewModel = await this.emPageManager.RetrieveFeatureTableViewModelAsync(feature, this.GetQuery());
-            if (featureTableViewModel == null)
+            var featureViewModel = await this.emPageManager.RetrieveFeatureIndexViewModelAsync(feature, this.GetQuery());
+            if (featureViewModel == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(featureTableViewModel);
+            return this.Ok(featureViewModel);
         }
 
         private IDictionary<string, StringValues> GetQuery()

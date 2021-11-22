@@ -79,7 +79,7 @@ namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch
                 var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
 
                 var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
-                await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.TableView.ViewItems);
+                await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.IndexView.ViewItems);
                 result.Items = entitiesModels;
             }
             catch (Exception ex)

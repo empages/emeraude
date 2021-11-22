@@ -40,7 +40,7 @@ namespace Emeraude.Application.Admin.EmPages.Utilities
         }
 
         /// <summary>
-        /// Gets route type
+        /// Gets route type.
         /// </summary>
         /// <param name="notUsedSegments"></param>
         /// <returns></returns>

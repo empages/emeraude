@@ -75,7 +75,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
         }
 
         /// <summary>
-        /// Configures model validation rules
+        /// Configures model validation rules.
         /// </summary>
         /// <param name="validatorAction"></param>
         public void ConfigureModelValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)

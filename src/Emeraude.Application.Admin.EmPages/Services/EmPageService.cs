@@ -133,7 +133,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
                             Order = parentDetailsViewBreadcrumb.Order - 1000,
                         };
 
-                        schemaDescription.TableView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
+                        schemaDescription.IndexView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
                         schemaDescription.DetailsView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
                         schemaDescription.FormView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
                         newBreadcrumbIndex++;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Emeraude.Application.Admin.Models;
 
-namespace Emeraude.Application.Admin.EmPages.Models.TableView
+namespace Emeraude.Application.Admin.EmPages.Models.IndexView
 {
     /// <summary>
     /// Implementation model of table row.

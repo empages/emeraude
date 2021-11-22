@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Models.DetailsView;
 using Emeraude.Application.Admin.EmPages.Models.FormView;
-using Emeraude.Application.Admin.EmPages.Models.TableView;
+using Emeraude.Application.Admin.EmPages.Models.IndexView;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Microsoft.Extensions.Primitives;
@@ -15,14 +15,14 @@ namespace Emeraude.Application.Admin.EmPages.Services
     public interface IEmPageManager
     {
         /// <summary>
-        /// Retrieves table view model.
+        /// Retrieves index view model.
         /// </summary>
         /// <param name="route"></param>
         /// <param name="query"></param>
         /// <param name="filter"></param>
         /// <param name="featureMode"></param>
         /// <returns></returns>
-        Task<EmPageTableViewModel> RetrieveTableViewModelAsync(
+        Task<EmPageIndexViewModel> RetrieveIndexViewModelAsync(
             string route,
             IDictionary<string, StringValues> query,
             EmPageDataFilter filter = null,
@@ -45,12 +45,12 @@ namespace Emeraude.Application.Admin.EmPages.Services
             bool featureMode = false);
 
         /// <summary>
-        /// Retrieves table view model for the context of feature.
+        /// Retrieves index view model for the context of feature.
         /// </summary>
         /// <param name="feature"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<EmPageTableViewModel> RetrieveFeatureTableViewModelAsync(
+        Task<EmPageIndexViewModel> RetrieveFeatureIndexViewModelAsync(
             EmPageDetailsFeatureModel feature,
             IDictionary<string, StringValues> query);
 

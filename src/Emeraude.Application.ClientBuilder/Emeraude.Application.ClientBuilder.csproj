@@ -43,10 +43,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Api" />
-  </ItemGroup>
-
   <Import Project="..\..\Emeraude.targets" />
 
 </Project>

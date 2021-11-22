@@ -13,7 +13,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         public string TableBreadcrumbTitle { get; set; }
 
         /// <summary>
-        /// Details breadcrumb title. Default is 'Details'
+        /// Details breadcrumb title. Default is 'Details'.
         /// </summary>
         public string DetailsBreadcrumbTitle { get; set; } = "Details";
 

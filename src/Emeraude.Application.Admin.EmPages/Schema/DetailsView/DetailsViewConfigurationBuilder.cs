@@ -43,7 +43,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
         public IList<EmPageFeature<TModel>> Features { get; }
 
         /// <summary>
-        /// Includes feature
+        /// Includes feature.
         /// </summary>
         /// <param name="featureAction"></param>
         /// <returns></returns>

@@ -95,7 +95,7 @@ namespace Emeraude.Application.Admin.EmPages.Data
             var entitiesResult = await this.FetchEntitiesAsync(request);
             var result = new TableViewDataRequestGenericResult<TModel>(entitiesResult);
 
-            result.Items = this.ConsolidateModelResponsesFields(result.Items, schema.TableView.ViewItems);
+            result.Items = this.ConsolidateModelResponsesFields(result.Items, schema.IndexView.ViewItems);
             return result;
         }
 

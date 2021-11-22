@@ -27,6 +27,7 @@ using Emeraude.Infrastructure.Identity.Options;
 using Emeraude.Infrastructure.Identity.Persistence;
 using Emeraude.Infrastructure.Localization.Extensions;
 using Emeraude.Infrastructure.Persistence.Extensions;
+using Emeraude.Presentation;
 using Emeraude.Presentation.ActionFilters;
 using Emeraude.Presentation.Converters;
 using Emeraude.Presentation.ModelBinders;
@@ -38,7 +39,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -109,7 +109,7 @@ namespace Emeraude.Extensions
 
             builder.Services.RegisterEmeraudePortalGateway(setup.PortalGatewayOptions);
 
-            settingsBuilder.MvcBuilder = builder.Services.ConfigureMvc(setup.MainOptions);
+            settingsBuilder.MvcBuilder = builder.Services.ConfigureMvc(setup.MainOptions, setup.PresentationOptions);
 
             return settingsBuilder;
         }
@@ -137,6 +137,14 @@ namespace Emeraude.Extensions
             setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
 
             setup.PersistenceOptions.AddDatabaseInitializer<IApplicationDatabaseInitializer>();
+        }
+
+        private static void PostOperationalEmeraudeOptions(this EmOptionsSetup setup)
+        {
+            if (setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider != null)
+            {
+                setup.PresentationOptions.FeatureProviders.Add(setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider);
+            }
         }
 
         private static void RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
@@ -248,7 +256,7 @@ namespace Emeraude.Extensions
             return identityBuilder;
         }
 
-        private static IMvcBuilder ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions)
+        private static IMvcBuilder ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions, EmPresentationOptions presentationOptions)
         {
             var mvcBuilder = services.AddMvc(options =>
             {
@@ -263,6 +271,10 @@ namespace Emeraude.Extensions
                 {
                     p.ApplicationParts.Add(ApplicationAssemblyPart.AssemblyPart);
                     p.FeatureProviders.Add(new ViewComponentFeatureProvider());
+                    foreach (var featureProvider in presentationOptions.FeatureProviders)
+                    {
+                        p.FeatureProviders.Add(featureProvider);
+                    }
                 })
                 .AddJsonOptions(options =>
                 {
@@ -297,6 +309,7 @@ namespace Emeraude.Extensions
             var setup = new EmOptionsSetup();
             setup.ApplyEmeraudeBaseOptions();
             setupAction?.Invoke(setup);
+            setup.PostOperationalEmeraudeOptions();
             services.AddSingleton<IEmOptionsProvider>(new EmOptionsProvider(setup));
 
             return setup;

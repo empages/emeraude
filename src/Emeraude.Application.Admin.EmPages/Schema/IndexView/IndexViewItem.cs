@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Emeraude.Application.Admin.EmPages.Schema.TableView
+namespace Emeraude.Application.Admin.EmPages.Schema.IndexView
 {
     /// <summary>
-    /// Table view item of <see cref="IEmPageSchema{TModel}"/>.
+    /// Index view item of <see cref="IEmPageSchema{TModel}"/>.
     /// </summary>
-    public class TableViewItem : ViewItem, IValuePipedViewItem
+    public class IndexViewItem : ViewItem, IValuePipedViewItem
     {
         private readonly List<(Type, string[])> valuePipes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableViewItem"/> class.
+        /// Initializes a new instance of the <see cref="IndexViewItem"/> class.
         /// </summary>
-        public TableViewItem()
+        public IndexViewItem()
         {
             this.valuePipes = new List<(Type, string[])>();
         }

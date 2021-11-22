@@ -62,6 +62,9 @@ namespace Emeraude.Presentation.PlatformBase.Controllers
                 ExpiresUtc = DateTime.UtcNow.AddMonths(1),
             };
 
+        /// <summary>
+        /// Gets whether the current user is authenticated or not.
+        /// </summary>
         protected bool IsAuthenticated =>
             this.User?.Identity?.IsAuthenticated ?? false;
 
@@ -106,7 +109,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers
             var redirectCallback = this.OptionsProvider.GetClientOptions().AuthenticationDefaultRedirectCallback;
             return redirectCallback != null
                 ? redirectCallback.Invoke(this.HttpContext)
-                : this.RedirectToAction("Index", "Home");
+                : this.LocalRedirect("/");
         }
     }
 }

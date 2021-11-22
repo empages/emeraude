@@ -16,7 +16,7 @@
         public const string GatewayIdentificationHeader = "Em-Portal-Gateway-Id";
 
         /// <summary>
-        /// Emeraude Portal CORS policy name;
+        /// Emeraude Portal CORS policy name.
         /// </summary>
         public const string CorsPolicyName = "_PortalGatewayPolicy";
     }

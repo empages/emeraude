@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Emeraude.Infrastructure.Identity.Extensions
 {
     /// <summary>
-    /// Extensions for <see cref="IdentityBuilder"/>
+    /// Extensions for <see cref="IdentityBuilder"/>.
     /// </summary>
     public static class IdentityBuilderExtensions
     {

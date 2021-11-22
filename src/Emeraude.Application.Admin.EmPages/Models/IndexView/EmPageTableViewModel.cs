@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using Emeraude.Application.Admin.Models;
 
-namespace Emeraude.Application.Admin.EmPages.Models.TableView
+namespace Emeraude.Application.Admin.EmPages.Models.IndexView
 {
     /// <summary>
     /// Model implementation for table view.
     /// </summary>
-    public class EmPageTableViewModel : EmPageViewModel
+    public class EmPageTableViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmPageTableViewModel"/> class.
         /// </summary>
-        /// <param name="context"></param>
-        public EmPageTableViewModel(EmPageViewContext context)
-            : base(context)
+        public EmPageTableViewModel()
         {
             this.HeadModel = new EmPageTableHeadModel();
             this.RowActions = new List<ActionModel>();

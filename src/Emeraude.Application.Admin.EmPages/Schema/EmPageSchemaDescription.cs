@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Emeraude.Application.Admin.EmPages.Schema.DetailsView;
 using Emeraude.Application.Admin.EmPages.Schema.FormView;
-using Emeraude.Application.Admin.EmPages.Schema.TableView;
+using Emeraude.Application.Admin.EmPages.Schema.IndexView;
 
 namespace Emeraude.Application.Admin.EmPages.Schema
 {
@@ -17,7 +17,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// </summary>
         public EmPageSchemaDescription()
         {
-            this.TableView = new TableViewDescription();
+            this.IndexView = new IndexViewDescription();
             this.DetailsView = new DetailsViewDescription();
             this.FormView = new FormViewDescription();
         }
@@ -54,8 +54,8 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// </summary>
         public IEnumerable<EmPageAction> ModelActions { get; set; }
 
-        /// <inheritdoc cref="TableViewDescription"/>
-        public TableViewDescription TableView { get; set; }
+        /// <inheritdoc cref="IndexViewDescription"/>
+        public IndexViewDescription IndexView { get; set; }
 
         /// <inheritdoc cref="DetailsViewDescription"/>
         public DetailsViewDescription DetailsView { get; set; }

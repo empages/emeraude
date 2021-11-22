@@ -7,6 +7,7 @@ using Emeraude.Infrastructure.FileStorage;
 using Emeraude.Infrastructure.Identity.Options;
 using Emeraude.Infrastructure.Localization;
 using Emeraude.Infrastructure.Persistence;
+using Emeraude.Presentation;
 using Emeraude.Presentation.PortalGateway;
 
 namespace Emeraude
@@ -21,6 +22,9 @@ namespace Emeraude
 
         /// <inheritdoc cref="EmApplicationsOptions" />
         public EmApplicationsOptions ApplicationsOptions { get; set; } = new ();
+
+        /// <inheritdoc cref="EmPresentationOptions" />
+        public EmPresentationOptions PresentationOptions { get; set; } = new ();
 
         /// <inheritdoc cref="EmAdminOptions" />
         public EmAdminOptions AdminOptions { get; set; } = new ();

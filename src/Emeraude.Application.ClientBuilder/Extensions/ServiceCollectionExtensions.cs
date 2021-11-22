@@ -24,17 +24,6 @@ namespace Emeraude.Application.ClientBuilder.Extensions
             services.AddScoped<IEndpointService, EndpointService>();
             services.AddScoped<IScaffoldModulesFactory, ScaffoldModulesFactory>();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(ClientBuilderConstants.CorsPolicyName, builder =>
-                {
-                    builder
-                        .WithOrigins(ClientBuilderConstants.WebClientOrigins)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-            });
-
             foreach (var modulesType in clientBuilderOptions.ModulesTypes)
             {
                 services.AddScoped(modulesType);

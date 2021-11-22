@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Emeraude.Presentation.PortalGateway.Controllers
 {
     /// <summary>
-    /// Base portal gateway API controller
+    /// Base portal gateway API controller.
     /// </summary>
     [ServiceFilter(typeof(PortalFilterAttribute))]
     [EnableCors(EmPortalConstants.CorsPolicyName)]

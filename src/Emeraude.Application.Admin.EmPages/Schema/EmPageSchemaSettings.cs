@@ -7,7 +7,7 @@ using System.Reflection;
 using Emeraude.Application.Admin.EmPages.Data;
 using Emeraude.Application.Admin.EmPages.Schema.DetailsView;
 using Emeraude.Application.Admin.EmPages.Schema.FormView;
-using Emeraude.Application.Admin.EmPages.Schema.TableView;
+using Emeraude.Application.Admin.EmPages.Schema.IndexView;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Essentials.Helpers;
@@ -21,7 +21,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
     public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
         where TModel : class, IEmPageModel, new()
     {
-        private readonly TableViewConfigurationBuilder<TModel> tableViewConfigurationBuilder;
+        private readonly IndexViewConfigurationBuilder<TModel> indexViewConfigurationBuilder;
         private readonly DetailsViewConfigurationBuilder<TModel> detailsViewConfigurationBuilder;
         private readonly FormViewConfigurationBuilder<TModel> formViewConfigurationBuilder;
 
@@ -30,7 +30,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// </summary>
         public EmPageSchemaSettings()
         {
-            this.tableViewConfigurationBuilder = new TableViewConfigurationBuilder<TModel>();
+            this.indexViewConfigurationBuilder = new IndexViewConfigurationBuilder<TModel>();
             this.detailsViewConfigurationBuilder = new DetailsViewConfigurationBuilder<TModel>();
             this.formViewConfigurationBuilder = new FormViewConfigurationBuilder<TModel>();
 
@@ -73,7 +73,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema
 
             if (!this.UseAsFeature)
             {
-                this.tableViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
+                this.indexViewConfigurationBuilder.Breadcrumbs.Add(new EmPageBreadcrumb
                 {
                     Title = tableBreadcrumb,
                 });
@@ -169,10 +169,10 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// </summary>
         /// <param name="configurationBuilderAction"></param>
         /// <returns></returns>
-        public EmPageSchemaSettings<TModel> ConfigureTableView(
-            Action<TableViewConfigurationBuilder<TModel>> configurationBuilderAction)
+        public EmPageSchemaSettings<TModel> ConfigureIndexView(
+            Action<IndexViewConfigurationBuilder<TModel>> configurationBuilderAction)
         {
-            configurationBuilderAction.Invoke(this.tableViewConfigurationBuilder);
+            configurationBuilderAction.Invoke(this.indexViewConfigurationBuilder);
             return this;
         }
 
@@ -218,11 +218,11 @@ namespace Emeraude.Application.Admin.EmPages.Schema
                 ModelType = typeof(TModel),
                 DataManagerType = dataManagerType,
                 ModelActions = this.ModelActions,
-                TableView = new TableViewDescription
+                IndexView = new IndexViewDescription
                 {
-                    ViewItems = this.tableViewConfigurationBuilder.ViewItems,
-                    PageActions = this.tableViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
-                    Breadcrumbs = this.tableViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
+                    ViewItems = this.indexViewConfigurationBuilder.ViewItems,
+                    PageActions = this.indexViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
+                    Breadcrumbs = this.indexViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
                 },
                 DetailsView = new DetailsViewDescription
                 {

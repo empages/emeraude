@@ -7,7 +7,7 @@ using FluentValidation;
 namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataCreate
 {
     /// <summary>
-    /// Validator for <see cref="EmPageDataCreateCommand{TEntity,TModel}"/>
+    /// Validator for <see cref="EmPageDataCreateCommand{TEntity,TModel}"/>.
     /// </summary>
     /// <typeparam name="TEntity">Target entity.</typeparam>
     /// <typeparam name="TModel">EmPage model.</typeparam>

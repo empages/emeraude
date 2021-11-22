@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Definux.Utilities.Extensions;
 using Emeraude.Essentials.Helpers;
 
-namespace Emeraude.Application.Admin.EmPages.Schema.TableView
+namespace Emeraude.Application.Admin.EmPages.Schema.IndexView
 {
     /// <summary>
-    /// Table implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{TViewItem,TModel}"/>
+    /// Index implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{TViewItem,TModel}"/>.
     /// </summary>
     /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class TableViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<TableViewItem, TModel>
+    public class IndexViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<IndexViewItem, TModel>
         where TModel : class, IEmPageModel, new()
     {
-        private readonly List<TableViewItem> viewItems;
+        private readonly List<IndexViewItem> viewItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableViewConfigurationBuilder{TModel}"/> class.
+        /// Initializes a new instance of the <see cref="IndexViewConfigurationBuilder{TModel}"/> class.
         /// </summary>
-        public TableViewConfigurationBuilder()
+        public IndexViewConfigurationBuilder()
         {
-            this.viewItems = new List<TableViewItem>();
+            this.viewItems = new List<IndexViewItem>();
             this.PageActions = new List<EmPageAction>
             {
                 new ()
@@ -36,7 +35,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.TableView
         }
 
         /// <inheritdoc/>
-        public IReadOnlyList<TableViewItem> ViewItems => this.viewItems;
+        public IReadOnlyList<IndexViewItem> ViewItems => this.viewItems;
 
         /// <inheritdoc/>
         public IList<EmPageAction> PageActions { get; }
@@ -45,12 +44,12 @@ namespace Emeraude.Application.Admin.EmPages.Schema.TableView
         public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
         /// <inheritdoc/>
-        public IEmPageSchemaViewConfigurationBuilder<TableViewItem, TModel> Use(
+        public IEmPageSchemaViewConfigurationBuilder<IndexViewItem, TModel> Use(
             Expression<Func<TModel, object>> property,
-            Action<TableViewItem> viewItemAction)
+            Action<IndexViewItem> viewItemAction)
         {
             var memberInfo = ReflectionHelpers.GetCorrectPropertyMember(property);
-            TableViewItem viewItem = new TableViewItem();
+            IndexViewItem viewItem = new IndexViewItem();
             viewItem.LoadSourceInfo(memberInfo as PropertyInfo);
             viewItemAction.Invoke(viewItem);
 
@@ -61,7 +60,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.TableView
 
             if (string.IsNullOrWhiteSpace(viewItem.Title))
             {
-                viewItem.Title = viewItem.SourceName.SplitWordsByCapitalLetters();
+                viewItem.Title = StringUtilities.SplitWordsByCapitalLetters(viewItem.SourceName);
             }
 
             if (viewItem.Order == -1)

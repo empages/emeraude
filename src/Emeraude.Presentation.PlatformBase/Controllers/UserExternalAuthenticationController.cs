@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Emeraude.Presentation.PlatformBase.Controllers
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="UserAuthenticationController"/>
     public abstract partial class UserAuthenticationController
     {
         private const string ExternalLoginRoute = "/external-login";

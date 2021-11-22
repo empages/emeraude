@@ -5,7 +5,7 @@ using Emeraude.Application.Admin.EmPages.Data;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Models.DetailsView;
-using Emeraude.Application.Admin.EmPages.Models.TableView;
+using Emeraude.Application.Admin.EmPages.Models.IndexView;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Admin.Models;
@@ -18,27 +18,49 @@ namespace Emeraude.Application.Admin.EmPages.Services
     /// </summary>
     public partial class EmPageManager
     {
-        /// <inheritdoc cref="RetrieveTableViewModelAsync"/>
-        public async Task<EmPageTableViewModel> RetrieveTableViewModelAsync(
+        /// <inheritdoc/>
+        public async Task<EmPageIndexViewModel> RetrieveIndexViewModelAsync(
             string route,
             IDictionary<string, StringValues> query,
             EmPageDataFilter filter = null,
             bool featureMode = false)
         {
+            return await this.RetrieveTableViewModelAsync(route, query, filter, featureMode);
+        }
+
+        /// <inheritdoc/>
+        public async Task<EmPageIndexViewModel> RetrieveFeatureIndexViewModelAsync(
+            EmPageDetailsFeatureModel feature,
+            IDictionary<string, StringValues> query)
+        {
+            return await this.RetrieveFeatureTableViewModelAsync(feature, query);
+        }
+
+        private async Task<EmPageIndexViewModel> RetrieveTableViewModelAsync(
+            string route,
+            IDictionary<string, StringValues> query,
+            EmPageDataFilter filter,
+            bool featureMode)
+        {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
-            if (!schemaDescription.TableView.IsActive || (!featureMode && schemaDescription.UseAsFeature))
+            if (!schemaDescription.IndexView.IsActive || (!featureMode && schemaDescription.UseAsFeature))
             {
                 return null;
             }
 
-            var model = new EmPageTableViewModel(new EmPageViewContext
+            var modelContext = new EmPageViewContext
             {
                 Route = schemaDescription.Route,
                 Title = schemaDescription.Title,
-            });
+            };
+
+            var model = new EmPageIndexViewModel(modelContext)
+            {
+                TableViewModel = new EmPageTableViewModel(),
+            };
 
             var headCells = new List<EmPageTableHeadCellModel>();
-            foreach (var tableViewItem in schemaDescription.TableView.ViewItems)
+            foreach (var tableViewItem in schemaDescription.IndexView.ViewItems)
             {
                 headCells.Add(new EmPageTableHeadCellModel
                 {
@@ -48,19 +70,19 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 });
             }
 
-            model.HeadModel.Cells.AddRange(headCells.OrderBy(x => x.Order));
+            model.TableViewModel.HeadModel.Cells.AddRange(headCells.OrderBy(x => x.Order));
 
             var actions = schemaDescription.ModelActions ?? new List<EmPageAction>();
-            model.HasActions = actions.Any();
-            if (model.HasActions)
+            model.TableViewModel.HasActions = actions.Any();
+            if (model.TableViewModel.HasActions)
             {
                 foreach (var action in actions)
                 {
-                    model.RowActions.Add(this.BuildRowAction(action, route));
+                    model.TableViewModel.RowActions.Add(this.BuildRowAction(action, route));
                 }
             }
 
-            this.MapToViewModel(schemaDescription.TableView, model);
+            this.MapToViewModel(schemaDescription.IndexView, model);
 
             if (schemaDescription.DataManagerType != null)
             {
@@ -76,18 +98,17 @@ namespace Emeraude.Application.Admin.EmPages.Services
                     foreach (var item in requestResult.Items)
                     {
                         var rowModel = this.BuildTableRow(item, model, schemaDescription);
-                        model.Rows.Add(rowModel);
+                        model.TableViewModel.Rows.Add(rowModel);
                     }
 
-                    model.PaginationModel = new PaginationModel(requestResult.CurrentPage, requestResult.PagesCount);
+                    model.TableViewModel.PaginationModel = new PaginationModel(requestResult.CurrentPage, requestResult.PagesCount);
                 }
             }
 
             return model;
         }
 
-        /// <inheritdoc cref="RetrieveFeatureTableViewModelAsync"/>
-        public async Task<EmPageTableViewModel> RetrieveFeatureTableViewModelAsync(EmPageDetailsFeatureModel feature, IDictionary<string, StringValues> query)
+        private async Task<EmPageIndexViewModel> RetrieveFeatureTableViewModelAsync(EmPageDetailsFeatureModel feature, IDictionary<string, StringValues> query)
         {
             return await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
         }
@@ -105,7 +126,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
             };
         }
 
-        private EmPageTableRowModel BuildTableRow(EmPageModelResponse item, EmPageTableViewModel model, EmPageSchemaDescription schemaDescription)
+        private EmPageTableRowModel BuildTableRow(EmPageModelResponse item, EmPageIndexViewModel model, EmPageSchemaDescription schemaDescription)
         {
             var rowModel = new EmPageTableRowModel
             {
@@ -126,13 +147,13 @@ namespace Emeraude.Application.Admin.EmPages.Services
 
             rowModel.Cells.AddRange(cells.OrderBy(x => x.Order));
 
-            rowModel.Actions.AddRange(model.RowActions.Select(this.BuildRowAction));
+            rowModel.Actions.AddRange(model.TableViewModel.RowActions.Select(this.BuildRowAction));
             this.SetDataRelatedPlaceholders(rowModel.Actions, item, schemaDescription);
 
             return rowModel;
         }
 
-        private EmPageTableCellModel BuildTableRowCell(EmPageModelResponseField field, EmPageTableViewModel model) =>
+        private EmPageTableCellModel BuildTableRowCell(EmPageModelResponseField field, EmPageIndexViewModel model) =>
             new ()
             {
                 Order = model.PropertyOrderMap.FirstOrDefault(x => x.Property == field.Property)?.Value ?? 0,
