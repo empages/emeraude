@@ -19,6 +19,11 @@ namespace Emeraude.Application.Admin.EmPages.Models.DetailsView
         }
 
         /// <summary>
+        /// Identifier of the view model.
+        /// </summary>
+        public string Identifier { get; set; }
+
+        /// <summary>
         /// List of all details feature of current EmPage.
         /// </summary>
         public IList<EmPageDetailsFeatureModel> Features { get; set; }

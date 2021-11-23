@@ -48,10 +48,12 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// Retrieves index view model for the context of feature.
         /// </summary>
         /// <param name="feature"></param>
+        /// <param name="parentDetailsViewModel"></param>
         /// <param name="query"></param>
         /// <returns></returns>
         Task<EmPageIndexViewModel> RetrieveFeatureIndexViewModelAsync(
             EmPageDetailsFeatureModel feature,
+            EmPageDetailsViewModel parentDetailsViewModel,
             IDictionary<string, StringValues> query);
 
         /// <summary>

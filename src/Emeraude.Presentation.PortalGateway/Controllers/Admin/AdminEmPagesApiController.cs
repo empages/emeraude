@@ -108,7 +108,7 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
                 return this.NotFound();
             }
 
-            var featureViewModel = await this.emPageManager.RetrieveFeatureIndexViewModelAsync(feature, this.GetQuery());
+            var featureViewModel = await this.emPageManager.RetrieveFeatureIndexViewModelAsync(feature, detailsViewModel, this.GetQuery());
             if (featureViewModel == null)
             {
                 return this.NotFound();

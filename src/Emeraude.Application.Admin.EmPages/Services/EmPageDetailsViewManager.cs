@@ -42,6 +42,8 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 Title = schemaDescription.Title,
             });
 
+            model.Identifier = modelId;
+
             var dataManager = this.GetDataManagerInstance(schemaDescription);
             var rawModel = await dataManager.GetRawModelAsync(modelId);
 

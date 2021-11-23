@@ -31,9 +31,10 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// <inheritdoc/>
         public async Task<EmPageIndexViewModel> RetrieveFeatureIndexViewModelAsync(
             EmPageDetailsFeatureModel feature,
+            EmPageDetailsViewModel parentDetailsViewModel,
             IDictionary<string, StringValues> query)
         {
-            return await this.RetrieveFeatureTableViewModelAsync(feature, query);
+            return await this.RetrieveFeatureTableViewModelAsync(feature, parentDetailsViewModel, query);
         }
 
         private async Task<EmPageIndexViewModel> RetrieveTableViewModelAsync(
@@ -108,9 +109,23 @@ namespace Emeraude.Application.Admin.EmPages.Services
             return model;
         }
 
-        private async Task<EmPageIndexViewModel> RetrieveFeatureTableViewModelAsync(EmPageDetailsFeatureModel feature, IDictionary<string, StringValues> query)
+        private async Task<EmPageIndexViewModel> RetrieveFeatureTableViewModelAsync(
+            EmPageDetailsFeatureModel feature,
+            EmPageDetailsViewModel parentDetailsViewModel,
+            IDictionary<string, StringValues> query)
         {
-            return await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
+            var viewModel = await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
+            if (viewModel == null)
+            {
+                return null;
+            }
+
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(parentDetailsViewModel.Context.Route);
+            var dataManager = this.GetDataManagerInstance(schemaDescription);
+            var parentModel = await dataManager.GetRawModelAsync(parentDetailsViewModel.Identifier);
+            this.SetDataRelatedPlaceholders(viewModel.Context.Breadcrumbs, parentModel, schemaDescription);
+
+            return viewModel;
         }
 
         private ActionModel BuildRowAction(EmPageAction action, string route)
