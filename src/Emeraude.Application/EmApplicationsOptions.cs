@@ -30,7 +30,7 @@ namespace Emeraude.Application
         public List<Type> MappingProfiles { get; }
 
         /// <summary>
-        /// Add new mapping profile type to the mapping profile. The method is prefered than the <see cref="MappingProfiles"/> property.
+        /// Add new mapping profile type to the mapping profile. The method is preferred than the <see cref="MappingProfiles"/> property.
         /// </summary>
         /// <typeparam name="TProfile">AutoMapper profile type.</typeparam>
         public void AddMappingProfile<TProfile>()

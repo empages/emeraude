@@ -12,7 +12,7 @@ namespace Emeraude.Application.Consumer.Extensions
         /// </summary>
         /// <param name="optionsProvider"></param>
         /// <returns></returns>
-        public static EmConsumerOptions GetClientOptions(this IEmOptionsProvider optionsProvider)
+        public static EmConsumerOptions GetConsumerOptions(this IEmOptionsProvider optionsProvider)
             => optionsProvider.GetOptions<EmConsumerOptions>();
     }
 }

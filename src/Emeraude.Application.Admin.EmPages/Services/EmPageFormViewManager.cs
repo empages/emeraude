@@ -141,6 +141,9 @@ namespace Emeraude.Application.Admin.EmPages.Services
             new ()
             {
                 Label = formViewItem.Title ?? formViewItem.SourceName,
+                Readonly = formViewItem.Readonly,
+                AllowNullValue = formViewItem.IsNullable,
+                Required = formViewItem.RequiredIndicator,
                 Order = formViewItem.Order,
                 Property = formViewItem?.SourceName,
                 Value = schemaDescription.ModelType.GetProperty(formViewItem.SourceName)?.GetValue(rawModel),

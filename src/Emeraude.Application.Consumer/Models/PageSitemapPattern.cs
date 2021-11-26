@@ -18,10 +18,19 @@ namespace Emeraude.Application.Consumer.Models
         /// Initializes a new instance of the <see cref="PageSitemapPattern"/> class.
         /// </summary>
         /// <param name="template"></param>
-        /// <param name="languageStore"></param>
-        public PageSitemapPattern(string template, ILanguageStore languageStore)
+        public PageSitemapPattern(string template)
         {
             this.Patterns.Add(template);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageSitemapPattern"/> class.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="languageStore"></param>
+        public PageSitemapPattern(string template, ILanguageStore languageStore)
+            : this(template)
+        {
             this.Patterns.AddRange(languageStore
                 .GetLanguages()
                 .Where(x => !x.IsDefault)

@@ -126,9 +126,10 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 model.PropertyParametersMap.Add(new PropertyMap<object>(viewItem.SourceName, viewItem.Parameters));
                 model.PropertyOrderMap.Add(new PropertyMap<int>(viewItem.SourceName, viewItem.Order));
 
-                if (viewItem.SourceType.IsEnum && !model.ModelEnumerations.ContainsKey(viewItem.SourceType.FullName))
+                var originalSourceType = ReflectionHelpers.GetTypeByIgnoreTheNullable(viewItem.SourceType);
+                if (originalSourceType.IsEnum && !model.ModelEnumerations.ContainsKey(originalSourceType.FullName))
                 {
-                    model.ModelEnumerations[viewItem.SourceType.FullName] = EnumUtilities.GetEnumValueItems(viewItem.SourceType);
+                    model.ModelEnumerations[originalSourceType.FullName] = EnumUtilities.GetEnumValueItems(originalSourceType);
                 }
             }
         }

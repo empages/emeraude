@@ -137,6 +137,7 @@ namespace Emeraude.Infrastructure.Identity.EventHandlers
             }
             catch (Exception)
             {
+                this.logger.LogDebug("An event handler ({Type}) with no implementation has been requested", typeof(THandler).FullName);
                 handler = null;
                 return false;
             }

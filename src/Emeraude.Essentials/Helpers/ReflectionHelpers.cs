@@ -27,7 +27,14 @@ namespace Emeraude.Essentials.Helpers
         /// <returns></returns>
         public static Type GetTypeByIgnoreTheNullable(Type type)
         {
-            return Nullable.GetUnderlyingType(type) != null ? Nullable.GetUnderlyingType(type) : type;
+            try
+            {
+                return Nullable.GetUnderlyingType(type) != null ? Nullable.GetUnderlyingType(type) : type;
+            }
+            catch (Exception)
+            {
+                return type;
+            }
         }
 
         /// <summary>

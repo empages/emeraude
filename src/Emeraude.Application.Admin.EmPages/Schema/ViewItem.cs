@@ -46,11 +46,23 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         public virtual void SetComponent<TComponent>(Action<TComponent> componentAction = null)
             where TComponent : EmPageComponent, new()
         {
+            this.InitializeComponent(componentAction);
+        }
+
+        /// <summary>
+        /// Initialize component and its specified properties.
+        /// </summary>
+        /// <param name="componentAction"></param>
+        /// <typeparam name="TComponent">Type of the component.</typeparam>
+        protected void InitializeComponent<TComponent>(Action<TComponent> componentAction)
+            where TComponent : EmPageComponent, new()
+        {
             var component = new TComponent();
             componentAction?.Invoke(component);
             this.Component = component;
             this.Component.SourceType = this.SourceType;
             this.Parameters = this.Component.GetParametersObject();
+            this.Component.ValidateSetup();
         }
     }
 }

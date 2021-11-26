@@ -29,15 +29,5 @@ namespace Emeraude.Infrastructure.FileStorage.Validation
         /// <param name="customMaxFileSize"></param>
         /// <returns></returns>
         ValidationResult ValidateFormImageFile(IFormFile formFile, List<FileExtensions> customFileExtensions = null, List<string> customMimeTypes = null, long customMaxFileSize = 0);
-
-        /// <summary>
-        /// Validate video by default or custom criteria.
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <param name="customFileExtensions"></param>
-        /// <param name="customMimeTypes"></param>
-        /// <param name="customMaxFileSize"></param>
-        /// <returns></returns>
-        ValidationResult ValidateFormVideoFile(IFormFile formFile, List<FileExtensions> customFileExtensions = null, List<string> customMimeTypes = null, long customMaxFileSize = 0);
     }
 }

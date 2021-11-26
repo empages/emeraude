@@ -50,5 +50,13 @@ namespace Emeraude.Application.Admin.EmPages.Components
         /// </summary>
         /// <returns></returns>
         public virtual object GetParametersObject() => new { };
+
+        /// <summary>
+        /// Validates setup of component.In order to provide a custom implementation for the component
+        /// take into account that there is no base implementation of that validation method.
+        /// </summary>
+        public virtual void ValidateSetup()
+        {
+        }
     }
 }

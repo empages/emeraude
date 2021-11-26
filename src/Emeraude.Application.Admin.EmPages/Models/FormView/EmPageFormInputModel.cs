@@ -26,6 +26,11 @@ namespace Emeraude.Application.Admin.EmPages.Models.FormView
         public bool Required { get; set; }
 
         /// <summary>
+        /// Indicates whether the input could contains null or not.
+        /// </summary>
+        public bool AllowNullValue { get; set; }
+
+        /// <summary>
         /// Indicates whether the input will be readonly or not.
         /// </summary>
         public bool Readonly { get; set; }

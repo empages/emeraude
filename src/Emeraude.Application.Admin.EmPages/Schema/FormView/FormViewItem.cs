@@ -1,6 +1,8 @@
 ﻿using System;
+using Emeraude.Application.Admin.EmPages.Components;
 using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Shared;
+using Emeraude.Essentials.Extensions;
 
 namespace Emeraude.Application.Admin.EmPages.Schema.FormView
 {
@@ -26,10 +28,15 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
         public bool Readonly { get; set; }
 
         /// <summary>
+        /// Flag that indicates whether the item could be null or not.
+        /// </summary>
+        public bool IsNullable => this.SourceType?.IsNullableType() ?? false;
+
+        /// <summary>
         /// <inheritdoc cref="SetComponent{TComponent}"/>
         /// </summary>
         /// <param name="componentAction"></param>
-        /// <typeparam name="TComponent">Component type that must be instance of <see cref="EmPageBaseFormElement"/> if view item is not set to readonly via <see cref="Readonly"/>.</typeparam>
+        /// <typeparam name="TComponent">Component type that must be instance of <see cref="EmPageComponent"/> if view item is not set to readonly via <see cref="Readonly"/>.</typeparam>
         /// <exception cref="InvalidCastException">Throws when the view item is not set to readonly via <see cref="Readonly"/> and component type is not <see cref="EmPageBaseFormElement"/>.</exception>
         public override void SetComponent<TComponent>(Action<TComponent> componentAction = null)
         {
@@ -42,7 +49,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
                 }
             }
 
-            base.SetComponent<TComponent>();
+            this.InitializeComponent(componentAction);
         }
     }
 }

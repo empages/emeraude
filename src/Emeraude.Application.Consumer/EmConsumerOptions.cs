@@ -12,11 +12,6 @@ namespace Emeraude.Application.Consumer
     public class EmConsumerOptions : IEmOptions
     {
         /// <summary>
-        /// Default redirect function that compute the action result redirection after login. If callback is null redirection will be executed to Index of HomeController if exists.
-        /// </summary>
-        public Func<HttpContext, IActionResult> AuthenticationDefaultRedirectCallback { get; set; }
-
-        /// <summary>
         /// Implementation type of <see cref="ISitemapComposition"/>.
         /// </summary>
         public Type SitemapCompositionType { get; private set; }

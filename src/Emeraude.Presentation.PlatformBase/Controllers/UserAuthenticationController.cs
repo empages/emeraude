@@ -9,6 +9,7 @@ using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.ExternalProviders;
 using Emeraude.Infrastructure.Identity.Services;
 using Emeraude.Presentation.Controllers;
+using Emeraude.Presentation.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -106,7 +107,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers
 
         private IActionResult RedirectToDefault()
         {
-            var redirectCallback = this.OptionsProvider.GetClientOptions().AuthenticationDefaultRedirectCallback;
+            var redirectCallback = this.OptionsProvider.GetPresentationOptions().AuthenticationDefaultRedirectCallback;
             return redirectCallback != null
                 ? redirectCallback.Invoke(this.HttpContext)
                 : this.LocalRedirect("/");

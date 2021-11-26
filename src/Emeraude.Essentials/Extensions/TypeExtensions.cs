@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Emeraude.Essentials.Helpers;
 
 namespace Emeraude.Essentials.Extensions
 {
@@ -187,5 +190,66 @@ namespace Emeraude.Essentials.Extensions
 
             return false;
         }
+
+        /// <summary>
+        /// Checks whether a type is a iterable type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsIterableType(this Type type)
+        {
+            var originalSourceType = ReflectionHelpers.GetTypeByIgnoreTheNullable(type);
+            bool isEnumerableType = originalSourceType.IsEnumerableType();
+            bool isCollectionType = originalSourceType.IsCollectionType();
+            bool isArray = originalSourceType.IsArray;
+
+            return isEnumerableType || isCollectionType || isArray;
+        }
+
+        /// <summary>
+        /// Checks whether a type is a collection or not.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsCollectionType(this Type type) => type.ImplementsGenericInterface(typeof(ICollection<>));
+
+        /// <summary>
+        /// Checks whether a type is a list or not.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsListType(this Type type) => typeof(IList).IsAssignableFrom(type);
+
+        /// <summary>
+        /// Checks whether a type is enumerable.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsEnumerableType(this Type type) => typeof(IEnumerable).IsAssignableFrom(type);
+
+        /// <summary>
+        /// Check whether a type is implement generic interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="interfaceType"></param>
+        /// <returns></returns>
+        public static bool ImplementsGenericInterface(this Type type, Type interfaceType) => type.GetGenericInterface(interfaceType) != null;
+
+        /// <summary>
+        /// Get generic interface of a type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="genericInterface"></param>
+        /// <returns></returns>
+        public static Type GetGenericInterface(this Type type, Type genericInterface) =>
+            type.IsGenericType(genericInterface) ? type : type.GetInterfaces().FirstOrDefault(t => t.IsGenericType(genericInterface));
+
+        /// <summary>
+        /// Checks whether a type is ga generic type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="genericType"></param>
+        /// <returns></returns>
+        public static bool IsGenericType(this Type type, Type genericType) => type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
     }
 }

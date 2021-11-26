@@ -3,7 +3,7 @@
 namespace Emeraude.Contracts
 {
     /// <summary>
-    /// Interface that represent the domain entity.
+    /// Contract that represent the domain entity.
     /// </summary>
     public interface IEntity
     {

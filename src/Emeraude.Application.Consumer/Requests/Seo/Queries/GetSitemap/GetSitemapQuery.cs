@@ -24,8 +24,8 @@ namespace Emeraude.Application.Consumer.Requests.Seo.Queries.GetSitemap
             /// <param name="sitemapComposition"></param>
             /// <param name="httpContextAccessor"></param>
             public GetSitemapQueryHandler(
-                ISitemapComposition sitemapComposition,
-                IHttpContextAccessor httpContextAccessor)
+                IHttpContextAccessor httpContextAccessor,
+                ISitemapComposition sitemapComposition = null)
             {
                 this.sitemapComposition = sitemapComposition;
                 this.httpContextAccessor = httpContextAccessor;
@@ -35,12 +35,16 @@ namespace Emeraude.Application.Consumer.Requests.Seo.Queries.GetSitemap
             public async Task<SitemapResult> Handle(GetSitemapQuery request, CancellationToken cancellationToken)
             {
                 var baseUrl = this.httpContextAccessor.HttpContext.GetAbsoluteRoute(string.Empty);
-                var sitemapPatterns = await this.sitemapComposition.SetupAsync();
                 var result = new SitemapResult();
-                foreach (var pattern in sitemapPatterns)
+
+                if (this.sitemapComposition != null)
                 {
-                    pattern.SetBaseUrl(baseUrl);
-                    result.Urls.AddRange(await pattern.BuildPatternUrlsAsync());
+                    var sitemapPatterns = await this.sitemapComposition.SetupAsync();
+                    foreach (var pattern in sitemapPatterns)
+                    {
+                        pattern.SetBaseUrl(baseUrl);
+                        result.Urls.AddRange(await pattern.BuildPatternUrlsAsync());
+                    }
                 }
 
                 return result;
