@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Definux.Utilities.Extensions;
 using Emeraude.Application.Exceptions;
+using Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Emeraude.Presentation.Extensions

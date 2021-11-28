@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Locales.Attributes;
 using Emeraude.Application.Exceptions;
 using Emeraude.Application.Identity.Requests.Commands.Register;
+using Emeraude.Infrastructure.Localization.Attributes;
 using Emeraude.Presentation.Extensions;
 using Emeraude.Presentation.PlatformBase.Extensions;
 using Emeraude.Presentation.PlatformBase.Models;

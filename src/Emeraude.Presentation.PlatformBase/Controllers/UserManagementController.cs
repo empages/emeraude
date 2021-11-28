@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Locales.Attributes;
-using Definux.Utilities.Objects;
 using Emeraude.Application.Identity.Requests.Commands.ChangeEmail;
 using Emeraude.Essentials.Base;
+using Emeraude.Essentials.Models;
+using Emeraude.Infrastructure.Localization.Attributes;
 using Emeraude.Presentation.Controllers;
 using Emeraude.Presentation.PlatformBase.Extensions;
 using Microsoft.AspNetCore.Authorization;

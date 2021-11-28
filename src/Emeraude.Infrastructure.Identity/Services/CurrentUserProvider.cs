@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Utilities.Extensions;
 using Emeraude.Contracts;
+using Emeraude.Essentials.Extensions;
 using Emeraude.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -26,12 +26,7 @@ namespace Emeraude.Infrastructure.Identity.Services
             UserManager<User> userManager,
             ILogger<CurrentUserProvider> logger)
         {
-            this.CurrentUserId = httpAccessor.GetCurrentUserId();
-            if (!this.CurrentUserId.HasValue)
-            {
-                this.CurrentUserId = httpAccessor.HttpContext.GetJwtUserId();
-            }
-
+            this.CurrentUserId = httpAccessor.GetCurrentUserId() ?? httpAccessor.HttpContext.GetJwtUserId();
             this.userManager = userManager;
             this.logger = logger;
         }

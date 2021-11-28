@@ -18,8 +18,7 @@ namespace Emeraude.Cli
                                 .InformationalVersion
                                 .ToString();
 
-            Console.WriteLine($"Emeraude .NET Command-line Tools {versionString} (https://emeraude.dev/)");
-            Console.WriteLine($"Powered by Definux (https://definux.io/)");
+            Console.WriteLine($"Emeraude Framework .NET Command-line Tools {versionString} (https://emeraude.dev/)");
             Console.WriteLine("- - - - - -");
             Console.WriteLine("Usage: em [command] [parameters]");
             Console.WriteLine("- - - - - -");

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Definux.Utilities.Extensions;
+using Emeraude.Essentials.Extensions;
 
 namespace Emeraude.Application.ClientBuilder.Models
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Definux.Emeraude.Locales.Attributes;
 using Emeraude.Application.Identity.Requests.Commands.ExternalAuthentication;
 using Emeraude.Infrastructure.Identity.Extensions;
+using Emeraude.Infrastructure.Localization.Attributes;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +75,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers
                 return !string.IsNullOrEmpty(returnUrl) ? this.LocalRedirect(returnUrl) : this.RedirectToDefault();
             }
 
+            // ReSharper disable once Mvc.ActionNotResolved
             return this.RedirectToAction(nameof(this.Login));
         }
     }

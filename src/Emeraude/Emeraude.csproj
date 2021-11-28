@@ -2,9 +2,6 @@
   
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Definux.Utilities.DataAnnotations" Version="1.0.40" />
-    <PackageReference Include="Definux.Utilities.Extensions" Version="1.0.40" />
-    <PackageReference Include="Definux.Utilities.Functions" Version="1.0.40" />
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
     <PackageReference Include="IdentityServer4" Version="4.1.2" />

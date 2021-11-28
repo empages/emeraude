@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Definux.Utilities.Enumerations;
-using Definux.Utilities.Validation;
+using Emeraude.Essentials.Enumerations;
+using Emeraude.Essentials.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace Emeraude.Infrastructure.FileStorage.Validation.Handlers

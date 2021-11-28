@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace Emeraude.Infrastructure.Identity.EventHandlers
 {
     /// <inheritdoc cref="IIdentityEventManager"/>
-    internal class IdentityEventManager : IIdentityEventManager
+    public class IdentityEventManager : IIdentityEventManager
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -18,7 +18,10 @@ namespace Emeraude.Infrastructure.Identity.EventHandlers
         /// <param name="serviceProvider"></param>
         /// <param name="httpContextAccessor"></param>
         /// <param name="logger"></param>
-        public IdentityEventManager(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, ILogger<IdentityEventManager> logger)
+        public IdentityEventManager(
+            IServiceProvider serviceProvider,
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<IdentityEventManager> logger)
         {
             this.serviceProvider = serviceProvider;
             this.httpContextAccessor = httpContextAccessor;

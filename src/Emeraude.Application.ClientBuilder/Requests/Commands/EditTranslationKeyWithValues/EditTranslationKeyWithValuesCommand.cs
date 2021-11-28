@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Utilities.Objects;
 using Emeraude.Application.Exceptions;
+using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Localization.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

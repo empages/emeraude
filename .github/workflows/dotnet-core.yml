@@ -14,18 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core 6 Preview
+      - name: Setup .NET Core 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.100-preview.6.21355.2
-      - name: Setup .NET Core 2.1
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 2.1.810
+          dotnet-version: 6.0.100
       - name: Install dependencies
         run: dotnet restore
-      - name: Install dotnet ef
-        run: dotnet tool install --global dotnet-ef
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test

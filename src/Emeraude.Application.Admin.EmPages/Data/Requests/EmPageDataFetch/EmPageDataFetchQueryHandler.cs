@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Definux.Utilities.Functions;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Services;
 using Emeraude.Contracts;
@@ -56,7 +55,7 @@ namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch
                 var requestExpression = this.BuildRequestExpression(request);
                 if (request.FilterExpression != null)
                 {
-                    requestExpression = ExpressionFunctions.AndAlso(requestExpression, request.FilterExpression);
+                    requestExpression = ExpressionBuilders.AndAlso(requestExpression, request.FilterExpression);
                 }
 
                 result.AllItemsCount = this.context
@@ -123,7 +122,7 @@ namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch
             {
                 foreach (var expression in expressionList)
                 {
-                    requestExpression = ExpressionFunctions.AndAlso(requestExpression, expression);
+                    requestExpression = ExpressionBuilders.AndAlso(requestExpression, expression);
                 }
             }
 

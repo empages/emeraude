@@ -22,6 +22,7 @@ namespace Emeraude.Presentation.Controllers
 
             if (compositeViewEngine.FindView(this.ControllerContext, "Index", false).Success)
             {
+                // ReSharper disable once Mvc.ViewNotResolved
                 return this.View(statusCode);
             }
 

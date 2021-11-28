@@ -3,21 +3,21 @@
 	    <TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10.0</LangVersion>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Copyright>2021 Definux</Copyright>
-		<Company>Definux</Company>
-		<Authors>Definux</Authors>
-		<Product>Emeraude</Product>
+		<Copyright>2021 Emeraude</Copyright>
+		<Company>Emeraude</Company>
+		<Authors>Georgi Karagogov</Authors>
+		<Product>Emeraude Framework</Product>
 		<PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/Definux/Emeraude</RepositoryUrl>
-		<Description>Emeraude Framework is a powerful solution for creating ASP.NET based web applications with predefined administration, authentication, authorization, localization, logging.</Description>
-		<PackageTags>aspnet, aspnetmvc, razor, definux, mvc, administration, localization, logging, authentication, authorization</PackageTags>
+		<RepositoryUrl>https://github.com/emeraudeframework/emeraude</RepositoryUrl>
+		<Description>A lightweight ASP.NET framework for creating successful products</Description>
+		<PackageTags>emeraude, framework, aspnet, aspnetmvc, razor, mvc, administration, localization, authentication, authorization, portal gateway</PackageTags>
 		<Version>$(PACKAGE_VERSION)</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>logo_128.jpg</PackageIcon>
 		<PackageIconUrl />
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<CodeAnalysisRuleSet>../../Definux.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>../../Emeraude.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 	
 	<ItemGroup>
@@ -39,9 +39,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<PropertyGroup>
-		<GenerateDocs>False</GenerateDocs>
-	</PropertyGroup>
-	<Import Project="builds\GenerateDocs.targets" Condition="'$(Configuration)|$(GenerateDocs)'=='Debug|True'" />
-	
 </Project>

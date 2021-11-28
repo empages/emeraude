@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Definux.Utilities.Extensions;
 using Emeraude.Application.Consumer.Adapters;
+using Emeraude.Essentials.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 

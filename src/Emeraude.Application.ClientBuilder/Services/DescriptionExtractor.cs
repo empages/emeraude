@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Definux.Utilities.Extensions;
 using Emeraude.Application.ClientBuilder.Attributes;
 using Emeraude.Application.ClientBuilder.Models;
+using Emeraude.Essentials.Extensions;
 
 namespace Emeraude.Application.ClientBuilder.Services
 {

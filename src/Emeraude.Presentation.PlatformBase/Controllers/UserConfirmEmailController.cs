@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Definux.Emeraude.Locales.Attributes;
 using Emeraude.Application.Identity.Requests.Commands.ConfirmEmail;
+using Emeraude.Infrastructure.Localization.Attributes;
 using Emeraude.Presentation.PlatformBase.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

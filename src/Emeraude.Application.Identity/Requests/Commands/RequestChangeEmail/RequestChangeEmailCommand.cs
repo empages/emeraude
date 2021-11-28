@@ -2,8 +2,8 @@
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Utilities.Extensions;
-using Definux.Utilities.Objects;
+using Emeraude.Essentials.Extensions;
+using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Identity.EventHandlers;
 using Emeraude.Infrastructure.Identity.Services;
 using Emeraude.Infrastructure.Localization.Services;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace Definux.Emeraude.Locales.Attributes
+namespace Emeraude.Infrastructure.Localization.Attributes
 {
     /// <summary>
     /// Defines language SEO friendly route based on language code (not default language).

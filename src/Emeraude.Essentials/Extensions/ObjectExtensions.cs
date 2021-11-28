@@ -11,6 +11,22 @@ namespace Emeraude.Essentials.Extensions
     public static class ObjectExtensions
     {
         /// <summary>
+        /// Get GUID value or null from object value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Guid GetGuidValueOrDefault(this object value)
+        {
+            var resultGuid = Guid.Empty;
+            if (value != null)
+            {
+                Guid.TryParse(value.ToString(), out resultGuid);
+            }
+
+            return resultGuid;
+        }
+
+        /// <summary>
         /// Converts object to serialized string that allows easier logging.
         /// </summary>
         /// <param name="sourceObject"></param>

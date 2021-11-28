@@ -1,5 +1,5 @@
 using System;
-using Definux.Utilities.Validation;
+using Emeraude.Essentials.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace Emeraude.Infrastructure.FileStorage.Validation.Handlers

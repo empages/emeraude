@@ -1,5 +1,5 @@
 ﻿using System;
-using Definux.Utilities.Objects;
+using Emeraude.Essentials.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Emeraude.Infrastructure.Identity.Models

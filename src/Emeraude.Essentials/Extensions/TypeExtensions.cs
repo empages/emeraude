@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Reflection;
 using Emeraude.Essentials.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Emeraude.Essentials.Extensions
 {
@@ -251,5 +253,46 @@ namespace Emeraude.Essentials.Extensions
         /// <param name="genericType"></param>
         /// <returns></returns>
         public static bool IsGenericType(this Type type, Type genericType) => type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
+
+        /// <summary>
+        /// Gets the <see cref="System.Net.Http.HttpMethod"/> from action from the controller based on action attributes.
+        /// </summary>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
+        public static System.Net.Http.HttpMethod GetControllerActionHttpMethod(this MethodInfo methodInfo)
+        {
+            System.Net.Http.HttpMethod resultMethod = System.Net.Http.HttpMethod.Get;
+
+            if (methodInfo.HasAttribute<HttpGetAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Get;
+            }
+            else if (methodInfo.HasAttribute<HttpPostAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Post;
+            }
+            else if (methodInfo.HasAttribute<HttpPutAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Put;
+            }
+            else if (methodInfo.HasAttribute<HttpDeleteAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Delete;
+            }
+            else if (methodInfo.HasAttribute<HttpOptionsAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Options;
+            }
+            else if (methodInfo.HasAttribute<HttpHeadAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Head;
+            }
+            else if (methodInfo.HasAttribute<HttpPatchAttribute>())
+            {
+                resultMethod = System.Net.Http.HttpMethod.Patch;
+            }
+
+            return resultMethod;
+        }
     }
 }

@@ -12,8 +12,8 @@ namespace Emeraude.Cli.Commands.Implementations.Create
     /// </summary>
     internal class CreateCommand : Command
     {
-        private const string StartupProjectName = "Emeraude.Template";
-        private const string EmStartupGitHubRepositoryUrl = "https://github.com/Definux/Emeraude.Template.git";
+        private const string StartupProjectName = "Emeraude.StartupTemplate";
+        private const string EmStartupGitHubRepositoryUrl = "https://github.com/emeraudeframework/startup-template.git";
 
         /// <inheritdoc/>
         internal override void Execute(Dictionary<string, string> parameters)

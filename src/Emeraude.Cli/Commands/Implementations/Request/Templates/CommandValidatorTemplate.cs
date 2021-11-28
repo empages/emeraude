@@ -18,7 +18,7 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CommandValidatorTemplate : CommandValidatorTemplateBase
     {
@@ -28,44 +28,44 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using FluentValidation;\r\n\r\nnamespace ");
+            this.Write("using FluentValidation;\r\n\r\n\r\nnamespace ");
             
-            #line 8 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
             this.Write(".Application.Requests.");
             
-            #line 8 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestFolder"]));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 8 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n    public class ");
             
-            #line 10 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("CommandValidator : AbstractValidator<");
             
-            #line 10 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Command>\r\n    {\r\n        public ");
             
-            #line 12 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default

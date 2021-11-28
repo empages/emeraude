@@ -18,7 +18,7 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
+    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class ResultTemplate : ResultTemplateBase
     {
@@ -30,28 +30,28 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
         {
             this.Write("namespace ");
             
-            #line 6 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
+            #line 6 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
             this.Write(".Application.Requests.");
             
-            #line 6 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
+            #line 6 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestFolder"]));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 6 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
+            #line 6 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n    public class ");
             
-            #line 8 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
+            #line 8 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default

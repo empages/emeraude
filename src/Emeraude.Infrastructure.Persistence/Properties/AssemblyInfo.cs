@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyProduct("Emeraude.Data")]
+[assembly: AssemblyProduct("Emeraude.Infrastructure.Persistence")]
 [assembly: ComVisible(false)]
 
-namespace Definux.Emeraude.Data
+namespace Emeraude.Infrastructure.Persistence.Properties
 {
     /// <summary>
     /// Assembly info provider.

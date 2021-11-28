@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Definux.Utilities.Extensions;
 using Emeraude.Essentials.Helpers;
 
 namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
@@ -73,7 +72,7 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
 
             if (string.IsNullOrWhiteSpace(viewItem.Title))
             {
-                viewItem.Title = viewItem.SourceName.SplitWordsByCapitalLetters();
+                viewItem.Title = StringUtilities.SplitWordsByCapitalLetters(viewItem.SourceName);
             }
 
             if (viewItem.Order == -1)

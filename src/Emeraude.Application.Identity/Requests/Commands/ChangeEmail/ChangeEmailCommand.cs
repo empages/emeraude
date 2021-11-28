@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Definux.Utilities.Objects;
+using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Identity.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Definux.Utilities.Functions;
 using Emeraude.Application.Admin.EmPages.Data.Requests;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataCreate;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataDetails;
@@ -110,7 +109,7 @@ namespace Emeraude.Application.Admin.EmPages.Data
                 }
 
                 var currentFilterExpression = this.CustomFilterExpressionsBuilders[property];
-                resultExpression = ExpressionFunctions.AndAlso(resultExpression, currentFilterExpression(value));
+                resultExpression = ExpressionBuilders.AndAlso(resultExpression, currentFilterExpression(value));
             }
 
             return resultExpression;

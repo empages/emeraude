@@ -1,4 +1,4 @@
-﻿using Definux.Utilities.Objects;
+﻿using Emeraude.Essentials.Models;
 
 namespace Emeraude.Application.Identity.Requests.Commands.ResetPassword
 {

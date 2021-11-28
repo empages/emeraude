@@ -2,9 +2,9 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Definux.Utilities.Functions;
 using Emeraude.Contracts;
 using Emeraude.Essentials.Base;
+using Emeraude.Essentials.Helpers;
 using Emeraude.Infrastructure.FileStorage.Services;
 using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.Persistence;
@@ -73,7 +73,7 @@ namespace Emeraude.Infrastructure.Identity.Services
             try
             {
                 string targetFileDirectoryPath = this.rootsService.GetPathFromPublicRoot(EmFolders.UploadFolderName, EmFolders.ImagesFolderName);
-                string avatarName = FilesFunctions.GetUniqueFileName();
+                string avatarName = FilesUtilities.GetUniqueFileName();
                 string avatarNameWithExtension = $"{avatarName}.jpg";
                 string targetFilePath = Path.Combine(targetFileDirectoryPath, avatarNameWithExtension);
 
@@ -106,7 +106,7 @@ namespace Emeraude.Infrastructure.Identity.Services
             {
                 string avatarRelativePath = Path.Combine(EmFolders.UploadFolderName, EmFolders.ImagesFolderName);
                 string targetFileDirectoryPath = Path.Combine(this.hostEnvironment.ContentRootPath, EmFolders.PublicRootFolderName, avatarRelativePath);
-                string avatarName = FilesFunctions.GetUniqueFileName();
+                string avatarName = FilesUtilities.GetUniqueFileName();
                 string avatarNameWithExtension = $"{avatarName}.jpg";
                 string targetFilePath = Path.Combine(targetFileDirectoryPath, avatarNameWithExtension);
 

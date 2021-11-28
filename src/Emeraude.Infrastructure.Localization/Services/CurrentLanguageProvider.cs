@@ -37,14 +37,9 @@ namespace Emeraude.Infrastructure.Localization.Services
             {
                 var language = this.context
                     .Languages
-                    .FirstOrDefault(x => x.Code == this.languageCode);
-
-                if (language == null)
-                {
-                    language = this.context
-                        .Languages
-                        .FirstOrDefault(x => x.IsDefault);
-                }
+                    .FirstOrDefault(x => x.Code == this.languageCode) ?? this.context
+                    .Languages
+                    .FirstOrDefault(x => x.IsDefault);
 
                 return language;
             }
@@ -61,14 +56,9 @@ namespace Emeraude.Infrastructure.Localization.Services
             {
                 var language = await this.context
                     .Languages
-                    .FirstOrDefaultAsync(x => x.Code == this.languageCode);
-
-                if (language == null)
-                {
-                    language = await this.context
-                        .Languages
-                        .FirstOrDefaultAsync(x => x.IsDefault);
-                }
+                    .FirstOrDefaultAsync(x => x.Code == this.languageCode) ?? await this.context
+                    .Languages
+                    .FirstOrDefaultAsync(x => x.IsDefault);
 
                 return language;
             }

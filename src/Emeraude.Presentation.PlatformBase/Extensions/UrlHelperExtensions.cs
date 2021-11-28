@@ -1,5 +1,5 @@
 ﻿using System;
-using Definux.Utilities.Extensions;
+using Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 

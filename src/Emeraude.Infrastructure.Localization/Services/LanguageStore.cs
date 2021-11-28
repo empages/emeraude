@@ -81,7 +81,7 @@ namespace Emeraude.Infrastructure.Localization.Services
         {
             try
             {
-                return await this.context.Languages.AsQueryable().FirstOrDefaultAsync(x => x.IsDefault);
+                return await this.context.Languages.FirstOrDefaultAsync(x => x.IsDefault);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace Emeraude.Infrastructure.Localization.Services
         {
             try
             {
-                return this.context.Languages.AsQueryable().ToList();
+                return this.context.Languages.ToList();
             }
             catch (Exception ex)
             {
@@ -127,7 +127,7 @@ namespace Emeraude.Infrastructure.Localization.Services
         {
             try
             {
-                return await this.context.Languages.AsQueryable().ToListAsync();
+                return await this.context.Languages.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -143,7 +143,6 @@ namespace Emeraude.Infrastructure.Localization.Services
             {
                 var translations = this.context
                     .Values
-                    .AsQueryable()
                     .Where(x => x.LanguageId == languageId)
                     .Include(x => x.TranslationKey)
                     .ToDictionary(k => k.TranslationKey.Key, v => v.Value);

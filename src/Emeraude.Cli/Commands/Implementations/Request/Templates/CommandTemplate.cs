@@ -18,7 +18,7 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class CommandTemplate : CommandTemplateBase
     {
@@ -30,98 +30,98 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
         {
             this.Write("using AutoMapper;\r\nusing ");
             
-            #line 7 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 7 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
-            this.Write(".Application.Interfaces;\r\nusing MediatR;\r\nusing System.Threading;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace ");
+            this.Write(".Application.Interfaces;\r\nusing MediatR;\r\nusing System.Threading;\r\nusing System.Threading.Tasks;\r\n\r\n\r\nnamespace ");
             
-            #line 12 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
             this.Write(".Application.Requests.");
             
-            #line 12 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestFolder"]));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 12 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n    public class ");
             
-            #line 14 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 15 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Command : ");
             
-            #line 14 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 15 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Request, IRequest<");
             
-            #line 14 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 15 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Result>\r\n    {\r\n        public class ");
             
-            #line 16 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 17 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("CommandHandler : IRequestHandler<");
             
-            #line 16 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 17 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Command, ");
             
-            #line 16 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 17 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Result>\r\n        {\r\n            private readonly IEntityContext context;\r\n            private readonly IMapper mapper;\r\n\r\n            public ");
             
-            #line 21 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 22 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("CommandHandler(IEntityContext context, IMapper mapper)\r\n            {\r\n                this.context = context;\r\n                this.mapper = mapper;\r\n            }\r\n\r\n            public async Task<");
             
-            #line 27 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 28 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Result> Handle(");
             
-            #line 27 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 28 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("Command request, CancellationToken cancellationToken)\r\n            {\r\n                return new ");
             
-            #line 29 "D:\GitHub\Definux\Emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
+            #line 30 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
