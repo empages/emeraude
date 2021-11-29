@@ -166,7 +166,7 @@ namespace Emeraude.Application.Admin.EmPages.Data
         {
             this.TriggerDataStrategyGuard();
             var createCommand = this.DataStrategy.BuildCreateCommand(model);
-            return await this.ExecuteDataStrategyRequestAsync<string>(createCommand);
+            return (await this.ExecuteDataStrategyRequestAsync<object>(createCommand))?.ToString();
         }
 
         /// <summary>

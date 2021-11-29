@@ -17,10 +17,9 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
         public FormViewItemType Type { get; set; }
 
         /// <summary>
-        /// Property that place required indicator on the current view item when value is set to 'true'.
-        /// That property does not have influence to the validation of the form.
+        /// Property that notify the client's view that field is required.
         /// </summary>
-        public bool RequiredIndicator { get; set; }
+        public bool Required { get; set; }
 
         /// <summary>
         /// Blocks current view item for mutation via the form.

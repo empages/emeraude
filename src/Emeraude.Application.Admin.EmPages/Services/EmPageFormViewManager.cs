@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Models.FormView;
@@ -79,6 +80,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
                     case EmPageFormType.EditForm:
                         formViewItems = schemaDescription.FormView.EditFormViewItems;
                         rawModel = await dataManager.GetRawModelAsync(modelId);
+                        model.Identifier = rawModel?.Id;
                         this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
                         this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
                         break;
@@ -96,15 +98,15 @@ namespace Emeraude.Application.Admin.EmPages.Services
         }
 
         /// <inheritdoc cref="SubmitFormViewModelAsync"/>
-        public async Task<EmPageFormSubmissionResponse> SubmitFormViewModelAsync(EmPageFormType formType, EmPageFormViewModel viewModel)
+        public async Task<EmPageFormSubmissionResponse> SubmitFormViewModelAsync(string route, EmPageFormType type, JsonElement payload)
         {
             var response = new EmPageFormSubmissionResponse();
             try
             {
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(viewModel.Context.Route);
-                var model = this.BuildModel(viewModel.Inputs, schemaDescription.ModelType);
+                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
                 var dataManage = this.GetDataManagerInstance(schemaDescription);
-                response.MutatedModelId = (await dataManage.CreateAsync(model))?.ToString();
+                var model = this.GetModelFromPayload(payload, schemaDescription);
+                response.MutatedModelId = await dataManage.CreateAsync(model);
             }
             catch (ValidationException ex)
             {
@@ -116,18 +118,6 @@ namespace Emeraude.Application.Admin.EmPages.Services
             catch (Exception ex)
             {
                 response.OperationError = ex.Message;
-            }
-
-            viewModel.ClearErrors();
-
-            this.MapValidationErrorsToModelInputs(
-                viewModel.Inputs,
-                response.ValidationErrors,
-                out var nonMappedErrors);
-
-            if (nonMappedErrors != null && nonMappedErrors.Any())
-            {
-                viewModel.NonMappedFormErrors.AddRange(nonMappedErrors);
             }
 
             return response;
@@ -143,7 +133,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 Label = formViewItem.Title ?? formViewItem.SourceName,
                 Readonly = formViewItem.Readonly,
                 AllowNullValue = formViewItem.IsNullable,
-                Required = formViewItem.RequiredIndicator,
+                Required = formViewItem.Required,
                 Order = formViewItem.Order,
                 Property = formViewItem?.SourceName,
                 Value = schemaDescription.ModelType.GetProperty(formViewItem.SourceName)?.GetValue(rawModel),
@@ -151,34 +141,9 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 Parameters = viewModel.PropertyParametersMap.FirstOrDefault(x => x.Property == formViewItem.SourceName)?.Value,
             };
 
-        private void MapValidationErrorsToModelInputs(
-            IEnumerable<EmPageFormInputModel> inputModels,
-            IDictionary<string, string[]> errors,
-            out IEnumerable<string> unmappedErrors)
+        private IEmPageModel GetModelFromPayload(JsonElement payload, EmPageSchemaDescription schemaDescription)
         {
-            var mappedKeys = new List<string>();
-            foreach (var inputModel in inputModels)
-            {
-                var errorKey = $"Model.{inputModel.Property}";
-                if (!errors.ContainsKey(errorKey))
-                {
-                    continue;
-                }
-
-                inputModel.ValidationErrors.AddRange(errors[errorKey]);
-                mappedKeys.Add(errorKey);
-            }
-
-            if (mappedKeys.Count != errors.Count)
-            {
-                unmappedErrors = errors
-                    .Where(x => !mappedKeys.Contains(x.Key))
-                    .SelectMany(x => x.Value);
-            }
-            else
-            {
-                unmappedErrors = new List<string>();
-            }
+            return payload.Deserialize(schemaDescription.ModelType, this.jsonOptions.JsonSerializerOptions) as IEmPageModel;
         }
     }
 }

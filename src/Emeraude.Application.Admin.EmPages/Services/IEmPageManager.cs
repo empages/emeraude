@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Models.DetailsView;
 using Emeraude.Application.Admin.EmPages.Models.FormView;
@@ -73,11 +74,10 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// <summary>
         /// Submit form view model for processing.
         /// </summary>
-        /// <param name="formType"></param>
-        /// <param name="viewModel"></param>
+        /// <param name="route"></param>
+        /// <param name="type"></param>
+        /// <param name="payload"></param>
         /// <returns></returns>
-        Task<EmPageFormSubmissionResponse> SubmitFormViewModelAsync(
-            EmPageFormType formType,
-            EmPageFormViewModel viewModel);
+        Task<EmPageFormSubmissionResponse> SubmitFormViewModelAsync(string route, EmPageFormType type, JsonElement payload);
     }
 }

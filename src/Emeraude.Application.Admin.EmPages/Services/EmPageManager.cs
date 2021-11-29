@@ -4,12 +4,13 @@ using System.Linq;
 using Emeraude.Application.Admin.EmPages.Components;
 using Emeraude.Application.Admin.EmPages.Data;
 using Emeraude.Application.Admin.EmPages.Models;
-using Emeraude.Application.Admin.EmPages.Models.FormView;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Admin.Models;
 using Emeraude.Essentials.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Emeraude.Application.Admin.EmPages.Services
 {
@@ -18,6 +19,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
     {
         private readonly IEmPageService emPageService;
         private readonly IServiceProvider serviceProvider;
+        private readonly JsonOptions jsonOptions;
         private readonly ILogger<EmPageManager> logger;
 
         /// <summary>
@@ -25,21 +27,19 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// </summary>
         /// <param name="emPageService"></param>
         /// <param name="serviceProvider"></param>
+        /// <param name="jsonOptionsAccessor"></param>
         /// <param name="logger"></param>
         public EmPageManager(
             IEmPageService emPageService,
             IServiceProvider serviceProvider,
+            IOptions<JsonOptions> jsonOptionsAccessor,
             ILogger<EmPageManager> logger)
         {
             this.emPageService = emPageService;
             this.serviceProvider = serviceProvider;
+            this.jsonOptions = jsonOptionsAccessor.Value;
             this.logger = logger;
         }
-
-        private IEmPageModel BuildModel(IEnumerable<EmPageFormInputModel> inputs, Type modelType) =>
-            DictionaryUtilities.NewClassInstanceFromDictionary(
-                modelType,
-                inputs.ToDictionary(k => k.Property, v => v.Value)) as IEmPageModel;
 
         private IEmPageDataManager GetDataManagerInstance(EmPageSchemaDescription schemaDescription)
         {

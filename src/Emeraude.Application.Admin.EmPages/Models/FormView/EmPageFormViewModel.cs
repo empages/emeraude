@@ -19,6 +19,12 @@ namespace Emeraude.Application.Admin.EmPages.Models.FormView
         }
 
         /// <summary>
+        /// Identifier of the model linked with current view model. Default value is null.
+        /// If the form is from type 'Edit' - the identifier will be assigned from the Id value of the model.
+        /// </summary>
+        public string Identifier { get; set; }
+
+        /// <summary>
         /// Inputs of form view.
         /// </summary>
         public List<EmPageFormInputModel> Inputs { get; set; }

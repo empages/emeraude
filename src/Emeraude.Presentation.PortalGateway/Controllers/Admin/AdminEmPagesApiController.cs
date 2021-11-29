@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Services;
 using Emeraude.Application.Admin.EmPages.Shared;
@@ -8,6 +9,7 @@ using Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 
 namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
 {
@@ -81,6 +83,23 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
             }
 
             return this.Ok(viewModel);
+        }
+
+        /// <summary>
+        /// Submits form view model.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <param name="type"></param>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        [HttpPost("form/{route}/{type}")]
+        public async Task<IActionResult> SubmitFormModel(
+            [FromRoute]string route,
+            [FromRoute]EmPageFormType type,
+            [FromBody]JsonElement payload)
+        {
+            var response = await this.emPageManager.SubmitFormViewModelAsync(route, type, payload);
+            return this.Ok(response);
         }
 
         /// <summary>

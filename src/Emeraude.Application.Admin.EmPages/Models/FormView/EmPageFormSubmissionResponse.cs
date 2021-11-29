@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Emeraude.Application.Admin.EmPages.Models.FormView
 {
@@ -19,6 +22,23 @@ namespace Emeraude.Application.Admin.EmPages.Models.FormView
         /// Id of the mutated model.
         /// </summary>
         public string MutatedModelId { get; set; }
+
+        /// <summary>
+        /// Returns boolean that indicates whether the response is succeeded or not
+        /// based on the <see cref="MutatedModelId"/>. To be a successful response
+        /// the <see cref="MutatedModelId"/> has to be different than (0 || Guid.Empty || string.Empty || null).
+        /// </summary>
+        public bool Succeeded
+        {
+            get
+            {
+                bool isEmptyOrNull = string.IsNullOrEmpty(this.MutatedModelId);
+                bool isZero = this.MutatedModelId == "0";
+                bool isGuidEmpty = this.MutatedModelId == Guid.Empty.ToString();
+
+                return !isEmptyOrNull && !isZero && !isGuidEmpty;
+            }
+        }
 
         /// <summary>
         /// Dictionary with all errors thrown during the operation execution.
