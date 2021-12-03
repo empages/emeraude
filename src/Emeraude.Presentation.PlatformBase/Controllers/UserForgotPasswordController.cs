@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Emeraude.Application.Exceptions;
 using Emeraude.Application.Identity.Requests.Commands.ForgotPassword;
-using Emeraude.Infrastructure.Localization.Attributes;
 using Emeraude.Presentation.Extensions;
+using Emeraude.Presentation.PlatformBase.Attributes;
 using Emeraude.Presentation.PlatformBase.Extensions;
 using Emeraude.Presentation.PlatformBase.Models;
 using Microsoft.AspNetCore.Mvc;

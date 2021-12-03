@@ -1,4 +1,4 @@
-﻿namespace Emeraude.Essentials.Base
+﻿namespace Emeraude.Presentation
 {
     /// <summary>
     /// List of all authentication constants into the system.

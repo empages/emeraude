@@ -1,6 +1,6 @@
 ﻿using Emeraude.Application.Admin.EmPages.Utilities;
 
-namespace Emeraude.Application.Admin.EmPages.Schema
+namespace Emeraude.Defaults.Options
 {
     /// <summary>
     /// Defaults options used for applying default properties of schema settings.

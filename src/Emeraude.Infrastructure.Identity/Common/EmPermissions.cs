@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Emeraude.Essentials.Models;
 
-namespace Emeraude.Essentials.Base
+namespace Emeraude.Infrastructure.Identity.Common
 {
     /// <summary>
     /// Built-in permissions of the Emeraude Framework.

@@ -2,9 +2,7 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Emeraude.Application.Consumer.Extensions;
 using Emeraude.Contracts;
-using Emeraude.Essentials.Base;
 using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.ExternalProviders;
 using Emeraude.Infrastructure.Identity.Services;
@@ -13,7 +11,6 @@ using Emeraude.Presentation.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
 namespace Emeraude.Presentation.PlatformBase.Controllers

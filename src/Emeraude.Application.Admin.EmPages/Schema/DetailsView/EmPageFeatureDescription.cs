@@ -29,9 +29,6 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
         /// <inheritdoc cref="EmPageFeature{TModel}.FeatureComponentType"/>
         public EmPageComponent FeatureComponentType { get; set; }
 
-        /// <inheritdoc cref="EmPageFeature{TModel}.RouteSegmentsAmount"/>
-        public int RouteSegmentsAmount { get; set; }
-
         /// <inheritdoc cref="EmPageFeature{TModel}.PageActions"/>
         public IList<EmPageAction> PageActions { get; set; }
 

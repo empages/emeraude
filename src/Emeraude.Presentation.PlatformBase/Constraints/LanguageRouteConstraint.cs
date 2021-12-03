@@ -3,7 +3,7 @@ using Emeraude.Infrastructure.Localization.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Emeraude.Infrastructure.Localization.Constraints
+namespace Emeraude.Presentation.PlatformBase.Constraints
 {
     /// <summary>
     /// Implementation of <see cref="IRouteConstraint"/> for language code constraint that validate the request language code.

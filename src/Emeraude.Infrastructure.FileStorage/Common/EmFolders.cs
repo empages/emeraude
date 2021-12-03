@@ -1,4 +1,4 @@
-﻿namespace Emeraude.Essentials.Base
+﻿namespace Emeraude.Infrastructure.FileStorage.Common
 {
     /// <summary>
     /// List of all folder names.

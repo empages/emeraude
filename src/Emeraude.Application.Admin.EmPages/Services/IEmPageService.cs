@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Schema;
 
 namespace Emeraude.Application.Admin.EmPages.Services
@@ -41,5 +42,11 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// <typeparam name="TEmPageModel">Type of the entity model.</typeparam>
         /// <returns></returns>
         Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems);
+
+        /// <summary>
+        /// Gets list of all registered EmPages that are not features.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<EmPageSimpleModel>> GetEmPagesListAsync();
     }
 }

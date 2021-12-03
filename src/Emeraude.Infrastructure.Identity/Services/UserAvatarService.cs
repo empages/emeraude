@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Emeraude.Contracts;
 using Emeraude.Essentials.Base;
 using Emeraude.Essentials.Helpers;
+using Emeraude.Infrastructure.FileStorage.Common;
 using Emeraude.Infrastructure.FileStorage.Services;
 using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.Persistence;

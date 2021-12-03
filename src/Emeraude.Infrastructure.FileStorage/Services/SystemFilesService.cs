@@ -206,6 +206,18 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         }
 
         /// <inheritdoc/>
+        public bool MoveTemporaryFileToPrivateDirectory(Guid fileId, string targetDirectory)
+        {
+            return this.MoveTemporaryFileToDirectory(fileId, targetDirectory, this.rootsService.PrivateRootDirectory);
+        }
+
+        /// <inheritdoc/>
+        public bool MoveTemporaryFileToPublicDirectory(Guid fileId, string targetDirectory)
+        {
+            return this.MoveTemporaryFileToDirectory(fileId, targetDirectory, this.rootsService.PublicRootDirectory);
+        }
+
+        /// <inheritdoc/>
         public bool MoveTemporaryFilesToPublicDirectory(IEnumerable<Guid> ids, string targetDirectory)
         {
             var result = true;
@@ -222,8 +234,9 @@ namespace Emeraude.Infrastructure.FileStorage.Services
             try
             {
                 var fileName = this.GetTemporaryFile(fileId); // with extension
-                var targetFilePath = Path.Combine(targetDirectory, fileName);
-                if (!string.IsNullOrWhiteSpace(fileName) && Directory.Exists(targetDirectory) && !File.Exists(targetFilePath))
+                var rootTargetDirectory = Path.Combine(rootFolder, targetDirectory);
+                var targetFilePath = Path.Combine(rootTargetDirectory, fileName);
+                if (!string.IsNullOrWhiteSpace(fileName) && Directory.Exists(rootTargetDirectory) && !File.Exists(targetFilePath))
                 {
                     string sourceFilePath = Path.Combine(this.hostEnvironment.GetTempUploadDirectory(), fileName);
                     File.Move(sourceFilePath, targetFilePath);

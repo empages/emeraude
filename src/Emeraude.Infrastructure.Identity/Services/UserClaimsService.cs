@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Emeraude.Contracts;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

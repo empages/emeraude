@@ -13,38 +13,53 @@ namespace Emeraude.Application.Admin.EmPages.Data
         where TModel : class, IEmPageModel, new()
     {
         /// <summary>
-        /// Build raw model query.
+        /// Build a raw model query.
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildRawModelQuery(EmPageDataFilter filter);
 
         /// <summary>
-        /// Build raw model query.
+        /// Builds a raw model query.
         /// </summary>
         /// <param name="modelId"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildRawModelQuery(string modelId);
 
         /// <summary>
-        /// Build fetch query.
+        /// Builds a fetch query.
         /// </summary>
         /// <param name="body"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildFetchQuery(EmPageDataFetchQueryBody body);
 
         /// <summary>
-        /// Build details query.
+        /// Builds a details query.
         /// </summary>
         /// <param name="modelId"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildDetailsQuery(string modelId);
 
         /// <summary>
-        /// Build create command.
+        /// Builds a create command.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         IEmPageRequest<TModel> BuildCreateCommand(TModel model);
+
+        /// <summary>
+        /// Builds a edit command.
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        IEmPageRequest<TModel> BuildEditCommand(string modelId, TModel model);
+
+        /// <summary>
+        /// Builds a delete command.
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        IEmPageRequest<TModel> BuildDeleteCommand(string modelId);
     }
 }

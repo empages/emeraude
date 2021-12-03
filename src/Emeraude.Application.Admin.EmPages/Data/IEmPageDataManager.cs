@@ -46,5 +46,20 @@ namespace Emeraude.Application.Admin.EmPages.Data
         /// <param name="model"></param>
         /// <returns></returns>
         Task<string> CreateAsync(IEmPageModel model);
+
+        /// <summary>
+        /// Edit operation.
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<string> EditAsync(string modelId, IEmPageModel model);
+
+        /// <summary>
+        /// Delete operation.
+        /// </summary>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        Task<bool> DeleteAsync(string modelId);
     }
 }

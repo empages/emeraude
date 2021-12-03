@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using WebMarkupMin.AspNetCore3;
 
 namespace Emeraude
 {
@@ -19,9 +18,6 @@ namespace Emeraude
 
         /// <inheritdoc cref="IMvcBuilder" />
         public IMvcBuilder MvcBuilder { get; set; }
-
-        /// <inheritdoc cref="WebMarkupMinServicesBuilder" />
-        public WebMarkupMinServicesBuilder WebMarkupMinServicesBuilder { get; set; }
 
         /// <summary>
         /// Execute post configuration over the already setup builders.

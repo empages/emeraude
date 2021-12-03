@@ -4,6 +4,8 @@ using System.Reflection;
 using Emeraude.Application.Admin.EmPages.Schema.DetailsView;
 using Emeraude.Application.Admin.EmPages.Schema.FormView;
 using Emeraude.Application.Admin.EmPages.Schema.IndexView;
+using Emeraude.Application.Admin.EmPages.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Emeraude.Application.Admin.EmPages.Schema
 {
@@ -27,6 +29,9 @@ namespace Emeraude.Application.Admin.EmPages.Schema
 
         /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Title"/>
         public string Title { get; set; }
+
+        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Description"/>
+        public string Description { get; set; }
 
         /// <inheritdoc cref="EmPageSchemaSettings{TModel}.UseAsFeature"/>
         public bool UseAsFeature { get; set; }
@@ -53,6 +58,11 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// Collection of all model actions.
         /// </summary>
         public IEnumerable<EmPageAction> ModelActions { get; set; }
+
+        /// <summary>
+        /// Dictionary that contains a authorization requirements per operation.
+        /// </summary>
+        public IDictionary<EmPageOperation, IEnumerable<IAuthorizationRequirement>> OperationsAuthorizationRequirements { get; set; }
 
         /// <inheritdoc cref="IndexViewDescription"/>
         public IndexViewDescription IndexView { get; set; }

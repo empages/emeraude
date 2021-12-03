@@ -1,4 +1,4 @@
-﻿namespace Emeraude.Essentials.Base
+﻿namespace Emeraude.Infrastructure.Identity.Common
 {
     /// <summary>
     /// List of all built-in application roles.

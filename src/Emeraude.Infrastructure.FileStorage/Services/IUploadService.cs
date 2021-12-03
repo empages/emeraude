@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace Emeraude.Infrastructure.FileStorage.Services
@@ -13,7 +14,7 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns></returns>
-        Task<string> UploadFileAsync(IFormFile formFile);
+        Task<Guid> UploadFileAsync(IFormFile formFile);
 
         /// <summary>
         /// Upload file in specified directory.
@@ -22,6 +23,6 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         /// <param name="saveDirectory"></param>
         /// <param name="publicRoot"></param>
         /// <returns></returns>
-        Task<string> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false);
+        Task<Guid> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false);
     }
 }

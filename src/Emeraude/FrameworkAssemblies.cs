@@ -53,11 +53,6 @@ namespace Emeraude
         public static readonly Assembly EmeraudeApplicationConsumer = Assembly.Load("Emeraude.Application.Consumer");
 
         /// <summary>
-        /// Emeraude.Application.General assembly.
-        /// </summary>
-        public static readonly Assembly EmeraudeApplicationGeneral = Assembly.Load("Emeraude.Application.General");
-
-        /// <summary>
         /// Emeraude.Application.Identity assembly.
         /// </summary>
         public static readonly Assembly EmeraudeApplicationIdentity = Assembly.Load("Emeraude.Application.Identity");

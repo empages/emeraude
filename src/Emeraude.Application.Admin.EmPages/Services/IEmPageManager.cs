@@ -79,5 +79,13 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// <param name="payload"></param>
         /// <returns></returns>
         Task<EmPageFormSubmissionResponse> SubmitFormViewModelAsync(string route, EmPageFormType type, JsonElement payload);
+
+        /// <summary>
+        /// Deletes a model based on a its Id and the route of the EmPage.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        Task<bool> DeleteModelAsync(string route, string modelId);
     }
 }

@@ -58,7 +58,15 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         IEnumerable<string> GetTemporaryFiles(IEnumerable<Guid> ids);
 
         /// <summary>
-        /// Apply temporary files into specified private root directory (async execution).
+        /// Apply temporary file into specified private root directory.
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <param name="targetDirectory"></param>
+        /// <returns></returns>
+        bool MoveTemporaryFileToPrivateDirectory(Guid fileId, string targetDirectory);
+
+        /// <summary>
+        /// Apply temporary files into specified private root directory.
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="targetDirectory"></param>
@@ -66,7 +74,15 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         bool MoveTemporaryFilesToPrivateDirectory(IEnumerable<Guid> ids, string targetDirectory);
 
         /// <summary>
-        /// Apply temporary files into specified public root directory (async execution).
+        /// Apply temporary file into specified public root directory.
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <param name="targetDirectory"></param>
+        /// <returns></returns>
+        bool MoveTemporaryFileToPublicDirectory(Guid fileId, string targetDirectory);
+
+        /// <summary>
+        /// Apply temporary files into specified public root directory.
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="targetDirectory"></param>

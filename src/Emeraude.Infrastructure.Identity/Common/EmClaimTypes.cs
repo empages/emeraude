@@ -1,4 +1,4 @@
-﻿namespace Emeraude.Essentials.Base
+﻿namespace Emeraude.Infrastructure.Identity.Common
 {
     /// <summary>
     /// List of all custom predefined claim types.
@@ -14,10 +14,5 @@
         /// Picture type.
         /// </summary>
         public const string Picture = "picture";
-
-        /// <summary>
-        /// Imitate type.
-        /// </summary>
-        public const string Imitate = "imitate";
     }
 }

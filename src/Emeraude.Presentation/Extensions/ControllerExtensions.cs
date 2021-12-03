@@ -1,6 +1,4 @@
-﻿using Emeraude.Application.General.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Emeraude.Presentation.Extensions
 {

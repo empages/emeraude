@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Services;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.Identity.Common;
+using Emeraude.Presentation.PortalGateway.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
 
 namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
 {
@@ -21,14 +22,28 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
     public class AdminEmPagesApiController : EmPortalGatewayApiController
     {
         private readonly IEmPageManager emPageManager;
+        private readonly IEmPageService emPageService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminEmPagesApiController"/> class.
         /// </summary>
         /// <param name="emPageManager"></param>
-        public AdminEmPagesApiController(IEmPageManager emPageManager)
+        /// <param name="emPageService"></param>
+        public AdminEmPagesApiController(IEmPageManager emPageManager, IEmPageService emPageService)
         {
             this.emPageManager = emPageManager;
+            this.emPageService = emPageService;
+        }
+
+        /// <summary>
+        /// Gets list of all EmPages that are not used as a feature.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetEmPagesList()
+        {
+            var emPages = await this.emPageService.GetEmPagesListAsync();
+            return this.Ok(emPages);
         }
 
         /// <summary>
@@ -134,6 +149,23 @@ namespace Emeraude.Presentation.PortalGateway.Controllers.Admin
             }
 
             return this.Ok(featureViewModel);
+        }
+
+        /// <summary>
+        /// Deletes a model.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
+        [HttpDelete("delete/{route}/{modelId}")]
+        public async Task<IActionResult> DeleteModel(string route, string modelId)
+        {
+            var deleted = await this.emPageManager.DeleteModelAsync(route, modelId);
+            var message = deleted ? "Entity has been deleted" : "Entity has not been deleted";
+            return this.Ok(new ActionResponse(deleted)
+            {
+                Message = message,
+            });
         }
 
         private IDictionary<string, StringValues> GetQuery()

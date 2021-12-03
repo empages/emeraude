@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.FileStorage.Common;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Emeraude.Infrastructure.FileStorage.Services

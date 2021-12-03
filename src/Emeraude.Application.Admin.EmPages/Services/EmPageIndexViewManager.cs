@@ -3,10 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Data;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
+using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Models.DetailsView;
 using Emeraude.Application.Admin.EmPages.Models.IndexView;
 using Emeraude.Application.Admin.EmPages.Schema;
+using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Admin.Models;
 using Microsoft.Extensions.Primitives;
@@ -44,10 +46,17 @@ namespace Emeraude.Application.Admin.EmPages.Services
             bool featureMode)
         {
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
-            if (!schemaDescription.IndexView.IsActive || (!featureMode && schemaDescription.UseAsFeature))
+            if (!schemaDescription.IndexView.IsActive)
             {
-                return null;
+                throw new EmPageNotFoundException($"There is no active 'Index View' for schema with route '{route}'");
             }
+
+            if (!featureMode && schemaDescription.UseAsFeature)
+            {
+                throw new EmPageNotFoundException($"The schema with route '{route}' is defined to be used as a feature so it cannot be used for 'Index View'");
+            }
+
+            await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModels, schemaDescription);
 
             var modelContext = new EmPageViewContext
             {
@@ -117,10 +126,13 @@ namespace Emeraude.Application.Admin.EmPages.Services
             var viewModel = await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
             if (viewModel == null)
             {
-                return null;
+                throw new EmPageNotFoundException($"A feature model for schema with route '{feature.Context.Route}' cannot be found");
             }
 
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(parentDetailsViewModel.Context.Route);
+
+            await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModels, schemaDescription);
+
             var dataManager = this.GetDataManagerInstance(schemaDescription);
             var parentModel = await dataManager.GetRawModelAsync(parentDetailsViewModel.Identifier);
             this.SetDataRelatedPlaceholders(viewModel.Context.Breadcrumbs, parentModel, schemaDescription);

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.Services;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;

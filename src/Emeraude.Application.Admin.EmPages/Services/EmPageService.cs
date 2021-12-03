@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Emeraude.Application.Admin.EmPages.Exceptions;
+using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Schema;
-using Emeraude.Configuration.Extensions;
-using Emeraude.Configuration.Options;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Emeraude.Application.Admin.EmPages.Services
 {
@@ -13,7 +12,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
     public class EmPageService : IEmPageService
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly EmMainOptions mainOptions;
+        private readonly IEmPageSchemaFactory schemaFactory;
 
         private IEnumerable<EmPageSchemaDescription> schemaDescriptions;
 
@@ -21,25 +20,39 @@ namespace Emeraude.Application.Admin.EmPages.Services
         /// Initializes a new instance of the <see cref="EmPageService"/> class.
         /// </summary>
         /// <param name="serviceProvider"></param>
-        /// <param name="optionsProvider"></param>
-        public EmPageService(IServiceProvider serviceProvider, IEmOptionsProvider optionsProvider)
+        /// <param name="schemaFactory"></param>
+        public EmPageService(
+            IServiceProvider serviceProvider,
+            IEmPageSchemaFactory schemaFactory)
         {
             this.serviceProvider = serviceProvider;
-            this.mainOptions = optionsProvider.GetMainOptions();
+            this.schemaFactory = schemaFactory;
         }
 
         /// <inheritdoc />
         public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string route)
         {
             await this.LoadSchemasIfEmptyAsync();
-            return this.schemaDescriptions?.FirstOrDefault(x => x.Route?.Equals(route, StringComparison.OrdinalIgnoreCase) ?? false);
+            var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.Route?.Equals(route, StringComparison.OrdinalIgnoreCase) ?? false);
+            if (schemaDescription == null)
+            {
+                throw new EmPageNotFoundException($"A schema with route: '{route}' cannot be found");
+            }
+
+            return schemaDescription;
         }
 
         /// <inheritdoc/>
         public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type modelType)
         {
             await this.LoadSchemasIfEmptyAsync();
-            return this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
+            var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
+            if (schemaDescription == null)
+            {
+                throw new EmPageNotFoundException($"A schema for model of type: '{modelType?.FullName}' cannot be found");
+            }
+
+            return schemaDescription;
         }
 
         /// <inheritdoc/>
@@ -50,7 +63,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
         public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
         {
             var modelType = typeof(TEmPageModel);
-            var propertiesValuePipes = this.ExtractPropertiesValuePipes(modelType, viewItems);
+            var propertiesValuePipes = this.ExtractPropertiesValuePipes(viewItems);
             foreach (var propertyValuePipes in propertiesValuePipes)
             {
                 var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
@@ -65,86 +78,43 @@ namespace Emeraude.Application.Admin.EmPages.Services
                     foreach (var (valuePipe, _) in propertyValuePipes.ValuePipes)
                     {
                         var convertedValue = await valuePipe.ConvertAsync(modelProperty?.GetValue(model));
-                        modelProperty.SetValue(model, convertedValue);
+                        modelProperty?.SetValue(model, convertedValue);
                     }
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<EmPageSimpleModel>> GetEmPagesListAsync()
+        {
+            await this.LoadSchemasIfEmptyAsync();
+            var resultModels = new List<EmPageSimpleModel>();
+            foreach (var schemaDescription in this.schemaDescriptions)
+            {
+                if (!schemaDescription.UseAsFeature)
+                {
+                    var currentEmPageModel = new EmPageSimpleModel
+                    {
+                        Route = schemaDescription.Route,
+                        Title = schemaDescription.Title,
+                        Description = schemaDescription.Description,
+                    };
+                    resultModels.Add(currentEmPageModel);
+                }
+            }
+
+            return resultModels;
         }
 
         private async Task LoadSchemasIfEmptyAsync()
         {
             if (this.schemaDescriptions == null || !this.schemaDescriptions.Any())
             {
-                this.schemaDescriptions = await this.FindAllSchemasDescriptionsAsync();
+                this.schemaDescriptions = await this.schemaFactory.CreateSchemasInstancesAsync();
             }
         }
 
-        private async Task<IEnumerable<EmPageSchemaDescription>> FindAllSchemasDescriptionsAsync()
-        {
-            var schemaType = typeof(IEmPageSchema<>);
-
-            var schemasImplementationsTypes = this.mainOptions.Assemblies
-                .SelectMany(x => x
-                    .GetExportedTypes()
-                    .Where(y => y.IsClass && y.GetInterfaces()
-                        .Any(z => z.IsGenericType && z.GetGenericTypeDefinition() == schemaType))
-                    .ToList())
-                .ToList();
-
-            var foundSchemaDescriptions = new List<EmPageSchemaDescription>();
-            foreach (var schemasImplementationType in schemasImplementationsTypes)
-            {
-                var schema = this.serviceProvider.GetService(schemasImplementationType);
-                var schemaSetupMethod = schemasImplementationType.GetMethod("SetupAsync");
-                var schemaSetupResultTask = (Task)schemaSetupMethod?.Invoke(schema, new object[] { });
-                if (schemaSetupResultTask != null)
-                {
-                    await schemaSetupResultTask.ConfigureAwait(false);
-                    var userDefinedSchemaSettings = (object)((dynamic)schemaSetupResultTask).Result as IEmPageSchemaSettings;
-                    var schemaDescription = userDefinedSchemaSettings?.BuildDescription(this.mainOptions.Assemblies);
-                    if (schemaDescription != null)
-                    {
-                        foundSchemaDescriptions.Add(schemaDescription);
-                    }
-                }
-            }
-
-            foreach (var schemaDescription in foundSchemaDescriptions)
-            {
-                if (schemaDescription.UseAsFeature)
-                {
-                    schemaDescription.ParentSchema =
-                        foundSchemaDescriptions.FirstOrDefault(x => x.DetailsView.Features.Any(y => y.Route == schemaDescription.Route));
-
-                    var relatedFeature = schemaDescription.ParentSchema.DetailsView.Features.First(x => x.Route == schemaDescription.Route);
-                    schemaDescription.ParentRelation = relatedFeature.EmPageBasedRelation;
-
-                    var newBreadcrumbIndex = 0;
-                    var parentSchemaFeatureBreadcrumbs = relatedFeature.Breadcrumbs;
-
-                    foreach (var parentDetailsViewBreadcrumb in parentSchemaFeatureBreadcrumbs)
-                    {
-                        var currentParentBreadcrumb = new EmPageBreadcrumb
-                        {
-                            Title = parentDetailsViewBreadcrumb.Title,
-                            Href = parentDetailsViewBreadcrumb.Href,
-                            IsActive = true,
-                            HideContextually = parentDetailsViewBreadcrumb.HideContextually,
-                            Order = parentDetailsViewBreadcrumb.Order - 1000,
-                        };
-
-                        schemaDescription.IndexView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                        schemaDescription.DetailsView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                        schemaDescription.FormView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                        newBreadcrumbIndex++;
-                    }
-                }
-            }
-
-            return foundSchemaDescriptions;
-        }
-
-        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(Type type, IEnumerable<IValuePipedViewItem> valuePipedViewItems)
+        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(IEnumerable<IValuePipedViewItem> valuePipedViewItems)
         {
             if (valuePipedViewItems == null)
             {
@@ -154,7 +124,6 @@ namespace Emeraude.Application.Admin.EmPages.Services
             var valuePipedViewItemsWithRegisteredPipes = valuePipedViewItems.Where(x => x.ValuePipes.Any());
 
             var result = new List<PropertyValuePipes>();
-            var scopedServiceProvider = this.serviceProvider.CreateScope().ServiceProvider;
             foreach (var viewItem in valuePipedViewItemsWithRegisteredPipes)
             {
                 var currentPropertyValuePipe = new PropertyValuePipes
@@ -164,7 +133,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
 
                 foreach (var (valuePipeType, valuePipeParameters) in viewItem.ValuePipes)
                 {
-                    var currentValuePipe = scopedServiceProvider.GetService(valuePipeType) as IValuePipe;
+                    var currentValuePipe = this.serviceProvider.GetService(valuePipeType) as IValuePipe;
                     currentPropertyValuePipe.ValuePipes.Add((currentValuePipe, valuePipeParameters));
                 }
 

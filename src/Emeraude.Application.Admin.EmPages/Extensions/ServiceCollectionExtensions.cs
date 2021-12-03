@@ -10,6 +10,7 @@ using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataEdit;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataRawModel;
 using Emeraude.Application.Admin.EmPages.Schema;
+using Emeraude.Application.Admin.EmPages.Schema.FormView;
 using Emeraude.Application.Admin.EmPages.Services;
 using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Models;
@@ -36,6 +37,7 @@ namespace Emeraude.Application.Admin.EmPages.Extensions
             services.RegisterEmPageSchemas(assembliesList);
             services.RegisterEmPagesDataServices(assembliesList);
 
+            services.AddSingleton<IEmPageSchemaFactory, EmPageSchemaFactory>();
             services.AddScoped<IEmPageManager, EmPageManager>();
             services.AddScoped<IEmPageService, EmPageService>();
 
@@ -43,6 +45,7 @@ namespace Emeraude.Application.Admin.EmPages.Extensions
                 new[]
                 {
                     typeof(IValuePipe),
+                    typeof(IFormViewSelectableCustomDataSource),
                 },
                 assembliesList);
         }

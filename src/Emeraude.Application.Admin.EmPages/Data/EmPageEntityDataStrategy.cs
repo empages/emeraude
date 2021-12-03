@@ -4,7 +4,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Emeraude.Application.Admin.EmPages.Data.Requests;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataCreate;
+using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataDelete;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataDetails;
+using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataEdit;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataRawModel;
 using Emeraude.Application.Admin.EmPages.Exceptions;
@@ -75,6 +77,20 @@ namespace Emeraude.Application.Admin.EmPages.Data
         public virtual IEmPageRequest<TModel> BuildCreateCommand(TModel model)
         {
             return new EmPageDataCreateCommand<TEntity, TModel>(model);
+        }
+
+        /// <inheritdoc/>
+        public IEmPageRequest<TModel> BuildEditCommand(string modelId, TModel model)
+        {
+            Guid.TryParse(modelId, out var entityId);
+            return new EmPageDataEditCommand<TEntity, TModel>(entityId, model);
+        }
+
+        /// <inheritdoc/>
+        public virtual IEmPageRequest<TModel> BuildDeleteCommand(string modelId)
+        {
+            Guid.TryParse(modelId, out var entityId);
+            return new EmPageDataDeleteCommand<TEntity, TModel>(entityId);
         }
 
         /// <summary>

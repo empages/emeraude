@@ -25,7 +25,7 @@ namespace Emeraude.Application.Admin.Models
         /// <summary>
         /// Indicates whether the action requires confirmation.
         /// </summary>
-        public bool HasConfirmation => string.IsNullOrWhiteSpace(this.ConfirmationMessage);
+        public bool HasConfirmation => !string.IsNullOrWhiteSpace(this.ConfirmationMessage);
 
         /// <summary>
         /// Message for action confirmation.

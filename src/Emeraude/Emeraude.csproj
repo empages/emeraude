@@ -25,7 +25,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="WebMarkupMin.AspNetCore3" Version="2.10.0" />
   </ItemGroup>
 
   <ItemGroup>

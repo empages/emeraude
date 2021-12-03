@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using AutoMapper;
 using Emeraude.Application;
 using Emeraude.Application.Admin;
@@ -19,7 +18,6 @@ using Emeraude.Application.Consumer.Mapping;
 using Emeraude.Application.Mapping;
 using Emeraude.Application.Persistence;
 using Emeraude.Configuration.Options;
-using Emeraude.Essentials.Base;
 using Emeraude.Infrastructure.FileStorage.Extensions;
 using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.Extensions;
@@ -31,6 +29,8 @@ using Emeraude.Presentation;
 using Emeraude.Presentation.ActionFilters;
 using Emeraude.Presentation.Converters;
 using Emeraude.Presentation.ModelBinders;
+using Emeraude.Presentation.PlatformBase.Constraints;
+using Emeraude.Presentation.PortalGateway.ActionFilters;
 using Emeraude.Presentation.PortalGateway.Extensions;
 using FluentValidation.AspNetCore;
 using IdentityServer4;
@@ -41,10 +41,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebMarkupMin.AspNetCore3;
 
 namespace Emeraude.Extensions
 {
@@ -99,9 +97,9 @@ namespace Emeraude.Extensions
 
             builder.Services.AddCqrsBehaviours();
 
-            builder.Services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
+            builder.Services.ConfigureRouting();
 
-            settingsBuilder.WebMarkupMinServicesBuilder = builder.Services.RegisterHtmlOptimizationServices();
+            builder.Services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -130,7 +128,6 @@ namespace Emeraude.Extensions
             setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdminEmPages);
             setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationClientBuilder);
             setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationConsumer);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationGeneral);
             setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationIdentity);
             setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplication);
             setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
@@ -145,6 +142,14 @@ namespace Emeraude.Extensions
             {
                 setup.PresentationOptions.FeatureProviders.Add(setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider);
             }
+        }
+
+        private static void ConfigureRouting(this IServiceCollection services)
+        {
+            services.AddRouting(opt =>
+            {
+                opt.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
+            });
         }
 
         private static void RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
@@ -261,6 +266,7 @@ namespace Emeraude.Extensions
             var mvcBuilder = services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestExceptionFilter());
+                options.Filters.Add(new EmPagesExceptionFilter());
                 options.ModelBinderProviders.Insert(0, new DateModelBinderProvider());
             })
                 .AddFluentValidation(options =>
@@ -315,46 +321,12 @@ namespace Emeraude.Extensions
             return setup;
         }
 
-        private static void AddBearerAuthentication(this AuthenticationBuilder builder, AccessTokenOptions accessTokenOptions)
-        {
-            builder
-                .AddJwtBearer(EmAuthenticationDefaults.BearerAuthenticationScheme, options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = accessTokenOptions.Issuer,
-                        ValidAudience = accessTokenOptions.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(accessTokenOptions.Key)),
-                    };
-                });
-        }
-
         private static void ConfigureAuthorizationPolicies(this IServiceCollection services)
         {
             services.AddAuthorizationCore(options =>
             {
                 options.ApplyEmeraudeAdminAuthorizationPolicies();
             });
-        }
-
-        private static WebMarkupMinServicesBuilder RegisterHtmlOptimizationServices(this IServiceCollection services)
-        {
-            return services.AddWebMarkupMin(
-                    options =>
-                    {
-                        options.AllowMinificationInDevelopmentEnvironment = true;
-                        options.AllowCompressionInDevelopmentEnvironment = true;
-                    })
-                .AddHtmlMinification(
-                    options =>
-                    {
-                        options.MinificationSettings.RemoveRedundantAttributes = true;
-                    })
-                .AddHttpCompression();
         }
 
         private static void AddEmeraudeClientBuilder(this IServiceCollection services, EmClientBuilderOptions options)

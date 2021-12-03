@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Emeraude.Application.General.Models;
 using Emeraude.Presentation.Controllers;
 using Emeraude.Presentation.PlatformBase.Controllers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Emeraude.Presentation.PlatformBase.Extensions
@@ -12,26 +10,6 @@ namespace Emeraude.Presentation.PlatformBase.Extensions
     /// </summary>
     public static class ControllerExtensions
     {
-        /// <summary>
-        /// Action result based on upload result.
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public static IActionResult UploadFileResponse(this ControllerBase controller, UploadResult result)
-        {
-            if (result.Success)
-            {
-                return controller.Ok(result);
-            }
-            else if (result.ValidationError)
-            {
-                return controller.StatusCode(StatusCodes.Status415UnsupportedMediaType, result.Message);
-            }
-
-            return controller.BadRequest();
-        }
-
         /// <summary>
         /// Redirects to execution result page.
         /// To use this extension method you need to have an instance of <see cref="ExecutionResultController"/>.

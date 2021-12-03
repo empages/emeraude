@@ -18,19 +18,19 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         public string Name { get; set; }
 
         /// <summary>
-        /// Relative to main entity URL of the action. This property supports string placeholder {0} which is the entity identifier.
+        /// Relative to main entity URL of the action.
         /// </summary>
         public string RelativeUrlFormat { get; set; }
+
+        /// <summary>
+        /// Relative URL of the action.
+        /// </summary>
+        public string RelativeUrl { get; set; }
 
         /// <summary>
         /// Represents a flag that indicates whether the action be executed separately or not.
         /// </summary>
         public bool SingleContext { get; set; }
-
-        /// <summary>
-        /// Indicates whether the action opens directly a HTTP request or a separate page.
-        /// </summary>
-        public bool DirectRequest { get; set; }
 
         /// <summary>
         /// Execution method.
@@ -54,6 +54,11 @@ namespace Emeraude.Application.Admin.EmPages.Schema
         /// <returns></returns>
         public string BuildActionUrlFormat(string entityKey)
         {
+            if (!string.IsNullOrWhiteSpace(this.RelativeUrl))
+            {
+                return this.RelativeUrl;
+            }
+
             var urlBase = $"/admin/{entityKey}";
             var relativeUrl = this.RelativeUrlFormat ?? string.Empty;
             if (!relativeUrl.StartsWith("/"))

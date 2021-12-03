@@ -36,7 +36,7 @@ namespace Emeraude.Application.Admin.EmPages.Models
         public IList<PropertyMap<object>> PropertyParametersMap { get; }
 
         /// <summary>
-        /// Pair that contains enumerations per type name for all properties of the model.
+        /// Pair that contains enumerations per type name extracted from properties of the model.
         /// </summary>
         public IDictionary<string, IEnumerable<EnumValueItem>> ModelEnumerations { get; }
 

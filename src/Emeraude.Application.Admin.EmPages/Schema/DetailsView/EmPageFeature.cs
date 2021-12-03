@@ -43,12 +43,6 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
         public EmPageComponent FeatureComponentType { get; private set; }
 
         /// <summary>
-        /// Amount of segments that will be taken from the page route.
-        /// Counting of segments starts from the segment next to the feature route.
-        /// </summary>
-        public int RouteSegmentsAmount { get; set; }
-
-        /// <summary>
         /// List of all page actions for the current EmPage.
         /// </summary>
         public IList<EmPageAction> PageActions { get; }
@@ -112,7 +106,6 @@ namespace Emeraude.Application.Admin.EmPages.Schema.DetailsView
                 Route = this.Route,
                 Title = this.Title,
                 FeatureComponentType = this.FeatureComponentType,
-                RouteSegmentsAmount = this.RouteSegmentsAmount,
                 Breadcrumbs = this.Breadcrumbs,
                 PageActions = this.PageActions,
                 EmPageBasedRelation = this.emPageBasedRelation,

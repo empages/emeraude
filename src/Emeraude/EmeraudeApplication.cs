@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using Emeraude.Configuration.Options;
+using Emeraude.Infrastructure.FileStorage.Common;
 using Emeraude.Infrastructure.FileStorage.Services;
 using Emeraude.Infrastructure.Localization.Services;
 using Emeraude.Infrastructure.Persistence.Extensions;
@@ -10,7 +10,6 @@ using Emeraude.Infrastructure.Persistence.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using WebMarkupMin.AspNetCore3;
 
 namespace Emeraude
 {
@@ -34,7 +33,7 @@ namespace Emeraude
             var appBuilder = WebApplication.CreateBuilder(new WebApplicationOptions
             {
                 ContentRootPath = Path.GetFullPath(Directory.GetCurrentDirectory()),
-                WebRootPath = "wwwroot",
+                WebRootPath = EmFolders.PublicRootFolderName,
                 Args = args,
             });
 
@@ -69,8 +68,6 @@ namespace Emeraude
 
                 foldersInitializer?.InitFolders();
                 languagesResourceManager?.BuildResources();
-
-                app.UseWebMarkupMin();
             }
             catch (Exception ex)
             {

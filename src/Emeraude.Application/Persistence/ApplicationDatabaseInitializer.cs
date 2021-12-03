@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emeraude.Configuration.Options;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.Entities;
 using Emeraude.Infrastructure.Identity.Extensions;
 using Emeraude.Infrastructure.Identity.Options;

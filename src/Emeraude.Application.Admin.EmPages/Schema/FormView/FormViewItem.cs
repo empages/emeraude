@@ -11,6 +11,8 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
     /// </summary>
     public class FormViewItem : ViewItem
     {
+        private Type selectableCustomDataSourceType = null;
+
         /// <summary>
         /// Type of the form view item.
         /// </summary>
@@ -32,6 +34,21 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
         public bool IsNullable => this.SourceType?.IsNullableType() ?? false;
 
         /// <summary>
+        /// Type of the selectable custom data source.
+        /// </summary>
+        public Type SelectableCustomDataSourceType => this.selectableCustomDataSourceType;
+
+        /// <summary>
+        /// Includes selectable custom data source to the current view item.
+        /// </summary>
+        /// <typeparam name="TSource">Type of <see cref="IFormViewSelectableCustomDataSource"/>.</typeparam>
+        public void IncludeSelectableCustomDataSource<TSource>()
+            where TSource : class, IFormViewSelectableCustomDataSource
+        {
+            this.selectableCustomDataSourceType = typeof(TSource);
+        }
+
+        /// <summary>
         /// <inheritdoc cref="SetComponent{TComponent}"/>
         /// </summary>
         /// <param name="componentAction"></param>
@@ -48,7 +65,10 @@ namespace Emeraude.Application.Admin.EmPages.Schema.FormView
                 }
             }
 
-            this.InitializeComponent(componentAction);
+            this.InitializeComponent(componentAction, component =>
+            {
+                component.SourceType = this.SelectableCustomDataSourceType ?? component.SourceType;
+            });
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Resources;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.FileStorage.Common;
 using Emeraude.Infrastructure.FileStorage.Services;
 using Microsoft.Extensions.Logging;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using Emeraude.Configuration.Options;
-using Emeraude.Infrastructure.Localization.Constraints;
 using Emeraude.Infrastructure.Localization.Persistence;
 using Emeraude.Infrastructure.Localization.Services;
 using Microsoft.EntityFrameworkCore;
@@ -41,11 +40,6 @@ namespace Emeraude.Infrastructure.Localization.Extensions
             services.AddScoped<IEmLocalizer, Localizer>();
             services.AddScoped<ILanguageStore, LanguageStore>();
             services.AddScoped<ILanguagesResourceManager, LanguagesResourceManager>();
-
-            services.AddRouting(opt =>
-            {
-                opt.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
-            });
 
             if (options.ExecuteMigrations)
             {

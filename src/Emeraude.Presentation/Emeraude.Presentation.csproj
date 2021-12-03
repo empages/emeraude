@@ -5,7 +5,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Emeraude.Application.General\Emeraude.Application.General.csproj" />
     <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
     <ProjectReference Include="..\Emeraude.Configuration\Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />

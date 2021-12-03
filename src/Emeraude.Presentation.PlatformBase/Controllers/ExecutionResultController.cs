@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Emeraude.Infrastructure.Localization.Attributes;
 using Emeraude.Presentation.Controllers;
+using Emeraude.Presentation.PlatformBase.Attributes;
 using Emeraude.Presentation.PlatformBase.Models;
 using Microsoft.AspNetCore.Mvc;
 

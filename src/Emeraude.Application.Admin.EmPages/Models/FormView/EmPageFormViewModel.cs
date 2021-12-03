@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Emeraude.Application.Admin.EmPages.Schema.FormView;
 
 namespace Emeraude.Application.Admin.EmPages.Models.FormView
 {
@@ -16,6 +17,7 @@ namespace Emeraude.Application.Admin.EmPages.Models.FormView
         {
             this.Inputs = new List<EmPageFormInputModel>();
             this.NonMappedFormErrors = new List<string>();
+            this.ModelSelectableCustomDataMap = new Dictionary<string, IEnumerable<FormViewSelectableCustomDataItem>>();
         }
 
         /// <summary>
@@ -28,6 +30,12 @@ namespace Emeraude.Application.Admin.EmPages.Models.FormView
         /// Inputs of form view.
         /// </summary>
         public List<EmPageFormInputModel> Inputs { get; set; }
+
+        /// <summary>
+        /// Pair that contains corresponding selectable custom data properties with registered <see cref="IFormViewSelectableCustomDataSource"/>.
+        /// Key of the dictionary is the full assembly of the implementation of selectable custom data source.
+        /// </summary>
+        public IDictionary<string, IEnumerable<FormViewSelectableCustomDataItem>> ModelSelectableCustomDataMap { get; }
 
         /// <summary>
         /// List of all form errors that are not related to the input models.

@@ -2,7 +2,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Emeraude.Application.Consumer\Emeraude.Application.Consumer.csproj" />
-      <ProjectReference Include="..\Emeraude.Application.General\Emeraude.Application.General.csproj" />
     </ItemGroup>
 
     <ItemGroup>

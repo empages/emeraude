@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Emeraude.Application.Identity.Requests.Commands.ExternalAuthentication;
 using Emeraude.Infrastructure.Identity.Extensions;
-using Emeraude.Infrastructure.Localization.Attributes;
+using Emeraude.Presentation.PlatformBase.Attributes;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;

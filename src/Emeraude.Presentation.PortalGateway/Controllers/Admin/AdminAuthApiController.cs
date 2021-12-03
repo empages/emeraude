@@ -4,6 +4,7 @@ using Emeraude.Application.Exceptions;
 using Emeraude.Application.Identity.Requests.Commands.Login;
 using Emeraude.Application.Identity.Requests.Commands.LoginWithTwoFactorAuthentication;
 using Emeraude.Essentials.Base;
+using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.Services;
 using Emeraude.Infrastructure.Identity.TokenProviders;
 using Emeraude.Presentation.Extensions;

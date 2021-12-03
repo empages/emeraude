@@ -38,22 +38,21 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> UploadFileAsync(IFormFile formFile)
+        public async Task<Guid> UploadFileAsync(IFormFile formFile)
         {
             try
             {
                 var saveDirectory = this.hostEnvironment.GetTempUploadDirectory();
                 var resultFileName = FilesUtilities.GetUniqueFileName();
                 var resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                var fileFullPath = Path.Combine(saveDirectory, $"{resultFileName}.{resultFileExtension}");
+                var resultFileNameWithExtension = $"{resultFileName}.{resultFileExtension}";
+                var fileFullPath = Path.Combine(saveDirectory, resultFileNameWithExtension);
 
                 await using var stream = File.Create(fileFullPath);
                 await formFile.CopyToAsync(stream);
                 stream.Flush();
 
-                this.temporaryFilesService.SaveFile(resultFileName);
-
-                return resultFileName;
+                return this.temporaryFilesService.SaveFile(resultFileNameWithExtension);
             }
             catch (Exception ex)
             {
@@ -63,7 +62,7 @@ namespace Emeraude.Infrastructure.FileStorage.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
+        public async Task<Guid> UploadFileAsync(IFormFile formFile, string saveDirectory, bool publicRoot = false)
         {
             try
             {
@@ -71,15 +70,14 @@ namespace Emeraude.Infrastructure.FileStorage.Services
                 var fullSaveDirectory = Path.Combine(rootDirectory, saveDirectory);
                 var resultFileName = FilesUtilities.GetUniqueFileName();
                 var resultFileExtension = formFile.FileName.Split('.').LastOrDefault();
-                var fileFullPath = Path.Combine(fullSaveDirectory, $"{resultFileName}.{resultFileExtension}");
+                var resultFileNameWithExtension = $"{resultFileName}.{resultFileExtension}";
+                var fileFullPath = Path.Combine(fullSaveDirectory, resultFileNameWithExtension);
 
                 await using var stream = File.Create(fileFullPath);
                 await formFile.CopyToAsync(stream);
                 stream.Flush();
 
-                this.temporaryFilesService.SaveFile(resultFileName);
-
-                return resultFileName;
+                return this.temporaryFilesService.SaveFile(resultFileNameWithExtension);
             }
             catch (Exception ex)
             {

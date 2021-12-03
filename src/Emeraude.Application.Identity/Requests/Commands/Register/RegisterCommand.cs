@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Emeraude.Essentials.Base;
 using Emeraude.Essentials.Extensions;
+using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.EventHandlers;
 using Emeraude.Infrastructure.Identity.Services;
 using Emeraude.Infrastructure.Localization.Services;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Models.FormView;
 using Emeraude.Application.Admin.EmPages.Schema;
@@ -10,6 +11,7 @@ using Emeraude.Application.Admin.EmPages.Schema.FormView;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Exceptions;
+using Emeraude.Essentials.Helpers;
 using Microsoft.Extensions.Primitives;
 
 namespace Emeraude.Application.Admin.EmPages.Services
@@ -24,17 +26,26 @@ namespace Emeraude.Application.Admin.EmPages.Services
         {
             // Retrieve schema
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
-            if (!schemaDescription.FormView.IsActive || schemaDescription.UseAsFeature)
+            if (!schemaDescription.FormView.IsActive)
             {
-                return null;
+                throw new EmPageNotFoundException($"There is no active 'Form View' for schema with route '{route}'");
             }
 
+            EmPageOperation operationType = EmPageOperation.CreateModel;
             switch (type)
             {
                 case EmPageFormType.CreateForm when !schemaDescription.FormView.IsCreateFormActive:
                 case EmPageFormType.EditForm when !schemaDescription.FormView.IsEditFormActive:
-                    return null;
+                    throw new EmPageNotFoundException($"There are no defined '{StringUtilities.SplitWordsByCapitalLetters(type.ToString())} View' items for schema with route '{route}'");
+                case EmPageFormType.CreateForm:
+                    operationType = EmPageOperation.CreateModel;
+                    break;
+                case EmPageFormType.EditForm:
+                    operationType = EmPageOperation.EditModel;
+                    break;
             }
+
+            await this.EmPageOperationAuthorizationGuardAsync(operationType, schemaDescription);
 
             var model = new EmPageFormViewModel(new EmPageViewContext
             {
@@ -43,6 +54,8 @@ namespace Emeraude.Application.Admin.EmPages.Services
             });
 
             this.MapToViewModel(schemaDescription.FormView, model);
+            await this.MapToFormViewModelAsync(schemaDescription.FormView, model);
+
             var breadcrumbsIndicesForHide = schemaDescription
                 .FormView
                 .Breadcrumbs
@@ -66,32 +79,34 @@ namespace Emeraude.Application.Admin.EmPages.Services
             }
 
             // Retrieve data
-            if (schemaDescription.DataManagerType != null)
+            var dataManager = this.GetDataManagerInstance(schemaDescription);
+            IEnumerable<FormViewItem> formViewItems;
+            IEmPageModel rawModel = Activator.CreateInstance(schemaDescription.ModelType) as IEmPageModel;
+
+            switch (type)
             {
-                var dataManager = this.GetDataManagerInstance(schemaDescription);
-                IEnumerable<FormViewItem> formViewItems = new List<FormViewItem>();
-                IEmPageModel rawModel = Activator.CreateInstance(schemaDescription.ModelType) as IEmPageModel;
+                case EmPageFormType.CreateForm:
+                    formViewItems = schemaDescription.FormView.CreateFormViewItems;
+                    break;
+                case EmPageFormType.EditForm:
+                    formViewItems = schemaDescription.FormView.EditFormViewItems;
+                    rawModel = await dataManager.GetRawModelAsync(modelId);
+                    if (rawModel == null)
+                    {
+                        throw new EmPageNotFoundException($"The model for schema with route: '{route}' and Id: '{modelId}' cannot be found");
+                    }
 
-                switch (type)
-                {
-                    case EmPageFormType.CreateForm:
-                        formViewItems = schemaDescription.FormView.CreateFormViewItems;
-                        break;
-                    case EmPageFormType.EditForm:
-                        formViewItems = schemaDescription.FormView.EditFormViewItems;
-                        rawModel = await dataManager.GetRawModelAsync(modelId);
-                        model.Identifier = rawModel?.Id;
-                        this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
-                        this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                }
+                    model.Identifier = rawModel?.Id;
+                    this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
+                    this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
 
-                foreach (var formViewItem in formViewItems)
-                {
-                    model.Inputs.Add(this.BuildFormInput(formViewItem, schemaDescription, rawModel, model));
-                }
+            foreach (var formViewItem in formViewItems)
+            {
+                model.Inputs.Add(this.BuildFormInput(formViewItem, schemaDescription, rawModel, model));
             }
 
             return model;
@@ -106,7 +121,18 @@ namespace Emeraude.Application.Admin.EmPages.Services
                 var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
                 var dataManage = this.GetDataManagerInstance(schemaDescription);
                 var model = this.GetModelFromPayload(payload, schemaDescription);
-                response.MutatedModelId = await dataManage.CreateAsync(model);
+
+                switch (type)
+                {
+                    case EmPageFormType.CreateForm:
+                        response.MutatedModelId = await dataManage.CreateAsync(model);
+                        break;
+                    case EmPageFormType.EditForm:
+                        response.MutatedModelId = await dataManage.EditAsync(model.Id, model);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Invalid behavior of EmPage form submission");
+                }
             }
             catch (ValidationException ex)
             {
@@ -121,6 +147,25 @@ namespace Emeraude.Application.Admin.EmPages.Services
             }
 
             return response;
+        }
+
+        private async Task MapToFormViewModelAsync(
+            FormViewDescription sourceDescription,
+            EmPageFormViewModel model)
+        {
+            foreach (var viewItem in sourceDescription.ViewItems)
+            {
+                if (viewItem.SelectableCustomDataSourceType != null)
+                {
+                    var selectableCustomDataSourceInstance = this.serviceProvider.GetService(viewItem.SelectableCustomDataSourceType) as IFormViewSelectableCustomDataSource;
+                    if (selectableCustomDataSourceInstance != null)
+                    {
+                        await selectableCustomDataSourceInstance.PrepareDataAsync();
+                        model.ModelSelectableCustomDataMap[viewItem.SelectableCustomDataSourceType.FullName] =
+                            await selectableCustomDataSourceInstance.GetItemsAsync(model);
+                    }
+                }
+            }
         }
 
         private EmPageFormInputModel BuildFormInput(

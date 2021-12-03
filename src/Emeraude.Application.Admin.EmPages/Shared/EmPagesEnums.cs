@@ -63,4 +63,16 @@
         Renderer = 1,
         Mutator = 2,
     }
+
+    /// <summary>
+    /// Available built-in operations that can be executed.
+    /// </summary>
+    public enum EmPageOperation
+    {
+        GetModels = 1,
+        GetModelDetails = 2,
+        CreateModel = 3,
+        EditModel = 4,
+        DeleteModel = 5,
+    }
 }

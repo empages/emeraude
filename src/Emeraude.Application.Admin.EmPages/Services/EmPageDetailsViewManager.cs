@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Emeraude.Application.Admin.EmPages.Data;
+using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Models.DetailsView;
 using Emeraude.Application.Admin.EmPages.Schema;
@@ -28,13 +29,10 @@ namespace Emeraude.Application.Admin.EmPages.Services
             var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
             if (!schemaDescription.DetailsView.IsActive)
             {
-                return null;
+                throw new EmPageNotFoundException($"There is no active 'Details View' for schema with route '{route}'");
             }
 
-            if (schemaDescription.DataManagerType == null)
-            {
-                return null;
-            }
+            await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModelDetails, schemaDescription);
 
             var model = new EmPageDetailsViewModel(new EmPageViewContext
             {
@@ -49,7 +47,7 @@ namespace Emeraude.Application.Admin.EmPages.Services
 
             if (rawModel == null)
             {
-                return null;
+                throw new EmPageNotFoundException($"The model for schema with route: '{route}' and Id: '{modelId}' cannot be found");
             }
 
             this.MapToViewModel(schemaDescription.DetailsView, model);
@@ -144,7 +142,6 @@ namespace Emeraude.Application.Admin.EmPages.Services
                     Route = feature.Route,
                     Title = feature.Title,
                 },
-                RouteSegmentsAmount = feature.RouteSegmentsAmount,
                 Component = feature.FeatureComponentType,
             };
 
