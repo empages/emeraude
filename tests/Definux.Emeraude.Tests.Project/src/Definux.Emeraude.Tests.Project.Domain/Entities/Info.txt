@@ -1,1 +1,0 @@
-Here you must place the domain entities.

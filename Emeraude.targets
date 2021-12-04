@@ -1,0 +1,42 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+	    <TargetFramework>net6.0</TargetFramework>
+		<LangVersion>10.0</LangVersion>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Copyright>2021 Emeraude</Copyright>
+		<Company>Emeraude</Company>
+		<Authors>Georgi Karagogov</Authors>
+		<Product>Emeraude Framework</Product>
+		<PackageProjectUrl>https://emeraude.dev/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/emeraudeframework/emeraude</RepositoryUrl>
+		<Description>A lightweight ASP.NET framework for creating successful products</Description>
+		<PackageTags>emeraude, framework, aspnet, aspnetmvc, razor, mvc, administration, localization, authentication, authorization, portal gateway</PackageTags>
+		<Version>$(PACKAGE_VERSION)</Version>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>logo_128.jpg</PackageIcon>
+		<PackageIconUrl />
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<CodeAnalysisRuleSet>../../Emeraude.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="..\..\art\logo_128.jpg">
+		  <Pack>True</Pack>
+		  <!--suppress CheckTagEmptyBody -->
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+  	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+</Project>

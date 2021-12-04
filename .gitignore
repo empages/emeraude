@@ -350,7 +350,3 @@ MigrationBackup/
 .ionide/
 
 .idea/
-
-samples/EmDoggo/src/EmDoggo/wwwroot/uploads/
-samples/EmDoggo/src/EmDoggo/privateroot/log.db
-samples/EmDoggo/src/EmDoggo/appsettings.json

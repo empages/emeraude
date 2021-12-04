@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\Emeraude.targets" />
+
+    <ItemGroup>
+      <ProjectReference Include="..\Emeraude.Application.Admin.EmPages\Emeraude.Application.Admin.EmPages.csproj" />
+      <ProjectReference Include="..\Emeraude\Emeraude.csproj" />
+    </ItemGroup>
+    
+    
+</Project>

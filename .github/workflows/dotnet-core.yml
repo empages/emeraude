@@ -5,27 +5,21 @@ env:
 
 on:
   push:
-    branches: [master, dev]
+    branches: [v2.0-preview]
   pull_request:
-    branches: [master, dev]
+    branches: [v2.0-preview]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core 3.1
+      - name: Setup .NET Core 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.402
-      - name: Setup .NET Core 2.1
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 2.1.810
+          dotnet-version: 6.0.100
       - name: Install dependencies
         run: dotnet restore
-      - name: Install dotnet ef
-        run: dotnet tool install --global dotnet-ef
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
