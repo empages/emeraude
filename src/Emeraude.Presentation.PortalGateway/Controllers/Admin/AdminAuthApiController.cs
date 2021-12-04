@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Emeraude.Application.Exceptions;
 using Emeraude.Application.Identity.Requests.Commands.Login;
 using Emeraude.Application.Identity.Requests.Commands.LoginWithTwoFactorAuthentication;
-using Emeraude.Essentials.Base;
 using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.Services;
 using Emeraude.Infrastructure.Identity.TokenProviders;
@@ -26,7 +25,7 @@ public class AdminAuthApiController : EmPortalGatewayApiController, IAdminAuthAp
 #if DEBUG
     private readonly TimeSpan accessTokenExpiration = TimeSpan.FromDays(1);
 #else
-        private readonly TimeSpan accessTokenExpiration = TimeSpan.FromHours(1);
+    private readonly TimeSpan accessTokenExpiration = TimeSpan.FromHours(1);
 #endif
 
     private readonly IUserClaimsService claimsService;
