@@ -7,79 +7,78 @@ using Emeraude.Application.Admin.EmPages.Data.Requests;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Essentials.Helpers;
 
-namespace Emeraude.Application.Admin.EmPages.Schema.FormView
+namespace Emeraude.Application.Admin.EmPages.Schema.FormView;
+
+/// <summary>
+/// Form implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Model}"/>.
+/// </summary>
+/// <typeparam name="TModel">EmPage model.</typeparam>
+public class FormViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel>
+    where TModel : class, IEmPageModel, new()
 {
+    private readonly List<FormViewItem> viewItems;
+
     /// <summary>
-    /// Form implementation of <see cref="IEmPageSchemaViewConfigurationBuilder{ViewItem, Model}"/>.
+    /// Initializes a new instance of the <see cref="FormViewConfigurationBuilder{TModel}"/> class.
     /// </summary>
-    /// <typeparam name="TModel">EmPage model.</typeparam>
-    public class FormViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel>
-        where TModel : class, IEmPageModel, new()
+    public FormViewConfigurationBuilder()
     {
-        private readonly List<FormViewItem> viewItems;
+        this.PageActions = new List<EmPageAction>();
+        this.Breadcrumbs = new List<EmPageBreadcrumb>();
+        this.viewItems = new List<FormViewItem>();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormViewConfigurationBuilder{TModel}"/> class.
-        /// </summary>
-        public FormViewConfigurationBuilder()
+    /// <inheritdoc/>
+    public IReadOnlyList<FormViewItem> ViewItems => this.viewItems;
+
+    /// <inheritdoc/>
+    public IList<EmPageAction> PageActions { get; }
+
+    /// <inheritdoc/>
+    public IList<EmPageBreadcrumb> Breadcrumbs { get; }
+
+    /// <summary>
+    /// Model validator action.
+    /// </summary>
+    public Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> ModelValidatorAction { get; private set; }
+
+    /// <inheritdoc/>
+    public IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel> Use(
+        Expression<Func<TModel, object>> property,
+        Action<FormViewItem> viewItemAction)
+    {
+        var memberInfo = ReflectionHelpers.GetCorrectPropertyMember(property);
+        FormViewItem viewItem = new FormViewItem();
+        viewItem.LoadSourceInfo(memberInfo as PropertyInfo);
+        viewItemAction.Invoke(viewItem);
+
+        var compatibleTypes = new[] { viewItem.Type, FormViewItemType.CreateEdit };
+        if (this.ViewItems.Any(x => x.SourceName == viewItem.SourceName && compatibleTypes.Contains(x.Type)))
         {
-            this.PageActions = new List<EmPageAction>();
-            this.Breadcrumbs = new List<EmPageBreadcrumb>();
-            this.viewItems = new List<FormViewItem>();
+            throw new ArgumentException($"Property {viewItem.SourceName} cannot be registered more than once.");
         }
 
-        /// <inheritdoc/>
-        public IReadOnlyList<FormViewItem> ViewItems => this.viewItems;
-
-        /// <inheritdoc/>
-        public IList<EmPageAction> PageActions { get; }
-
-        /// <inheritdoc/>
-        public IList<EmPageBreadcrumb> Breadcrumbs { get; }
-
-        /// <summary>
-        /// Model validator action.
-        /// </summary>
-        public Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> ModelValidatorAction { get; private set; }
-
-        /// <inheritdoc/>
-        public IEmPageSchemaViewConfigurationBuilder<FormViewItem, TModel> Use(
-            Expression<Func<TModel, object>> property,
-            Action<FormViewItem> viewItemAction)
+        if (string.IsNullOrWhiteSpace(viewItem.Title))
         {
-            var memberInfo = ReflectionHelpers.GetCorrectPropertyMember(property);
-            FormViewItem viewItem = new FormViewItem();
-            viewItem.LoadSourceInfo(memberInfo as PropertyInfo);
-            viewItemAction.Invoke(viewItem);
-
-            var compatibleTypes = new[] { viewItem.Type, FormViewItemType.CreateEdit };
-            if (this.ViewItems.Any(x => x.SourceName == viewItem.SourceName && compatibleTypes.Contains(x.Type)))
-            {
-                throw new ArgumentException($"Property {viewItem.SourceName} cannot be registered more than once.");
-            }
-
-            if (string.IsNullOrWhiteSpace(viewItem.Title))
-            {
-                viewItem.Title = StringUtilities.SplitWordsByCapitalLetters(viewItem.SourceName);
-            }
-
-            if (viewItem.Order == -1)
-            {
-                viewItem.Order = this.ViewItems.Count;
-            }
-
-            this.viewItems.Add(viewItem);
-
-            return this;
+            viewItem.Title = StringUtilities.SplitWordsByCapitalLetters(viewItem.SourceName);
         }
 
-        /// <summary>
-        /// Configures model validation rules.
-        /// </summary>
-        /// <param name="validatorAction"></param>
-        public void ConfigureModelValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)
+        if (viewItem.Order == -1)
         {
-            this.ModelValidatorAction = validatorAction;
+            viewItem.Order = this.ViewItems.Count;
         }
+
+        this.viewItems.Add(viewItem);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Configures model validation rules.
+    /// </summary>
+    /// <param name="validatorAction"></param>
+    public void ConfigureModelValidator(Action<EmPageMutationalRequestType, EmPageModelValidator<TModel>> validatorAction)
+    {
+        this.ModelValidatorAction = validatorAction;
     }
 }

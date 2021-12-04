@@ -1,9 +1,8 @@
-﻿namespace Emeraude.Infrastructure.Identity.EventHandlers
+﻿namespace Emeraude.Infrastructure.Identity.EventHandlers;
+
+/// <summary>
+/// Event arguments for login event handler.
+/// </summary>
+public class LoginEventArgs : IdentityEventArgs
 {
-    /// <summary>
-    /// Event arguments for login event handler.
-    /// </summary>
-    public class LoginEventArgs : IdentityEventArgs
-    {
-    }
 }

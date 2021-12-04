@@ -11,116 +11,115 @@ using Emeraude.Infrastructure.Localization.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Queries.GetTranslationsGridData
+namespace Emeraude.Application.ClientBuilder.Requests.Queries.GetTranslationsGridData;
+
+/// <summary>
+/// Query that returns the all translation keys and values into grid format.
+/// </summary>
+public class GetTranslationGridDataQuery : IRequest<TranslationsGridDataResult>
 {
     /// <summary>
-    /// Query that returns the all translation keys and values into grid format.
+    /// Search query for filtration.
     /// </summary>
-    public class GetTranslationGridDataQuery : IRequest<TranslationsGridDataResult>
+    public string SearchQuery { get; set; }
+
+    /// <summary>
+    /// Filtration page number.
+    /// </summary>
+    public int Page { get; set; }
+
+    /// <inheritdoc/>
+    public class GetTranslationGridDataQueryHandler : IRequestHandler<GetTranslationGridDataQuery, TranslationsGridDataResult>
     {
-        /// <summary>
-        /// Search query for filtration.
-        /// </summary>
-        public string SearchQuery { get; set; }
+        private const int DefaultPageSize = 50;
+
+        private readonly ILocalizationContext context;
+        private readonly IMapper mapper;
 
         /// <summary>
-        /// Filtration page number.
+        /// Initializes a new instance of the <see cref="GetTranslationGridDataQueryHandler"/> class.
         /// </summary>
-        public int Page { get; set; }
+        /// <param name="context"></param>
+        /// <param name="mapper"></param>
+        public GetTranslationGridDataQueryHandler(ILocalizationContext context, IMapper mapper)
+        {
+            this.context = context;
+            this.mapper = mapper;
+        }
 
         /// <inheritdoc/>
-        public class GetTranslationGridDataQueryHandler : IRequestHandler<GetTranslationGridDataQuery, TranslationsGridDataResult>
+        public async Task<TranslationsGridDataResult> Handle(GetTranslationGridDataQuery request, CancellationToken cancellationToken)
         {
-            private const int DefaultPageSize = 50;
+            string searchQuery = request.SearchQuery?.Trim().ToUpperInvariant() ?? string.Empty;
+            TranslationsGridDataResult resultData = new TranslationsGridDataResult();
 
-            private readonly ILocalizationContext context;
-            private readonly IMapper mapper;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="GetTranslationGridDataQueryHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            /// <param name="mapper"></param>
-            public GetTranslationGridDataQueryHandler(ILocalizationContext context, IMapper mapper)
+            Expression<Func<TranslationKey, bool>> filterExpression = x => true;
+            if (!string.IsNullOrWhiteSpace(searchQuery))
             {
-                this.context = context;
-                this.mapper = mapper;
+                var idsByValues = await this.context
+                    .Values
+                    .Where(x => EF.Functions.Like(x.NormalizedValue, $"%{searchQuery}%"))
+                    .Select(x => x.TranslationKeyId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                filterExpression = x =>
+                    EF.Functions.Like(x.Key, $"%{searchQuery}%") || idsByValues.Contains(x.Id);
             }
 
-            /// <inheritdoc/>
-            public async Task<TranslationsGridDataResult> Handle(GetTranslationGridDataQuery request, CancellationToken cancellationToken)
+            var translationsKeysQuery = this
+                .context
+                .Keys
+                .Where(filterExpression);
+
+            resultData.AllItemsCount = await translationsKeysQuery.CountAsync(cancellationToken);
+            resultData.PageSize = DefaultPageSize;
+            resultData.CurrentPage = request.Page > 0 ? request.Page : 1;
+
+            var translationsKeys = await translationsKeysQuery
+                .OrderBy(x => x.Key)
+                .Skip(resultData.StartRow)
+                .Take(DefaultPageSize)
+                .Include(x => x.Translations)
+                .ToListAsync(cancellationToken);
+
+            var languages = await this.context
+                .Languages
+                .OrderByDescending(x => x.IsDefault)
+                .ToListAsync(cancellationToken);
+
+            var items = new List<TranslationsGridItem>();
+
+            foreach (var key in translationsKeys)
             {
-                string searchQuery = request.SearchQuery?.Trim().ToUpperInvariant() ?? string.Empty;
-                TranslationsGridDataResult resultData = new TranslationsGridDataResult();
-
-                Expression<Func<TranslationKey, bool>> filterExpression = x => true;
-                if (!string.IsNullOrWhiteSpace(searchQuery))
+                var currentDataItem = new TranslationsGridItem
                 {
-                    var idsByValues = await this.context
-                        .Values
-                        .Where(x => EF.Functions.Like(x.NormalizedValue, $"%{searchQuery}%"))
-                        .Select(x => x.TranslationKeyId)
-                        .Distinct()
-                        .ToListAsync(cancellationToken);
+                    KeyId = key.Id,
+                    Key = key.Key,
+                };
 
-                    filterExpression = x =>
-                        EF.Functions.Like(x.Key, $"%{searchQuery}%") || idsByValues.Contains(x.Id);
-                }
-
-                var translationsKeysQuery = this
-                    .context
-                    .Keys
-                    .Where(filterExpression);
-
-                resultData.AllItemsCount = await translationsKeysQuery.CountAsync(cancellationToken);
-                resultData.PageSize = DefaultPageSize;
-                resultData.CurrentPage = request.Page > 0 ? request.Page : 1;
-
-                var translationsKeys = await translationsKeysQuery
-                    .OrderBy(x => x.Key)
-                    .Skip(resultData.StartRow)
-                    .Take(DefaultPageSize)
-                    .Include(x => x.Translations)
-                    .ToListAsync(cancellationToken);
-
-                var languages = await this.context
-                    .Languages
-                    .OrderByDescending(x => x.IsDefault)
-                    .ToListAsync(cancellationToken);
-
-                var items = new List<TranslationsGridItem>();
-
-                foreach (var key in translationsKeys)
+                foreach (var language in languages)
                 {
-                    var currentDataItem = new TranslationsGridItem
+                    var currentTranslation = key
+                        .Translations
+                        .FirstOrDefault(x => x.LanguageId == language.Id);
+
+                    var languageValue = new TranslationLanguageValue
                     {
-                        KeyId = key.Id,
-                        Key = key.Key,
+                        LanguageCode = language.Code,
+                        Value = currentTranslation?.Value,
+                        Id = currentTranslation?.Id ?? -1,
                     };
 
-                    foreach (var language in languages)
-                    {
-                        var currentTranslation = key
-                            .Translations
-                            .FirstOrDefault(x => x.LanguageId == language.Id);
-
-                        var languageValue = new TranslationLanguageValue
-                        {
-                            LanguageCode = language.Code,
-                            Value = currentTranslation?.Value,
-                            Id = currentTranslation?.Id ?? -1,
-                        };
-
-                        currentDataItem.LanguageValues.Add(languageValue);
-                    }
-
-                    items.Add(currentDataItem);
+                    currentDataItem.LanguageValues.Add(languageValue);
                 }
 
-                resultData.Items = items;
-
-                return resultData;
+                items.Add(currentDataItem);
             }
+
+            resultData.Items = items;
+
+            return resultData;
         }
     }
 }

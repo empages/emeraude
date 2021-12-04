@@ -8,95 +8,94 @@ using Emeraude.Presentation.PlatformBase.Attributes;
 using Emeraude.Presentation.PlatformBase.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Emeraude.Presentation.PlatformBase.Controllers
+namespace Emeraude.Presentation.PlatformBase.Controllers;
+
+/// <inheritdoc cref="UserAuthenticationController"/>
+public abstract partial class UserAuthenticationController
 {
-    /// <inheritdoc cref="UserAuthenticationController"/>
-    public abstract partial class UserAuthenticationController
+    private const string LoginRoute = "/login";
+
+    /// <summary>
+    /// Login action for GET request.
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route(LoginRoute)]
+    [LanguageRoute(LoginRoute)]
+    public virtual IActionResult Login(string returnUrl = null)
     {
-        private const string LoginRoute = "/login";
-
-        /// <summary>
-        /// Login action for GET request.
-        /// </summary>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route(LoginRoute)]
-        [LanguageRoute(LoginRoute)]
-        public virtual IActionResult Login(string returnUrl = null)
+        if (this.IsAuthenticated)
         {
-            if (this.IsAuthenticated)
-            {
-                return this.RedirectToDefault();
-            }
-
-            var returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
-            var viewModel = new LoginViewModel();
-            this.ViewData["ReturnUrl"] = returnUrl;
-            if (!string.IsNullOrEmpty(returnUrlLanguageCode) && string.IsNullOrEmpty(this.HttpContext.GetLanguageCode()))
-            {
-                return this.LocalRedirect($"/{returnUrlLanguageCode}{LoginRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
-            }
-
-            return this.LoginView(viewModel);
+            return this.RedirectToDefault();
         }
 
-        /// <summary>
-        /// Login action for GET request.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route(LoginRoute)]
-        [LanguageRoute(LoginRoute)]
-        [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
+        var returnUrlLanguageCode = returnUrl.GetLanguageCodeFromUrl();
+        var viewModel = new LoginViewModel();
+        this.ViewData["ReturnUrl"] = returnUrl;
+        if (!string.IsNullOrEmpty(returnUrlLanguageCode) && string.IsNullOrEmpty(this.HttpContext.GetLanguageCode()))
         {
-            if (this.IsAuthenticated)
-            {
-                return this.RedirectToDefault();
-            }
+            return this.LocalRedirect($"/{returnUrlLanguageCode}{LoginRoute}?returnUrl={this.urlEncoder.Encode(returnUrl)}");
+        }
 
-            try
-            {
-                var result = await this.Mediator.Send(request);
+        return this.LoginView(viewModel);
+    }
 
-                if (result.Result.Succeeded)
+    /// <summary>
+    /// Login action for GET request.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="returnUrl"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route(LoginRoute)]
+    [LanguageRoute(LoginRoute)]
+    [ValidateAntiForgeryToken]
+    public virtual async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
+    {
+        if (this.IsAuthenticated)
+        {
+            return this.RedirectToDefault();
+        }
+
+        try
+        {
+            var result = await this.Mediator.Send(request);
+
+            if (result.Result.Succeeded)
+            {
+                await this.SignInAsync(result.User);
+                if (string.IsNullOrWhiteSpace(returnUrl))
                 {
-                    await this.SignInAsync(result.User);
-                    if (string.IsNullOrWhiteSpace(returnUrl))
-                    {
-                        return this.RedirectToDefault();
-                    }
-
-                    return this.LocalRedirect(returnUrl);
+                    return this.RedirectToDefault();
                 }
 
-                if (result.Result.IsLockedOut)
-                {
-                    return this.View("Lockout");
-                }
-
-                this.ModelState.AddModelError(string.Empty, Strings.TheEmailAddressOrPasswordIsIncorrect);
+                return this.LocalRedirect(returnUrl);
             }
-            catch (ValidationException ex)
+
+            if (result.Result.IsLockedOut)
             {
-                this.ModelState.ApplyValidationException(ex);
-            }
-            catch (Exception)
-            {
-                this.ModelState.AddModelError(string.Empty, Strings.YourLoginAttemptHasFailed);
+                return this.View("Lockout");
             }
 
-            this.ViewData["ReturnUrl"] = returnUrl;
-
-            return this.LoginView(request as LoginViewModel);
+            this.ModelState.AddModelError(string.Empty, Strings.TheEmailAddressOrPasswordIsIncorrect);
         }
-
-        private ViewResult LoginView(LoginViewModel model)
+        catch (ValidationException ex)
         {
-            return this.View("Login", model);
+            this.ModelState.ApplyValidationException(ex);
         }
+        catch (Exception)
+        {
+            this.ModelState.AddModelError(string.Empty, Strings.YourLoginAttemptHasFailed);
+        }
+
+        this.ViewData["ReturnUrl"] = returnUrl;
+
+        return this.LoginView(request as LoginViewModel);
+    }
+
+    private ViewResult LoginView(LoginViewModel model)
+    {
+        return this.View("Login", model);
     }
 }

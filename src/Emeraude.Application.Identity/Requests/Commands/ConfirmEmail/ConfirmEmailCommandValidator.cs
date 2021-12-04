@@ -1,20 +1,19 @@
 ﻿using Emeraude.Application.Identity.Extensions;
 using FluentValidation;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ConfirmEmail
+namespace Emeraude.Application.Identity.Requests.Commands.ConfirmEmail;
+
+/// <summary>
+/// Validator for confirm email command.
+/// </summary>
+public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailCommand>
 {
     /// <summary>
-    /// Validator for confirm email command.
+    /// Initializes a new instance of the <see cref="ConfirmEmailCommandValidator"/> class.
     /// </summary>
-    public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailCommand>
+    public ConfirmEmailCommandValidator()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfirmEmailCommandValidator"/> class.
-        /// </summary>
-        public ConfirmEmailCommandValidator()
-        {
-            this.RuleFor(x => x.Email)
-                .ValidateEmailAddress();
-        }
+        this.RuleFor(x => x.Email)
+            .ValidateEmailAddress();
     }
 }

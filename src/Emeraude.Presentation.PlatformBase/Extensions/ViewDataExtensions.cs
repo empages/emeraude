@@ -1,33 +1,32 @@
 ﻿using Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Emeraude.Presentation.PlatformBase.Extensions
+namespace Emeraude.Presentation.PlatformBase.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="ViewDataDictionary"/>.
+/// </summary>
+public static class ViewDataExtensions
 {
+    private const string TitleViewDataKey = "Title";
+
     /// <summary>
-    /// Extensions for <see cref="ViewDataDictionary"/>.
+    /// Set title into the ViewData.
     /// </summary>
-    public static class ViewDataExtensions
+    /// <param name="viewData"></param>
+    /// <param name="title"></param>
+    public static void SetTitle(this ViewDataDictionary viewData, string title)
     {
-        private const string TitleViewDataKey = "Title";
+        viewData[TitleViewDataKey] = title;
+    }
 
-        /// <summary>
-        /// Set title into the ViewData.
-        /// </summary>
-        /// <param name="viewData"></param>
-        /// <param name="title"></param>
-        public static void SetTitle(this ViewDataDictionary viewData, string title)
-        {
-            viewData[TitleViewDataKey] = title;
-        }
-
-        /// <summary>
-        /// Gets title value from the ViewData.
-        /// </summary>
-        /// <param name="viewData"></param>
-        /// <returns></returns>
-        public static string GetTitle(this ViewDataDictionary viewData)
-        {
-            return viewData.GetValueOrDefault(TitleViewDataKey)?.ToString();
-        }
+    /// <summary>
+    /// Gets title value from the ViewData.
+    /// </summary>
+    /// <param name="viewData"></param>
+    /// <returns></returns>
+    public static string GetTitle(this ViewDataDictionary viewData)
+    {
+        return viewData.GetValueOrDefault(TitleViewDataKey)?.ToString();
     }
 }

@@ -4,48 +4,47 @@ using Emeraude.Application.Exceptions;
 using Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Emeraude.Presentation.Extensions
+namespace Emeraude.Presentation.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="ModelStateDictionary"/>.
+/// </summary>
+public static class ModelStateDictionaryExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="ModelStateDictionary"/>.
+    /// Apply validation exceptions to current model state.
     /// </summary>
-    public static class ModelStateDictionaryExtensions
+    /// <param name="modelState"></param>
+    /// <param name="exception"></param>
+    /// <param name="skipTranslationKey"></param>
+    public static void ApplyValidationException(this ModelStateDictionary modelState, ValidationException exception, bool skipTranslationKey = false)
     {
-        /// <summary>
-        /// Apply validation exceptions to current model state.
-        /// </summary>
-        /// <param name="modelState"></param>
-        /// <param name="exception"></param>
-        /// <param name="skipTranslationKey"></param>
-        public static void ApplyValidationException(this ModelStateDictionary modelState, ValidationException exception, bool skipTranslationKey = false)
+        if (exception != null && exception.Failures != null && exception.Failures.Count > 0)
         {
-            if (exception != null && exception.Failures != null && exception.Failures.Count > 0)
+            foreach (var failure in exception.Failures)
             {
-                foreach (var failure in exception.Failures)
+                foreach (var failureValue in failure.Value)
                 {
-                    foreach (var failureValue in failure.Value)
+                    if (!skipTranslationKey)
                     {
-                        if (!skipTranslationKey)
-                        {
-                            modelState.AddModelError(failure.Key, failureValue);
-                        }
-                        else
-                        {
-                            modelState.AddModelError(failure.Key, failureValue?.Replace("_", " ").ToLower().ToFirstUpper() + ".");
-                        }
+                        modelState.AddModelError(failure.Key, failureValue);
+                    }
+                    else
+                    {
+                        modelState.AddModelError(failure.Key, failureValue?.Replace("_", " ").ToLower().ToFirstUpper() + ".");
                     }
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// Get list of validation errors.
-        /// </summary>
-        /// <param name="modelState"></param>
-        /// <returns></returns>
-        public static Dictionary<string, IEnumerable<string>> GetValidationErrors(this ModelStateDictionary modelState)
-        {
-            return modelState.ToDictionary(k => k.Key, v => v.Value.Errors.Select(x => x.ErrorMessage));
-        }
+    /// <summary>
+    /// Get list of validation errors.
+    /// </summary>
+    /// <param name="modelState"></param>
+    /// <returns></returns>
+    public static Dictionary<string, IEnumerable<string>> GetValidationErrors(this ModelStateDictionary modelState)
+    {
+        return modelState.ToDictionary(k => k.Key, v => v.Value.Errors.Select(x => x.ErrorMessage));
     }
 }

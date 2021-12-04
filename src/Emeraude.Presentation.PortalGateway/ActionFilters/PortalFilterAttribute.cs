@@ -3,34 +3,33 @@ using Emeraude.Presentation.PortalGateway.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Emeraude.Presentation.PortalGateway.ActionFilters
+namespace Emeraude.Presentation.PortalGateway.ActionFilters;
+
+/// <summary>
+/// Emeraude portal action filter that checks whether Portal client can access the application via the gateway.
+/// </summary>
+public class PortalFilterAttribute : ActionFilterAttribute
 {
+    private readonly EmPortalGatewayOptions options;
+
     /// <summary>
-    /// Emeraude portal action filter that checks whether Portal client can access the application via the gateway.
+    /// Initializes a new instance of the <see cref="PortalFilterAttribute"/> class.
     /// </summary>
-    public class PortalFilterAttribute : ActionFilterAttribute
+    /// <param name="optionsProvider"></param>
+    public PortalFilterAttribute(IEmOptionsProvider optionsProvider)
     {
-        private readonly EmPortalGatewayOptions options;
+        this.options = optionsProvider.GetPortalGatewayOptions();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalFilterAttribute"/> class.
-        /// </summary>
-        /// <param name="optionsProvider"></param>
-        public PortalFilterAttribute(IEmOptionsProvider optionsProvider)
+    /// <inheritdoc/>
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (!context.HttpContext.Request.Headers.ContainsKey(EmPortalConstants.GatewayIdentificationHeader) ||
+            !context.HttpContext.Request.Headers[EmPortalConstants.GatewayIdentificationHeader].Equals(this.options.GatewayId))
         {
-            this.options = optionsProvider.GetPortalGatewayOptions();
+            context.Result = new BadRequestResult();
         }
 
-        /// <inheritdoc/>
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            if (!context.HttpContext.Request.Headers.ContainsKey(EmPortalConstants.GatewayIdentificationHeader) ||
-                !context.HttpContext.Request.Headers[EmPortalConstants.GatewayIdentificationHeader].Equals(this.options.GatewayId))
-            {
-                context.Result = new BadRequestResult();
-            }
-
-            base.OnActionExecuting(context);
-        }
+        base.OnActionExecuting(context);
     }
 }

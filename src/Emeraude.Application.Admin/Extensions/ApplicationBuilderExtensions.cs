@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Emeraude.Application.Admin.Extensions
+namespace Emeraude.Application.Admin.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IApplicationBuilder"/>.
+/// </summary>
+public static class ApplicationBuilderExtensions
 {
-    /// <summary>
-    /// Extensions for <see cref="IApplicationBuilder"/>.
-    /// </summary>
-    public static class ApplicationBuilderExtensions
-    {
-    }
 }

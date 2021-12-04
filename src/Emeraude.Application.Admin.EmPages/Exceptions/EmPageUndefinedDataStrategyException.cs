@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace Emeraude.Application.Admin.EmPages.Exceptions
+namespace Emeraude.Application.Admin.EmPages.Exceptions;
+
+/// <summary>
+/// Exception that is thrown when a specified data manager has not definition for its data strategy.
+/// </summary>
+public class EmPageUndefinedDataStrategyException : Exception
 {
     /// <summary>
-    /// Exception that is thrown when a specified data manager has not definition for its data strategy.
+    /// Initializes a new instance of the <see cref="EmPageUndefinedDataStrategyException"/> class.
     /// </summary>
-    public class EmPageUndefinedDataStrategyException : Exception
+    /// <param name="message"></param>
+    public EmPageUndefinedDataStrategyException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageUndefinedDataStrategyException"/> class.
-        /// </summary>
-        /// <param name="message"></param>
-        public EmPageUndefinedDataStrategyException(string message)
-            : base(message)
-        {
-        }
     }
 }

@@ -4,50 +4,49 @@ using Emeraude.Essentials.Enumerations;
 using Emeraude.Essentials.Validation;
 using Microsoft.AspNetCore.Http;
 
-namespace Emeraude.Infrastructure.FileStorage.Validation.Handlers
+namespace Emeraude.Infrastructure.FileStorage.Validation.Handlers;
+
+/// <summary>
+/// File validation handler for file extension.
+/// </summary>
+internal class FileExtensionHandler : Handler<IFormFile>
 {
+    private readonly List<FileExtensions> allowedFileExtensions;
+
     /// <summary>
-    /// File validation handler for file extension.
+    /// Initializes a new instance of the <see cref="FileExtensionHandler"/> class.
     /// </summary>
-    internal class FileExtensionHandler : Handler<IFormFile>
+    /// <param name="allowedFileExtensions"></param>
+    public FileExtensionHandler(List<FileExtensions> allowedFileExtensions)
     {
-        private readonly List<FileExtensions> allowedFileExtensions;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileExtensionHandler"/> class.
-        /// </summary>
-        /// <param name="allowedFileExtensions"></param>
-        public FileExtensionHandler(List<FileExtensions> allowedFileExtensions)
+        if (allowedFileExtensions == null || allowedFileExtensions.Count == 0)
         {
-            if (allowedFileExtensions == null || allowedFileExtensions.Count == 0)
-            {
-                throw new NullReferenceException("Allowed file extensions list must be valid list with at least 1 element in.");
-            }
-
-            this.allowedFileExtensions = allowedFileExtensions;
+            throw new NullReferenceException("Allowed file extensions list must be valid list with at least 1 element in.");
         }
 
-        /// <inheritdoc/>
-        protected override string HandleProcessAction()
+        this.allowedFileExtensions = allowedFileExtensions;
+    }
+
+    /// <inheritdoc/>
+    protected override string HandleProcessAction()
+    {
+        bool isFileValid = false;
+        foreach (var fileExtension in this.allowedFileExtensions)
         {
-            bool isFileValid = false;
-            foreach (var fileExtension in this.allowedFileExtensions)
+            if (this.RequestObject.FileName.ToLower().EndsWith($".{fileExtension.ToString().Replace("_", string.Empty).ToLower()}"))
             {
-                if (this.RequestObject.FileName.ToLower().EndsWith($".{fileExtension.ToString().Replace("_", string.Empty).ToLower()}"))
-                {
-                    isFileValid = true;
-                    break;
-                }
+                isFileValid = true;
+                break;
             }
-
-            string resultMessage = string.Empty;
-            if (!isFileValid)
-            {
-                this.RequestObject = null;
-                resultMessage = "File extension is not allowed. ";
-            }
-
-            return resultMessage;
         }
+
+        string resultMessage = string.Empty;
+        if (!isFileValid)
+        {
+            this.RequestObject = null;
+            resultMessage = "File extension is not allowed. ";
+        }
+
+        return resultMessage;
     }
 }

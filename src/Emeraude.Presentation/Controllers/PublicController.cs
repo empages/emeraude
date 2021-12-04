@@ -12,116 +12,115 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Presentation.Controllers
+namespace Emeraude.Presentation.Controllers;
+
+/// <summary>
+/// Abstraction for controllers which will be used on the client side of the application (not for the administration).
+/// </summary>
+[ApiExplorerSettings(IgnoreApi = true)]
+public abstract class PublicController : EmController
 {
-    /// <summary>
-    /// Abstraction for controllers which will be used on the client side of the application (not for the administration).
-    /// </summary>
-    [ApiExplorerSettings(IgnoreApi = true)]
-    public abstract class PublicController : EmController
+    private const string LanguageCookieName = ".Emeraude.Language";
+
+    private ICurrentLanguageProvider currentLanguageProvider;
+    private IUserManager userManager;
+    private IEmLocalizer localizer;
+
+    /// <inheritdoc cref="ICurrentLanguageProvider"/>
+    protected ICurrentLanguageProvider CurrentLanguageProvider =>
+        this.currentLanguageProvider ??= this.HttpContext.RequestServices.GetService<ICurrentLanguageProvider>();
+
+    /// <inheritdoc cref="IUserManager"/>
+    protected IUserManager UserManager =>
+        this.userManager ??= this.HttpContext.RequestServices.GetService<IUserManager>();
+
+    /// <inheritdoc cref="IEmLocalizer"/>
+    protected IEmLocalizer Localizer => this.localizer ??= this.HttpContext.RequestServices.GetService<IEmLocalizer>();
+
+    /// <inheritdoc/>
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
-        private const string LanguageCookieName = ".Emeraude.Language";
+        this.ManageLanguageCookie();
+        base.OnActionExecuting(context);
+    }
 
-        private ICurrentLanguageProvider currentLanguageProvider;
-        private IUserManager userManager;
-        private IEmLocalizer localizer;
+    /// <summary>
+    /// Gets route with language code (async extraction) at the beginning based on current language.
+    /// </summary>
+    /// <param name="route"></param>
+    /// <returns></returns>
+    public async Task<string> GetLanguageRouteAsync(string route)
+    {
+        var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
+        return this.GetRouteWithAppliedLanguage(route, currentLanguage);
+    }
 
-        /// <inheritdoc cref="ICurrentLanguageProvider"/>
-        protected ICurrentLanguageProvider CurrentLanguageProvider =>
-            this.currentLanguageProvider ??= this.HttpContext.RequestServices.GetService<ICurrentLanguageProvider>();
-
-        /// <inheritdoc cref="IUserManager"/>
-        protected IUserManager UserManager =>
-            this.userManager ??= this.HttpContext.RequestServices.GetService<IUserManager>();
-
-        /// <inheritdoc cref="IEmLocalizer"/>
-        protected IEmLocalizer Localizer => this.localizer ??= this.HttpContext.RequestServices.GetService<IEmLocalizer>();
-
-        /// <inheritdoc/>
-        public override void OnActionExecuting(ActionExecutingContext context)
+    /// <summary>
+    /// Process current language and set language cookie in the client's browser.
+    /// </summary>
+    [NonAction]
+    protected virtual void ManageLanguageCookie()
+    {
+        var currentLanguage = this.CurrentLanguageProvider.GetCurrentLanguage();
+        if (currentLanguage == null || currentLanguage.IsDefault)
         {
-            this.ManageLanguageCookie();
-            base.OnActionExecuting(context);
+            return;
         }
 
-        /// <summary>
-        /// Gets route with language code (async extraction) at the beginning based on current language.
-        /// </summary>
-        /// <param name="route"></param>
-        /// <returns></returns>
-        public async Task<string> GetLanguageRouteAsync(string route)
+        bool cookieExist = this.HttpContext.Request.Cookies.ContainsKey(LanguageCookieName);
+
+        CookieOptions options = new CookieOptions
         {
-            var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
-            return this.GetRouteWithAppliedLanguage(route, currentLanguage);
+            Expires = DateTime.Now.AddYears(1),
+            IsEssential = true,
+        };
+
+        if (cookieExist)
+        {
+            this.Response.Cookies.Delete(LanguageCookieName);
         }
 
-        /// <summary>
-        /// Process current language and set language cookie in the client's browser.
-        /// </summary>
-        [NonAction]
-        protected virtual void ManageLanguageCookie()
-        {
-            var currentLanguage = this.CurrentLanguageProvider.GetCurrentLanguage();
-            if (currentLanguage == null || currentLanguage.IsDefault)
-            {
-                return;
-            }
+        this.Response.Cookies.Append(LanguageCookieName, currentLanguage.Code, options);
+    }
 
-            bool cookieExist = this.HttpContext.Request.Cookies.ContainsKey(LanguageCookieName);
+    /// <summary>
+    /// Get route with language code at the beginning based on current language.
+    /// </summary>
+    /// <param name="route"></param>
+    /// <returns></returns>
+    protected string GetLanguageRoute(string route)
+    {
+        var currentLanguage = this.currentLanguageProvider.GetCurrentLanguage();
+        return this.GetRouteWithAppliedLanguage(route, currentLanguage);
+    }
 
-            CookieOptions options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddYears(1),
-                IsEssential = true,
-            };
+    /// <summary>
+    /// Redirect to local url merged with current language code (async extraction).
+    /// </summary>
+    /// <param name="localUrl"></param>
+    /// <returns></returns>
+    protected async Task<IActionResult> LanguageLocalRedirectAsync(string localUrl)
+    {
+        return this.LocalRedirect(await this.GetLanguageRouteAsync(localUrl));
+    }
 
-            if (cookieExist)
-            {
-                this.Response.Cookies.Delete(LanguageCookieName);
-            }
+    /// <summary>
+    /// Redirect to local url merged with current language code.
+    /// </summary>
+    /// <param name="localUrl"></param>
+    /// <returns></returns>
+    protected IActionResult LanguageLocalRedirect(string localUrl)
+    {
+        return this.LocalRedirect(this.GetLanguageRoute(localUrl));
+    }
 
-            this.Response.Cookies.Append(LanguageCookieName, currentLanguage.Code, options);
-        }
-
-        /// <summary>
-        /// Get route with language code at the beginning based on current language.
-        /// </summary>
-        /// <param name="route"></param>
-        /// <returns></returns>
-        protected string GetLanguageRoute(string route)
-        {
-            var currentLanguage = this.currentLanguageProvider.GetCurrentLanguage();
-            return this.GetRouteWithAppliedLanguage(route, currentLanguage);
-        }
-
-        /// <summary>
-        /// Redirect to local url merged with current language code (async extraction).
-        /// </summary>
-        /// <param name="localUrl"></param>
-        /// <returns></returns>
-        protected async Task<IActionResult> LanguageLocalRedirectAsync(string localUrl)
-        {
-            return this.LocalRedirect(await this.GetLanguageRouteAsync(localUrl));
-        }
-
-        /// <summary>
-        /// Redirect to local url merged with current language code.
-        /// </summary>
-        /// <param name="localUrl"></param>
-        /// <returns></returns>
-        protected IActionResult LanguageLocalRedirect(string localUrl)
-        {
-            return this.LocalRedirect(this.GetLanguageRoute(localUrl));
-        }
-
-        /// <summary>
-        /// Add a value (translation key) into the ViewData.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value">Translation key.</param>
-        protected void AddTranslatedValueIntoViewData(string key, string value)
-        {
-            this.ViewData[key] = this.Localizer[value];
-        }
+    /// <summary>
+    /// Add a value (translation key) into the ViewData.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value">Translation key.</param>
+    protected void AddTranslatedValueIntoViewData(string key, string value)
+    {
+        this.ViewData[key] = this.Localizer[value];
     }
 }

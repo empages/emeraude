@@ -7,49 +7,48 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Emeraude.Application.Behaviours
+namespace Emeraude.Application.Behaviours;
+
+/// <summary>
+/// Pipeline behavior that logs the request.
+/// </summary>
+/// <typeparam name="TRequest">Request.</typeparam>
+/// <typeparam name="TResponse">Response.</typeparam>
+public class RequestLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
+    private readonly ILogger<TRequest> logger;
+
     /// <summary>
-    /// Pipeline behavior that logs the request.
+    /// Initializes a new instance of the <see cref="RequestLoggingBehavior{TRequest, TResponse}"/> class.
     /// </summary>
-    /// <typeparam name="TRequest">Request.</typeparam>
-    /// <typeparam name="TResponse">Response.</typeparam>
-    public class RequestLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    /// <param name="logger"></param>
+    // ReSharper disable once ContextualLoggerProblem
+    public RequestLoggingBehavior(ILogger<TRequest> logger)
     {
-        private readonly ILogger<TRequest> logger;
+        this.logger = logger;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestLoggingBehavior{TRequest, TResponse}"/> class.
-        /// </summary>
-        /// <param name="logger"></param>
-        // ReSharper disable once ContextualLoggerProblem
-        public RequestLoggingBehavior(ILogger<TRequest> logger)
+    /// <inheritdoc/>
+    public Task<TResponse> Handle(
+        TRequest request,
+        CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next)
+    {
+        try
         {
-            this.logger = logger;
+            this.logger.LogInformation(
+                "[EM] Executed request of type {Request} with instance of {RequestInstance}",
+                typeof(TRequest),
+                request?.ToLoggingString());
+        }
+        catch (Exception)
+        {
+            this.logger.LogInformation(
+                "[EM] Executed request of type {Request}",
+                typeof(TRequest));
         }
 
-        /// <inheritdoc/>
-        public Task<TResponse> Handle(
-            TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<TResponse> next)
-        {
-            try
-            {
-                this.logger.LogInformation(
-                    "[EM] Executed request of type {Request} with instance of {RequestInstance}",
-                    typeof(TRequest),
-                    request?.ToLoggingString());
-            }
-            catch (Exception)
-            {
-                this.logger.LogInformation(
-                    "[EM] Executed request of type {Request}",
-                    typeof(TRequest));
-            }
-
-            return next();
-        }
+        return next();
     }
 }

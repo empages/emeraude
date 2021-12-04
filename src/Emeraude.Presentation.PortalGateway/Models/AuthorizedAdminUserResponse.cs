@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace Emeraude.Presentation.PortalGateway.Models
+namespace Emeraude.Presentation.PortalGateway.Models;
+
+/// <summary>
+/// Response of access administration verification.
+/// </summary>
+public class AuthorizedAdminUserResponse
 {
     /// <summary>
-    /// Response of access administration verification.
+    /// Identifier of the admin user.
     /// </summary>
-    public class AuthorizedAdminUserResponse
-    {
-        /// <summary>
-        /// Identifier of the admin user.
-        /// </summary>
-        public Guid UserId { get; set; }
+    public Guid UserId { get; set; }
 
-        /// <summary>
-        /// Email address of the admin user.
-        /// </summary>
-        public string UserEmail { get; set; }
+    /// <summary>
+    /// Email address of the admin user.
+    /// </summary>
+    public string UserEmail { get; set; }
 
-        /// <summary>
-        /// User name of the admin user.
-        /// </summary>
-        public string UserName { get; set; }
-    }
+    /// <summary>
+    /// User name of the admin user.
+    /// </summary>
+    public string UserName { get; set; }
 }

@@ -1,45 +1,44 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Emeraude.Presentation.PlatformBase.Extensions
+namespace Emeraude.Presentation.PlatformBase.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IHtmlHelper"/>.
+/// </summary>
+public static class HtmlHelperExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IHtmlHelper"/>.
+    /// Check for existence of model state errors related with no specific property.
     /// </summary>
-    public static class HtmlHelperExtensions
+    /// <param name="htmlHelper"></param>
+    /// <returns></returns>
+    public static bool HasNonModelError(this IHtmlHelper htmlHelper)
     {
-        /// <summary>
-        /// Check for existence of model state errors related with no specific property.
-        /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <returns></returns>
-        public static bool HasNonModelError(this IHtmlHelper htmlHelper)
-        {
-            return !string.IsNullOrEmpty(htmlHelper.NonModelError());
-        }
+        return !string.IsNullOrEmpty(htmlHelper.NonModelError());
+    }
 
-        /// <summary>
-        /// Gives the first model state error related with no specific property.
-        /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <returns></returns>
-        public static string NonModelError(this IHtmlHelper htmlHelper)
+    /// <summary>
+    /// Gives the first model state error related with no specific property.
+    /// </summary>
+    /// <param name="htmlHelper"></param>
+    /// <returns></returns>
+    public static string NonModelError(this IHtmlHelper htmlHelper)
+    {
+        string error = string.Empty;
+        if (!htmlHelper.ViewContext.ModelState.IsValid)
         {
-            string error = string.Empty;
-            if (!htmlHelper.ViewContext.ModelState.IsValid)
+            foreach (var modelStateValue in htmlHelper.ViewContext.ModelState)
             {
-                foreach (var modelStateValue in htmlHelper.ViewContext.ModelState)
+                if (modelStateValue.Key == string.Empty &&
+                    modelStateValue.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid &&
+                    modelStateValue.Value.Errors.Count > 0)
                 {
-                    if (modelStateValue.Key == string.Empty &&
-                        modelStateValue.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid &&
-                        modelStateValue.Value.Errors.Count > 0)
-                    {
-                        error = modelStateValue.Value.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty;
-                    }
+                    error = modelStateValue.Value.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty;
                 }
             }
-
-            return error;
         }
+
+        return error;
     }
 }

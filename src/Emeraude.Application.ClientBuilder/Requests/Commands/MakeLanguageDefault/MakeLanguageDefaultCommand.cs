@@ -6,54 +6,53 @@ using Emeraude.Infrastructure.Localization.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.MakeLanguageDefault
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.MakeLanguageDefault;
+
+/// <summary>
+/// Command that make specified language a default one.
+/// </summary>
+public class MakeLanguageDefaultCommand : IRequest<SimpleResult>
 {
     /// <summary>
-    /// Command that make specified language a default one.
+    /// Id of the language.
     /// </summary>
-    public class MakeLanguageDefaultCommand : IRequest<SimpleResult>
+    public int LanguageId { get; set; }
+
+    /// <inheritdoc/>
+    public class MakeLanguageDefaultCommandHandler : IRequestHandler<MakeLanguageDefaultCommand, SimpleResult>
     {
+        private readonly ILocalizationContext context;
+
         /// <summary>
-        /// Id of the language.
+        /// Initializes a new instance of the <see cref="MakeLanguageDefaultCommandHandler"/> class.
         /// </summary>
-        public int LanguageId { get; set; }
+        /// <param name="context"></param>
+        public MakeLanguageDefaultCommandHandler(ILocalizationContext context)
+        {
+            this.context = context;
+        }
 
         /// <inheritdoc/>
-        public class MakeLanguageDefaultCommandHandler : IRequestHandler<MakeLanguageDefaultCommand, SimpleResult>
+        public async Task<SimpleResult> Handle(MakeLanguageDefaultCommand request, CancellationToken cancellationToken)
         {
-            private readonly ILocalizationContext context;
+            var languages = await this.context
+                .Languages
+                .ToListAsync(cancellationToken);
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MakeLanguageDefaultCommandHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            public MakeLanguageDefaultCommandHandler(ILocalizationContext context)
+            foreach (var language in languages)
             {
-                this.context = context;
+                language.IsDefault = language.Id == request.LanguageId;
             }
 
-            /// <inheritdoc/>
-            public async Task<SimpleResult> Handle(MakeLanguageDefaultCommand request, CancellationToken cancellationToken)
+            if (!languages.Any(x => x.IsDefault))
             {
-                var languages = await this.context
-                    .Languages
-                    .ToListAsync(cancellationToken);
-
-                foreach (var language in languages)
-                {
-                    language.IsDefault = language.Id == request.LanguageId;
-                }
-
-                if (!languages.Any(x => x.IsDefault))
-                {
-                    return SimpleResult.UnsuccessfulResult;
-                }
-
-                this.context.Languages.UpdateRange(languages);
-                await this.context.SaveChangesAsync(cancellationToken);
-
-                return SimpleResult.SuccessfulResult;
+                return SimpleResult.UnsuccessfulResult;
             }
+
+            this.context.Languages.UpdateRange(languages);
+            await this.context.SaveChangesAsync(cancellationToken);
+
+            return SimpleResult.SuccessfulResult;
         }
     }
 }

@@ -1,23 +1,22 @@
-﻿namespace Emeraude.Application.ClientBuilder.Requests.Queries.GetTranslationsGridData
+﻿namespace Emeraude.Application.ClientBuilder.Requests.Queries.GetTranslationsGridData;
+
+/// <summary>
+/// Cell implementation for the grid row item <see cref="TranslationsGridItem"/>.
+/// </summary>
+public class TranslationLanguageValue
 {
     /// <summary>
-    /// Cell implementation for the grid row item <see cref="TranslationsGridItem"/>.
+    /// Short code of the referenced language.
     /// </summary>
-    public class TranslationLanguageValue
-    {
-        /// <summary>
-        /// Short code of the referenced language.
-        /// </summary>
-        public string LanguageCode { get; set; }
+    public string LanguageCode { get; set; }
 
-        /// <summary>
-        /// Id of the translation.
-        /// </summary>
-        public int Id { get; set; }
+    /// <summary>
+    /// Id of the translation.
+    /// </summary>
+    public int Id { get; set; }
 
-        /// <summary>
-        /// Value of the translation.
-        /// </summary>
-        public string Value { get; set; }
-    }
+    /// <summary>
+    /// Value of the translation.
+    /// </summary>
+    public string Value { get; set; }
 }

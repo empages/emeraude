@@ -12,167 +12,166 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Emeraude.Infrastructure.Identity.Services
+namespace Emeraude.Infrastructure.Identity.Services;
+
+/// <inheritdoc cref="IRoleManager"/>
+public class RoleManager : IRoleManager
 {
-    /// <inheritdoc cref="IRoleManager"/>
-    public class RoleManager : IRoleManager
+    private readonly ILogger<RoleManager> logger;
+    private readonly RoleManager<Role> roleManager;
+    private readonly UserManager<User> userManager;
+    private readonly IIdentityContext context;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleManager"/> class.
+    /// </summary>
+    /// <param name="roleManager"></param>
+    /// <param name="userManager"></param>
+    /// <param name="context"></param>
+    /// <param name="logger"></param>
+    public RoleManager(
+        RoleManager<Role> roleManager,
+        UserManager<User> userManager,
+        IIdentityContext context,
+        ILogger<RoleManager> logger)
     {
-        private readonly ILogger<RoleManager> logger;
-        private readonly RoleManager<Role> roleManager;
-        private readonly UserManager<User> userManager;
-        private readonly IIdentityContext context;
+        this.roleManager = roleManager;
+        this.userManager = userManager;
+        this.context = context;
+        this.logger = logger;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleManager"/> class.
-        /// </summary>
-        /// <param name="roleManager"></param>
-        /// <param name="userManager"></param>
-        /// <param name="context"></param>
-        /// <param name="logger"></param>
-        public RoleManager(
-            RoleManager<Role> roleManager,
-            UserManager<User> userManager,
-            IIdentityContext context,
-            ILogger<RoleManager> logger)
+    /// <inheritdoc/>
+    public async Task<Dictionary<Guid, string>> GetRolesAsync()
+    {
+        try
         {
-            this.roleManager = roleManager;
-            this.userManager = userManager;
-            this.context = context;
-            this.logger = logger;
+            return await this.context.Roles.ToDictionaryAsync(k => k.Id, v => v.Name);
         }
-
-        /// <inheritdoc/>
-        public async Task<Dictionary<Guid, string>> GetRolesAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                return await this.context.Roles.ToDictionaryAsync(k => k.Id, v => v.Name);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting roles");
-                return new Dictionary<Guid, string>();
-            }
+            this.logger.LogError(ex, "An error occured during getting roles");
+            return new Dictionary<Guid, string>();
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<bool> CreateRoleAsync(string roleName, IEnumerable<string> claims)
+    /// <inheritdoc/>
+    public async Task<bool> CreateRoleAsync(string roleName, IEnumerable<string> claims)
+    {
+        try
         {
-            try
+            if (claims == null)
             {
-                if (claims == null)
+                claims = new string[] { };
+            }
+
+            var role = await this.roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                role = new Role(roleName);
+                var result = await this.roleManager.CreateAsync(role);
+                if (!result.Succeeded)
                 {
-                    claims = new string[] { };
+                    return false;
                 }
 
-                var role = await this.roleManager.FindByNameAsync(roleName);
-                if (role == null)
+                foreach (string claim in claims.Distinct())
                 {
-                    role = new Role(roleName);
-                    var result = await this.roleManager.CreateAsync(role);
+                    result = await this.roleManager.AddClaimAsync(role, new Claim(EmClaimTypes.Permission, claim));
+
                     if (!result.Succeeded)
                     {
+                        await this.DeleteRoleAsync(role.Name);
                         return false;
                     }
-
-                    foreach (string claim in claims.Distinct())
-                    {
-                        result = await this.roleManager.AddClaimAsync(role, new Claim(EmClaimTypes.Permission, claim));
-
-                        if (!result.Succeeded)
-                        {
-                            await this.DeleteRoleAsync(role.Name);
-                            return false;
-                        }
-                    }
                 }
+            }
 
+            return true;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during creating role");
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> DeleteRoleAsync(string roleName)
+    {
+        try
+        {
+            var role = await this.roleManager.FindByNameAsync(roleName);
+
+            if (role != null)
+            {
+                await this.roleManager.DeleteAsync(role);
                 return true;
             }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during creating role");
-                return false;
-            }
+
+            return false;
         }
-
-        /// <inheritdoc/>
-        public async Task<bool> DeleteRoleAsync(string roleName)
+        catch (Exception ex)
         {
-            try
-            {
-                var role = await this.roleManager.FindByNameAsync(roleName);
-
-                if (role != null)
-                {
-                    await this.roleManager.DeleteAsync(role);
-                    return true;
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during deleting role");
-                return false;
-            }
+            this.logger.LogError(ex, "An error occured during deleting role");
+            return false;
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<Dictionary<Guid, string>> GetUserRolesAsync(IUser user)
+    /// <inheritdoc/>
+    public async Task<Dictionary<Guid, string>> GetUserRolesAsync(IUser user)
+    {
+        try
         {
-            try
-            {
-                var userRoles = await this.userManager.GetRolesAsync((User)user);
+            var userRoles = await this.userManager.GetRolesAsync((User)user);
 
-                return await this.context
-                    .Roles
-                    .Where(x => userRoles.Contains(x.Name))
-                    .ToDictionaryAsync(k => k.Id, v => v.Name);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting user roles");
-                return new Dictionary<Guid, string>();
-            }
+            return await this.context
+                .Roles
+                .Where(x => userRoles.Contains(x.Name))
+                .ToDictionaryAsync(k => k.Id, v => v.Name);
         }
-
-        /// <inheritdoc/>
-        public async Task<bool> RemoveAllRolesFromUserAsync(IUser user)
+        catch (Exception ex)
         {
-            try
-            {
-                var userRoles = await this.userManager.GetRolesAsync((User)user);
-                var result = await this.userManager.RemoveFromRolesAsync((User)user, userRoles);
-
-                return result.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during removing the roles of user");
-                return false;
-            }
+            this.logger.LogError(ex, "An error occured during getting user roles");
+            return new Dictionary<Guid, string>();
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<bool> AssignRolesToUserAsync(IUser user, IEnumerable<Guid> roleIds)
+    /// <inheritdoc/>
+    public async Task<bool> RemoveAllRolesFromUserAsync(IUser user)
+    {
+        try
         {
-            try
-            {
-                var rolesToAssign = await this.context
-                    .Roles
-                    .Where(x => roleIds.Contains(x.Id))
-                    .ToListAsync();
+            var userRoles = await this.userManager.GetRolesAsync((User)user);
+            var result = await this.userManager.RemoveFromRolesAsync((User)user, userRoles);
 
-                var result = await this.userManager.AddToRolesAsync((User)user, rolesToAssign?.Select(x => x.Name));
+            return result.Succeeded;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during removing the roles of user");
+            return false;
+        }
+    }
 
-                return result.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during roles assignment to the user");
-                return false;
-            }
+    /// <inheritdoc/>
+    public async Task<bool> AssignRolesToUserAsync(IUser user, IEnumerable<Guid> roleIds)
+    {
+        try
+        {
+            var rolesToAssign = await this.context
+                .Roles
+                .Where(x => roleIds.Contains(x.Id))
+                .ToListAsync();
+
+            var result = await this.userManager.AddToRolesAsync((User)user, rolesToAssign?.Select(x => x.Name));
+
+            return result.Succeeded;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during roles assignment to the user");
+            return false;
         }
     }
 }

@@ -7,82 +7,81 @@ using Emeraude.Infrastructure.Identity.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Emeraude.Application.Identity.Requests.Commands.Login
+namespace Emeraude.Application.Identity.Requests.Commands.Login;
+
+/// <summary>
+/// Command for user login.
+/// </summary>
+public class LoginCommand : IRequest<LoginRequestResult>
 {
     /// <summary>
-    /// Command for user login.
+    /// Email of the user.
     /// </summary>
-    public class LoginCommand : IRequest<LoginRequestResult>
+    public string Email { get; set; }
+
+    /// <summary>
+    /// Password of the user.
+    /// </summary>
+    public string Password { get; set; }
+
+    /// <inheritdoc/>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginRequestResult>
     {
-        /// <summary>
-        /// Email of the user.
-        /// </summary>
-        public string Email { get; set; }
+        private readonly IUserManager userManager;
+        private readonly IIdentityEventManager eventManager;
 
         /// <summary>
-        /// Password of the user.
+        /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
         /// </summary>
-        public string Password { get; set; }
+        /// <param name="userManager"></param>
+        /// <param name="eventManager"></param>
+        public LoginCommandHandler(IUserManager userManager, IIdentityEventManager eventManager)
+        {
+            this.userManager = userManager;
+            this.eventManager = eventManager;
+        }
 
         /// <inheritdoc/>
-        public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginRequestResult>
+        public async Task<LoginRequestResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            private readonly IUserManager userManager;
-            private readonly IIdentityEventManager eventManager;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
-            /// </summary>
-            /// <param name="userManager"></param>
-            /// <param name="eventManager"></param>
-            public LoginCommandHandler(IUserManager userManager, IIdentityEventManager eventManager)
+            var user = await this.userManager.FindUserByEmailAsync(request.Email);
+            var result = new LoginRequestResult
             {
-                this.userManager = userManager;
-                this.eventManager = eventManager;
+                User = user,
+                Result = SignInResult.Failed,
+            };
+
+            if (!await this.userManager.IsInRoleAsync(user, EmRoles.Admin) && !await this.userManager.IsInRoleAsync(user, EmRoles.User))
+            {
+                result.Result = SignInResult.NotAllowed;
+            }
+            else if (await this.userManager.IsLockedOutAsync(user))
+            {
+                result.Result = SignInResult.LockedOut;
             }
 
-            /// <inheritdoc/>
-            public async Task<LoginRequestResult> Handle(LoginCommand request, CancellationToken cancellationToken)
+            if (result.Result == SignInResult.Failed && await this.userManager.CheckPasswordAsync(user, request.Password))
             {
-                var user = await this.userManager.FindUserByEmailAsync(request.Email);
-                var result = new LoginRequestResult
+                if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, EmRoles.Admin))
                 {
-                    User = user,
-                    Result = SignInResult.Failed,
-                };
-
-                if (!await this.userManager.IsInRoleAsync(user, EmRoles.Admin) && !await this.userManager.IsInRoleAsync(user, EmRoles.User))
-                {
-                    result.Result = SignInResult.NotAllowed;
-                }
-                else if (await this.userManager.IsLockedOutAsync(user))
-                {
-                    result.Result = SignInResult.LockedOut;
-                }
-
-                if (result.Result == SignInResult.Failed && await this.userManager.CheckPasswordAsync(user, request.Password))
-                {
-                    if (await this.userManager.GetTwoFactorEnabledAsync(user) && await this.userManager.IsInRoleAsync(user, EmRoles.Admin))
-                    {
-                        result.Result = SignInResult.TwoFactorRequired;
-                    }
-                    else
-                    {
-                        result.Result = SignInResult.Success;
-                    }
+                    result.Result = SignInResult.TwoFactorRequired;
                 }
                 else
                 {
-                    await this.userManager.AccessFailedAsync(user);
+                    result.Result = SignInResult.Success;
                 }
-
-                if (result.Result == SignInResult.Success)
-                {
-                    await this.eventManager.TriggerLoginEventAsync(user.Id);
-                }
-
-                return result;
             }
+            else
+            {
+                await this.userManager.AccessFailedAsync(user);
+            }
+
+            if (result.Result == SignInResult.Success)
+            {
+                await this.eventManager.TriggerLoginEventAsync(user.Id);
+            }
+
+            return result;
         }
     }
 }

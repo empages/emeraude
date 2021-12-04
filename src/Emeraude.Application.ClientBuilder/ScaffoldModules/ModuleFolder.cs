@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Emeraude.Application.ClientBuilder.ScaffoldModules
+namespace Emeraude.Application.ClientBuilder.ScaffoldModules;
+
+/// <summary>
+/// Folder implementation of scaffold module.
+/// </summary>
+public class ModuleFolder
 {
     /// <summary>
-    /// Folder implementation of scaffold module.
+    /// Name of the folder.
     /// </summary>
-    public class ModuleFolder
-    {
-        /// <summary>
-        /// Name of the folder.
-        /// </summary>
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        /// <summary>
-        /// Relative path of the folder.
-        /// </summary>
-        public string RelativePath { get; set; }
-    }
+    /// <summary>
+    /// Relative path of the folder.
+    /// </summary>
+    public string RelativePath { get; set; }
 }

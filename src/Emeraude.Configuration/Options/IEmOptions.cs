@@ -1,13 +1,12 @@
-﻿namespace Emeraude.Configuration.Options
+﻿namespace Emeraude.Configuration.Options;
+
+/// <summary>
+/// Contract for options instance of Emeraude module.
+/// </summary>
+public interface IEmOptions
 {
     /// <summary>
-    /// Contract for options instance of Emeraude module.
+    /// Validate current instance of the options.
     /// </summary>
-    public interface IEmOptions
-    {
-        /// <summary>
-        /// Validate current instance of the options.
-        /// </summary>
-        void Validate();
-    }
+    void Validate();
 }

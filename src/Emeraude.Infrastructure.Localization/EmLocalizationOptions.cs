@@ -1,17 +1,16 @@
 ﻿using Emeraude.Configuration.Options;
 
-namespace Emeraude.Infrastructure.Localization
+namespace Emeraude.Infrastructure.Localization;
+
+/// <summary>
+/// Options for localization infrastructure of Emeraude.
+/// </summary>
+public class EmLocalizationOptions : IEmOptions
 {
     /// <summary>
-    /// Options for localization infrastructure of Emeraude.
+    /// <inheritdoc />
     /// </summary>
-    public class EmLocalizationOptions : IEmOptions
+    public void Validate()
     {
-        /// <summary>
-        /// <inheritdoc />
-        /// </summary>
-        public void Validate()
-        {
-        }
     }
 }

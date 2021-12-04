@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Emeraude.Contracts
+namespace Emeraude.Contracts;
+
+/// <summary>
+/// Contract that represent the domain entity.
+/// </summary>
+public interface IEntity
 {
     /// <summary>
-    /// Contract that represent the domain entity.
+    /// Identification of the entity.
     /// </summary>
-    public interface IEntity
-    {
-        /// <summary>
-        /// Identification of the entity.
-        /// </summary>
-        Guid Id { get; set; }
-    }
+    Guid Id { get; set; }
 }

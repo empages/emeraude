@@ -6,49 +6,48 @@ using Emeraude.Infrastructure.Localization.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.DeleteKey
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.DeleteKey;
+
+/// <summary>
+/// Command that deletes a specified translation keys and its related translations.
+/// </summary>
+public class DeleteKeyCommand : IRequest<SimpleResult>
 {
     /// <summary>
-    /// Command that deletes a specified translation keys and its related translations.
+    /// Id of the key.
     /// </summary>
-    public class DeleteKeyCommand : IRequest<SimpleResult>
+    public int KeyId { get; set; }
+
+    /// <inheritdoc/>
+    public class DeleteKeyCommandHandler : IRequestHandler<DeleteKeyCommand, SimpleResult>
     {
+        private readonly ILocalizationContext context;
+
         /// <summary>
-        /// Id of the key.
+        /// Initializes a new instance of the <see cref="DeleteKeyCommandHandler"/> class.
         /// </summary>
-        public int KeyId { get; set; }
+        /// <param name="context"></param>
+        public DeleteKeyCommandHandler(ILocalizationContext context)
+        {
+            this.context = context;
+        }
 
         /// <inheritdoc/>
-        public class DeleteKeyCommandHandler : IRequestHandler<DeleteKeyCommand, SimpleResult>
+        public async Task<SimpleResult> Handle(DeleteKeyCommand request, CancellationToken cancellationToken)
         {
-            private readonly ILocalizationContext context;
+            var keyToRemove = await this.context
+                .Keys
+                .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DeleteKeyCommandHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            public DeleteKeyCommandHandler(ILocalizationContext context)
+            if (keyToRemove == null)
             {
-                this.context = context;
+                throw new EntityNotFoundException("Translation key", request.KeyId);
             }
 
-            /// <inheritdoc/>
-            public async Task<SimpleResult> Handle(DeleteKeyCommand request, CancellationToken cancellationToken)
-            {
-                var keyToRemove = await this.context
-                    .Keys
-                    .FirstOrDefaultAsync(x => x.Id == request.KeyId, cancellationToken);
+            this.context.Keys.Remove(keyToRemove);
+            await this.context.SaveChangesAsync(cancellationToken);
 
-                if (keyToRemove == null)
-                {
-                    throw new EntityNotFoundException("Translation key", request.KeyId);
-                }
-
-                this.context.Keys.Remove(keyToRemove);
-                await this.context.SaveChangesAsync(cancellationToken);
-
-                return new SimpleResult(true);
-            }
+            return new SimpleResult(true);
         }
     }
 }

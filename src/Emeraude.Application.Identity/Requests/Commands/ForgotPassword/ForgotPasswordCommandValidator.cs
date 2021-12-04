@@ -1,20 +1,19 @@
 ﻿using Emeraude.Application.Identity.Extensions;
 using FluentValidation;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ForgotPassword
+namespace Emeraude.Application.Identity.Requests.Commands.ForgotPassword;
+
+/// <summary>
+/// Validator for client forgot password command.
+/// </summary>
+public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>
 {
     /// <summary>
-    /// Validator for client forgot password command.
+    /// Initializes a new instance of the <see cref="ForgotPasswordCommandValidator"/> class.
     /// </summary>
-    public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>
+    public ForgotPasswordCommandValidator()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ForgotPasswordCommandValidator"/> class.
-        /// </summary>
-        public ForgotPasswordCommandValidator()
-        {
-            this.RuleFor(x => x.Email)
-                .ValidateEmailAddress();
-        }
+        this.RuleFor(x => x.Email)
+            .ValidateEmailAddress();
     }
 }

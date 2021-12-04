@@ -6,30 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Presentation.Controllers
+namespace Emeraude.Presentation.Controllers;
+
+/// <summary>
+/// Base Emeraude controller that provides all required services and base functionalities.
+/// </summary>
+public abstract class EmController : Controller
 {
-    /// <summary>
-    /// Base Emeraude controller that provides all required services and base functionalities.
-    /// </summary>
-    public abstract class EmController : Controller
-    {
-        private UrlEncoder urlEncoder;
-        private IMediator mediator;
-        private ICurrentUserProvider currentUserProvider;
-        private IEmOptionsProvider optionsProvider;
+    private UrlEncoder urlEncoder;
+    private IMediator mediator;
+    private ICurrentUserProvider currentUserProvider;
+    private IEmOptionsProvider optionsProvider;
 
-        /// <inheritdoc cref="IMediator"/>
-        protected IMediator Mediator => this.mediator ??= this.HttpContext?.RequestServices?.GetService<IMediator>();
+    /// <inheritdoc cref="IMediator"/>
+    protected IMediator Mediator => this.mediator ??= this.HttpContext?.RequestServices?.GetService<IMediator>();
 
-        /// <inheritdoc cref="System.Text.Encodings.Web.UrlEncoder"/>
-        protected UrlEncoder UrlEncoder => this.urlEncoder ??= this.HttpContext.RequestServices.GetService<UrlEncoder>();
+    /// <inheritdoc cref="System.Text.Encodings.Web.UrlEncoder"/>
+    protected UrlEncoder UrlEncoder => this.urlEncoder ??= this.HttpContext.RequestServices.GetService<UrlEncoder>();
 
-        /// <inheritdoc cref="ICurrentUserProvider"/>
-        protected ICurrentUserProvider CurrentUserProvider =>
-            this.currentUserProvider ??= this.HttpContext.RequestServices.GetService<ICurrentUserProvider>();
+    /// <inheritdoc cref="ICurrentUserProvider"/>
+    protected ICurrentUserProvider CurrentUserProvider =>
+        this.currentUserProvider ??= this.HttpContext.RequestServices.GetService<ICurrentUserProvider>();
 
-        /// <inheritdoc cref="IEmOptionsProvider"/>
-        protected IEmOptionsProvider OptionsProvider =>
-            this.optionsProvider ??= this.HttpContext.RequestServices.GetService<IEmOptionsProvider>();
-    }
+    /// <inheritdoc cref="IEmOptionsProvider"/>
+    protected IEmOptionsProvider OptionsProvider =>
+        this.optionsProvider ??= this.HttpContext.RequestServices.GetService<IEmOptionsProvider>();
 }

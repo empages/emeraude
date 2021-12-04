@@ -14,119 +14,118 @@ using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Persistence.Context;
 using Microsoft.Extensions.Logging;
 
-namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch
+namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
+
+/// <inheritdoc/>
+public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQueryHandler<EmPageDataFetchQuery<TEntity, TModel>, TEntity, TModel>
+    where TEntity : class, IEntity, new()
+    where TModel : class, IEmPageModel, new()
 {
-    /// <inheritdoc/>
-    public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQueryHandler<EmPageDataFetchQuery<TEntity, TModel>, TEntity, TModel>
-        where TEntity : class, IEntity, new()
-        where TModel : class, IEmPageModel, new()
+    private readonly IEmContext context;
+    private readonly IMapper mapper;
+    private readonly ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger;
+    private readonly IEmPageService emPageService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmPageDataFetchQueryHandler{TEntity,TModel}"/> class.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="mapper"></param>
+    /// <param name="logger"></param>
+    /// <param name="emPageService"></param>
+    public EmPageDataFetchQueryHandler(
+        IEmContext context,
+        IMapper mapper,
+        ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger,
+        IEmPageService emPageService)
     {
-        private readonly IEmContext context;
-        private readonly IMapper mapper;
-        private readonly ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger;
-        private readonly IEmPageService emPageService;
+        this.context = context;
+        this.mapper = mapper;
+        this.logger = logger;
+        this.emPageService = emPageService;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryHandler{TEntity,TModel}"/> class.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="mapper"></param>
-        /// <param name="logger"></param>
-        /// <param name="emPageService"></param>
-        public EmPageDataFetchQueryHandler(
-            IEmContext context,
-            IMapper mapper,
-            ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger,
-            IEmPageService emPageService)
+    /// <inheritdoc/>
+    public async Task<PaginatedList<TModel>> Handle(EmPageDataFetchQuery<TEntity, TModel> request, CancellationToken cancellationToken)
+    {
+        var result = new PaginatedList<TModel>();
+
+        try
         {
-            this.context = context;
-            this.mapper = mapper;
-            this.logger = logger;
-            this.emPageService = emPageService;
+            var requestExpression = this.BuildRequestExpression(request);
+            if (request.FilterExpression != null)
+            {
+                requestExpression = ExpressionBuilders.AndAlso(requestExpression, request.FilterExpression);
+            }
+
+            result.AllItemsCount = this.context
+                .Set<TEntity>()
+                .Where(requestExpression)
+                .Count();
+
+            result.CurrentPage = request.Page;
+            result.PageSize = request.PageSize;
+
+            var orderType = this.GetOrderTypeByString(request.OrderType);
+            var entities = this.context
+                .Set<TEntity>()
+                .Where(requestExpression)
+                .OrderByProperty(request.OrderBy, nameof(IEntity.Id), orderType)
+                .Skip(result.StartRow)
+                .Take(request.PageSize)
+                .ToList();
+
+            var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
+
+            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
+            await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.IndexView.ViewItems);
+            result.Items = entitiesModels;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "EmPage fetch query fails");
         }
 
-        /// <inheritdoc/>
-        public async Task<PaginatedList<TModel>> Handle(EmPageDataFetchQuery<TEntity, TModel> request, CancellationToken cancellationToken)
+        return result;
+    }
+
+    private OrderType GetOrderTypeByString(string orderTypeString)
+    {
+        var orderType = OrderType.Unspecified;
+        if (!string.IsNullOrEmpty(orderTypeString))
         {
-            var result = new PaginatedList<TModel>();
-
-            try
+            if (orderTypeString.ToLower() == "asc")
             {
-                var requestExpression = this.BuildRequestExpression(request);
-                if (request.FilterExpression != null)
-                {
-                    requestExpression = ExpressionBuilders.AndAlso(requestExpression, request.FilterExpression);
-                }
-
-                result.AllItemsCount = this.context
-                    .Set<TEntity>()
-                    .Where(requestExpression)
-                    .Count();
-
-                result.CurrentPage = request.Page;
-                result.PageSize = request.PageSize;
-
-                var orderType = this.GetOrderTypeByString(request.OrderType);
-                var entities = this.context
-                    .Set<TEntity>()
-                    .Where(requestExpression)
-                    .OrderByProperty(request.OrderBy, nameof(IEntity.Id), orderType)
-                    .Skip(result.StartRow)
-                    .Take(request.PageSize)
-                    .ToList();
-
-                var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
-
-                var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
-                await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.IndexView.ViewItems);
-                result.Items = entitiesModels;
+                orderType = OrderType.Ascending;
             }
-            catch (Exception ex)
+            else if (orderTypeString.ToLower() == "desc")
             {
-                this.logger.LogError(ex, "EmPage fetch query fails");
+                orderType = OrderType.Descending;
             }
-
-            return result;
         }
 
-        private OrderType GetOrderTypeByString(string orderTypeString)
-        {
-            var orderType = OrderType.Unspecified;
-            if (!string.IsNullOrEmpty(orderTypeString))
-            {
-                if (orderTypeString.ToLower() == "asc")
-                {
-                    orderType = OrderType.Ascending;
-                }
-                else if (orderTypeString.ToLower() == "desc")
-                {
-                    orderType = OrderType.Descending;
-                }
-            }
+        return orderType;
+    }
 
-            return orderType;
+    private Expression<Func<TEntity, bool>> BuildRequestExpression(EmPageDataFetchQuery<TEntity, TModel> request)
+    {
+        var expressionList = new List<Expression<Func<TEntity, bool>>>();
+
+        var queryExpressionBySearchQuery = !string.IsNullOrEmpty(request.SearchQuery) ? ExpressionBuilders.BuildQueryExpressionBySearchQuery<TEntity>(request.SearchQuery) : null;
+        if (queryExpressionBySearchQuery != null)
+        {
+            expressionList.Add(queryExpressionBySearchQuery);
         }
 
-        private Expression<Func<TEntity, bool>> BuildRequestExpression(EmPageDataFetchQuery<TEntity, TModel> request)
+        Expression<Func<TEntity, bool>> requestExpression = x => true;
+        if (expressionList.Count > 0)
         {
-            var expressionList = new List<Expression<Func<TEntity, bool>>>();
-
-            var queryExpressionBySearchQuery = !string.IsNullOrEmpty(request.SearchQuery) ? ExpressionBuilders.BuildQueryExpressionBySearchQuery<TEntity>(request.SearchQuery) : null;
-            if (queryExpressionBySearchQuery != null)
+            foreach (var expression in expressionList)
             {
-                expressionList.Add(queryExpressionBySearchQuery);
+                requestExpression = ExpressionBuilders.AndAlso(requestExpression, expression);
             }
-
-            Expression<Func<TEntity, bool>> requestExpression = x => true;
-            if (expressionList.Count > 0)
-            {
-                foreach (var expression in expressionList)
-                {
-                    requestExpression = ExpressionBuilders.AndAlso(requestExpression, expression);
-                }
-            }
-
-            return requestExpression;
         }
+
+        return requestExpression;
     }
 }

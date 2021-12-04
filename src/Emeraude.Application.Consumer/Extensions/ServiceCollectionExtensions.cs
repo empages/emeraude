@@ -4,21 +4,20 @@ using Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Application.Consumer.Extensions
+namespace Emeraude.Application.Consumer.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IServiceCollection"/>.
+/// </summary>
+public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Register client features.
     /// </summary>
-    public static class ServiceCollectionExtensions
+    /// <param name="services"></param>
+    /// <param name="clientOptions"></param>
+    public static void AddEmeraudeConsumer(this IServiceCollection services, EmConsumerOptions clientOptions)
     {
-        /// <summary>
-        /// Register client features.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="clientOptions"></param>
-        public static void AddEmeraudeConsumer(this IServiceCollection services, EmConsumerOptions clientOptions)
-        {
-            services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
-        }
+        services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
     }
 }

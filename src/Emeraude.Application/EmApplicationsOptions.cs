@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using AutoMapper;
 using Emeraude.Configuration.Options;
 
-namespace Emeraude.Application
+namespace Emeraude.Application;
+
+/// <summary>
+/// Options for application architectural part of the Emeraude.
+/// </summary>
+public class EmApplicationsOptions : IEmOptions
 {
     /// <summary>
-    /// Options for application architectural part of the Emeraude.
+    /// Initializes a new instance of the <see cref="EmApplicationsOptions"/> class.
     /// </summary>
-    public class EmApplicationsOptions : IEmOptions
+    public EmApplicationsOptions()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmApplicationsOptions"/> class.
-        /// </summary>
-        public EmApplicationsOptions()
-        {
-            this.MappingAssemblies = new List<string>();
-            this.MappingProfiles = new List<Type>();
-        }
+        this.MappingAssemblies = new List<string>();
+        this.MappingProfiles = new List<Type>();
+    }
 
-        /// <summary>
-        /// List of all assemblies that contains mappings.
-        /// </summary>
-        public List<string> MappingAssemblies { get; }
+    /// <summary>
+    /// List of all assemblies that contains mappings.
+    /// </summary>
+    public List<string> MappingAssemblies { get; }
 
-        /// <summary>
-        /// List of all mapping profiles types used for AutoMapper configuration.
-        /// </summary>
-        public List<Type> MappingProfiles { get; }
+    /// <summary>
+    /// List of all mapping profiles types used for AutoMapper configuration.
+    /// </summary>
+    public List<Type> MappingProfiles { get; }
 
-        /// <summary>
-        /// Add new mapping profile type to the mapping profile. The method is preferred than the <see cref="MappingProfiles"/> property.
-        /// </summary>
-        /// <typeparam name="TProfile">AutoMapper profile type.</typeparam>
-        public void AddMappingProfile<TProfile>()
-            where TProfile : Profile
-        {
-            this.MappingProfiles.Add(typeof(TProfile));
-        }
+    /// <summary>
+    /// Add new mapping profile type to the mapping profile. The method is preferred than the <see cref="MappingProfiles"/> property.
+    /// </summary>
+    /// <typeparam name="TProfile">AutoMapper profile type.</typeparam>
+    public void AddMappingProfile<TProfile>()
+        where TProfile : Profile
+    {
+        this.MappingProfiles.Add(typeof(TProfile));
+    }
 
-        /// <summary>
-        /// <inheritdoc />
-        /// </summary>
-        public void Validate()
-        {
-        }
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
+    public void Validate()
+    {
     }
 }

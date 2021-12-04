@@ -1,18 +1,17 @@
 ﻿using Emeraude.Configuration.Options;
 
-namespace Emeraude.Application.Consumer.Extensions
+namespace Emeraude.Application.Consumer.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IEmOptionsProvider"/>.
+/// </summary>
+public static class EmOptionsProviderExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IEmOptionsProvider"/>.
+    /// Gets Emeraude client options.
     /// </summary>
-    public static class EmOptionsProviderExtensions
-    {
-        /// <summary>
-        /// Gets Emeraude client options.
-        /// </summary>
-        /// <param name="optionsProvider"></param>
-        /// <returns></returns>
-        public static EmConsumerOptions GetConsumerOptions(this IEmOptionsProvider optionsProvider)
-            => optionsProvider.GetOptions<EmConsumerOptions>();
-    }
+    /// <param name="optionsProvider"></param>
+    /// <returns></returns>
+    public static EmConsumerOptions GetConsumerOptions(this IEmOptionsProvider optionsProvider)
+        => optionsProvider.GetOptions<EmConsumerOptions>();
 }

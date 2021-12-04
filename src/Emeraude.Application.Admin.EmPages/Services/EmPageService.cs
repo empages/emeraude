@@ -6,141 +6,140 @@ using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Models;
 using Emeraude.Application.Admin.EmPages.Schema;
 
-namespace Emeraude.Application.Admin.EmPages.Services
+namespace Emeraude.Application.Admin.EmPages.Services;
+
+/// <inheritdoc />
+public class EmPageService : IEmPageService
 {
-    /// <inheritdoc />
-    public class EmPageService : IEmPageService
+    private readonly IServiceProvider serviceProvider;
+    private readonly IEmPageSchemaFactory schemaFactory;
+
+    private IEnumerable<EmPageSchemaDescription> schemaDescriptions;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmPageService"/> class.
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    /// <param name="schemaFactory"></param>
+    public EmPageService(
+        IServiceProvider serviceProvider,
+        IEmPageSchemaFactory schemaFactory)
     {
-        private readonly IServiceProvider serviceProvider;
-        private readonly IEmPageSchemaFactory schemaFactory;
+        this.serviceProvider = serviceProvider;
+        this.schemaFactory = schemaFactory;
+    }
 
-        private IEnumerable<EmPageSchemaDescription> schemaDescriptions;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageService"/> class.
-        /// </summary>
-        /// <param name="serviceProvider"></param>
-        /// <param name="schemaFactory"></param>
-        public EmPageService(
-            IServiceProvider serviceProvider,
-            IEmPageSchemaFactory schemaFactory)
+    /// <inheritdoc />
+    public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string route)
+    {
+        await this.LoadSchemasIfEmptyAsync();
+        var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.Route?.Equals(route, StringComparison.OrdinalIgnoreCase) ?? false);
+        if (schemaDescription == null)
         {
-            this.serviceProvider = serviceProvider;
-            this.schemaFactory = schemaFactory;
+            throw new EmPageNotFoundException($"A schema with route: '{route}' cannot be found");
         }
 
-        /// <inheritdoc />
-        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(string route)
+        return schemaDescription;
+    }
+
+    /// <inheritdoc/>
+    public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type modelType)
+    {
+        await this.LoadSchemasIfEmptyAsync();
+        var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
+        if (schemaDescription == null)
         {
-            await this.LoadSchemasIfEmptyAsync();
-            var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.Route?.Equals(route, StringComparison.OrdinalIgnoreCase) ?? false);
-            if (schemaDescription == null)
+            throw new EmPageNotFoundException($"A schema for model of type: '{modelType?.FullName}' cannot be found");
+        }
+
+        return schemaDescription;
+    }
+
+    /// <inheritdoc/>
+    public EmPageSchemaDescription FindSchemaDescriptionByContract(Type modelType)
+        => this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
+
+    /// <inheritdoc/>
+    public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
+    {
+        var modelType = typeof(TEmPageModel);
+        var propertiesValuePipes = this.ExtractPropertiesValuePipes(viewItems);
+        foreach (var propertyValuePipes in propertiesValuePipes)
+        {
+            var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
+            var currentPropertyValues = models.Select(x => modelProperty?.GetValue(x));
+            foreach (var (valuePipe, valuePipeParameters) in propertyValuePipes.ValuePipes)
             {
-                throw new EmPageNotFoundException($"A schema with route: '{route}' cannot be found");
+                await valuePipe.PrepareAsync(currentPropertyValues, valuePipeParameters);
             }
 
-            return schemaDescription;
-        }
-
-        /// <inheritdoc/>
-        public async Task<EmPageSchemaDescription> FindSchemaDescriptionAsync(Type modelType)
-        {
-            await this.LoadSchemasIfEmptyAsync();
-            var schemaDescription = this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
-            if (schemaDescription == null)
+            foreach (var model in models)
             {
-                throw new EmPageNotFoundException($"A schema for model of type: '{modelType?.FullName}' cannot be found");
-            }
-
-            return schemaDescription;
-        }
-
-        /// <inheritdoc/>
-        public EmPageSchemaDescription FindSchemaDescriptionByContract(Type modelType)
-            => this.schemaDescriptions?.FirstOrDefault(x => x.ModelType == modelType);
-
-        /// <inheritdoc/>
-        public async Task ApplyValuePipesAsync<TEmPageModel>(IEnumerable<TEmPageModel> models, IEnumerable<IValuePipedViewItem> viewItems)
-        {
-            var modelType = typeof(TEmPageModel);
-            var propertiesValuePipes = this.ExtractPropertiesValuePipes(viewItems);
-            foreach (var propertyValuePipes in propertiesValuePipes)
-            {
-                var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
-                var currentPropertyValues = models.Select(x => modelProperty?.GetValue(x));
-                foreach (var (valuePipe, valuePipeParameters) in propertyValuePipes.ValuePipes)
+                foreach (var (valuePipe, _) in propertyValuePipes.ValuePipes)
                 {
-                    await valuePipe.PrepareAsync(currentPropertyValues, valuePipeParameters);
-                }
-
-                foreach (var model in models)
-                {
-                    foreach (var (valuePipe, _) in propertyValuePipes.ValuePipes)
-                    {
-                        var convertedValue = await valuePipe.ConvertAsync(modelProperty?.GetValue(model));
-                        modelProperty?.SetValue(model, convertedValue);
-                    }
+                    var convertedValue = await valuePipe.ConvertAsync(modelProperty?.GetValue(model));
+                    modelProperty?.SetValue(model, convertedValue);
                 }
             }
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<EmPageSimpleModel>> GetEmPagesListAsync()
+    /// <inheritdoc/>
+    public async Task<IEnumerable<EmPageSimpleModel>> GetEmPagesListAsync()
+    {
+        await this.LoadSchemasIfEmptyAsync();
+        var resultModels = new List<EmPageSimpleModel>();
+        foreach (var schemaDescription in this.schemaDescriptions)
         {
-            await this.LoadSchemasIfEmptyAsync();
-            var resultModels = new List<EmPageSimpleModel>();
-            foreach (var schemaDescription in this.schemaDescriptions)
+            if (!schemaDescription.UseAsFeature)
             {
-                if (!schemaDescription.UseAsFeature)
+                var currentEmPageModel = new EmPageSimpleModel
                 {
-                    var currentEmPageModel = new EmPageSimpleModel
-                    {
-                        Route = schemaDescription.Route,
-                        Title = schemaDescription.Title,
-                        Description = schemaDescription.Description,
-                    };
-                    resultModels.Add(currentEmPageModel);
-                }
-            }
-
-            return resultModels;
-        }
-
-        private async Task LoadSchemasIfEmptyAsync()
-        {
-            if (this.schemaDescriptions == null || !this.schemaDescriptions.Any())
-            {
-                this.schemaDescriptions = await this.schemaFactory.CreateSchemasInstancesAsync();
-            }
-        }
-
-        private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(IEnumerable<IValuePipedViewItem> valuePipedViewItems)
-        {
-            if (valuePipedViewItems == null)
-            {
-                throw new ArgumentNullException(nameof(valuePipedViewItems));
-            }
-
-            var valuePipedViewItemsWithRegisteredPipes = valuePipedViewItems.Where(x => x.ValuePipes.Any());
-
-            var result = new List<PropertyValuePipes>();
-            foreach (var viewItem in valuePipedViewItemsWithRegisteredPipes)
-            {
-                var currentPropertyValuePipe = new PropertyValuePipes
-                {
-                    PropertyName = ((IViewItem)viewItem).SourceName,
+                    Route = schemaDescription.Route,
+                    Title = schemaDescription.Title,
+                    Description = schemaDescription.Description,
                 };
+                resultModels.Add(currentEmPageModel);
+            }
+        }
 
-                foreach (var (valuePipeType, valuePipeParameters) in viewItem.ValuePipes)
-                {
-                    var currentValuePipe = this.serviceProvider.GetService(valuePipeType) as IValuePipe;
-                    currentPropertyValuePipe.ValuePipes.Add((currentValuePipe, valuePipeParameters));
-                }
+        return resultModels;
+    }
 
-                result.Add(currentPropertyValuePipe);
+    private async Task LoadSchemasIfEmptyAsync()
+    {
+        if (this.schemaDescriptions == null || !this.schemaDescriptions.Any())
+        {
+            this.schemaDescriptions = await this.schemaFactory.CreateSchemasInstancesAsync();
+        }
+    }
+
+    private IEnumerable<PropertyValuePipes> ExtractPropertiesValuePipes(IEnumerable<IValuePipedViewItem> valuePipedViewItems)
+    {
+        if (valuePipedViewItems == null)
+        {
+            throw new ArgumentNullException(nameof(valuePipedViewItems));
+        }
+
+        var valuePipedViewItemsWithRegisteredPipes = valuePipedViewItems.Where(x => x.ValuePipes.Any());
+
+        var result = new List<PropertyValuePipes>();
+        foreach (var viewItem in valuePipedViewItemsWithRegisteredPipes)
+        {
+            var currentPropertyValuePipe = new PropertyValuePipes
+            {
+                PropertyName = ((IViewItem)viewItem).SourceName,
+            };
+
+            foreach (var (valuePipeType, valuePipeParameters) in viewItem.ValuePipes)
+            {
+                var currentValuePipe = this.serviceProvider.GetService(valuePipeType) as IValuePipe;
+                currentPropertyValuePipe.ValuePipes.Add((currentValuePipe, valuePipeParameters));
             }
 
-            return result;
+            result.Add(currentPropertyValuePipe);
         }
+
+        return result;
     }
 }

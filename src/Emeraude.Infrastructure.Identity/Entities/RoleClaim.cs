@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Emeraude.Infrastructure.Identity.Entities
+namespace Emeraude.Infrastructure.Identity.Entities;
+
+/// <summary>
+/// Role claim entity used from the application that implements ASP.NET Core <see cref="IdentityRoleClaim{TKey}"/>.
+/// </summary>
+public class RoleClaim : IdentityRoleClaim<Guid>
 {
-    /// <summary>
-    /// Role claim entity used from the application that implements ASP.NET Core <see cref="IdentityRoleClaim{TKey}"/>.
-    /// </summary>
-    public class RoleClaim : IdentityRoleClaim<Guid>
-    {
-    }
 }

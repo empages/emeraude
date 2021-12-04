@@ -3,83 +3,82 @@ using System.Linq;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Microsoft.Extensions.Primitives;
 
-namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch
+namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
+
+/// <summary>
+/// Fetch query context.
+/// </summary>
+public class EmPageDataFetchQueryBody
 {
     /// <summary>
-    /// Fetch query context.
+    /// Initializes a new instance of the <see cref="EmPageDataFetchQueryBody"/> class.
     /// </summary>
-    public class EmPageDataFetchQueryBody
+    /// <param name="query"></param>
+    public EmPageDataFetchQueryBody(IDictionary<string, StringValues> query)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageDataFetchQueryBody"/> class.
-        /// </summary>
-        /// <param name="query"></param>
-        public EmPageDataFetchQueryBody(IDictionary<string, StringValues> query)
+        this.LoadParameters(query);
+    }
+
+    /// <summary>
+    /// Pagination page index. First index is 1.
+    /// </summary>
+    public int Page { get; set; } = 1;
+
+    /// <summary>
+    /// Search query string.
+    /// </summary>
+    public string SearchQuery { get; set; }
+
+    /// <summary>
+    /// Order property.
+    /// </summary>
+    public string OrderBy { get; set; }
+
+    /// <summary>
+    /// Order type.
+    /// </summary>
+    public string OrderType { get; set; }
+
+    /// <summary>
+    /// EmPage data filter instance.
+    /// </summary>
+    public EmPageDataFilter Filter { get; set; }
+
+    private void LoadParameters(IDictionary<string, StringValues> query)
+    {
+        if (query == null)
         {
-            this.LoadParameters(query);
+            return;
         }
 
-        /// <summary>
-        /// Pagination page index. First index is 1.
-        /// </summary>
-        public int Page { get; set; } = 1;
+        var normalizedQuery = query.ToDictionary(k => k.Key.ToLowerInvariant(), v => v.Value);
 
-        /// <summary>
-        /// Search query string.
-        /// </summary>
-        public string SearchQuery { get; set; }
-
-        /// <summary>
-        /// Order property.
-        /// </summary>
-        public string OrderBy { get; set; }
-
-        /// <summary>
-        /// Order type.
-        /// </summary>
-        public string OrderType { get; set; }
-
-        /// <summary>
-        /// EmPage data filter instance.
-        /// </summary>
-        public EmPageDataFilter Filter { get; set; }
-
-        private void LoadParameters(IDictionary<string, StringValues> query)
+        var pageKey = nameof(this.Page).ToLowerInvariant();
+        if (normalizedQuery.ContainsKey(pageKey))
         {
-            if (query == null)
+            var pageRawValue = normalizedQuery[pageKey].FirstOrDefault();
+            if (int.TryParse(pageRawValue, out var page))
             {
-                return;
+                this.Page = page > 0 ? page : 1;
             }
+        }
 
-            var normalizedQuery = query.ToDictionary(k => k.Key.ToLowerInvariant(), v => v.Value);
+        var searchQueryKey = nameof(this.SearchQuery).ToLowerInvariant();
+        if (normalizedQuery.ContainsKey(searchQueryKey))
+        {
+            this.SearchQuery = normalizedQuery[searchQueryKey].FirstOrDefault();
+        }
 
-            var pageKey = nameof(this.Page).ToLowerInvariant();
-            if (normalizedQuery.ContainsKey(pageKey))
-            {
-                var pageRawValue = normalizedQuery[pageKey].FirstOrDefault();
-                if (int.TryParse(pageRawValue, out var page))
-                {
-                    this.Page = page > 0 ? page : 1;
-                }
-            }
+        var orderByKey = nameof(this.OrderBy).ToLowerInvariant();
+        if (normalizedQuery.ContainsKey(orderByKey))
+        {
+            this.OrderBy = normalizedQuery[orderByKey].FirstOrDefault();
+        }
 
-            var searchQueryKey = nameof(this.SearchQuery).ToLowerInvariant();
-            if (normalizedQuery.ContainsKey(searchQueryKey))
-            {
-                this.SearchQuery = normalizedQuery[searchQueryKey].FirstOrDefault();
-            }
-
-            var orderByKey = nameof(this.OrderBy).ToLowerInvariant();
-            if (normalizedQuery.ContainsKey(orderByKey))
-            {
-                this.OrderBy = normalizedQuery[orderByKey].FirstOrDefault();
-            }
-
-            var orderTypeKey = nameof(this.OrderType).ToLowerInvariant();
-            if (normalizedQuery.ContainsKey(orderTypeKey))
-            {
-                this.OrderType = normalizedQuery[orderTypeKey].FirstOrDefault();
-            }
+        var orderTypeKey = nameof(this.OrderType).ToLowerInvariant();
+        if (normalizedQuery.ContainsKey(orderTypeKey))
+        {
+            this.OrderType = normalizedQuery[orderTypeKey].FirstOrDefault();
         }
     }
 }

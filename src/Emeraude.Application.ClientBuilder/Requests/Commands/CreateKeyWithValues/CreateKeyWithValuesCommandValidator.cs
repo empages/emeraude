@@ -1,19 +1,18 @@
 ﻿using Emeraude.Infrastructure.Localization.Persistence;
 using FluentValidation;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateKeyWithValues
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateKeyWithValues;
+
+/// <summary>
+/// Command validator for <see cref="CreateKeyWithValuesCommand"/>.
+/// </summary>
+public class CreateKeyWithValuesCommandValidator : AbstractValidator<CreateKeyWithValuesCommand>
 {
     /// <summary>
-    /// Command validator for <see cref="CreateKeyWithValuesCommand"/>.
+    /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommandValidator"/> class.
     /// </summary>
-    public class CreateKeyWithValuesCommandValidator : AbstractValidator<CreateKeyWithValuesCommand>
+    /// <param name="context"></param>
+    public CreateKeyWithValuesCommandValidator(ILocalizationContext context)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommandValidator"/> class.
-        /// </summary>
-        /// <param name="context"></param>
-        public CreateKeyWithValuesCommandValidator(ILocalizationContext context)
-        {
-        }
     }
 }

@@ -2,32 +2,31 @@
 using Emeraude.Configuration.Options;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Application.Admin.Extensions
+namespace Emeraude.Application.Admin.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IServiceCollection"/>.
+/// </summary>
+public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Register all required Emeraude administration services.
     /// </summary>
-    public static class ServiceCollectionExtensions
+    /// <param name="services"></param>
+    /// <param name="adminOptions"></param>
+    /// <param name="mainOptions"></param>
+    public static void AddEmeraudeAdmin(
+        this IServiceCollection services,
+        EmAdminOptions adminOptions,
+        EmMainOptions mainOptions)
     {
-        /// <summary>
-        /// Register all required Emeraude administration services.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="adminOptions"></param>
-        /// <param name="mainOptions"></param>
-        public static void AddEmeraudeAdmin(
-            this IServiceCollection services,
-            EmAdminOptions adminOptions,
-            EmMainOptions mainOptions)
-        {
-            services.AddRouting();
+        services.AddRouting();
 
-            services.RegisterAdapters(adminOptions);
-        }
+        services.RegisterAdapters(adminOptions);
+    }
 
-        private static void RegisterAdapters(this IServiceCollection services, EmAdminOptions options)
-        {
-            services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
-        }
+    private static void RegisterAdapters(this IServiceCollection services, EmAdminOptions options)
+    {
+        services.AddScoped(typeof(IAdminMenusBuilder), options.AdminMenusBuilderType);
     }
 }

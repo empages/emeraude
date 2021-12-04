@@ -6,68 +6,67 @@ using Emeraude.Infrastructure.Identity.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ChangeEmail
+namespace Emeraude.Application.Identity.Requests.Commands.ChangeEmail;
+
+/// <summary>
+/// Command that change the email of the specified user.
+/// </summary>
+public class ChangeEmailCommand : IRequest<SimpleResult>
 {
     /// <summary>
-    /// Command that change the email of the specified user.
+    /// Initializes a new instance of the <see cref="ChangeEmailCommand"/> class.
     /// </summary>
-    public class ChangeEmailCommand : IRequest<SimpleResult>
+    /// <param name="newEmail"></param>
+    /// <param name="token"></param>
+    public ChangeEmailCommand(string newEmail, string token)
     {
+        this.NewEmail = newEmail;
+        this.Token = token;
+    }
+
+    /// <summary>
+    /// Email of the user.
+    /// </summary>
+    public string NewEmail { get; set; }
+
+    /// <summary>
+    /// Confirmation token of the user.
+    /// </summary>
+    public string Token { get; set; }
+
+    /// <inheritdoc />
+    public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, SimpleResult>
+    {
+        private readonly IUserManager userManager;
+        private readonly ILogger<ChangeEmailCommandHandler> logger;
+        private readonly ICurrentUserProvider currentUserProvider;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangeEmailCommand"/> class.
+        /// Initializes a new instance of the <see cref="ChangeEmailCommandHandler"/> class.
         /// </summary>
-        /// <param name="newEmail"></param>
-        /// <param name="token"></param>
-        public ChangeEmailCommand(string newEmail, string token)
+        /// <param name="userManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="currentUserProvider"></param>
+        public ChangeEmailCommandHandler(IUserManager userManager, ILogger<ChangeEmailCommandHandler> logger, ICurrentUserProvider currentUserProvider)
         {
-            this.NewEmail = newEmail;
-            this.Token = token;
+            this.userManager = userManager;
+            this.logger = logger;
+            this.currentUserProvider = currentUserProvider;
         }
 
-        /// <summary>
-        /// Email of the user.
-        /// </summary>
-        public string NewEmail { get; set; }
-
-        /// <summary>
-        /// Confirmation token of the user.
-        /// </summary>
-        public string Token { get; set; }
-
         /// <inheritdoc />
-        public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, SimpleResult>
+        public async Task<SimpleResult> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
         {
-            private readonly IUserManager userManager;
-            private readonly ILogger<ChangeEmailCommandHandler> logger;
-            private readonly ICurrentUserProvider currentUserProvider;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ChangeEmailCommandHandler"/> class.
-            /// </summary>
-            /// <param name="userManager"></param>
-            /// <param name="logger"></param>
-            /// <param name="currentUserProvider"></param>
-            public ChangeEmailCommandHandler(IUserManager userManager, ILogger<ChangeEmailCommandHandler> logger, ICurrentUserProvider currentUserProvider)
+            try
             {
-                this.userManager = userManager;
-                this.logger = logger;
-                this.currentUserProvider = currentUserProvider;
+                var user = await this.currentUserProvider.GetCurrentUserAsync();
+                var result = await this.userManager.ChangeEmailAsync(user, request.NewEmail, request.Token);
+                return result.Succeeded ? SimpleResult.SuccessfulResult : SimpleResult.UnsuccessfulResult;
             }
-
-            /// <inheritdoc />
-            public async Task<SimpleResult> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
+            catch (Exception ex)
             {
-                try
-                {
-                    var user = await this.currentUserProvider.GetCurrentUserAsync();
-                    var result = await this.userManager.ChangeEmailAsync(user, request.NewEmail, request.Token);
-                    return result.Succeeded ? SimpleResult.SuccessfulResult : SimpleResult.UnsuccessfulResult;
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogError(ex, "Change user email command fails");
-                    return SimpleResult.UnsuccessfulResult;
-                }
+                this.logger.LogError(ex, "Change user email command fails");
+                return SimpleResult.UnsuccessfulResult;
             }
         }
     }

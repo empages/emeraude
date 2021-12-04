@@ -2,149 +2,148 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Emeraude.Configuration.Options
+namespace Emeraude.Configuration.Options;
+
+/// <summary>
+/// Emeraude Framework main options.
+/// </summary>
+public class EmMainOptions : IEmOptions
 {
+    private string domainAssembly;
+    private string applicationAssembly;
+    private string infrastructureAssembly;
+    private string adminAssembly;
+
     /// <summary>
-    /// Emeraude Framework main options.
+    /// Initializes a new instance of the <see cref="EmMainOptions"/> class.
     /// </summary>
-    public class EmMainOptions : IEmOptions
+    public EmMainOptions()
     {
-        private string domainAssembly;
-        private string applicationAssembly;
-        private string infrastructureAssembly;
-        private string adminAssembly;
+        this.Assemblies = new List<Assembly>();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmMainOptions"/> class.
-        /// </summary>
-        public EmMainOptions()
+    /// <summary>
+    /// General name of the project. Default value is 'Emeraude'.
+    /// </summary>
+    public string ProjectName { get; set; } = "Emeraude";
+
+    /// <summary>
+    /// Base URI of the application.
+    /// </summary>
+    public string BaseUri { get; set; }
+
+    /// <summary>
+    /// Activate test mode for the application. Recommended for unit and integration tests.
+    /// </summary>
+    public bool TestMode { get; set; }
+
+    /// <summary>
+    /// Contains the domain assembly name.
+    /// </summary>
+    public string DomainAssembly
+    {
+        get => this.domainAssembly;
+        set
         {
-            this.Assemblies = new List<Assembly>();
+            this.domainAssembly = value;
+            this.AddAssembly(this.domainAssembly);
         }
+    }
 
-        /// <summary>
-        /// General name of the project. Default value is 'Emeraude'.
-        /// </summary>
-        public string ProjectName { get; set; } = "Emeraude";
-
-        /// <summary>
-        /// Base URI of the application.
-        /// </summary>
-        public string BaseUri { get; set; }
-
-        /// <summary>
-        /// Activate test mode for the application. Recommended for unit and integration tests.
-        /// </summary>
-        public bool TestMode { get; set; }
-
-        /// <summary>
-        /// Contains the domain assembly name.
-        /// </summary>
-        public string DomainAssembly
+    /// <summary>
+    /// Contains the infrastructure assembly name.
+    /// </summary>
+    public string InfrastructureAssembly
+    {
+        get => this.infrastructureAssembly;
+        set
         {
-            get => this.domainAssembly;
-            set
-            {
-                this.domainAssembly = value;
-                this.AddAssembly(this.domainAssembly);
-            }
+            this.infrastructureAssembly = value;
+            this.AddAssembly(this.infrastructureAssembly);
         }
+    }
 
-        /// <summary>
-        /// Contains the infrastructure assembly name.
-        /// </summary>
-        public string InfrastructureAssembly
+    /// <summary>
+    /// Contains the application assembly name.
+    /// </summary>
+    public string ApplicationAssembly
+    {
+        get => this.applicationAssembly;
+        set
         {
-            get => this.infrastructureAssembly;
-            set
-            {
-                this.infrastructureAssembly = value;
-                this.AddAssembly(this.infrastructureAssembly);
-            }
+            this.applicationAssembly = value;
+            this.AddAssembly(this.applicationAssembly);
         }
+    }
 
-        /// <summary>
-        /// Contains the application assembly name.
-        /// </summary>
-        public string ApplicationAssembly
+    /// <summary>
+    /// Contains the admin assembly name.
+    /// </summary>
+    public string AdminAssembly
+    {
+        get => this.adminAssembly;
+        set
         {
-            get => this.applicationAssembly;
-            set
-            {
-                this.applicationAssembly = value;
-                this.AddAssembly(this.applicationAssembly);
-            }
+            this.adminAssembly = value;
+            this.AddAssembly(this.adminAssembly);
         }
+    }
 
-        /// <summary>
-        /// Contains the admin assembly name.
-        /// </summary>
-        public string AdminAssembly
+    /// <summary>
+    /// List with all assemblies used for registration of execution services and requests.
+    /// </summary>
+    public List<Assembly> Assemblies { get; set; }
+
+    /// <summary>
+    /// Execution assembly of the application.
+    /// </summary>
+    public Assembly EmeraudeAssembly { get; private set; }
+
+    /// <summary>
+    /// Flag that turn on/off auto execution of migrations for all database contexts.
+    /// </summary>
+    public bool ExecuteMigrations { get; set; }
+
+    /// <summary>
+    /// Get the current Emeraude Framework version.
+    /// </summary>
+    public string EmeraudeVersion => this.EmeraudeAssembly?.GetName()?.Version?.ToString();
+
+    /// <summary>
+    /// Add assembly for the registration purposes of requests, validators, and handlers.
+    /// </summary>
+    /// <param name="assemblyName"></param>
+    public void AddAssembly(string assemblyName)
+    {
+        this.Assemblies.Add(Assembly.Load(assemblyName));
+    }
+
+    /// <summary>
+    /// Add assembly for the registration purposes of requests, validators, and handlers.
+    /// </summary>
+    /// <param name="assembly"></param>
+    public void AddAssembly(Assembly assembly)
+    {
+        this.Assemblies.Add(assembly);
+    }
+
+    /// <summary>
+    /// Set the application execution assembly if the value is not set.
+    /// </summary>
+    /// <param name="assembly"></param>
+    public void SetEmeraudeAssembly(Assembly assembly)
+    {
+        if (this.EmeraudeAssembly == null)
         {
-            get => this.adminAssembly;
-            set
-            {
-                this.adminAssembly = value;
-                this.AddAssembly(this.adminAssembly);
-            }
+            this.EmeraudeAssembly = assembly;
+            this.AddAssembly(assembly);
         }
+    }
 
-        /// <summary>
-        /// List with all assemblies used for registration of execution services and requests.
-        /// </summary>
-        public List<Assembly> Assemblies { get; set; }
-
-        /// <summary>
-        /// Execution assembly of the application.
-        /// </summary>
-        public Assembly EmeraudeAssembly { get; private set; }
-
-        /// <summary>
-        /// Flag that turn on/off auto execution of migrations for all database contexts.
-        /// </summary>
-        public bool ExecuteMigrations { get; set; }
-
-        /// <summary>
-        /// Get the current Emeraude Framework version.
-        /// </summary>
-        public string EmeraudeVersion => this.EmeraudeAssembly?.GetName()?.Version?.ToString();
-
-        /// <summary>
-        /// Add assembly for the registration purposes of requests, validators, and handlers.
-        /// </summary>
-        /// <param name="assemblyName"></param>
-        public void AddAssembly(string assemblyName)
-        {
-            this.Assemblies.Add(Assembly.Load(assemblyName));
-        }
-
-        /// <summary>
-        /// Add assembly for the registration purposes of requests, validators, and handlers.
-        /// </summary>
-        /// <param name="assembly"></param>
-        public void AddAssembly(Assembly assembly)
-        {
-            this.Assemblies.Add(assembly);
-        }
-
-        /// <summary>
-        /// Set the application execution assembly if the value is not set.
-        /// </summary>
-        /// <param name="assembly"></param>
-        public void SetEmeraudeAssembly(Assembly assembly)
-        {
-            if (this.EmeraudeAssembly == null)
-            {
-                this.EmeraudeAssembly = assembly;
-                this.AddAssembly(assembly);
-            }
-        }
-
-        /// <summary>
-        /// <inheritdoc />
-        /// </summary>
-        public void Validate()
-        {
-        }
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
+    public void Validate()
+    {
     }
 }

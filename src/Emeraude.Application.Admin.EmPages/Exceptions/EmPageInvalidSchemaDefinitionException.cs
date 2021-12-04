@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace Emeraude.Application.Admin.EmPages.Exceptions
+namespace Emeraude.Application.Admin.EmPages.Exceptions;
+
+/// <summary>
+/// Exception that is thrown when there is an invalid schema setup. Normally this exception is thrown during schema definition.
+/// </summary>
+public class EmPageInvalidSchemaDefinitionException : Exception
 {
     /// <summary>
-    /// Exception that is thrown when there is an invalid schema setup. Normally this exception is thrown during schema definition.
+    /// Initializes a new instance of the <see cref="EmPageInvalidSchemaDefinitionException"/> class.
     /// </summary>
-    public class EmPageInvalidSchemaDefinitionException : Exception
+    /// <param name="message"></param>
+    public EmPageInvalidSchemaDefinitionException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageInvalidSchemaDefinitionException"/> class.
-        /// </summary>
-        /// <param name="message"></param>
-        public EmPageInvalidSchemaDefinitionException(string message)
-            : base(message)
-        {
-        }
     }
 }

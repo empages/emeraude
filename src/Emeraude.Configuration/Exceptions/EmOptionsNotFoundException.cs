@@ -1,26 +1,25 @@
 ﻿using System;
 
-namespace Emeraude.Configuration.Exceptions
+namespace Emeraude.Configuration.Exceptions;
+
+/// <summary>
+/// Represent error during accessing specific Emeraude options.
+/// </summary>
+public class EmOptionsNotFoundException : Exception
 {
     /// <summary>
-    /// Represent error during accessing specific Emeraude options.
+    /// Initializes a new instance of the <see cref="EmOptionsNotFoundException"/> class.
     /// </summary>
-    public class EmOptionsNotFoundException : Exception
+    public EmOptionsNotFoundException()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmOptionsNotFoundException"/> class.
-        /// </summary>
-        public EmOptionsNotFoundException()
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmOptionsNotFoundException"/> class.
-        /// </summary>
-        /// <param name="message"></param>
-        public EmOptionsNotFoundException(string message)
-            : base(message)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmOptionsNotFoundException"/> class.
+    /// </summary>
+    /// <param name="message"></param>
+    public EmOptionsNotFoundException(string message)
+        : base(message)
+    {
     }
 }

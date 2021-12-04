@@ -16,7 +16,6 @@ using Emeraude.Application.ClientBuilder.Options;
 using Emeraude.Application.Consumer.Extensions;
 using Emeraude.Application.Consumer.Mapping;
 using Emeraude.Application.Mapping;
-using Emeraude.Application.Persistence;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.FileStorage.Extensions;
 using Emeraude.Infrastructure.Identity.Entities;
@@ -44,297 +43,292 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Emeraude.Extensions
+namespace Emeraude.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IServiceCollection"/>.
+/// </summary>
+public static class WebApplicationBuilderExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Configure Emeraude framework required services and functionalities.
     /// </summary>
-    public static class WebApplicationBuilderExtensions
+    /// <param name="builder"></param>
+    /// <param name="setupAction"></param>
+    /// <returns></returns>
+    public static EmeraudeSettingsBuilder ConfigureEmeraude(
+        this WebApplicationBuilder builder,
+        Action<EmOptionsSetup> setupAction = null)
     {
-        /// <summary>
-        /// Configure Emeraude framework required services and functionalities.
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="setupAction"></param>
-        /// <returns></returns>
-        public static EmeraudeSettingsBuilder ConfigureEmeraude(
-            this WebApplicationBuilder builder,
-            Action<EmOptionsSetup> setupAction = null)
+        var settingsBuilder = new EmeraudeSettingsBuilder();
+
+        var applicationAssembly = Assembly.GetCallingAssembly().GetName().Name;
+
+        var setup = builder.Services.RegisterEmeraudeOptions(setupAction);
+
+        builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddOptions();
+
+        builder.Services.ConfigureDatabases(setup.PersistenceOptions, setup.MainOptions);
+
+        builder.Services.ConfigureMapper(applicationAssembly, setup.ApplicationsOptions);
+
+        settingsBuilder.IdentityBuilder = builder.Services.ConfigureIdentityOptions(setup.IdentityOptions);
+
+        settingsBuilder.AuthenticationBuilder = builder.AddEmeraudeAuthentication(setup.IdentityOptions);
+
+        builder.Services.RegisterEmeraudeIdentity();
+
+        builder.Services.RegisterEmeraudeLocalization(setup.MainOptions);
+
+        builder.Services.RegisterEmeraudeSystemFilesManagement(setup.FilesOptions);
+
+        builder.Services.ConfigureAuthorizationPolicies();
+
+        builder.Services.AddEmeraudeAdmin(setup.AdminOptions, setup.MainOptions);
+
+        builder.Services.RegisterEmPages(setup.MainOptions.Assemblies);
+
+        builder.Services.AddEmeraudeConsumer(setup.ConsumerOptions);
+
+        builder.Services.RegisterMediatR(setup.MainOptions.Assemblies);
+
+        builder.Services.AddCqrsBehaviours();
+
+        builder.Services.ConfigureRouting();
+
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+        builder.Services.AddEmeraudeClientBuilder(setup.ClientBuilderOptions);
+
+        builder.Services.RegisterEmeraudePortalGateway(setup.PortalGatewayOptions);
+
+        settingsBuilder.MvcBuilder = builder.Services.ConfigureMvc(setup.MainOptions, setup.PresentationOptions);
+
+        return settingsBuilder;
+    }
+
+    /// <summary>
+    /// Configure <see cref="IDataProtectionBuilder"/> to use 'privateroot' as directory for session storage.
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    public static IDataProtectionBuilder ApplyAuthenticationSessionToPrivateRoot(this IServiceCollection services)
+    {
+        return services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("./privateroot/sessions"));
+    }
+
+    private static void ApplyEmeraudeBaseOptions(this EmOptionsSetup setup)
+    {
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdmin);
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdminEmPages);
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationClientBuilder);
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationConsumer);
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationIdentity);
+        setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplication);
+        setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
+        setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
+    }
+
+    private static void PostOperationalEmeraudeOptions(this EmOptionsSetup setup)
+    {
+        if (setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider != null)
         {
-            var settingsBuilder = new EmeraudeSettingsBuilder();
-
-            var applicationAssembly = Assembly.GetCallingAssembly().GetName().Name;
-
-            var setup = builder.Services.RegisterEmeraudeOptions(setupAction);
-
-            builder.Services.AddHttpContextAccessor();
-
-            builder.Services.AddOptions();
-
-            builder.Services.ConfigureDatabases(setup.PersistenceOptions, setup.MainOptions);
-
-            builder.Services.ConfigureMapper(applicationAssembly, setup.ApplicationsOptions);
-
-            settingsBuilder.IdentityBuilder = builder.Services.ConfigureIdentityOptions(setup.IdentityOptions);
-
-            settingsBuilder.AuthenticationBuilder = builder.AddEmeraudeAuthentication(setup.IdentityOptions);
-
-            builder.Services.RegisterEmeraudeIdentity();
-
-            builder.Services.RegisterEmeraudeLocalization(setup.MainOptions);
-
-            builder.Services.RegisterEmeraudeSystemFilesManagement(setup.FilesOptions);
-
-            builder.Services.ConfigureAuthorizationPolicies();
-
-            builder.Services.AddEmeraudeAdmin(setup.AdminOptions, setup.MainOptions);
-
-            builder.Services.RegisterEmPages(setup.MainOptions.Assemblies);
-
-            builder.Services.AddEmeraudeConsumer(setup.ConsumerOptions);
-
-            builder.Services.RegisterMediatR(setup.MainOptions.Assemblies);
-
-            builder.Services.AddCqrsBehaviours();
-
-            builder.Services.ConfigureRouting();
-
-            builder.Services.AddDatabaseInitializer<IApplicationDatabaseInitializer, ApplicationDatabaseInitializer>();
-
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.AddEmeraudeClientBuilder(setup.ClientBuilderOptions);
-
-            builder.Services.RegisterEmeraudePortalGateway(setup.PortalGatewayOptions);
-
-            settingsBuilder.MvcBuilder = builder.Services.ConfigureMvc(setup.MainOptions, setup.PresentationOptions);
-
-            return settingsBuilder;
+            setup.PresentationOptions.FeatureProviders.Add(setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider);
         }
+    }
 
-        /// <summary>
-        /// Configure <see cref="IDataProtectionBuilder"/> to use 'privateroot' as directory for session storage.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IDataProtectionBuilder ApplyAuthenticationSessionToPrivateRoot(this IServiceCollection services)
+    private static void ConfigureRouting(this IServiceCollection services)
+    {
+        services.AddRouting(opt =>
         {
-            return services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("./privateroot/sessions"));
-        }
+            opt.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
+        });
+    }
 
-        private static void ApplyEmeraudeBaseOptions(this EmOptionsSetup setup)
+    private static void RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
+    {
+        var assembliesList = new List<Assembly>
         {
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdmin);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdminEmPages);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationClientBuilder);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationConsumer);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationIdentity);
-            setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplication);
-            setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
-            setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
+            AdminAssembly.GetAssembly(), Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly(),
+        };
+        assembliesList.AddRange(assemblies);
 
-            setup.PersistenceOptions.AddDatabaseInitializer<IApplicationDatabaseInitializer>();
-        }
+        services.AddMediatR(assembliesList.ToArray());
+    }
 
-        private static void PostOperationalEmeraudeOptions(this EmOptionsSetup setup)
-        {
-            if (setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider != null)
+    private static void AddCqrsBehaviours(this IServiceCollection services)
+    {
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggingBehavior<,>));
+    }
+
+    private static AuthenticationBuilder AddEmeraudeAuthentication(this WebApplicationBuilder builder, EmIdentityOptions identityOptions)
+    {
+        var authenticationBuilder = builder
+            .Services
+            .AddAuthentication(options =>
             {
-                setup.PresentationOptions.FeatureProviders.Add(setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider);
+                options.DefaultSignInScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
+                options.DefaultAuthenticateScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
+                options.DefaultChallengeScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
+                options.DefaultScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
+            })
+            .AddCookie(IdentityServerConstants.ExternalCookieAuthenticationScheme);
+
+        builder.Services.RegisterExternalProvidersAuthenticators(
+            authenticationBuilder,
+            identityOptions.ExternalProvidersAuthenticators);
+
+        authenticationBuilder
+            .AddConsumerCookie()
+            .AddBearerAuthentication(identityOptions.AccessTokenOptions);
+
+        return authenticationBuilder;
+    }
+
+    private static void ConfigureMapper(
+        this IServiceCollection services,
+        string applicationAssembly,
+        EmApplicationsOptions applicationsOptions)
+    {
+        services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
+        {
+            configuration.AddProfile<AdminAssemblyMappingProfile>();
+            configuration.AddProfile<ClientAssemblyMappingProfile>();
+            configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();
+            configuration.AddProfile<ApplicationMappingProfile>();
+            configuration.AddMaps(applicationAssembly);
+            configuration.AllowNullCollections = true;
+            configuration.AllowNullDestinationValues = true;
+
+            if (applicationsOptions != null)
+            {
+                if (applicationsOptions.MappingAssemblies != null && applicationsOptions.MappingAssemblies.Count > 0)
+                {
+                    foreach (var mappingAssembly in applicationsOptions.MappingAssemblies)
+                    {
+                        configuration.AddMaps(mappingAssembly);
+                    }
+                }
+
+                if (applicationsOptions.MappingProfiles != null && applicationsOptions.MappingProfiles.Count > 0)
+                {
+                    foreach (var mappingProfileType in applicationsOptions.MappingProfiles)
+                    {
+                        configuration.AddProfile(mappingProfileType);
+                    }
+                }
             }
-        }
+        })));
+    }
 
-        private static void ConfigureRouting(this IServiceCollection services)
+    private static IdentityBuilder ConfigureIdentityOptions(this IServiceCollection services, EmIdentityOptions options)
+    {
+        var identityBuilder = services.AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<IdentityContextInstance>()
+            .AddDefaultTokenProviders()
+            .AddEmPostAuthenticationTokenProvider();
+
+        services.Configure<IdentityOptions>(opt =>
         {
-            services.AddRouting(opt =>
+            opt.Lockout = options.SourceIdentityOptions.Lockout;
+            opt.Password = options.SourceIdentityOptions.Password;
+            opt.Stores = options.SourceIdentityOptions.Stores;
+
+            opt.Tokens.AuthenticatorIssuer = options.SourceIdentityOptions.Tokens.AuthenticatorIssuer;
+            opt.Tokens.AuthenticatorTokenProvider = options.SourceIdentityOptions.Tokens.AuthenticatorTokenProvider;
+            opt.Tokens.ChangeEmailTokenProvider = options.SourceIdentityOptions.Tokens.ChangeEmailTokenProvider;
+            opt.Tokens.EmailConfirmationTokenProvider = options.SourceIdentityOptions.Tokens.EmailConfirmationTokenProvider;
+            opt.Tokens.PasswordResetTokenProvider = options.SourceIdentityOptions.Tokens.PasswordResetTokenProvider;
+            opt.Tokens.ChangePhoneNumberTokenProvider = options.SourceIdentityOptions.Tokens.ChangePhoneNumberTokenProvider;
+            if (options.SourceIdentityOptions.Tokens.ProviderMap.Any())
             {
-                opt.ConstraintMap.Add(LanguageRouteConstraint.LanguageConstraintKey, typeof(LanguageRouteConstraint));
-            });
-        }
+                opt.Tokens.ProviderMap = options.SourceIdentityOptions.Tokens.ProviderMap;
+            }
 
-        private static void RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
-        {
-            var assembliesList = new List<Assembly>
-            {
-                AdminAssembly.GetAssembly(), Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly(),
-            };
-            assembliesList.AddRange(assemblies);
+            opt.User = options.SourceIdentityOptions.User;
+            opt.ClaimsIdentity = options.SourceIdentityOptions.ClaimsIdentity;
+            opt.SignIn = options.SourceIdentityOptions.SignIn;
+        });
 
-            services.AddMediatR(assembliesList.ToArray());
-        }
+        return identityBuilder;
+    }
 
-        private static void AddCqrsBehaviours(this IServiceCollection services)
-        {
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggingBehavior<,>));
-        }
-
-        private static AuthenticationBuilder AddEmeraudeAuthentication(this WebApplicationBuilder builder, EmIdentityOptions identityOptions)
-        {
-            var authenticationBuilder = builder
-                .Services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultSignInScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
-                    options.DefaultAuthenticateScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
-                    options.DefaultChallengeScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
-                    options.DefaultScheme = EmAuthenticationDefaults.CookieAuthenticationScheme;
-                })
-                .AddCookie(IdentityServerConstants.ExternalCookieAuthenticationScheme);
-
-            builder.Services.RegisterExternalProvidersAuthenticators(
-                authenticationBuilder,
-                identityOptions.ExternalProvidersAuthenticators);
-
-            authenticationBuilder
-                .AddConsumerCookie()
-                .AddBearerAuthentication(identityOptions.AccessTokenOptions);
-
-            return authenticationBuilder;
-        }
-
-        private static void ConfigureMapper(
-            this IServiceCollection services,
-            string applicationAssembly,
-            EmApplicationsOptions applicationsOptions)
-        {
-            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(configuration =>
-            {
-                configuration.AddProfile<AdminAssemblyMappingProfile>();
-                configuration.AddProfile<ClientAssemblyMappingProfile>();
-                configuration.AddProfile<AdminClientBuilderAssemblyMappingProfile>();
-                configuration.AddProfile<ApplicationMappingProfile>();
-                configuration.AddMaps(applicationAssembly);
-                configuration.AllowNullCollections = true;
-                configuration.AllowNullDestinationValues = true;
-
-                if (applicationsOptions != null)
-                {
-                    if (applicationsOptions.MappingAssemblies != null && applicationsOptions.MappingAssemblies.Count > 0)
-                    {
-                        foreach (var mappingAssembly in applicationsOptions.MappingAssemblies)
-                        {
-                            configuration.AddMaps(mappingAssembly);
-                        }
-                    }
-
-                    if (applicationsOptions.MappingProfiles != null && applicationsOptions.MappingProfiles.Count > 0)
-                    {
-                        foreach (var mappingProfileType in applicationsOptions.MappingProfiles)
-                        {
-                            configuration.AddProfile(mappingProfileType);
-                        }
-                    }
-                }
-            })));
-        }
-
-        private static IdentityBuilder ConfigureIdentityOptions(this IServiceCollection services, EmIdentityOptions options)
-        {
-            var identityBuilder = services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<IdentityContextInstance>()
-                .AddDefaultTokenProviders()
-                .AddEmPostAuthenticationTokenProvider();
-
-            services.Configure<IdentityOptions>(opt =>
-            {
-                opt.Lockout = options.SourceIdentityOptions.Lockout;
-                opt.Password = options.SourceIdentityOptions.Password;
-                opt.Stores = options.SourceIdentityOptions.Stores;
-
-                opt.Tokens.AuthenticatorIssuer = options.SourceIdentityOptions.Tokens.AuthenticatorIssuer;
-                opt.Tokens.AuthenticatorTokenProvider = options.SourceIdentityOptions.Tokens.AuthenticatorTokenProvider;
-                opt.Tokens.ChangeEmailTokenProvider = options.SourceIdentityOptions.Tokens.ChangeEmailTokenProvider;
-                opt.Tokens.EmailConfirmationTokenProvider = options.SourceIdentityOptions.Tokens.EmailConfirmationTokenProvider;
-                opt.Tokens.PasswordResetTokenProvider = options.SourceIdentityOptions.Tokens.PasswordResetTokenProvider;
-                opt.Tokens.ChangePhoneNumberTokenProvider = options.SourceIdentityOptions.Tokens.ChangePhoneNumberTokenProvider;
-                if (options.SourceIdentityOptions.Tokens.ProviderMap.Any())
-                {
-                    opt.Tokens.ProviderMap = options.SourceIdentityOptions.Tokens.ProviderMap;
-                }
-
-                opt.User = options.SourceIdentityOptions.User;
-                opt.ClaimsIdentity = options.SourceIdentityOptions.ClaimsIdentity;
-                opt.SignIn = options.SourceIdentityOptions.SignIn;
-            });
-
-            return identityBuilder;
-        }
-
-        private static IMvcBuilder ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions, EmPresentationOptions presentationOptions)
-        {
-            var mvcBuilder = services.AddMvc(options =>
+    private static IMvcBuilder ConfigureMvc(this IServiceCollection services, EmMainOptions emeraudeOptions, EmPresentationOptions presentationOptions)
+    {
+        var mvcBuilder = services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestExceptionFilter());
                 options.Filters.Add(new EmPagesExceptionFilter());
                 options.ModelBinderProviders.Insert(0, new DateModelBinderProvider());
             })
-                .AddFluentValidation(options =>
-                {
-                    options.RegisterValidatorsFromAssemblies(emeraudeOptions.Assemblies);
-                })
-                .ConfigureApplicationPartManager(p =>
-                {
-                    p.ApplicationParts.Add(ApplicationAssemblyPart.AssemblyPart);
-                    p.FeatureProviders.Add(new ViewComponentFeatureProvider());
-                    foreach (var featureProvider in presentationOptions.FeatureProviders)
-                    {
-                        p.FeatureProviders.Add(featureProvider);
-                    }
-                })
-                .AddJsonOptions(options =>
-                {
-                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-                    {
-                        ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy(),
-                        },
-                        Formatting = Formatting.Indented,
-                        Converters = new List<JsonConverter>
-                        {
-                            new TimeSpanNewtonsoftConverter(),
-                            new TimeSpanNullableNewtonsoftConverter(),
-                            new DateModelNewtonsoftConverter(),
-                            new DateModelNullableNewtonsoftConverter(),
-                        },
-                    };
-
-                    options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
-                    options.JsonSerializerOptions.Converters.Add(new TimeSpanNullableConverter());
-                    options.JsonSerializerOptions.Converters.Add(new DateModelConverter());
-                    options.JsonSerializerOptions.Converters.Add(new DateModelNullableConverter());
-                })
-                .AddXmlSerializerFormatters();
-
-            return mvcBuilder;
-        }
-
-        private static EmOptionsSetup RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptionsSetup> setupAction)
-        {
-            var setup = new EmOptionsSetup();
-            setup.ApplyEmeraudeBaseOptions();
-            setupAction?.Invoke(setup);
-            setup.PostOperationalEmeraudeOptions();
-            services.AddSingleton<IEmOptionsProvider>(new EmOptionsProvider(setup));
-
-            return setup;
-        }
-
-        private static void ConfigureAuthorizationPolicies(this IServiceCollection services)
-        {
-            services.AddAuthorizationCore(options =>
+            .AddFluentValidation(options =>
             {
-                options.ApplyEmeraudeAdminAuthorizationPolicies();
-            });
-        }
-
-        private static void AddEmeraudeClientBuilder(this IServiceCollection services, EmClientBuilderOptions options)
-        {
-            if (options.EnableClientBuilder)
+                options.RegisterValidatorsFromAssemblies(emeraudeOptions.Assemblies);
+            })
+            .ConfigureApplicationPartManager(p =>
             {
-                services.RegisterClientBuilder(options);
-            }
+                p.ApplicationParts.Add(ApplicationAssemblyPart.AssemblyPart);
+                p.FeatureProviders.Add(new ViewComponentFeatureProvider());
+                foreach (var featureProvider in presentationOptions.FeatureProviders)
+                {
+                    p.FeatureProviders.Add(featureProvider);
+                }
+            })
+            .AddJsonOptions(options =>
+            {
+                JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy(),
+                    },
+                    Formatting = Formatting.Indented,
+                    Converters = new List<JsonConverter>
+                    {
+                        new TimeSpanNewtonsoftConverter(),
+                        new TimeSpanNullableNewtonsoftConverter(),
+                        new DateModelNewtonsoftConverter(),
+                        new DateModelNullableNewtonsoftConverter(),
+                    },
+                };
+
+                options.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
+                options.JsonSerializerOptions.Converters.Add(new TimeSpanNullableConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateModelConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateModelNullableConverter());
+            })
+            .AddXmlSerializerFormatters();
+
+        return mvcBuilder;
+    }
+
+    private static EmOptionsSetup RegisterEmeraudeOptions(this IServiceCollection services, Action<EmOptionsSetup> setupAction)
+    {
+        var setup = new EmOptionsSetup();
+        setup.ApplyEmeraudeBaseOptions();
+        setupAction?.Invoke(setup);
+        setup.PostOperationalEmeraudeOptions();
+        services.AddSingleton<IEmOptionsProvider>(new EmOptionsProvider(setup));
+
+        return setup;
+    }
+
+    private static void ConfigureAuthorizationPolicies(this IServiceCollection services)
+    {
+        services.AddAuthorizationCore(options =>
+        {
+            options.ApplyEmeraudeAdminAuthorizationPolicies();
+        });
+    }
+
+    private static void AddEmeraudeClientBuilder(this IServiceCollection services, EmClientBuilderOptions options)
+    {
+        if (options.EnableClientBuilder)
+        {
+            services.RegisterClientBuilder(options);
         }
     }
 }

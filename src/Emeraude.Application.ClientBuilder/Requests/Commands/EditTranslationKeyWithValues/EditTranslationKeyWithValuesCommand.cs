@@ -7,81 +7,80 @@ using Emeraude.Infrastructure.Localization.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.EditTranslationKeyWithValues
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.EditTranslationKeyWithValues;
+
+/// <summary>
+/// Command that edit a translation key.
+/// </summary>
+public class EditTranslationKeyWithValuesCommand : IRequest<SimpleResult>
 {
     /// <summary>
-    /// Command that edit a translation key.
+    /// Id of the key.
     /// </summary>
-    public class EditTranslationKeyWithValuesCommand : IRequest<SimpleResult>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// New value of the translation key.
+    /// </summary>
+    public string Key { get; set; }
+
+    /// <summary>
+    /// Translation values.
+    /// </summary>
+    public IEnumerable<TranslationKeyValue> Values { get; set; }
+
+    /// <inheritdoc/>
+    public class EditTranslationKeyWithValuesCommandHandler : IRequestHandler<EditTranslationKeyWithValuesCommand, SimpleResult>
     {
-        /// <summary>
-        /// Id of the key.
-        /// </summary>
-        public int Id { get; set; }
+        private readonly ILocalizationContext context;
 
         /// <summary>
-        /// New value of the translation key.
+        /// Initializes a new instance of the <see cref="EditTranslationKeyWithValuesCommandHandler"/> class.
         /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// Translation values.
-        /// </summary>
-        public IEnumerable<TranslationKeyValue> Values { get; set; }
+        /// <param name="context"></param>
+        public EditTranslationKeyWithValuesCommandHandler(ILocalizationContext context)
+        {
+            this.context = context;
+        }
 
         /// <inheritdoc/>
-        public class EditTranslationKeyWithValuesCommandHandler : IRequestHandler<EditTranslationKeyWithValuesCommand, SimpleResult>
+        public async Task<SimpleResult> Handle(EditTranslationKeyWithValuesCommand request, CancellationToken cancellationToken)
         {
-            private readonly ILocalizationContext context;
+            var keyEntity = await this.context
+                .Keys
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="EditTranslationKeyWithValuesCommandHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            public EditTranslationKeyWithValuesCommandHandler(ILocalizationContext context)
+            if (keyEntity == null)
             {
-                this.context = context;
+                throw new EntityNotFoundException("Translation key", request.Id);
             }
 
-            /// <inheritdoc/>
-            public async Task<SimpleResult> Handle(EditTranslationKeyWithValuesCommand request, CancellationToken cancellationToken)
+            keyEntity.Key = request.Key;
+            this.context.Keys.Update(keyEntity);
+            foreach (var translationValue in request.Values)
             {
-                var keyEntity = await this.context
-                    .Keys
-                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
-                if (keyEntity == null)
-                {
-                    throw new EntityNotFoundException("Translation key", request.Id);
-                }
-
-                keyEntity.Key = request.Key;
-                this.context.Keys.Update(keyEntity);
-                foreach (var translationValue in request.Values)
-                {
-                    await this.UpdateTranslationAsync(translationValue, cancellationToken);
-                }
-
-                await this.context.SaveChangesAsync(cancellationToken);
-
-                return new SimpleResult(true);
+                await this.UpdateTranslationAsync(translationValue, cancellationToken);
             }
 
-            private async Task UpdateTranslationAsync(TranslationKeyValue value, CancellationToken cancellationToken)
+            await this.context.SaveChangesAsync(cancellationToken);
+
+            return new SimpleResult(true);
+        }
+
+        private async Task UpdateTranslationAsync(TranslationKeyValue value, CancellationToken cancellationToken)
+        {
+            var translationEntity = await this.context
+                .Values
+                .FirstOrDefaultAsync(x => x.Id == value.Id, cancellationToken);
+
+            if (translationEntity == null)
             {
-                var translationEntity = await this.context
-                    .Values
-                    .FirstOrDefaultAsync(x => x.Id == value.Id, cancellationToken);
-
-                if (translationEntity == null)
-                {
-                    throw new EntityNotFoundException("Translation value", value.Id);
-                }
-
-                translationEntity.Value = value.Value;
-
-                this.context.Values.Update(translationEntity);
+                throw new EntityNotFoundException("Translation value", value.Id);
             }
+
+            translationEntity.Value = value.Value;
+
+            this.context.Values.Update(translationEntity);
         }
     }
 }

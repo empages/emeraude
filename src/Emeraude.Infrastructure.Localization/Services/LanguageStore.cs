@@ -7,153 +7,152 @@ using Emeraude.Infrastructure.Localization.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Emeraude.Infrastructure.Localization.Services
+namespace Emeraude.Infrastructure.Localization.Services;
+
+/// <summary>
+/// Storage implementation for all localization data - languages, translations.
+/// </summary>
+public class LanguageStore : ILanguageStore
 {
+    private readonly ILocalizationContext context;
+    private readonly ILogger<LanguageStore> logger;
+
     /// <summary>
-    /// Storage implementation for all localization data - languages, translations.
+    /// Initializes a new instance of the <see cref="LanguageStore"/> class.
     /// </summary>
-    public class LanguageStore : ILanguageStore
+    /// <param name="context"></param>
+    /// <param name="logger"></param>
+    public LanguageStore(ILocalizationContext context, ILogger<LanguageStore> logger)
     {
-        private readonly ILocalizationContext context;
-        private readonly ILogger<LanguageStore> logger;
+        this.context = context;
+        this.logger = logger;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguageStore"/> class.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="logger"></param>
-        public LanguageStore(ILocalizationContext context, ILogger<LanguageStore> logger)
+    /// <inheritdoc/>
+    public string[] GetAllLanguageCodes()
+    {
+        try
         {
-            this.context = context;
-            this.logger = logger;
+            var languages = this.context.Languages.ToList();
+            string[] languageCodes = languages.Select(x => x.Code).ToArray();
+
+            return languageCodes;
         }
-
-        /// <inheritdoc/>
-        public string[] GetAllLanguageCodes()
+        catch (Exception ex)
         {
-            try
-            {
-                var languages = this.context.Languages.ToList();
-                string[] languageCodes = languages.Select(x => x.Code).ToArray();
-
-                return languageCodes;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting all languages codes");
-                return null;
-            }
+            this.logger.LogError(ex, "An error occured during getting all languages codes");
+            return null;
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<string[]> GetAllLanguageCodesAsync()
+    /// <inheritdoc/>
+    public async Task<string[]> GetAllLanguageCodesAsync()
+    {
+        try
         {
-            try
-            {
-                var languages = await this.context.Languages.ToListAsync();
-                string[] languageCodes = languages.Select(x => x.Code).ToArray();
+            var languages = await this.context.Languages.ToListAsync();
+            string[] languageCodes = languages.Select(x => x.Code).ToArray();
 
-                return languageCodes;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting all languages codes");
-                return null;
-            }
+            return languageCodes;
         }
-
-        /// <inheritdoc/>
-        public Language GetDefaultLanguage()
+        catch (Exception ex)
         {
-            try
-            {
-                return this.context.Languages.FirstOrDefault(x => x.IsDefault);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting default language");
-                return default;
-            }
+            this.logger.LogError(ex, "An error occured during getting all languages codes");
+            return null;
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<Language> GetDefaultLanguageAsync()
+    /// <inheritdoc/>
+    public Language GetDefaultLanguage()
+    {
+        try
         {
-            try
-            {
-                return await this.context.Languages.FirstOrDefaultAsync(x => x.IsDefault);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting default language");
-                return default;
-            }
+            return this.context.Languages.FirstOrDefault(x => x.IsDefault);
         }
-
-        /// <inheritdoc/>
-        public List<string> GetTranslationsKeys()
+        catch (Exception ex)
         {
-            try
-            {
-                return this.context
-                    .Keys
-                    .AsQueryable()
-                    .Select(x => x.Key)
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translation keys");
-                return null;
-            }
+            this.logger.LogError(ex, "An error occured during getting default language");
+            return default;
         }
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<Language> GetLanguages()
+    /// <inheritdoc/>
+    public async Task<Language> GetDefaultLanguageAsync()
+    {
+        try
         {
-            try
-            {
-                return this.context.Languages.ToList();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting languages");
-                return null;
-            }
+            return await this.context.Languages.FirstOrDefaultAsync(x => x.IsDefault);
         }
-
-        /// <inheritdoc/>
-        public async Task<IEnumerable<Language>> GetLanguagesAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                return await this.context.Languages.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting languages");
-                return null;
-            }
+            this.logger.LogError(ex, "An error occured during getting default language");
+            return default;
         }
+    }
 
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLanguageTranslationDictionary(int languageId)
+    /// <inheritdoc/>
+    public List<string> GetTranslationsKeys()
+    {
+        try
         {
-            try
-            {
-                var translations = this.context
-                    .Values
-                    .Where(x => x.LanguageId == languageId)
-                    .Include(x => x.TranslationKey)
-                    .ToDictionary(k => k.TranslationKey.Key, v => v.Value);
+            return this.context
+                .Keys
+                .AsQueryable()
+                .Select(x => x.Key)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting translation keys");
+            return null;
+        }
+    }
 
-                return translations;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translations dictionary");
-                return null;
-            }
+    /// <inheritdoc/>
+    public IEnumerable<Language> GetLanguages()
+    {
+        try
+        {
+            return this.context.Languages.ToList();
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting languages");
+            return null;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<Language>> GetLanguagesAsync()
+    {
+        try
+        {
+            return await this.context.Languages.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting languages");
+            return null;
+        }
+    }
+
+    /// <inheritdoc/>
+    public Dictionary<string, string> GetLanguageTranslationDictionary(int languageId)
+    {
+        try
+        {
+            var translations = this.context
+                .Values
+                .Where(x => x.LanguageId == languageId)
+                .Include(x => x.TranslationKey)
+                .ToDictionary(k => k.TranslationKey.Key, v => v.Value);
+
+            return translations;
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting translations dictionary");
+            return null;
         }
     }
 }

@@ -13,90 +13,89 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
 
-namespace Emeraude.Tests.Application.Tests
+namespace Emeraude.Tests.Application.Tests;
+
+public class GetSitemapQueryHandlerTests
 {
-    public class GetSitemapQueryHandlerTests
+    [Fact]
+    public async Task Handle_OnCorrectSetup_CorrectSitemapResult()
     {
-        [Fact]
-        public async Task Handle_OnCorrectSetup_CorrectSitemapResult()
-        {
-            var queryHandler = this.GetSubject();
-            var result = await queryHandler.Handle(new GetSitemapQuery(), CancellationToken.None);
-            string baseUrl = "https://emeraude.dev";
+        var queryHandler = this.GetSubject();
+        var result = await queryHandler.Handle(new GetSitemapQuery(), CancellationToken.None);
+        string baseUrl = "https://emeraude.dev";
             
-            result
-                .Urls
-                .Should()
-                .HaveCount(6);
+        result
+            .Urls
+            .Should()
+            .HaveCount(6);
 
-            result
-                .Urls
-                .Select(x => x.Location)
-                .Should()
-                .BeEquivalentTo(new List<string>
-                {
-                    $"{baseUrl}/home",
-                    $"{baseUrl}/en/home",
-                    $"{baseUrl}/entities/1",
-                    $"{baseUrl}/en/entities/1",
-                    $"{baseUrl}/entities/2",
-                    $"{baseUrl}/en/entities/2",
-                });
+        result
+            .Urls
+            .Select(x => x.Location)
+            .Should()
+            .BeEquivalentTo(new List<string>
+            {
+                $"{baseUrl}/home",
+                $"{baseUrl}/en/home",
+                $"{baseUrl}/entities/1",
+                $"{baseUrl}/en/entities/1",
+                $"{baseUrl}/entities/2",
+                $"{baseUrl}/en/entities/2",
+            });
             
-            result
-                .Urls
-                .Select(x => x.ChangeFrequency)
-                .Should()
-                .BeEquivalentTo(new List<string>
-                {
-                    SeoChangeFrequencyTypes.Monthly.ToString(),
-                    SeoChangeFrequencyTypes.Monthly.ToString(),
-                    SeoChangeFrequencyTypes.Daily.ToString(),
-                    SeoChangeFrequencyTypes.Daily.ToString(),
-                    SeoChangeFrequencyTypes.Daily.ToString(),
-                    SeoChangeFrequencyTypes.Daily.ToString(),
-                });
+        result
+            .Urls
+            .Select(x => x.ChangeFrequency)
+            .Should()
+            .BeEquivalentTo(new List<string>
+            {
+                SeoChangeFrequencyTypes.Monthly.ToString(),
+                SeoChangeFrequencyTypes.Monthly.ToString(),
+                SeoChangeFrequencyTypes.Daily.ToString(),
+                SeoChangeFrequencyTypes.Daily.ToString(),
+                SeoChangeFrequencyTypes.Daily.ToString(),
+                SeoChangeFrequencyTypes.Daily.ToString(),
+            });
             
-            result
-                .Urls
-                .Select(x => x.LastModification)
-                .Should()
-                .BeEquivalentTo(new List<string>
+        result
+            .Urls
+            .Select(x => x.LastModification)
+            .Should()
+            .BeEquivalentTo(new List<string>
+            {
+                string.Empty,
+                string.Empty,
+                new DateTime(2020, 1, 1).ToString("o"),
+                new DateTime(2020, 1, 1).ToString("o"),
+                new DateTime(2020, 2, 2).ToString("o"),
+                new DateTime(2020, 2, 2).ToString("o"),
+            });
+    }
+
+    private GetSitemapQuery.GetSitemapQueryHandler GetSubject()
+    {
+        var languageStoreMock = new Mock<ILanguageStore>();
+        languageStoreMock
+            .Setup(x => x.GetLanguages())
+            .Returns(new List<Language>
+            {
+                new()
                 {
-                    string.Empty,
-                    string.Empty,
-                    new DateTime(2020, 1, 1).ToString("o"),
-                    new DateTime(2020, 1, 1).ToString("o"),
-                    new DateTime(2020, 2, 2).ToString("o"),
-                    new DateTime(2020, 2, 2).ToString("o"),
-                });
-        }
-
-        private GetSitemapQuery.GetSitemapQueryHandler GetSubject()
-        {
-            var languageStoreMock = new Mock<ILanguageStore>();
-            languageStoreMock
-                .Setup(x => x.GetLanguages())
-                .Returns(new List<Language>
+                    IsDefault = true,
+                    Code = "bg"
+                },
+                new()
                 {
-                    new()
-                    {
-                        IsDefault = true,
-                        Code = "bg"
-                    },
-                    new()
-                    {
-                        Code = "en"
-                    }
-                });
+                    Code = "en"
+                }
+            });
 
-            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-            var httpContext = new DefaultHttpContext();
-            httpContextAccessorMock
-                .Setup(x => x.HttpContext)
-                .Returns(httpContext);
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext();
+        httpContextAccessorMock
+            .Setup(x => x.HttpContext)
+            .Returns(httpContext);
 
-            return new GetSitemapQuery.GetSitemapQueryHandler(httpContextAccessorMock.Object, new FakeSitemapComposition(languageStoreMock.Object));
-        }
+        return new GetSitemapQuery.GetSitemapQueryHandler(httpContextAccessorMock.Object, new FakeSitemapComposition(languageStoreMock.Object));
     }
 }

@@ -1,20 +1,19 @@
 ﻿using Emeraude.Application.Identity.Extensions;
 using FluentValidation;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ChangeEmail
+namespace Emeraude.Application.Identity.Requests.Commands.ChangeEmail;
+
+/// <summary>
+/// Validator for <see cref="ChangeEmailCommand"/>.
+/// </summary>
+public class ChangeEmailCommandValidator : AbstractValidator<ChangeEmailCommand>
 {
     /// <summary>
-    /// Validator for <see cref="ChangeEmailCommand"/>.
+    /// Initializes a new instance of the <see cref="ChangeEmailCommandValidator"/> class.
     /// </summary>
-    public class ChangeEmailCommandValidator : AbstractValidator<ChangeEmailCommand>
+    public ChangeEmailCommandValidator()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChangeEmailCommandValidator"/> class.
-        /// </summary>
-        public ChangeEmailCommandValidator()
-        {
-            this.RuleFor(x => x.NewEmail)
-                .ValidateEmailAddress();
-        }
+        this.RuleFor(x => x.NewEmail)
+            .ValidateEmailAddress();
     }
 }

@@ -2,22 +2,21 @@
 using System.Threading.Tasks;
 using Emeraude.Contracts;
 
-namespace Emeraude.Infrastructure.Identity.Services
+namespace Emeraude.Infrastructure.Identity.Services;
+
+/// <summary>
+/// Helper accessor service that provides the identity user for the current request.
+/// </summary>
+public interface ICurrentUserProvider
 {
     /// <summary>
-    /// Helper accessor service that provides the identity user for the current request.
+    /// Current user id.
     /// </summary>
-    public interface ICurrentUserProvider
-    {
-        /// <summary>
-        /// Current user id.
-        /// </summary>
-        Guid? CurrentUserId { get; }
+    Guid? CurrentUserId { get; }
 
-        /// <summary>
-        /// Returns current request user.
-        /// </summary>
-        /// <returns></returns>
-        Task<IUser> GetCurrentUserAsync();
-    }
+    /// <summary>
+    /// Returns current request user.
+    /// </summary>
+    /// <returns></returns>
+    Task<IUser> GetCurrentUserAsync();
 }

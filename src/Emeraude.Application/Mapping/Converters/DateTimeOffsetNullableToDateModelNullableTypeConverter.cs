@@ -2,26 +2,25 @@
 using AutoMapper;
 using Emeraude.Application.Models;
 
-namespace Emeraude.Application.Mapping.Converters
+namespace Emeraude.Application.Mapping.Converters;
+
+/// <inheritdoc />
+public class DateTimeOffsetNullableToDateModelNullableTypeConverter : ITypeConverter<DateTimeOffset?, DateModel?>
 {
     /// <inheritdoc />
-    public class DateTimeOffsetNullableToDateModelNullableTypeConverter : ITypeConverter<DateTimeOffset?, DateModel?>
+    public DateModel? Convert(DateTimeOffset? source, DateModel? destination, ResolutionContext context)
     {
-        /// <inheritdoc />
-        public DateModel? Convert(DateTimeOffset? source, DateModel? destination, ResolutionContext context)
+        DateModel? result = null;
+        if (source.HasValue)
         {
-            DateModel? result = null;
-            if (source.HasValue)
+            result = new DateModel
             {
-                result = new DateModel
-                {
-                    Year = source.Value.Year,
-                    Month = source.Value.Month,
-                    Day = source.Value.Day,
-                };
-            }
-
-            return result;
+                Year = source.Value.Year,
+                Month = source.Value.Month,
+                Day = source.Value.Day,
+            };
         }
+
+        return result;
     }
 }

@@ -1,19 +1,18 @@
 ﻿using Emeraude.Essentials.Models;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ChangePassword
+namespace Emeraude.Application.Identity.Requests.Commands.ChangePassword;
+
+/// <summary>
+/// Change password command result.
+/// </summary>
+public class ChangePasswordRequestResult : SimpleResult
 {
     /// <summary>
-    /// Change password command result.
+    /// Initializes a new instance of the <see cref="ChangePasswordRequestResult"/> class.
     /// </summary>
-    public class ChangePasswordRequestResult : SimpleResult
+    /// <param name="success"></param>
+    public ChangePasswordRequestResult(bool success = false)
+        : base(success)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChangePasswordRequestResult"/> class.
-        /// </summary>
-        /// <param name="success"></param>
-        public ChangePasswordRequestResult(bool success = false)
-            : base(success)
-        {
-        }
     }
 }

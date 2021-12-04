@@ -1,13 +1,12 @@
-﻿namespace Emeraude.Application.ClientBuilder.DataTransferObjects
+﻿namespace Emeraude.Application.ClientBuilder.DataTransferObjects;
+
+/// <summary>
+/// Request for module generation.
+/// </summary>
+public class ScaffoldGenerateByIdRequest
 {
     /// <summary>
-    /// Request for module generation.
+    /// Target module Id.
     /// </summary>
-    public class ScaffoldGenerateByIdRequest
-    {
-        /// <summary>
-        /// Target module Id.
-        /// </summary>
-        public string ModuleId { get; set; }
-    }
+    public string ModuleId { get; set; }
 }

@@ -3,52 +3,51 @@ using Emeraude.Infrastructure.Localization.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Emeraude.Presentation.PlatformBase.Constraints
+namespace Emeraude.Presentation.PlatformBase.Constraints;
+
+/// <summary>
+/// Implementation of <see cref="IRouteConstraint"/> for language code constraint that validate the request language code.
+/// </summary>
+public class LanguageRouteConstraint : IRouteConstraint
 {
     /// <summary>
-    /// Implementation of <see cref="IRouteConstraint"/> for language code constraint that validate the request language code.
+    /// Language value property that is applied to the route parameters.
     /// </summary>
-    public class LanguageRouteConstraint : IRouteConstraint
+    public const string LanguageValueKey = "languageCode";
+
+    /// <summary>
+    /// Short name of the language constraint.
+    /// </summary>
+    public const string LanguageConstraintKey = "lang";
+
+    /// <inheritdoc/>
+    public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
     {
-        /// <summary>
-        /// Language value property that is applied to the route parameters.
-        /// </summary>
-        public const string LanguageValueKey = "languageCode";
+        var languageStore = (ILanguageStore)httpContext.RequestServices.GetService(typeof(ILanguageStore));
 
-        /// <summary>
-        /// Short name of the language constraint.
-        /// </summary>
-        public const string LanguageConstraintKey = "lang";
+        bool match = false;
 
-        /// <inheritdoc/>
-        public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
+        string[] allowedLanguages = languageStore.GetAllLanguageCodes();
+        string[] filteredAllowedLanguages = allowedLanguages;
+
+        if (values.ContainsKey(LanguageValueKey))
         {
-            var languageStore = (ILanguageStore)httpContext.RequestServices.GetService(typeof(ILanguageStore));
-
-            bool match = false;
-
-            string[] allowedLanguages = languageStore.GetAllLanguageCodes();
-            string[] filteredAllowedLanguages = allowedLanguages;
-
-            if (values.ContainsKey(LanguageValueKey))
+            string languageCode = values[LanguageValueKey]?.ToString();
+            var defaultLanguage = languageStore.GetDefaultLanguage();
+            if (defaultLanguage != null)
             {
-                string languageCode = values[LanguageValueKey]?.ToString();
-                var defaultLanguage = languageStore.GetDefaultLanguage();
-                if (defaultLanguage != null)
-                {
-                    filteredAllowedLanguages = allowedLanguages.Where(x => x != defaultLanguage.Code.ToLower()).ToArray();
-                }
-
-                if (languageCode != null &&
-                    filteredAllowedLanguages != null &&
-                    filteredAllowedLanguages.Any() &&
-                    filteredAllowedLanguages.Contains(languageCode))
-                {
-                    match = true;
-                }
+                filteredAllowedLanguages = allowedLanguages.Where(x => x != defaultLanguage.Code.ToLower()).ToArray();
             }
 
-            return match;
+            if (languageCode != null &&
+                filteredAllowedLanguages != null &&
+                filteredAllowedLanguages.Any() &&
+                filteredAllowedLanguages.Contains(languageCode))
+            {
+                match = true;
+            }
         }
+
+        return match;
     }
 }

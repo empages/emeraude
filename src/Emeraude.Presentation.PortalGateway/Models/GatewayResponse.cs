@@ -1,18 +1,17 @@
-﻿namespace Emeraude.Presentation.PortalGateway.Models
+﻿namespace Emeraude.Presentation.PortalGateway.Models;
+
+/// <summary>
+/// Wrapped response from the gateway connectivity check.
+/// </summary>
+public class GatewayResponse
 {
     /// <summary>
-    /// Wrapped response from the gateway connectivity check.
+    /// Gets the verification status of the response.
     /// </summary>
-    public class GatewayResponse
-    {
-        /// <summary>
-        /// Gets the verification status of the response.
-        /// </summary>
-        public bool Verified { get; set; }
+    public bool Verified { get; set; }
 
-        /// <summary>
-        /// Current application environment variable.
-        /// </summary>
-        public string Environment { get; set; }
-    }
+    /// <summary>
+    /// Current application environment variable.
+    /// </summary>
+    public string Environment { get; set; }
 }

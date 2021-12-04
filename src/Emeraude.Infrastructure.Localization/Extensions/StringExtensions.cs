@@ -1,42 +1,41 @@
 ﻿using System;
 
-namespace Emeraude.Infrastructure.Localization.Extensions
+namespace Emeraude.Infrastructure.Localization.Extensions;
+
+/// <summary>
+/// Extensions for strings.
+/// </summary>
+public static class StringExtensions
 {
     /// <summary>
-    /// Extensions for strings.
+    /// Extract language code from specified URL.
     /// </summary>
-    public static class StringExtensions
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public static string GetLanguageCodeFromUrl(this string url)
     {
-        /// <summary>
-        /// Extract language code from specified URL.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static string GetLanguageCodeFromUrl(this string url)
+        string returnUrlLanguageCode = null;
+        try
         {
-            string returnUrlLanguageCode = null;
-            try
+            if (!string.IsNullOrWhiteSpace(url))
             {
-                if (!string.IsNullOrWhiteSpace(url))
+                string tempReturnUrl = url;
+                if (url.StartsWith("/", StringComparison.OrdinalIgnoreCase))
                 {
-                    string tempReturnUrl = url;
-                    if (url.StartsWith("/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        tempReturnUrl = tempReturnUrl.Substring(1);
-                    }
+                    tempReturnUrl = tempReturnUrl.Substring(1);
+                }
 
-                    string returnUrlLanguagePart = tempReturnUrl.Substring(0, 3);
-                    if (returnUrlLanguagePart.EndsWith("/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        returnUrlLanguageCode = returnUrlLanguagePart.Substring(0, 2);
-                    }
+                string returnUrlLanguagePart = tempReturnUrl.Substring(0, 3);
+                if (returnUrlLanguagePart.EndsWith("/", StringComparison.OrdinalIgnoreCase))
+                {
+                    returnUrlLanguageCode = returnUrlLanguagePart.Substring(0, 2);
                 }
             }
-            catch (Exception)
-            {
-            }
-
-            return returnUrlLanguageCode;
         }
+        catch (Exception)
+        {
+        }
+
+        return returnUrlLanguageCode;
     }
 }

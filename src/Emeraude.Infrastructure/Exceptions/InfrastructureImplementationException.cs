@@ -1,26 +1,25 @@
 ﻿using System;
 
-namespace Emeraude.Infrastructure.Exceptions
+namespace Emeraude.Infrastructure.Exceptions;
+
+/// <summary>
+/// Exception that is thrown when an unexpected error occured in the infrastructure layer.
+/// </summary>
+public class InfrastructureImplementationException : Exception
 {
     /// <summary>
-    /// Exception that is thrown when an unexpected error occured in the infrastructure layer.
+    /// Initializes a new instance of the <see cref="InfrastructureImplementationException"/> class.
     /// </summary>
-    public class InfrastructureImplementationException : Exception
+    /// <param name="message"></param>
+    public InfrastructureImplementationException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InfrastructureImplementationException"/> class.
-        /// </summary>
-        /// <param name="message"></param>
-        public InfrastructureImplementationException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InfrastructureImplementationException"/> class.
-        /// </summary>
-        public InfrastructureImplementationException()
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InfrastructureImplementationException"/> class.
+    /// </summary>
+    public InfrastructureImplementationException()
+    {
     }
 }

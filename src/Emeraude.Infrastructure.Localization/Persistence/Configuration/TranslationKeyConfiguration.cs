@@ -2,30 +2,29 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Emeraude.Infrastructure.Localization.Persistence.Configuration
+namespace Emeraude.Infrastructure.Localization.Persistence.Configuration;
+
+/// <inheritdoc cref="IEntityTypeConfiguration{TEntity}"/>
+public class TranslationKeyConfiguration : IEntityTypeConfiguration<TranslationKey>
 {
-    /// <inheritdoc cref="IEntityTypeConfiguration{TEntity}"/>
-    public class TranslationKeyConfiguration : IEntityTypeConfiguration<TranslationKey>
+    /// <inheritdoc/>
+    public void Configure(EntityTypeBuilder<TranslationKey> builder)
     {
-        /// <inheritdoc/>
-        public void Configure(EntityTypeBuilder<TranslationKey> builder)
-        {
-            builder
-                .HasKey(x => x.Id);
+        builder
+            .HasKey(x => x.Id);
 
-            builder
-                .Property(x => x.Id)
-                .HasColumnName("id")
-                .ValueGeneratedOnAdd();
+        builder
+            .Property(x => x.Id)
+            .HasColumnName("id")
+            .ValueGeneratedOnAdd();
 
-            builder
-                .Property(x => x.Key)
-                .HasColumnName("key")
-                .UseCollation("NOCASE");
+        builder
+            .Property(x => x.Key)
+            .HasColumnName("key")
+            .UseCollation("NOCASE");
 
-            builder
-                .HasIndex(x => x.Key)
-                .IsUnique();
-        }
+        builder
+            .HasIndex(x => x.Key)
+            .IsUnique();
     }
 }

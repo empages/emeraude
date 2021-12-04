@@ -1,18 +1,17 @@
 ﻿using Emeraude.Application.Mapping;
 
-namespace Emeraude.Application.Admin.Mapping.Profiles
+namespace Emeraude.Application.Admin.Mapping.Profiles;
+
+/// <summary>
+/// Assembly mapping profile for registration of all mappings configurations for administration.
+/// </summary>
+public class AdminAssemblyMappingProfile : AssemblyMappingProfile
 {
     /// <summary>
-    /// Assembly mapping profile for registration of all mappings configurations for administration.
+    /// Initializes a new instance of the <see cref="AdminAssemblyMappingProfile"/> class.
     /// </summary>
-    public class AdminAssemblyMappingProfile : AssemblyMappingProfile
+    public AdminAssemblyMappingProfile()
+        : base(System.Reflection.Assembly.GetExecutingAssembly())
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdminAssemblyMappingProfile"/> class.
-        /// </summary>
-        public AdminAssemblyMappingProfile()
-            : base(System.Reflection.Assembly.GetExecutingAssembly())
-        {
-        }
     }
 }

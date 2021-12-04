@@ -1,11 +1,10 @@
 ﻿using Emeraude.Application.Identity.Requests.Commands.Login;
 
-namespace Emeraude.Presentation.PlatformBase.Models
+namespace Emeraude.Presentation.PlatformBase.Models;
+
+/// <summary>
+/// Presentation wrapper of login request.
+/// </summary>
+public class LoginViewModel : LoginCommand
 {
-    /// <summary>
-    /// Presentation wrapper of login request.
-    /// </summary>
-    public class LoginViewModel : LoginCommand
-    {
-    }
 }

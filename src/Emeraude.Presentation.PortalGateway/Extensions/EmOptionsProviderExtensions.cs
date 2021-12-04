@@ -1,18 +1,17 @@
 ﻿using Emeraude.Configuration.Options;
 
-namespace Emeraude.Presentation.PortalGateway.Extensions
+namespace Emeraude.Presentation.PortalGateway.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IEmOptionsProvider"/>.
+/// </summary>
+public static class EmOptionsProviderExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IEmOptionsProvider"/>.
+    /// Gets Emeraude portal gateway options.
     /// </summary>
-    public static class EmOptionsProviderExtensions
-    {
-        /// <summary>
-        /// Gets Emeraude portal gateway options.
-        /// </summary>
-        /// <param name="optionsProvider"></param>
-        /// <returns></returns>
-        public static EmPortalGatewayOptions GetPortalGatewayOptions(this IEmOptionsProvider optionsProvider)
-            => optionsProvider.GetOptions<EmPortalGatewayOptions>();
-    }
+    /// <param name="optionsProvider"></param>
+    /// <returns></returns>
+    public static EmPortalGatewayOptions GetPortalGatewayOptions(this IEmOptionsProvider optionsProvider)
+        => optionsProvider.GetOptions<EmPortalGatewayOptions>();
 }

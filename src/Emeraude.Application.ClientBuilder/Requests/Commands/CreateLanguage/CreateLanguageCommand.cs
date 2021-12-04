@@ -7,75 +7,74 @@ using Emeraude.Infrastructure.Localization.Persistence.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateLanguage
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateLanguage;
+
+/// <summary>
+/// Command that create a language.
+/// </summary>
+public class CreateLanguageCommand : CreateLanguageRequest, IRequest<MutationResult>
 {
     /// <summary>
-    /// Command that create a language.
+    /// Initializes a new instance of the <see cref="CreateLanguageCommand"/> class.
     /// </summary>
-    public class CreateLanguageCommand : CreateLanguageRequest, IRequest<MutationResult>
+    /// <param name="request"></param>
+    public CreateLanguageCommand(CreateLanguageRequest request)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateLanguageCommand"/> class.
-        /// </summary>
-        /// <param name="request"></param>
-        public CreateLanguageCommand(CreateLanguageRequest request)
-        {
-            this.Name = request.Name;
-            this.NativeName = request.NativeName;
-            this.Code = request.Code;
-        }
+        this.Name = request.Name;
+        this.NativeName = request.NativeName;
+        this.Code = request.Code;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateLanguageCommand"/> class.
+    /// </summary>
+    public CreateLanguageCommand()
+    {
+    }
+
+    /// <inheritdoc/>
+    public class CreateLanguageCommandHandler : IRequestHandler<CreateLanguageCommand, MutationResult>
+    {
+        private readonly ILocalizationContext context;
+        private readonly IMapper mapper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateLanguageCommand"/> class.
+        /// Initializes a new instance of the <see cref="CreateLanguageCommandHandler"/> class.
         /// </summary>
-        public CreateLanguageCommand()
+        /// <param name="context"></param>
+        /// <param name="mapper"></param>
+        public CreateLanguageCommandHandler(ILocalizationContext context, IMapper mapper)
         {
+            this.context = context;
+            this.mapper = mapper;
         }
 
         /// <inheritdoc/>
-        public class CreateLanguageCommandHandler : IRequestHandler<CreateLanguageCommand, MutationResult>
+        public async Task<MutationResult> Handle(CreateLanguageCommand request, CancellationToken cancellationToken)
         {
-            private readonly ILocalizationContext context;
-            private readonly IMapper mapper;
+            var language = this.mapper.Map<Language>(request);
+            language.Code = language
+                .Code
+                .Trim()
+                .ToLowerInvariant();
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CreateLanguageCommandHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            /// <param name="mapper"></param>
-            public CreateLanguageCommandHandler(ILocalizationContext context, IMapper mapper)
+            var keys = await this
+                .context
+                .Keys
+                .ToListAsync(cancellationToken);
+
+            foreach (var key in keys)
             {
-                this.context = context;
-                this.mapper = mapper;
-            }
-
-            /// <inheritdoc/>
-            public async Task<MutationResult> Handle(CreateLanguageCommand request, CancellationToken cancellationToken)
-            {
-                var language = this.mapper.Map<Language>(request);
-                language.Code = language
-                    .Code
-                    .Trim()
-                    .ToLowerInvariant();
-
-                var keys = await this
-                    .context
-                    .Keys
-                    .ToListAsync(cancellationToken);
-
-                foreach (var key in keys)
+                language.Translations.Add(new TranslationValue
                 {
-                    language.Translations.Add(new TranslationValue
-                    {
-                        TranslationKeyId = key.Id,
-                    });
-                }
-
-                this.context.Languages.Add(language);
-                await this.context.SaveChangesAsync(cancellationToken);
-
-                return new MutationResult(language.Id.ToString());
+                    TranslationKeyId = key.Id,
+                });
             }
+
+            this.context.Languages.Add(language);
+            await this.context.SaveChangesAsync(cancellationToken);
+
+            return new MutationResult(language.Id.ToString());
         }
     }
 }

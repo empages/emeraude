@@ -1,13 +1,12 @@
-﻿namespace Emeraude.Application.Admin
+﻿namespace Emeraude.Application.Admin;
+
+/// <summary>
+/// Admin assembly constants.
+/// </summary>
+public static class EmAdminConstants
 {
     /// <summary>
-    /// Admin assembly constants.
+    /// Admin area name.
     /// </summary>
-    public static class EmAdminConstants
-    {
-        /// <summary>
-        /// Admin area name.
-        /// </summary>
-        public const string AreaName = "Admin";
-    }
+    public const string AreaName = "Admin";
 }

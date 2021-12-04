@@ -1,43 +1,42 @@
-﻿namespace Emeraude.Infrastructure.FileStorage.Common
+﻿namespace Emeraude.Infrastructure.FileStorage.Common;
+
+/// <summary>
+/// List of all folder names.
+/// </summary>
+public static class EmFolders
 {
     /// <summary>
-    /// List of all folder names.
+    /// Public root folder name.
     /// </summary>
-    public static class EmFolders
-    {
-        /// <summary>
-        /// Public root folder name.
-        /// </summary>
-        public const string PublicRootFolderName = "wwwroot";
+    public const string PublicRootFolderName = "wwwroot";
 
-        /// <summary>
-        /// Private root folder name.
-        /// </summary>
-        public const string PrivateRootFolderName = "privateroot";
+    /// <summary>
+    /// Private root folder name.
+    /// </summary>
+    public const string PrivateRootFolderName = "privateroot";
 
-        /// <summary>
-        /// Upload folder name.
-        /// </summary>
-        public const string UploadFolderName = "uploads";
+    /// <summary>
+    /// Upload folder name.
+    /// </summary>
+    public const string UploadFolderName = "uploads";
 
-        /// <summary>
-        /// Temp folder name.
-        /// </summary>
-        public const string TempFolderName = "temp";
+    /// <summary>
+    /// Temp folder name.
+    /// </summary>
+    public const string TempFolderName = "temp";
 
-        /// <summary>
-        /// Assets folder name.
-        /// </summary>
-        public const string AssetsFolderName = "assets";
+    /// <summary>
+    /// Assets folder name.
+    /// </summary>
+    public const string AssetsFolderName = "assets";
 
-        /// <summary>
-        /// Images folder name.
-        /// </summary>
-        public const string ImagesFolderName = "images";
+    /// <summary>
+    /// Images folder name.
+    /// </summary>
+    public const string ImagesFolderName = "images";
 
-        /// <summary>
-        /// Resources folder name.
-        /// </summary>
-        public const string ResourcesFolderName = "resources";
-    }
+    /// <summary>
+    /// Resources folder name.
+    /// </summary>
+    public const string ResourcesFolderName = "resources";
 }

@@ -1,20 +1,19 @@
 ﻿using FluentValidation;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ChangeUserName
+namespace Emeraude.Application.Identity.Requests.Commands.ChangeUserName;
+
+/// <summary>
+/// Validator for <see cref="ChangeUserNameCommand"/>.
+/// </summary>
+public class ChangeUserNameCommandValidator : AbstractValidator<ChangeUserNameCommand>
 {
     /// <summary>
-    /// Validator for <see cref="ChangeUserNameCommand"/>.
+    /// Initializes a new instance of the <see cref="ChangeUserNameCommandValidator"/> class.
     /// </summary>
-    public class ChangeUserNameCommandValidator : AbstractValidator<ChangeUserNameCommand>
+    public ChangeUserNameCommandValidator()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChangeUserNameCommandValidator"/> class.
-        /// </summary>
-        public ChangeUserNameCommandValidator()
-        {
-            this.RuleFor(x => x.NewName)
-                .NotEmpty()
-                .WithMessage(Strings.NameIsRequired);
-        }
+        this.RuleFor(x => x.NewName)
+            .NotEmpty()
+            .WithMessage(Strings.NameIsRequired);
     }
 }

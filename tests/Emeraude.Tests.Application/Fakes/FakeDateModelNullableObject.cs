@@ -1,9 +1,8 @@
 ﻿using Emeraude.Application.Models;
 
-namespace Emeraude.Tests.Application.Fakes
+namespace Emeraude.Tests.Application.Fakes;
+
+public class FakeDateModelNullableObject
 {
-    public class FakeDateModelNullableObject
-    {
-        public DateModel? Date { get; set; }
-    }
+    public DateModel? Date { get; set; }
 }

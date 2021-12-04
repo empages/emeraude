@@ -1,13 +1,12 @@
-﻿namespace Emeraude.Application.Admin.EmPages.Models.DetailsView
+﻿namespace Emeraude.Application.Admin.EmPages.Models.DetailsView;
+
+/// <summary>
+/// Implementation model of details field.
+/// </summary>
+public class EmPageDetailsFieldModel : EmPageViewItemContextModel
 {
     /// <summary>
-    /// Implementation model of details field.
+    /// Title of the field.
     /// </summary>
-    public class EmPageDetailsFieldModel : EmPageViewItemContextModel
-    {
-        /// <summary>
-        /// Title of the field.
-        /// </summary>
-        public string Title { get; set; }
-    }
+    public string Title { get; set; }
 }

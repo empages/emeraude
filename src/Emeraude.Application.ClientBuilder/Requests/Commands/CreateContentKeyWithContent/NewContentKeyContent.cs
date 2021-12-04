@@ -1,18 +1,17 @@
-﻿namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateContentKeyWithContent
+﻿namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateContentKeyWithContent;
+
+/// <summary>
+/// Content key content for a specified language.
+/// </summary>
+public class NewContentKeyContent
 {
     /// <summary>
-    /// Content key content for a specified language.
+    /// Language id of the static content.
     /// </summary>
-    public class NewContentKeyContent
-    {
-        /// <summary>
-        /// Language id of the static content.
-        /// </summary>
-        public int LanguageId { get; set; }
+    public int LanguageId { get; set; }
 
-        /// <summary>
-        /// Content text of the static content.
-        /// </summary>
-        public string Content { get; set; }
-    }
+    /// <summary>
+    /// Content text of the static content.
+    /// </summary>
+    public string Content { get; set; }
 }

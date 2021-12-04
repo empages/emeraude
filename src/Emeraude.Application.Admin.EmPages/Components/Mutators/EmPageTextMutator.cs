@@ -1,29 +1,28 @@
 ﻿using Emeraude.Application.Admin.EmPages.Shared;
 
-namespace Emeraude.Application.Admin.EmPages.Components.Mutators
+namespace Emeraude.Application.Admin.EmPages.Components.Mutators;
+
+/// <summary>
+/// Component that mutate texts.
+/// </summary>
+public class EmPageTextMutator : EmPageComponent
 {
     /// <summary>
-    /// Component that mutate texts.
+    /// Initializes a new instance of the <see cref="EmPageTextMutator"/> class.
     /// </summary>
-    public class EmPageTextMutator : EmPageComponent
+    public EmPageTextMutator()
+        : base(EmPageComponentType.Mutator)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageTextMutator"/> class.
-        /// </summary>
-        public EmPageTextMutator()
-            : base(EmPageComponentType.Mutator)
-        {
-        }
-
-        /// <summary>
-        /// Flag that indicates whether the text is large or not.
-        /// </summary>
-        public bool LargeText { get; set; }
-
-        /// <inheritdoc/>
-        public override object GetParametersObject() => new
-        {
-            this.LargeText,
-        };
     }
+
+    /// <summary>
+    /// Flag that indicates whether the text is large or not.
+    /// </summary>
+    public bool LargeText { get; set; }
+
+    /// <inheritdoc/>
+    public override object GetParametersObject() => new
+    {
+        this.LargeText,
+    };
 }

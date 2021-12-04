@@ -1,19 +1,18 @@
 ﻿using System.Reflection;
 
-namespace Emeraude.Application.Admin
+namespace Emeraude.Application.Admin;
+
+/// <summary>
+/// Assembly provider of the Emeraude administration.
+/// </summary>
+public static class AdminAssembly
 {
     /// <summary>
-    /// Assembly provider of the Emeraude administration.
+    /// Gets the assembly of the Emeraude administration.
     /// </summary>
-    public static class AdminAssembly
+    /// <returns></returns>
+    public static Assembly GetAssembly()
     {
-        /// <summary>
-        /// Gets the assembly of the Emeraude administration.
-        /// </summary>
-        /// <returns></returns>
-        public static Assembly GetAssembly()
-        {
-            return Assembly.GetExecutingAssembly();
-        }
+        return Assembly.GetExecutingAssembly();
     }
 }

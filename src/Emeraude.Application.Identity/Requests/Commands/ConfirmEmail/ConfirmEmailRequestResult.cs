@@ -1,19 +1,18 @@
 ﻿using Emeraude.Essentials.Models;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ConfirmEmail
+namespace Emeraude.Application.Identity.Requests.Commands.ConfirmEmail;
+
+/// <summary>
+/// Confirm email command result.
+/// </summary>
+public class ConfirmEmailRequestResult : SimpleResult
 {
     /// <summary>
-    /// Confirm email command result.
+    /// Initializes a new instance of the <see cref="ConfirmEmailRequestResult"/> class.
     /// </summary>
-    public class ConfirmEmailRequestResult : SimpleResult
+    /// <param name="success"></param>
+    public ConfirmEmailRequestResult(bool success)
+        : base(success)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfirmEmailRequestResult"/> class.
-        /// </summary>
-        /// <param name="success"></param>
-        public ConfirmEmailRequestResult(bool success)
-            : base(success)
-        {
-        }
     }
 }

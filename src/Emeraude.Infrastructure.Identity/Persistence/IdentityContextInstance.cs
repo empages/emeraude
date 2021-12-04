@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Infrastructure.Identity.Persistence
+namespace Emeraude.Infrastructure.Identity.Persistence;
+
+/// <summary>
+/// Identity context instance.
+/// </summary>
+public class IdentityContextInstance : IdentityContext<IdentityContextInstance>
 {
     /// <summary>
-    /// Identity context instance.
+    /// Initializes a new instance of the <see cref="IdentityContextInstance"/> class.
     /// </summary>
-    public class IdentityContextInstance : IdentityContext<IdentityContextInstance>
+    /// <param name="options"></param>
+    public IdentityContextInstance(DbContextOptions<IdentityContextInstance> options)
+        : base(options)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IdentityContextInstance"/> class.
-        /// </summary>
-        /// <param name="options"></param>
-        public IdentityContextInstance(DbContextOptions<IdentityContextInstance> options)
-            : base(options)
-        {
-        }
     }
 }

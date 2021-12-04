@@ -3,119 +3,118 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 
-namespace Emeraude.Application.ClientBuilder.Models
+namespace Emeraude.Application.ClientBuilder.Models;
+
+/// <summary>
+/// Implementaion of API endpoint for the purposes of client builder.
+/// </summary>
+public class Endpoint
 {
     /// <summary>
-    /// Implementaion of API endpoint for the purposes of client builder.
+    /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    public class Endpoint
+    public Endpoint()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Endpoint"/> class.
-        /// </summary>
-        public Endpoint()
+        this.Arguments = new List<ArgumentDescription>();
+    }
+
+    /// <summary>
+    /// Identification of the endpoint.
+    /// </summary>
+    public string Id { get; set; }
+
+    /// <summary>
+    /// Name of the controller which contains the endpoint.
+    /// </summary>
+    public string ControllerName { get; set; }
+
+    /// <summary>
+    /// Action method name of the endpoint.
+    /// </summary>
+    public string ActionName { get; set; }
+
+    /// <summary>
+    /// Route of the endpoint.
+    /// </summary>
+    public string Route { get; set; }
+
+    /// <summary>
+    /// Is the endpoint requires authentication to be executedd.
+    /// </summary>
+    public bool Authorized { get; set; }
+
+    /// <summary>
+    /// Description if the response of the endpoint.
+    /// </summary>
+    [JsonIgnore]
+    public ResponseDescription Response { get; set; }
+
+    /// <summary>
+    /// <see cref="HttpMethod"/> of the endpoint.
+    /// </summary>
+    [JsonIgnore]
+    public HttpMethod Method { get; set; }
+
+    /// <summary>
+    /// HTTP method name of the endpoint.
+    /// </summary>
+    public string MethodName
+    {
+        get
         {
-            this.Arguments = new List<ArgumentDescription>();
+            return this.Method?.Method;
         }
+    }
 
-        /// <summary>
-        /// Identification of the endpoint.
-        /// </summary>
-        public string Id { get; set; }
+    /// <summary>
+    /// Arguments of the endpoint action.
+    /// </summary>
+    [JsonIgnore]
+    public List<ArgumentDescription> Arguments { get; set; }
 
-        /// <summary>
-        /// Name of the controller which contains the endpoint.
-        /// </summary>
-        public string ControllerName { get; set; }
-
-        /// <summary>
-        /// Action method name of the endpoint.
-        /// </summary>
-        public string ActionName { get; set; }
-
-        /// <summary>
-        /// Route of the endpoint.
-        /// </summary>
-        public string Route { get; set; }
-
-        /// <summary>
-        /// Is the endpoint requires authentication to be executedd.
-        /// </summary>
-        public bool Authorized { get; set; }
-
-        /// <summary>
-        /// Description if the response of the endpoint.
-        /// </summary>
-        [JsonIgnore]
-        public ResponseDescription Response { get; set; }
-
-        /// <summary>
-        /// <see cref="HttpMethod"/> of the endpoint.
-        /// </summary>
-        [JsonIgnore]
-        public HttpMethod Method { get; set; }
-
-        /// <summary>
-        /// HTTP method name of the endpoint.
-        /// </summary>
-        public string MethodName
+    /// <summary>
+    /// The complex argument of the endpoint. The purpose of this property is to get the main request object of the request.
+    /// </summary>
+    [JsonIgnore]
+    public ArgumentDescription ComplexArgument
+    {
+        get
         {
-            get
-            {
-                return this.Method?.Method;
-            }
+            return this.Arguments.FirstOrDefault(x => x.Type.IsComplex);
         }
+    }
 
-        /// <summary>
-        /// Arguments of the endpoint action.
-        /// </summary>
-        [JsonIgnore]
-        public List<ArgumentDescription> Arguments { get; set; }
-
-        /// <summary>
-        /// The complex argument of the endpoint. The purpose of this property is to get the main request object of the request.
-        /// </summary>
-        [JsonIgnore]
-        public ArgumentDescription ComplexArgument
+    /// <summary>
+    /// Arguments names of the endpoint, separated with comma and join into a string.
+    /// </summary>
+    [JsonIgnore]
+    public string ArgumentsListString
+    {
+        get
         {
-            get
+            if (this.Arguments == null || this.Arguments.Count == 0)
             {
-                return this.Arguments.FirstOrDefault(x => x.Type.IsComplex);
+                return string.Empty;
             }
+
+            return string.Join(", ", this.Arguments.Select(x => x.Name));
         }
+    }
 
-        /// <summary>
-        /// Arguments names of the endpoint, separated with comma and join into a string.
-        /// </summary>
-        [JsonIgnore]
-        public string ArgumentsListString
+    /// <summary>
+    /// Arguments names of the endpoint, separated with comma and join into a string with their types.
+    /// </summary>
+    [JsonIgnore]
+    public string StrongTypedArgumentsListString
+    {
+        get
         {
-            get
+            if (this.Arguments == null || this.Arguments.Count == 0)
             {
-                if (this.Arguments == null || this.Arguments.Count == 0)
-                {
-                    return string.Empty;
-                }
-
-                return string.Join(", ", this.Arguments.Select(x => x.Name));
+                return string.Empty;
             }
-        }
 
-        /// <summary>
-        /// Arguments names of the endpoint, separated with comma and join into a string with their types.
-        /// </summary>
-        [JsonIgnore]
-        public string StrongTypedArgumentsListString
-        {
-            get
-            {
-                if (this.Arguments == null || this.Arguments.Count == 0)
-                {
-                    return string.Empty;
-                }
-
-                return string.Join(", ", this.Arguments.Select(x => $"{x.Type.Name} {x.Name}"));
-            }
+            return string.Join(", ", this.Arguments.Select(x => $"{x.Type.Name} {x.Name}"));
         }
     }
 }

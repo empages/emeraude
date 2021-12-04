@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace Emeraude.Essentials.Attributes
+namespace Emeraude.Essentials.Attributes;
+
+/// <summary>
+/// Attribute that add additional key information to enumeration.
+/// </summary>
+[AttributeUsage(AttributeTargets.Field)]
+public class EnumKeyAttribute : Attribute
 {
     /// <summary>
-    /// Attribute that add additional key information to enumeration.
+    /// Initializes a new instance of the <see cref="EnumKeyAttribute"/> class.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
-    public class EnumKeyAttribute : Attribute
+    /// <param name="key"></param>
+    public EnumKeyAttribute(string key)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumKeyAttribute"/> class.
-        /// </summary>
-        /// <param name="key"></param>
-        public EnumKeyAttribute(string key)
-        {
-            this.Key = key;
-        }
-
-        /// <summary>
-        /// Key of the enumeration.
-        /// </summary>
-        public string Key { get; }
+        this.Key = key;
     }
+
+    /// <summary>
+    /// Key of the enumeration.
+    /// </summary>
+    public string Key { get; }
 }

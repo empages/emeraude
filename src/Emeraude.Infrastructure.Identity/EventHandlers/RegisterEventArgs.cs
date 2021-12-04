@@ -1,13 +1,12 @@
-﻿namespace Emeraude.Infrastructure.Identity.EventHandlers
+﻿namespace Emeraude.Infrastructure.Identity.EventHandlers;
+
+/// <summary>
+/// Event arguments for register event handler.
+/// </summary>
+public class RegisterEventArgs : IdentityEventArgs
 {
     /// <summary>
-    /// Event arguments for register event handler.
+    /// Email confirmation link.
     /// </summary>
-    public class RegisterEventArgs : IdentityEventArgs
-    {
-        /// <summary>
-        /// Email confirmation link.
-        /// </summary>
-        public string EmailConfirmationLink { get; set; }
-    }
+    public string EmailConfirmationLink { get; set; }
 }

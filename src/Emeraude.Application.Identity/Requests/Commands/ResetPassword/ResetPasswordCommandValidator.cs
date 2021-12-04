@@ -3,30 +3,29 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ResetPassword
+namespace Emeraude.Application.Identity.Requests.Commands.ResetPassword;
+
+/// <summary>
+/// Validator of reset password command.
+/// </summary>
+public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
 {
     /// <summary>
-    /// Validator of reset password command.
+    /// Initializes a new instance of the <see cref="ResetPasswordCommandValidator"/> class.
     /// </summary>
-    public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
+    /// <param name="identityOptionsAccessor"></param>
+    public ResetPasswordCommandValidator(IOptions<IdentityOptions> identityOptionsAccessor)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResetPasswordCommandValidator"/> class.
-        /// </summary>
-        /// <param name="identityOptionsAccessor"></param>
-        public ResetPasswordCommandValidator(IOptions<IdentityOptions> identityOptionsAccessor)
-        {
-            var identityOptions = identityOptionsAccessor.Value;
+        var identityOptions = identityOptionsAccessor.Value;
 
-            this.RuleFor(x => x.Email)
-                .ValidateEmailAddress();
+        this.RuleFor(x => x.Email)
+            .ValidateEmailAddress();
 
-            this.RuleFor(x => x.Password)
-                .ValidatePassword(identityOptions.Password);
+        this.RuleFor(x => x.Password)
+            .ValidatePassword(identityOptions.Password);
 
-            this.RuleFor(x => x.ConfirmedPassword)
-                .Equal(x => x.Password)
-                .WithMessage(Strings.ConfirmedPasswordDoesNotMatchThePassword);
-        }
+        this.RuleFor(x => x.ConfirmedPassword)
+            .Equal(x => x.Password)
+            .WithMessage(Strings.ConfirmedPasswordDoesNotMatchThePassword);
     }
 }

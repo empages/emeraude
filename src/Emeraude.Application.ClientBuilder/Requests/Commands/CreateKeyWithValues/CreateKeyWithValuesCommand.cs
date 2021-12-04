@@ -5,70 +5,69 @@ using Emeraude.Infrastructure.Localization.Persistence;
 using Emeraude.Infrastructure.Localization.Persistence.Entities;
 using MediatR;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateKeyWithValues
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateKeyWithValues;
+
+/// <summary>
+/// Command which create translation key into localization context.
+/// </summary>
+public class CreateKeyWithValuesCommand : NewKeyWithValuesRequest, IRequest<MutationResult>
 {
     /// <summary>
-    /// Command which create translation key into localization context.
+    /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommand"/> class.
     /// </summary>
-    public class CreateKeyWithValuesCommand : NewKeyWithValuesRequest, IRequest<MutationResult>
+    /// <param name="request"></param>
+    public CreateKeyWithValuesCommand(NewKeyWithValuesRequest request)
     {
+        this.Key = request.Key;
+        this.Values = request.Values;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommand"/> class.
+    /// </summary>
+    public CreateKeyWithValuesCommand()
+    {
+    }
+
+    /// <summary>
+    /// Create key with values command handler.
+    /// </summary>
+    public class CreateKeyWithValuesCommandHandler : IRequestHandler<CreateKeyWithValuesCommand, MutationResult>
+    {
+        private readonly ILocalizationContext context;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommand"/> class.
+        /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommandHandler"/> class.
         /// </summary>
-        /// <param name="request"></param>
-        public CreateKeyWithValuesCommand(NewKeyWithValuesRequest request)
+        /// <param name="context"></param>
+        public CreateKeyWithValuesCommandHandler(ILocalizationContext context)
         {
-            this.Key = request.Key;
-            this.Values = request.Values;
+            this.context = context;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommand"/> class.
-        /// </summary>
-        public CreateKeyWithValuesCommand()
+        /// <inheritdoc/>
+        public async Task<MutationResult> Handle(CreateKeyWithValuesCommand request, CancellationToken cancellationToken)
         {
-        }
-
-        /// <summary>
-        /// Create key with values command handler.
-        /// </summary>
-        public class CreateKeyWithValuesCommandHandler : IRequestHandler<CreateKeyWithValuesCommand, MutationResult>
-        {
-            private readonly ILocalizationContext context;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CreateKeyWithValuesCommandHandler"/> class.
-            /// </summary>
-            /// <param name="context"></param>
-            public CreateKeyWithValuesCommandHandler(ILocalizationContext context)
+            var key = new TranslationKey
             {
-                this.context = context;
+                Key = request.Key,
+            };
+
+            foreach (var value in request.Values)
+            {
+                key.Translations.Add(new TranslationValue
+                {
+                    LanguageId = value.LanguageId,
+                    Value = value.Value,
+                    NormalizedValue = value.Value?.Trim().ToUpperInvariant() ?? string.Empty,
+                });
             }
 
-            /// <inheritdoc/>
-            public async Task<MutationResult> Handle(CreateKeyWithValuesCommand request, CancellationToken cancellationToken)
-            {
-                var key = new TranslationKey
-                {
-                    Key = request.Key,
-                };
+            this.context.Keys.Add(key);
 
-                foreach (var value in request.Values)
-                {
-                    key.Translations.Add(new TranslationValue
-                    {
-                        LanguageId = value.LanguageId,
-                        Value = value.Value,
-                        NormalizedValue = value.Value?.Trim().ToUpperInvariant() ?? string.Empty,
-                    });
-                }
+            await this.context.SaveChangesAsync(cancellationToken);
 
-                this.context.Keys.Add(key);
-
-                await this.context.SaveChangesAsync(cancellationToken);
-
-                return new MutationResult(key.Id.ToString());
-            }
+            return new MutationResult(key.Id.ToString());
         }
     }
 }

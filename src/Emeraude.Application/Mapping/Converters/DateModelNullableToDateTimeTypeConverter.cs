@@ -2,13 +2,12 @@
 using AutoMapper;
 using Emeraude.Application.Models;
 
-namespace Emeraude.Application.Mapping.Converters
+namespace Emeraude.Application.Mapping.Converters;
+
+/// <inheritdoc />
+public class DateModelNullableToDateTimeTypeConverter : ITypeConverter<DateModel?, DateTime>
 {
     /// <inheritdoc />
-    public class DateModelNullableToDateTimeTypeConverter : ITypeConverter<DateModel?, DateTime>
-    {
-        /// <inheritdoc />
-        public DateTime Convert(DateModel? source, DateTime destination, ResolutionContext context)
-            => source?.ToDateTime() ?? default;
-    }
+    public DateTime Convert(DateModel? source, DateTime destination, ResolutionContext context)
+        => source?.ToDateTime() ?? default;
 }

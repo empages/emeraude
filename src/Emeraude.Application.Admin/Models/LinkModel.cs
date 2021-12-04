@@ -1,18 +1,17 @@
-﻿namespace Emeraude.Application.Admin.Models
+﻿namespace Emeraude.Application.Admin.Models;
+
+/// <summary>
+/// Model that defines actionable link.
+/// </summary>
+public class LinkModel
 {
     /// <summary>
-    /// Model that defines actionable link.
+    /// Title of the button.
     /// </summary>
-    public class LinkModel
-    {
-        /// <summary>
-        /// Title of the button.
-        /// </summary>
-        public string Title { get; set; }
+    public string Title { get; set; }
 
-        /// <summary>
-        /// Action URL.
-        /// </summary>
-        public string ActionUrl { get; set; }
-    }
+    /// <summary>
+    /// Action URL.
+    /// </summary>
+    public string ActionUrl { get; set; }
 }

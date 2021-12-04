@@ -7,70 +7,69 @@ using Emeraude.Application.Admin.EmPages.Schema.IndexView;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Emeraude.Application.Admin.EmPages.Schema
+namespace Emeraude.Application.Admin.EmPages.Schema;
+
+/// <summary>
+/// EmPages schema description.
+/// </summary>
+public class EmPageSchemaDescription
 {
     /// <summary>
-    /// EmPages schema description.
+    /// Initializes a new instance of the <see cref="EmPageSchemaDescription"/> class.
     /// </summary>
-    public class EmPageSchemaDescription
+    public EmPageSchemaDescription()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageSchemaDescription"/> class.
-        /// </summary>
-        public EmPageSchemaDescription()
-        {
-            this.IndexView = new IndexViewDescription();
-            this.DetailsView = new DetailsViewDescription();
-            this.FormView = new FormViewDescription();
-        }
-
-        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Route"/>
-        public string Route { get; set; }
-
-        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Title"/>
-        public string Title { get; set; }
-
-        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Description"/>
-        public string Description { get; set; }
-
-        /// <inheritdoc cref="EmPageSchemaSettings{TModel}.UseAsFeature"/>
-        public bool UseAsFeature { get; set; }
-
-        /// <summary>
-        /// Parent schema in case <see cref="UseAsFeature"/> is true.
-        /// </summary>
-        public EmPageSchemaDescription ParentSchema { get; set; }
-
-        /// <inheritdoc cref="EmPageFeatureSourceToParentRelation"/>
-        public EmPageFeatureSourceToParentRelation ParentRelation { get; set; }
-
-        /// <summary>
-        /// Type of the schema linked model.
-        /// </summary>
-        public Type ModelType { get; set; }
-
-        /// <summary>
-        /// Type of the schema linked data manager.
-        /// </summary>
-        public Type DataManagerType { get; set; }
-
-        /// <summary>
-        /// Collection of all model actions.
-        /// </summary>
-        public IEnumerable<EmPageAction> ModelActions { get; set; }
-
-        /// <summary>
-        /// Dictionary that contains a authorization requirements per operation.
-        /// </summary>
-        public IDictionary<EmPageOperation, IEnumerable<IAuthorizationRequirement>> OperationsAuthorizationRequirements { get; set; }
-
-        /// <inheritdoc cref="IndexViewDescription"/>
-        public IndexViewDescription IndexView { get; set; }
-
-        /// <inheritdoc cref="DetailsViewDescription"/>
-        public DetailsViewDescription DetailsView { get; set; }
-
-        /// <inheritdoc cref="FormViewDescription"/>
-        public FormViewDescription FormView { get; set; }
+        this.IndexView = new IndexViewDescription();
+        this.DetailsView = new DetailsViewDescription();
+        this.FormView = new FormViewDescription();
     }
+
+    /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Route"/>
+    public string Route { get; set; }
+
+    /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Title"/>
+    public string Title { get; set; }
+
+    /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Description"/>
+    public string Description { get; set; }
+
+    /// <inheritdoc cref="EmPageSchemaSettings{TModel}.UseAsFeature"/>
+    public bool UseAsFeature { get; set; }
+
+    /// <summary>
+    /// Parent schema in case <see cref="UseAsFeature"/> is true.
+    /// </summary>
+    public EmPageSchemaDescription ParentSchema { get; set; }
+
+    /// <inheritdoc cref="EmPageFeatureSourceToParentRelation"/>
+    public EmPageFeatureSourceToParentRelation ParentRelation { get; set; }
+
+    /// <summary>
+    /// Type of the schema linked model.
+    /// </summary>
+    public Type ModelType { get; set; }
+
+    /// <summary>
+    /// Type of the schema linked data manager.
+    /// </summary>
+    public Type DataManagerType { get; set; }
+
+    /// <summary>
+    /// Collection of all model actions.
+    /// </summary>
+    public IEnumerable<EmPageAction> ModelActions { get; set; }
+
+    /// <summary>
+    /// Dictionary that contains a authorization requirements per operation.
+    /// </summary>
+    public IDictionary<EmPageOperation, IEnumerable<IAuthorizationRequirement>> OperationsAuthorizationRequirements { get; set; }
+
+    /// <inheritdoc cref="IndexViewDescription"/>
+    public IndexViewDescription IndexView { get; set; }
+
+    /// <inheritdoc cref="DetailsViewDescription"/>
+    public DetailsViewDescription DetailsView { get; set; }
+
+    /// <inheritdoc cref="FormViewDescription"/>
+    public FormViewDescription FormView { get; set; }
 }

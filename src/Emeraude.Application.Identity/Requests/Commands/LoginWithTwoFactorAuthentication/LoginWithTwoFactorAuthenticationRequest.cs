@@ -1,18 +1,17 @@
-﻿namespace Emeraude.Application.Identity.Requests.Commands.LoginWithTwoFactorAuthentication
+﻿namespace Emeraude.Application.Identity.Requests.Commands.LoginWithTwoFactorAuthentication;
+
+/// <summary>
+/// Request for user login with two factor authentication.
+/// </summary>
+public class LoginWithTwoFactorAuthenticationRequest
 {
     /// <summary>
-    /// Request for user login with two factor authentication.
+    /// Email of the user.
     /// </summary>
-    public class LoginWithTwoFactorAuthenticationRequest
-    {
-        /// <summary>
-        /// Email of the user.
-        /// </summary>
-        public string Email { get; set; }
+    public string Email { get; set; }
 
-        /// <summary>
-        /// Two factor authentication code.
-        /// </summary>
-        public string Code { get; set; }
-    }
+    /// <summary>
+    /// Two factor authentication code.
+    /// </summary>
+    public string Code { get; set; }
 }

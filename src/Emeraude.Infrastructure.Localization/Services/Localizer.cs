@@ -5,149 +5,148 @@ using Emeraude.Infrastructure.Localization.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Emeraude.Infrastructure.Localization.Services
+namespace Emeraude.Infrastructure.Localization.Services;
+
+/// <inheritdoc cref="IEmLocalizer"/>
+public class Localizer : IEmLocalizer
 {
-    /// <inheritdoc cref="IEmLocalizer"/>
-    public class Localizer : IEmLocalizer
+    private readonly ILocalizationContext context;
+    private readonly ILogger<Localizer> logger;
+    private readonly ICurrentLanguageProvider currentLanguageProvider;
+    private readonly ILanguagesResourceManager languagesResourceManager;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Localizer"/> class.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="logger"></param>
+    /// <param name="currentLanguageProvider"></param>
+    /// <param name="languagesResourceManager"></param>
+    public Localizer(
+        ILocalizationContext context,
+        ILogger<Localizer> logger,
+        ICurrentLanguageProvider currentLanguageProvider,
+        ILanguagesResourceManager languagesResourceManager)
     {
-        private readonly ILocalizationContext context;
-        private readonly ILogger<Localizer> logger;
-        private readonly ICurrentLanguageProvider currentLanguageProvider;
-        private readonly ILanguagesResourceManager languagesResourceManager;
+        this.context = context;
+        this.logger = logger;
+        this.currentLanguageProvider = currentLanguageProvider;
+        this.languagesResourceManager = languagesResourceManager;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Localizer"/> class.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="logger"></param>
-        /// <param name="currentLanguageProvider"></param>
-        /// <param name="languagesResourceManager"></param>
-        public Localizer(
-            ILocalizationContext context,
-            ILogger<Localizer> logger,
-            ICurrentLanguageProvider currentLanguageProvider,
-            ILanguagesResourceManager languagesResourceManager)
+    /// <inheritdoc/>
+    public string this[string key] => this.TranslateKey(key);
+
+    /// <inheritdoc/>
+    public string GetStaticContent(string key)
+    {
+        try
         {
-            this.context = context;
-            this.logger = logger;
-            this.currentLanguageProvider = currentLanguageProvider;
-            this.languagesResourceManager = languagesResourceManager;
+            string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+            string content = this.context
+                .StaticContent
+                .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                ?.Content;
+
+            return string.IsNullOrEmpty(content) ? key : content;
         }
-
-        /// <inheritdoc/>
-        public string this[string key] => this.TranslateKey(key);
-
-        /// <inheritdoc/>
-        public string GetStaticContent(string key)
+        catch (Exception ex)
         {
-            try
-            {
-                string languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
-                string content = this.context
-                    .StaticContent
-                    .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    ?.Content;
-
-                return string.IsNullOrEmpty(content) ? key : content;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting static content");
-                return key;
-            }
+            this.logger.LogError(ex, "An error occured during getting static content");
+            return key;
         }
+    }
 
-        /// <inheritdoc/>
-        public string GetStaticContent(string key, string languageCode)
+    /// <inheritdoc/>
+    public string GetStaticContent(string key, string languageCode)
+    {
+        try
         {
-            try
-            {
-                string content = this.context
-                    .StaticContent
-                    .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    ?.Content;
+            string content = this.context
+                .StaticContent
+                .FirstOrDefault(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                ?.Content;
 
-                return string.IsNullOrEmpty(content) ? key : content;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting static content");
-                return key;
-            }
+            return string.IsNullOrEmpty(content) ? key : content;
         }
-
-        /// <inheritdoc/>
-        public async Task<string> GetStaticContentAsync(string key)
+        catch (Exception ex)
         {
-            try
-            {
-                string languageCode = (await this.currentLanguageProvider.GetCurrentLanguageAsync())?.Code;
-                string content = (await this.context
-                    .StaticContent
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    .FirstOrDefaultAsync())?.Content;
-
-                return string.IsNullOrEmpty(content) ? key : content;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting static content");
-                return key;
-            }
+            this.logger.LogError(ex, "An error occured during getting static content");
+            return key;
         }
+    }
 
-        /// <inheritdoc/>
-        public async Task<string> GetStaticContentAsync(string key, string languageCode)
+    /// <inheritdoc/>
+    public async Task<string> GetStaticContentAsync(string key)
+    {
+        try
         {
-            try
-            {
-                string content = (await this.context
-                    .StaticContent
-                    .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
-                    .FirstOrDefaultAsync())?.Content;
+            string languageCode = (await this.currentLanguageProvider.GetCurrentLanguageAsync())?.Code;
+            string content = (await this.context
+                .StaticContent
+                .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                .FirstOrDefaultAsync())?.Content;
 
-                return string.IsNullOrEmpty(content) ? key : content;
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting static content");
-                return key;
-            }
+            return string.IsNullOrEmpty(content) ? key : content;
         }
-
-        /// <inheritdoc/>
-        public string TranslateKey(string key)
+        catch (Exception ex)
         {
-            try
-            {
-                var languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
-                return this.TranslateKeyAction(key, languageCode);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translation");
-                return key;
-            }
+            this.logger.LogError(ex, "An error occured during getting static content");
+            return key;
         }
+    }
 
-        /// <inheritdoc/>
-        public string TranslateKey(string key, string languageCode)
+    /// <inheritdoc/>
+    public async Task<string> GetStaticContentAsync(string key, string languageCode)
+    {
+        try
         {
-            try
-            {
-                return this.TranslateKeyAction(key, languageCode);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "An error occured during getting translation");
-                return key;
-            }
-        }
+            string content = (await this.context
+                .StaticContent
+                .Where(x => x.Language.Code.ToLower() == languageCode.ToLower() && x.ContentKey.Key == key)
+                .FirstOrDefaultAsync())?.Content;
 
-        private string TranslateKeyAction(string key, string languageCode)
-        {
-            string value = this.languagesResourceManager.GetTranslationResource(key, languageCode);
-            return string.IsNullOrEmpty(value) ? key : value;
+            return string.IsNullOrEmpty(content) ? key : content;
         }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting static content");
+            return key;
+        }
+    }
+
+    /// <inheritdoc/>
+    public string TranslateKey(string key)
+    {
+        try
+        {
+            var languageCode = this.currentLanguageProvider.GetCurrentLanguage()?.Code;
+            return this.TranslateKeyAction(key, languageCode);
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting translation");
+            return key;
+        }
+    }
+
+    /// <inheritdoc/>
+    public string TranslateKey(string key, string languageCode)
+    {
+        try
+        {
+            return this.TranslateKeyAction(key, languageCode);
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "An error occured during getting translation");
+            return key;
+        }
+    }
+
+    private string TranslateKeyAction(string key, string languageCode)
+    {
+        string value = this.languagesResourceManager.GetTranslationResource(key, languageCode);
+        return string.IsNullOrEmpty(value) ? key : value;
     }
 }

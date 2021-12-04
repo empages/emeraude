@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Emeraude.Infrastructure.Identity.EventHandlers;
 
-namespace Emeraude.Tests.Infrastructure.Fakes
+namespace Emeraude.Tests.Infrastructure.Fakes;
+
+public class FakeExternalLoginEventHandler : IExternalLoginEventHandler
 {
-    public class FakeExternalLoginEventHandler : IExternalLoginEventHandler
+    public async virtual Task HandleAsync(ExternalLoginEventArgs args)
     {
-        public async virtual Task HandleAsync(ExternalLoginEventArgs args)
-        {
-        }
     }
 }

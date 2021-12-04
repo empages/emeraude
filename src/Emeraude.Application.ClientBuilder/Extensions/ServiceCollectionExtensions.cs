@@ -7,27 +7,26 @@ using Emeraude.Application.ClientBuilder.Shared;
 using Emeraude.Essentials.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Application.ClientBuilder.Extensions
+namespace Emeraude.Application.ClientBuilder.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IServiceCollection"/>.
+/// </summary>
+public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IServiceCollection"/>.
+    /// Register Client Builder services.
     /// </summary>
-    public static class ServiceCollectionExtensions
+    /// <param name="services"></param>
+    /// <param name="clientBuilderOptions"></param>
+    public static void RegisterClientBuilder(this IServiceCollection services, EmClientBuilderOptions clientBuilderOptions)
     {
-        /// <summary>
-        /// Register Client Builder services.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="clientBuilderOptions"></param>
-        public static void RegisterClientBuilder(this IServiceCollection services, EmClientBuilderOptions clientBuilderOptions)
-        {
-            services.AddScoped<IEndpointService, EndpointService>();
-            services.AddScoped<IScaffoldModulesFactory, ScaffoldModulesFactory>();
+        services.AddScoped<IEndpointService, EndpointService>();
+        services.AddScoped<IScaffoldModulesFactory, ScaffoldModulesFactory>();
 
-            foreach (var modulesType in clientBuilderOptions.ModulesTypes)
-            {
-                services.AddScoped(modulesType);
-            }
+        foreach (var modulesType in clientBuilderOptions.ModulesTypes)
+        {
+            services.AddScoped(modulesType);
         }
     }
 }

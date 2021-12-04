@@ -1,19 +1,18 @@
 ﻿using Emeraude.Essentials.Models;
 
-namespace Emeraude.Application.Identity.Requests.Commands.ActivateTwoFactorAuthentication
+namespace Emeraude.Application.Identity.Requests.Commands.ActivateTwoFactorAuthentication;
+
+/// <summary>
+/// Result for two factor authentication request.
+/// </summary>
+public class ActivateTwoFactorAuthenticationResult : SimpleResult
 {
     /// <summary>
-    /// Result for two factor authentication request.
+    /// Initializes a new instance of the <see cref="ActivateTwoFactorAuthenticationResult"/> class.
     /// </summary>
-    public class ActivateTwoFactorAuthenticationResult : SimpleResult
+    /// <param name="success"></param>
+    public ActivateTwoFactorAuthenticationResult(bool success)
+        : base(success)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActivateTwoFactorAuthenticationResult"/> class.
-        /// </summary>
-        /// <param name="success"></param>
-        public ActivateTwoFactorAuthenticationResult(bool success)
-            : base(success)
-        {
-        }
     }
 }

@@ -6,60 +6,59 @@ using Emeraude.Cli.Commands.Implementations.Create;
 using Emeraude.Cli.Commands.Implementations.Request;
 using Emeraude.Cli.Properties;
 
-namespace Emeraude.Cli
+namespace Emeraude.Cli;
+
+/// <summary>
+/// Command factory provider that contains and triggers the command execution.
+/// </summary>
+internal class ActionProvider
 {
+    private readonly string[] args;
+    private readonly Dictionary<string, Command> commandFactories;
+
     /// <summary>
-    /// Command factory provider that contains and triggers the command execution.
+    /// Initializes a new instance of the <see cref="ActionProvider"/> class.
     /// </summary>
-    internal class ActionProvider
+    /// <param name="args"></param>
+    internal ActionProvider(string[] args)
     {
-        private readonly string[] args;
-        private readonly Dictionary<string, Command> commandFactories;
+        this.args = args;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionProvider"/> class.
-        /// </summary>
-        /// <param name="args"></param>
-        internal ActionProvider(string[] args)
+        this.commandFactories = new Dictionary<string, Command>
         {
-            this.args = args;
+            { CommandsNames.Create, new CreateCommand() },
+            { CommandsNames.Request, new RequestCommand() },
+        };
+    }
 
-            this.commandFactories = new Dictionary<string, Command>
+    /// <summary>
+    /// Parse and executes the inputed command.
+    /// </summary>
+    internal void Execute()
+    {
+        try
+        {
+            if (this.args.FirstOrDefault()?.ToLower() == CommandsNames.Help)
             {
-                { CommandsNames.Create, new CreateCommand() },
-                { CommandsNames.Request, new RequestCommand() },
-            };
+                StaticConsolePrints.PrintHelpInformation();
+                return;
+            }
+
+            ConsoleCommand consoleCommand = new ConsoleCommand(this.args);
+            if (consoleCommand.IsValid)
+            {
+                this.commandFactories[consoleCommand.Command].LoadCliConfig(consoleCommand.GetParameter(CommandParameters.ConfigurationDirectory));
+                this.commandFactories[consoleCommand.Command].Execute(consoleCommand.Parameters);
+            }
+            else
+            {
+                StaticConsolePrints.PrintGeneralInformation();
+            }
         }
-
-        /// <summary>
-        /// Parse and executes the inputed command.
-        /// </summary>
-        internal void Execute()
+        catch (Exception)
         {
-            try
-            {
-                if (this.args.FirstOrDefault()?.ToLower() == CommandsNames.Help)
-                {
-                    StaticConsolePrints.PrintHelpInformation();
-                    return;
-                }
-
-                ConsoleCommand consoleCommand = new ConsoleCommand(this.args);
-                if (consoleCommand.IsValid)
-                {
-                    this.commandFactories[consoleCommand.Command].LoadCliConfig(consoleCommand.GetParameter(CommandParameters.ConfigurationDirectory));
-                    this.commandFactories[consoleCommand.Command].Execute(consoleCommand.Parameters);
-                }
-                else
-                {
-                    StaticConsolePrints.PrintGeneralInformation();
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(Messages.SomethingUnexpectedHappened);
-                Console.WriteLine(Messages.SeeHelpForCli);
-            }
+            Console.WriteLine(Messages.SomethingUnexpectedHappened);
+            Console.WriteLine(Messages.SeeHelpForCli);
         }
     }
 }

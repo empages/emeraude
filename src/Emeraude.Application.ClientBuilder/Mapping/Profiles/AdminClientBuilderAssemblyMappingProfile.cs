@@ -1,18 +1,17 @@
 ﻿using Emeraude.Application.Mapping;
 
-namespace Emeraude.Application.ClientBuilder.Mapping.Profiles
+namespace Emeraude.Application.ClientBuilder.Mapping.Profiles;
+
+/// <summary>
+/// Assembly mapping profile for registration of all mappings configurations for client builder.
+/// </summary>
+public class AdminClientBuilderAssemblyMappingProfile : AssemblyMappingProfile
 {
     /// <summary>
-    /// Assembly mapping profile for registration of all mappings configurations for client builder.
+    /// Initializes a new instance of the <see cref="AdminClientBuilderAssemblyMappingProfile"/> class.
     /// </summary>
-    public class AdminClientBuilderAssemblyMappingProfile : AssemblyMappingProfile
+    public AdminClientBuilderAssemblyMappingProfile()
+        : base(System.Reflection.Assembly.GetExecutingAssembly())
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdminClientBuilderAssemblyMappingProfile"/> class.
-        /// </summary>
-        public AdminClientBuilderAssemblyMappingProfile()
-            : base(System.Reflection.Assembly.GetExecutingAssembly())
-        {
-        }
     }
 }

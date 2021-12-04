@@ -1,18 +1,17 @@
 ﻿using Emeraude.Application.Admin.EmPages.Shared;
 
-namespace Emeraude.Application.Admin.EmPages.Components.Renderers
+namespace Emeraude.Application.Admin.EmPages.Components.Renderers;
+
+/// <summary>
+/// Renderer for booleans.
+/// </summary>
+public class EmPageFlagRenderer : EmPageComponent
 {
     /// <summary>
-    /// Renderer for booleans.
+    /// Initializes a new instance of the <see cref="EmPageFlagRenderer"/> class.
     /// </summary>
-    public class EmPageFlagRenderer : EmPageComponent
+    public EmPageFlagRenderer()
+        : base(EmPageComponentType.Renderer)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmPageFlagRenderer"/> class.
-        /// </summary>
-        public EmPageFlagRenderer()
-            : base(EmPageComponentType.Renderer)
-        {
-        }
     }
 }

@@ -1,54 +1,53 @@
-﻿namespace Emeraude.Application.ClientBuilder.Shared
+﻿namespace Emeraude.Application.ClientBuilder.Shared;
+
+/// <summary>
+/// Type of the application instance.
+/// </summary>
+public enum InstanceType
 {
     /// <summary>
-    /// Type of the application instance.
+    /// Undefined type of module.
     /// </summary>
-    public enum InstanceType
-    {
-        /// <summary>
-        /// Undefined type of module.
-        /// </summary>
-        Undefined = 0,
-
-        /// <summary>
-        /// Web module instance.
-        /// </summary>
-        Web = 1,
-
-        /// <summary>
-        /// Mobile module instance.
-        /// </summary>
-        Mobile = 2,
-
-        /// <summary>
-        /// Desktop module instance.
-        /// </summary>
-        Desktop = 3,
-    }
+    Undefined = 0,
 
     /// <summary>
-    /// Type of generation result.
+    /// Web module instance.
     /// </summary>
-    public enum ScaffoldModulesProcessResult
-    {
-        /// <summary>
-        /// Error.
-        /// </summary>
-        Error = -1,
+    Web = 1,
 
-        /// <summary>
-        /// Success.
-        /// </summary>
-        Success = 1,
+    /// <summary>
+    /// Mobile module instance.
+    /// </summary>
+    Mobile = 2,
 
-        /// <summary>
-        /// Success with errors.
-        /// </summary>
-        SuccessWithErrors = 2,
+    /// <summary>
+    /// Desktop module instance.
+    /// </summary>
+    Desktop = 3,
+}
 
-        /// <summary>
-        /// Unsuccessful.
-        /// </summary>
-        Unsuccessful = 3,
-    }
+/// <summary>
+/// Type of generation result.
+/// </summary>
+public enum ScaffoldModulesProcessResult
+{
+    /// <summary>
+    /// Error.
+    /// </summary>
+    Error = -1,
+
+    /// <summary>
+    /// Success.
+    /// </summary>
+    Success = 1,
+
+    /// <summary>
+    /// Success with errors.
+    /// </summary>
+    SuccessWithErrors = 2,
+
+    /// <summary>
+    /// Unsuccessful.
+    /// </summary>
+    Unsuccessful = 3,
 }

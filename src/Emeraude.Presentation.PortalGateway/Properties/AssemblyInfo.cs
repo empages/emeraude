@@ -4,20 +4,19 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Emeraude.Presentation.PortalGateway")]
 [assembly: ComVisible(false)]
 
-namespace Emeraude.Presentation.PortalGateway.Properties
+namespace Emeraude.Presentation.PortalGateway.Properties;
+
+/// <summary>
+/// Assembly info provider.
+/// </summary>
+public static class AssemblyInfo
 {
     /// <summary>
-    /// Assembly info provider.
+    /// Gets execution assembly.
     /// </summary>
-    public static class AssemblyInfo
+    /// <returns></returns>
+    public static Assembly GetAssembly()
     {
-        /// <summary>
-        /// Gets execution assembly.
-        /// </summary>
-        /// <returns></returns>
-        public static Assembly GetAssembly()
-        {
-            return Assembly.GetExecutingAssembly();
-        }
+        return Assembly.GetExecutingAssembly();
     }
 }

@@ -3,35 +3,34 @@ using AutoMapper;
 using Emeraude.Application.Mapping.Converters;
 using Emeraude.Application.Models;
 
-namespace Emeraude.Application.Mapping
+namespace Emeraude.Application.Mapping;
+
+/// <summary>
+/// Default Emeraude application mapping profile.
+/// </summary>
+public class ApplicationMappingProfile : Profile
 {
     /// <summary>
-    /// Default Emeraude application mapping profile.
+    /// Initializes a new instance of the <see cref="ApplicationMappingProfile"/> class.
     /// </summary>
-    public class ApplicationMappingProfile : Profile
+    public ApplicationMappingProfile()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationMappingProfile"/> class.
-        /// </summary>
-        public ApplicationMappingProfile()
-        {
-            this.CreateMap<DateTime, DateModel>().ConvertUsing<DateTimeToDateModelTypeConverter>();
-            this.CreateMap<DateTime?, DateModel>().ConvertUsing<DateTimeNullableToDateModelTypeConverter>();
-            this.CreateMap<DateTime, DateModel?>().ConvertUsing<DateTimeToDateModelNullableTypeConverter>();
-            this.CreateMap<DateTime?, DateModel?>().ConvertUsing<DateTimeNullableToDateModelNullableTypeConverter>();
-            this.CreateMap<DateTimeOffset, DateModel>().ConvertUsing<DateTimeOffsetToDateModelTypeConverter>();
-            this.CreateMap<DateTimeOffset?, DateModel>().ConvertUsing<DateTimeOffsetNullableToDateModelTypeConverter>();
-            this.CreateMap<DateTimeOffset, DateModel?>().ConvertUsing<DateTimeOffsetToDateModelNullableTypeConverter>();
-            this.CreateMap<DateTimeOffset?, DateModel?>().ConvertUsing<DateTimeOffsetNullableToDateModelNullableTypeConverter>();
+        this.CreateMap<DateTime, DateModel>().ConvertUsing<DateTimeToDateModelTypeConverter>();
+        this.CreateMap<DateTime?, DateModel>().ConvertUsing<DateTimeNullableToDateModelTypeConverter>();
+        this.CreateMap<DateTime, DateModel?>().ConvertUsing<DateTimeToDateModelNullableTypeConverter>();
+        this.CreateMap<DateTime?, DateModel?>().ConvertUsing<DateTimeNullableToDateModelNullableTypeConverter>();
+        this.CreateMap<DateTimeOffset, DateModel>().ConvertUsing<DateTimeOffsetToDateModelTypeConverter>();
+        this.CreateMap<DateTimeOffset?, DateModel>().ConvertUsing<DateTimeOffsetNullableToDateModelTypeConverter>();
+        this.CreateMap<DateTimeOffset, DateModel?>().ConvertUsing<DateTimeOffsetToDateModelNullableTypeConverter>();
+        this.CreateMap<DateTimeOffset?, DateModel?>().ConvertUsing<DateTimeOffsetNullableToDateModelNullableTypeConverter>();
 
-            this.CreateMap<DateModel, DateTime>().ConvertUsing<DateModelToDateTimeTypeConverter>();
-            this.CreateMap<DateModel, DateTime?>().ConvertUsing<DateModelToDateTimeNullableTypeConverter>();
-            this.CreateMap<DateModel?, DateTime>().ConvertUsing<DateModelNullableToDateTimeTypeConverter>();
-            this.CreateMap<DateModel?, DateTime?>().ConvertUsing<DateModelNullableToDateTimeNullableTypeConverter>();
-            this.CreateMap<DateModel, DateTimeOffset>().ConvertUsing<DateModelToDateTimeOffsetTypeConverter>();
-            this.CreateMap<DateModel, DateTimeOffset?>().ConvertUsing<DateModelToDateTimeOffsetNullableTypeConverter>();
-            this.CreateMap<DateModel?, DateTimeOffset>().ConvertUsing<DateModelNullableToDateTimeOffsetTypeConverter>();
-            this.CreateMap<DateModel?, DateTimeOffset?>().ConvertUsing<DateModelNullableToDateTimeOffsetNullableTypeConverter>();
-        }
+        this.CreateMap<DateModel, DateTime>().ConvertUsing<DateModelToDateTimeTypeConverter>();
+        this.CreateMap<DateModel, DateTime?>().ConvertUsing<DateModelToDateTimeNullableTypeConverter>();
+        this.CreateMap<DateModel?, DateTime>().ConvertUsing<DateModelNullableToDateTimeTypeConverter>();
+        this.CreateMap<DateModel?, DateTime?>().ConvertUsing<DateModelNullableToDateTimeNullableTypeConverter>();
+        this.CreateMap<DateModel, DateTimeOffset>().ConvertUsing<DateModelToDateTimeOffsetTypeConverter>();
+        this.CreateMap<DateModel, DateTimeOffset?>().ConvertUsing<DateModelToDateTimeOffsetNullableTypeConverter>();
+        this.CreateMap<DateModel?, DateTimeOffset>().ConvertUsing<DateModelNullableToDateTimeOffsetTypeConverter>();
+        this.CreateMap<DateModel?, DateTimeOffset?>().ConvertUsing<DateModelNullableToDateTimeOffsetNullableTypeConverter>();
     }
 }

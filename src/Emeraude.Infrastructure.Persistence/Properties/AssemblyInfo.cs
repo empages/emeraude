@@ -4,20 +4,19 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Emeraude.Infrastructure.Persistence")]
 [assembly: ComVisible(false)]
 
-namespace Emeraude.Infrastructure.Persistence.Properties
+namespace Emeraude.Infrastructure.Persistence.Properties;
+
+/// <summary>
+/// Assembly info provider.
+/// </summary>
+public static class AssemblyInfo
 {
     /// <summary>
-    /// Assembly info provider.
+    /// Gets execution assembly.
     /// </summary>
-    public static class AssemblyInfo
+    /// <returns></returns>
+    public static Assembly GetAssembly()
     {
-        /// <summary>
-        /// Gets execution assembly.
-        /// </summary>
-        /// <returns></returns>
-        public static Assembly GetAssembly()
-        {
-            return Assembly.GetExecutingAssembly();
-        }
+        return Assembly.GetExecutingAssembly();
     }
 }
