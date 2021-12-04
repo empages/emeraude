@@ -1,39 +1,39 @@
-#version: 2.0.0.{build}-preview
-#branches:
-#  only:
-#  - v2.0-preview
-#skip_tags: true
-#image: Previous Visual Studio 2019
-#clone_depth: 1
-#assembly_info:
-#  patch: true
-#  file: '**\AssemblyInfo.*'
-#  assembly_version: '{version}'
-#  assembly_file_version: '{version}'
-#  assembly_informational_version: '{version}'
-#environment:
-#  DOTNET_CLI_TELEMETRY_OPTOUT: 1
-#  PACKAGE_VERSION: $(appveyor_build_version)
-#  DOTNET_HOST_PATH: '%ProgramFiles%\dotnet\dotnet.exe'
-#before_build:
-#- cmd: dotnet restore
-#build:
-#  project: Emeraude.sln
-#  publish_nuget: true
-#  publish_aspnet_core: true
-#  publish_core_console: true
-#  verbosity: minimal
-#deploy:
-#- provider: Environment
-#  name: nuget
-#  on:
-#    branch: v2.0-preview
-#- provider: GitHub
-#  tag: v$(appveyor_build_version)
-#  release: $(appveyor_build_version)
-#  description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
-#  auth_token:
-#    secure: HWgJb3yYS+zFJpUK3i7AQb14rhVfZTK4Aj1EKXQbYW96VbqnRa5NTCqC3bvsM/Lm
-#  artifact: /.*\.nupkg/
-#  on:
-#    branch: v2.0-preview
+version: 2.0.0.{build}-preview
+branches:
+  only:
+    - master
+skip_tags: true
+image: Visual Studio 2022
+clone_depth: 1
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  PACKAGE_VERSION: $(appveyor_build_version)
+  DOTNET_HOST_PATH: '%ProgramFiles%\dotnet\dotnet.exe'
+before_build:
+  - cmd: dotnet restore
+build:
+  project: Emeraude.sln
+  publish_nuget: true
+  publish_aspnet_core: true
+  publish_core_console: true
+  verbosity: minimal
+deploy:
+  - provider: Environment
+    name: EmeraudeNuget
+    on:
+      branch: master
+  - provider: GitHub
+    tag: v$(appveyor_build_version)
+    release: $(appveyor_build_version)
+    description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
+    auth_token:
+      secure: HWgJb3yYS+zFJpUK3i7AQb14rhVfZTK4Aj1EKXQbYW96VbqnRa5NTCqC3bvsM/Lm
+    artifact: /.*\.nupkg/
+    on:
+      branch: master
