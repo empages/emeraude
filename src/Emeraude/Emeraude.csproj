@@ -1,4 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>$(PACKAGE_VERSION)</Version>
+  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
