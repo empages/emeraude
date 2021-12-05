@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyProduct("Emeraude.Infrastructure.Persistence")]
+[assembly: AssemblyProduct("Emeraude.Presentation.PlatformBase")]
 [assembly: ComVisible(false)]
