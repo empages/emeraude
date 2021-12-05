@@ -1,11 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>10.0</LangVersion>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+    
     <Import Project="..\..\Emeraude.targets" />
 
     <ItemGroup>
       <ProjectReference Include="..\Emeraude.Application.Admin.EmPages\Emeraude.Application.Admin.EmPages.csproj" />
       <ProjectReference Include="..\Emeraude\Emeraude.csproj" />
     </ItemGroup>
-    
     
 </Project>

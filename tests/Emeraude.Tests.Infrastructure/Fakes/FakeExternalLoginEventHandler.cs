@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeExternalLoginEventHandler : IExternalLoginEventHandler
 {
-    public async virtual Task HandleAsync(ExternalLoginEventArgs args)
+    public virtual async Task HandleAsync(ExternalLoginEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }

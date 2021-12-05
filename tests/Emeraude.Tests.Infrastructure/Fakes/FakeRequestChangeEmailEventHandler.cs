@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeRequestChangeEmailEventHandler : IRequestChangeEmailEventHandler
 {
-    public async virtual Task HandleAsync(RequestChangeEmailEventArgs args)
+    public virtual async Task HandleAsync(RequestChangeEmailEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }

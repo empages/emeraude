@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeExternalRegisterEventHandler : IExternalRegisterEventHandler
 {
-    public async virtual Task HandleAsync(ExternalRegisterEventArgs args)
+    public virtual async Task HandleAsync(ExternalRegisterEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }

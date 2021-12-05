@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeForgotPasswordEventHandler : IForgotPasswordEventHandler
 {
-    public async virtual Task HandleAsync(ForgotPasswordEventArgs args)
+    public virtual async Task HandleAsync(ForgotPasswordEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }

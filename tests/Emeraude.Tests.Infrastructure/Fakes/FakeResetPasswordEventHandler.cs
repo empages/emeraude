@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeResetPasswordEventHandler : IResetPasswordEventHandler
 {
-    public async virtual Task HandleAsync(ResetPasswordEventArgs args)
+    public virtual async Task HandleAsync(ResetPasswordEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }

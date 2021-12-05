@@ -5,7 +5,8 @@ namespace Emeraude.Tests.Infrastructure.Fakes;
 
 public class FakeConfirmedEmailEventHandler : IConfirmedEmailEventHandler
 {
-    public async virtual Task HandleAsync(ConfirmedEmailEventArgs args)
+    public virtual async Task HandleAsync(ConfirmedEmailEventArgs args)
     {
+        await Task.CompletedTask;
     }
 }
