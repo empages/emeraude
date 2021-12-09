@@ -56,6 +56,12 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
     public string Description { get; set; }
 
     /// <summary>
+    /// Priority index of the current EmPage. The purpose of that property is related to the rendering order
+    /// on the client side. The default value is 0.
+    /// </summary>
+    public int PriorityIndex { get; set; }
+
+    /// <summary>
     /// Flag that indicates whether the schema is used with separate context or it is a feature of other parent schema.
     /// </summary>
     public bool UseAsFeature { get; set; }
@@ -145,6 +151,7 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
             Route = this.Route,
             Title = this.Title,
             Description = this.Description,
+            PriorityIndex = this.PriorityIndex,
             UseAsFeature = this.UseAsFeature,
             ModelType = typeof(TModel),
             DataManagerType = dataManagerType,
@@ -155,6 +162,8 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
                 ViewItems = this.indexViewConfigurationBuilder.ViewItems,
                 PageActions = this.indexViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
                 Breadcrumbs = this.indexViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
+                CustomViewComponent = this.indexViewConfigurationBuilder.CustomViewComponent,
+                OrderProperties = this.indexViewConfigurationBuilder.OrderProperties,
             },
             DetailsView = new DetailsViewDescription
             {

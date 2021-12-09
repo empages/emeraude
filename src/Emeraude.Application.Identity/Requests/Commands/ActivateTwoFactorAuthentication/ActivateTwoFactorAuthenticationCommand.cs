@@ -11,15 +11,6 @@ namespace Emeraude.Application.Identity.Requests.Commands.ActivateTwoFactorAuthe
 public class ActivateTwoFactorAuthenticationCommand : IRequest<ActivateTwoFactorAuthenticationResult>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ActivateTwoFactorAuthenticationCommand"/> class.
-    /// </summary>
-    /// <param name="code"></param>
-    public ActivateTwoFactorAuthenticationCommand(string code)
-    {
-        this.Code = code;
-    }
-
-    /// <summary>
     /// Authenticator code.
     /// </summary>
     public string Code { get; set; }
@@ -50,13 +41,13 @@ public class ActivateTwoFactorAuthenticationCommand : IRequest<ActivateTwoFactor
 
             var currentUser = await this.currentUserProvider.GetCurrentUserAsync();
 
-            var is2faTokenValid = await this.userManager
+            var is2FaTokenValid = await this.userManager
                 .VerifyTwoFactorTokenAsync(
                     currentUser,
                     this.userManager.Options.Tokens.AuthenticatorTokenProvider,
                     verificationCode);
 
-            if (!is2faTokenValid)
+            if (!is2FaTokenValid)
             {
                 return new ActivateTwoFactorAuthenticationResult(false);
             }

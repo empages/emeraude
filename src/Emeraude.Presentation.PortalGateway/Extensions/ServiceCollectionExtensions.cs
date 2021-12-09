@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Emeraude.Presentation.PortalGateway.ActionFilters;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Emeraude.Presentation.PortalGateway.Extensions;
@@ -17,6 +18,11 @@ public static class ServiceCollectionExtensions
     public static void RegisterEmeraudePortalGateway(this IServiceCollection services, EmPortalGatewayOptions gatewayOptions)
     {
         services.AddScoped<PortalFilterAttribute>();
+
+        foreach (var (strategy, implementation) in gatewayOptions.IdentityActionsStrategies)
+        {
+            services.AddTransient(strategy, implementation);
+        }
 
         services.AddCors(options =>
         {

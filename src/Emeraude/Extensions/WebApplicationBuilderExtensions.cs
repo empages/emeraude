@@ -133,10 +133,7 @@ public static class WebApplicationBuilderExtensions
 
     private static void PostOperationalEmeraudeOptions(this EmOptionsSetup setup)
     {
-        if (setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider != null)
-        {
-            setup.PresentationOptions.FeatureProviders.Add(setup.PortalGatewayOptions.AdminAuthControllerFeatureProvider);
-        }
+        // Currently empty.
     }
 
     private static void ConfigureRouting(this IServiceCollection services)

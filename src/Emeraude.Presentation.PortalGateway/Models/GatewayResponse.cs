@@ -14,4 +14,14 @@ public class GatewayResponse
     /// Current application environment variable.
     /// </summary>
     public string Environment { get; set; }
+
+    /// <summary>
+    /// Flag that indicates whether the current instance of the application is in development environment.
+    /// </summary>
+    public bool IsDevelopment { get; set; }
+
+    /// <summary>
+    /// Shows Emeraude Framework version.
+    /// </summary>
+    public string FrameworkVersion { get; set; }
 }

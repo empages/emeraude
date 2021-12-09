@@ -1,4 +1,6 @@
-﻿namespace Emeraude.Presentation.PortalGateway;
+﻿using System;
+
+namespace Emeraude.Presentation.PortalGateway;
 
 /// <summary>
 /// Constants of Emeraude Portal.
@@ -16,7 +18,24 @@ public static class EmPortalConstants
     public const string GatewayIdentificationHeader = "Em-Portal-Gateway-Id";
 
     /// <summary>
-    /// Emeraude Portal CORS policy name.
+    /// Emeraude portal CORS policy name.
     /// </summary>
     public const string CorsPolicyName = "_PortalGatewayPolicy";
+
+    /// <summary>
+    /// Emeraude portal identity post authentication purpose.
+    /// </summary>
+    public const string PostAuthenticationPurpose = "AccessAdministration";
+
+#if DEBUG
+    /// <summary>
+    /// Default access token expiration.
+    /// </summary>
+    public static readonly TimeSpan AccessTokenExpiration = TimeSpan.FromDays(1);
+#else
+    /// <summary>
+    /// Default access token expiration.
+    /// </summary>
+    public static readonly TimeSpan AccessTokenExpiration = TimeSpan.FromHours(1);
+#endif
 }

@@ -32,6 +32,7 @@ public class IndexViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurat
         };
 
         this.Breadcrumbs = new List<EmPageBreadcrumb>();
+        this.OrderProperties = new Dictionary<string, string>();
     }
 
     /// <inheritdoc/>
@@ -42,6 +43,19 @@ public class IndexViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurat
 
     /// <inheritdoc/>
     public IList<EmPageBreadcrumb> Breadcrumbs { get; }
+
+    /// <summary>
+    /// Dictionary that contains possible order properties for the current view.
+    /// Key represents the identifier of an expression that you can define in your data strategy.
+    /// Value represents the text that will be visualized in the client side.
+    /// </summary>
+    public IDictionary<string, string> OrderProperties { get; }
+
+    /// <summary>
+    /// Instance of custom view component. In case the component is set to null the default table view will be used.
+    /// Consider that custom view components requires additional component definition by using the runtime injection.
+    /// </summary>
+    public CustomIndexViewComponent CustomViewComponent { get; set; }
 
     /// <inheritdoc/>
     public IEmPageSchemaViewConfigurationBuilder<IndexViewItem, TModel> Use(

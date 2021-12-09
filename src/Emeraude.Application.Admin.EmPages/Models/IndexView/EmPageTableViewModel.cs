@@ -16,6 +16,7 @@ public class EmPageTableViewModel
         this.HeadModel = new EmPageTableHeadModel();
         this.RowActions = new List<ActionModel>();
         this.Rows = new List<EmPageTableRowModel>();
+        this.OrderProperties = new Dictionary<string, string>();
     }
 
     /// <summary>
@@ -32,6 +33,11 @@ public class EmPageTableViewModel
     /// Collection of all actions that will be applied to each entity.
     /// </summary>
     public IList<ActionModel> RowActions { get; set; }
+
+    /// <summary>
+    /// Available order properties of current table view.
+    /// </summary>
+    public IDictionary<string, string> OrderProperties { get; set; }
 
     /// <summary>
     /// Rows of the table.

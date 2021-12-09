@@ -33,6 +33,9 @@ public class EmPageSchemaDescription
     /// <inheritdoc cref="EmPageSchemaSettings{TModel}.Description"/>
     public string Description { get; set; }
 
+    /// <inheritdoc cref="EmPageSchemaSettings{TModel}.PriorityIndex"/>
+    public int PriorityIndex { get; set; }
+
     /// <inheritdoc cref="EmPageSchemaSettings{TModel}.UseAsFeature"/>
     public bool UseAsFeature { get; set; }
 

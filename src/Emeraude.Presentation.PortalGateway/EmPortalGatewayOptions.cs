@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Emeraude.Configuration.Exceptions;
 using Emeraude.Configuration.Options;
-using Emeraude.Presentation.PortalGateway.Controllers.Admin;
-using Emeraude.Presentation.PortalGateway.FeatureProviders;
-using Microsoft.AspNetCore.Mvc.Controllers;
+using Emeraude.Presentation.PortalGateway.Strategies;
 
 namespace Emeraude.Presentation.PortalGateway;
 
@@ -11,6 +12,8 @@ namespace Emeraude.Presentation.PortalGateway;
 /// </summary>
 public class EmPortalGatewayOptions : IEmOptions
 {
+    private readonly IDictionary<Type, Type> identityActionsStrategies;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPortalGatewayOptions"/> class.
     /// </summary>
@@ -20,6 +23,10 @@ public class EmPortalGatewayOptions : IEmOptions
         {
             EmPortalConstants.EmeraudePortalUrl,
         };
+
+        this.identityActionsStrategies = new Dictionary<Type, Type>();
+        this.AddIdentityActionsStrategy<IAuthenticationActionsStrategy, DefaultAuthenticationActionsStrategy>();
+        this.AddIdentityActionsStrategy<IManageActionsStrategy, DefaultManageActionsStrategy>();
     }
 
     /// <summary>
@@ -33,25 +40,28 @@ public class EmPortalGatewayOptions : IEmOptions
     public string GatewayId { get; set; }
 
     /// <summary>
-    /// Admin auth controller feature provider for informing the MVC configuration how to recognize the admin authentication API controller.
+    /// A pair with the identity strategy services and their implementations.
     /// </summary>
-    public ControllerFeatureProvider AdminAuthControllerFeatureProvider { get; private set; } = new AdminAuthControllerFeatureProvider<AdminAuthApiController>();
+    public IReadOnlyDictionary<Type, Type> IdentityActionsStrategies => new ReadOnlyDictionary<Type, Type>(this.identityActionsStrategies);
 
     /// <summary>
-    /// Sets the admin authentication controller.
-    /// For the purposes of overriding - make your own admin authentication controller by implement <see cref="IAdminAuthApiController"/>.
+    /// Registers a custom identity actions strategy.
+    /// Consider the fact when you add a custom strategy the default one will be overriden.
     /// </summary>
-    /// <typeparam name="TControllerType">Type of the controller.</typeparam>
-    public void SetAdminAuthenticationController<TControllerType>()
-        where TControllerType : class, IAdminAuthApiController
+    /// <typeparam name="TStrategy">Contract type of the strategy action.</typeparam>
+    /// <typeparam name="TStrategyImplementation">Implementation type of the strategy action.</typeparam>
+    /// <exception cref="EmInvalidConfigurationException"></exception>
+    public void AddIdentityActionsStrategy<TStrategy, TStrategyImplementation>()
+        where TStrategy : IIdentityActionStrategy
+        where TStrategyImplementation : class, TStrategy
     {
-        this.AdminAuthControllerFeatureProvider = new AdminAuthControllerFeatureProvider<TControllerType>();
-    }
+        if (typeof(TStrategy) == typeof(IIdentityActionStrategy))
+        {
+            throw new EmInvalidConfigurationException("You cannot register directly strategy of type IIdentityActionStrategy");
+        }
 
-    /// <summary>
-    /// Disables the admin authentication.
-    /// </summary>
-    public void DisableAdminAuthentication() => this.AdminAuthControllerFeatureProvider = null;
+        this.identityActionsStrategies[typeof(TStrategy)] = typeof(TStrategyImplementation);
+    }
 
     /// <inheritdoc/>
     public void Validate()
