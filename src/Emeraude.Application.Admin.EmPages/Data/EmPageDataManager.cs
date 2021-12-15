@@ -96,8 +96,7 @@ public abstract class EmPageDataManager<TModel> : IEmPageDataManager
         }
 
         var schema = await this.GetSchemaAsync();
-
-        request.OrderBy = this.InterceptOrderProperty(request.OrderBy);
+        request.OrderBy ??= string.Empty;
         var entitiesResult = await this.FetchEntitiesAsync(request);
         var result = new TableViewDataRequestGenericResult<TModel>(entitiesResult);
 
@@ -293,18 +292,6 @@ public abstract class EmPageDataManager<TModel> : IEmPageDataManager
     }
 
     /// <summary>
-    /// Return list of all order properties for current entity.
-    /// </summary>
-    /// <returns></returns>
-    protected virtual List<string> GetOrderProperties()
-    {
-        return new List<string>
-        {
-            nameof(IEmPageModel.Id),
-        };
-    }
-
-    /// <summary>
     /// Executes data strategy request and cast the response.
     /// </summary>
     /// <param name="request"></param>
@@ -333,12 +320,6 @@ public abstract class EmPageDataManager<TModel> : IEmPageDataManager
         {
             throw new EmPageUndefinedDataStrategyException($"{this.GetType().FullName} has no defined data strategy.");
         }
-    }
-
-    private string InterceptOrderProperty(string property)
-    {
-        var allowedProperties = this.GetOrderProperties();
-        return allowedProperties.Contains(property) ? property : null;
     }
 
     private EmPageModelResponse ConsolidateModelResponseFields(EmPageModelResponse modelResponse, IEnumerable<IViewItem> modelViewItems)

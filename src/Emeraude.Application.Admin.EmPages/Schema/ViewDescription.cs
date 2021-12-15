@@ -28,5 +28,5 @@ public abstract class ViewDescription<TViewItem>
     /// <summary>
     /// Indicates whether the current view is active or not.
     /// </summary>
-    public bool IsActive => this.ViewItems != null && this.ViewItems.Any();
+    public virtual bool IsActive => this.ViewItems != null && this.ViewItems.Any();
 }

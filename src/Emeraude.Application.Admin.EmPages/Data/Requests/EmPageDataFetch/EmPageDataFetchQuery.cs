@@ -22,7 +22,7 @@ public class EmPageDataFetchQuery<TEntity, TModel> : IEmPageDataFetchQuery<TEnti
     public string SearchQuery { get; set; }
 
     /// <inheritdoc/>
-    public string OrderBy { get; set; }
+    public Expression<Func<TEntity, object>> OrderBy { get; set; }
 
     /// <inheritdoc/>
     public string OrderType { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Emeraude.Configuration.Options;
+using Emeraude.Infrastructure.Persistence.Options;
 
 namespace Emeraude.Infrastructure.Persistence.Extensions;
 

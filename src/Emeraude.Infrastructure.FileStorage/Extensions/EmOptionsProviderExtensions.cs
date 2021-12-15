@@ -1,4 +1,5 @@
 ﻿using Emeraude.Configuration.Options;
+using Emeraude.Infrastructure.FileStorage.Options;
 
 namespace Emeraude.Infrastructure.FileStorage.Extensions;
 

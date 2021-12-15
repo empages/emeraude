@@ -67,10 +67,21 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
             result.PageSize = request.PageSize;
 
             var orderType = this.GetOrderTypeByString(request.OrderType);
-            var entities = this.context
+            var entitiesQuery = this.context
                 .Set<TEntity>()
-                .Where(requestExpression)
-                .OrderByProperty(request.OrderBy, nameof(IEntity.Id), orderType)
+                .Where(requestExpression);
+
+            Expression<Func<TEntity, object>> orderExpression = x => x.Id;
+            if (request.OrderBy != null)
+            {
+                orderExpression = request.OrderBy;
+            }
+
+            IOrderedQueryable<TEntity> orderedEntitiesQuery = orderType != OrderType.Descending
+                ? entitiesQuery.OrderBy(orderExpression)
+                : entitiesQuery.OrderByDescending(orderExpression);
+
+            var entities = orderedEntitiesQuery
                 .Skip(result.StartRow)
                 .Take(request.PageSize)
                 .ToList();

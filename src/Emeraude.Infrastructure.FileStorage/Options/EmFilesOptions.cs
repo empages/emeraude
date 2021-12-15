@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Emeraude.Configuration.Options;
 
-namespace Emeraude.Infrastructure.FileStorage;
+namespace Emeraude.Infrastructure.FileStorage.Options;
 
 /// <summary>
 /// Options for files infrastructure of Emeraude.

@@ -1,6 +1,6 @@
 ﻿using Emeraude.Configuration.Options;
 
-namespace Emeraude.Infrastructure.Localization;
+namespace Emeraude.Infrastructure.Localization.Options;
 
 /// <summary>
 /// Options for localization infrastructure of Emeraude.

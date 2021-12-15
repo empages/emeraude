@@ -1,4 +1,5 @@
 ﻿using Emeraude.Configuration.Options;
+using Emeraude.Presentation.PortalGateway.Options;
 
 namespace Emeraude.Presentation.PortalGateway.Extensions;
 

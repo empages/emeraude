@@ -1,10 +1,8 @@
 ﻿using System;
 using Emeraude.Application.Consumer.Adapters;
 using Emeraude.Configuration.Options;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Emeraude.Application.Consumer;
+namespace Emeraude.Application.Consumer.Options;
 
 /// <summary>
 /// Options for consumer part of Emeraude.

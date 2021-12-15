@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services"></param>
     public static void RegisterEmeraudeIdentity(this IServiceCollection services)
     {
+        services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         services.AddScoped<IUserManager, UserManager>();
         services.AddScoped<IRoleManager, RoleManager>();

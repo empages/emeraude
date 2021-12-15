@@ -4,9 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Emeraude.Contracts;
-using Emeraude.Essentials.Extensions;
 using Emeraude.Infrastructure.Identity.Persistence;
-using Microsoft.AspNetCore.Http;
+using Emeraude.Infrastructure.Identity.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -25,43 +24,37 @@ public abstract class EmContext<TContext> : IdentityContext<TContext>, IEmContex
     /// Initializes a new instance of the <see cref="EmContext{TContext}"/> class.
     /// </summary>
     /// <param name="options"></param>
-    /// <param name="httpAccessor"></param>
-    /// <param name="serviceProvider"></param>
+    /// <param name="currentUser"></param>
     protected EmContext(
         DbContextOptions<TContext> options,
-        IHttpContextAccessor httpAccessor,
-        IServiceProvider serviceProvider)
+        ICurrentUser currentUser)
         : base(options)
     {
-        this.ServiceProvider = serviceProvider;
-        this.currentUserId = httpAccessor.GetCurrentUserId();
+        this.currentUserId = currentUser.Id;
     }
 
-    /// <inheritdoc cref="IServiceProvider"/>
-    public IServiceProvider ServiceProvider { get; }
-
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IDatabaseContext.SaveChanges()" />
     public override int SaveChanges()
     {
         this.UpdateAuditableEntities();
         return base.SaveChanges();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IDatabaseContext.SaveChanges(bool)" />
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         this.UpdateAuditableEntities();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IDatabaseContext.SaveChangesAsync(bool,System.Threading.CancellationToken)" />
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
     {
         this.UpdateAuditableEntities();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IDatabaseContext.SaveChangesAsync(System.Threading.CancellationToken)" />
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         this.UpdateAuditableEntities();
@@ -78,7 +71,7 @@ public abstract class EmContext<TContext> : IdentityContext<TContext>, IEmContex
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder = this.ConfigureEntitiesIdentifications(builder);
+        this.ConfigureEntitiesIdentifications(builder);
     }
 
     /// <summary>

@@ -25,6 +25,13 @@ public class ChangeEmailCommand : IRequest<SimpleResult>
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="ChangeEmailCommand"/> class.
+    /// </summary>
+    public ChangeEmailCommand()
+    {
+    }
+
+    /// <summary>
     /// Email of the user.
     /// </summary>
     public string NewEmail { get; set; }
@@ -33,6 +40,11 @@ public class ChangeEmailCommand : IRequest<SimpleResult>
     /// Confirmation token of the user.
     /// </summary>
     public string Token { get; set; }
+
+    /// <summary>
+    /// Flag that executes the request without the need of token. The default is 'false'.
+    /// </summary>
+    public bool IgnoreToken { get; set; }
 
     /// <inheritdoc />
     public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, SimpleResult>
@@ -60,7 +72,13 @@ public class ChangeEmailCommand : IRequest<SimpleResult>
             try
             {
                 var user = await this.currentUserProvider.GetCurrentUserAsync();
-                var result = await this.userManager.ChangeEmailAsync(user, request.NewEmail, request.Token);
+                string token = request.Token;
+                if (request.IgnoreToken)
+                {
+                    token = await this.userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
+                }
+
+                var result = await this.userManager.ChangeEmailAsync(user, request.NewEmail, token);
                 return result.Succeeded ? SimpleResult.SuccessfulResult : SimpleResult.UnsuccessfulResult;
             }
             catch (Exception ex)

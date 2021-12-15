@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
-namespace Emeraude.Presentation;
+namespace Emeraude.Presentation.Options;
 
 /// <summary>
 /// Options for presentation layer of Emeraude.

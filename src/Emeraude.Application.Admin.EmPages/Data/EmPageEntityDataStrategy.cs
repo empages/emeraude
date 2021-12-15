@@ -13,7 +13,9 @@ using Emeraude.Application.Admin.EmPages.Exceptions;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Contracts;
+using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Helpers;
+using Emeraude.Infrastructure.Persistence.Seed;
 
 namespace Emeraude.Application.Admin.EmPages.Data;
 
@@ -32,12 +34,18 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     protected EmPageEntityDataStrategy()
     {
         this.CustomFilterExpressionsBuilders = new Dictionary<PropertyInfo, Func<object, Expression<Func<TEntity, bool>>>>();
+        this.AvailableOrderExpressions = new Dictionary<string, Expression<Func<TEntity, object>>>();
     }
 
     /// <summary>
     /// Dictionary that contains filter expressions for model properties.
     /// </summary>
-    protected IDictionary<PropertyInfo, Func<object, Expression<Func<TEntity, bool>>>> CustomFilterExpressionsBuilders { get; set; }
+    protected IDictionary<PropertyInfo, Func<object, Expression<Func<TEntity, bool>>>> CustomFilterExpressionsBuilders { get; }
+
+    /// <summary>
+    /// Dictionary that contains order expressions for current model.
+    /// </summary>
+    protected IDictionary<string, Expression<Func<TEntity, object>>> AvailableOrderExpressions { get; }
 
     /// <inheritdoc/>
     public IEmPageRequest<TModel> BuildRawModelQuery(EmPageDataFilter filter)
@@ -60,7 +68,7 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
         {
             SearchQuery = body.SearchQuery,
             Page = body.Page,
-            OrderBy = body.OrderBy,
+            OrderBy = this.AvailableOrderExpressions.GetValueOrDefault(body.OrderBy),
             OrderType = body.OrderType,
             FilterExpression = this.BuildFilterExpression(body.Filter),
         };
@@ -94,7 +102,7 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     }
 
     /// <summary>
-    /// Register custom filter expression for manual filtration.
+    /// Registers a custom filter expression for manual filtration.
     /// </summary>
     /// <param name="property"></param>
     /// <param name="expressionFunction"></param>
@@ -102,6 +110,16 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     {
         var propertyInfo = ReflectionHelpers.GetCorrectPropertyMember(property) as PropertyInfo;
         this.CustomFilterExpressionsBuilders.Add(propertyInfo, expressionFunction);
+    }
+
+    /// <summary>
+    /// Registers an order expression for current entity.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="orderExpression"></param>
+    protected void AddOrderExpression(string key, Expression<Func<TEntity, object>> orderExpression)
+    {
+        this.AvailableOrderExpressions.Add(key, orderExpression);
     }
 
     /// <summary>

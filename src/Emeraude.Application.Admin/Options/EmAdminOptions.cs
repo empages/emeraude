@@ -1,10 +1,8 @@
 ﻿using System;
 using Emeraude.Application.Admin.Adapters;
 using Emeraude.Configuration.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace Emeraude.Application.Admin;
+namespace Emeraude.Application.Admin.Options;
 
 /// <summary>
 /// Options for admin part of Emeraude.
@@ -12,14 +10,9 @@ namespace Emeraude.Application.Admin;
 public class EmAdminOptions : IEmOptions
 {
     /// <summary>
-    /// Admin dashboard request type.
-    /// </summary>
-    public Type DashboardRequestType { get; set; }
-
-    /// <summary>
     /// Implementation type of <see cref="IAdminMenusBuilder"/>.
     /// </summary>
-    public Type AdminMenusBuilderType { get; set; }
+    public Type AdminMenusBuilderType { get; private set; }
 
     /// <summary>
     /// Set admin menus builder type.

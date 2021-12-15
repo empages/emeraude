@@ -27,9 +27,9 @@ public interface IEmPageDataFetchQuery<TEntity, TModel> : IRequest<PaginatedList
     string SearchQuery { get; set; }
 
     /// <summary>
-    /// Order property.
+    /// Order expression.
     /// </summary>
-    public string OrderBy { get; set; }
+    public Expression<Func<TEntity, object>> OrderBy { get; set; }
 
     /// <summary>
     /// Order type.

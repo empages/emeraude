@@ -10,9 +10,9 @@ namespace Emeraude.Infrastructure.Identity.Services;
 public interface ICurrentUserProvider
 {
     /// <summary>
-    /// Current user id.
+    /// Id of the current user.
     /// </summary>
-    Guid? CurrentUserId { get; }
+    public Guid? CurrentUserId { get; }
 
     /// <summary>
     /// Returns current request user.

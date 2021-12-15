@@ -12,36 +12,37 @@ namespace Emeraude.Infrastructure.Identity.Services;
 /// <inheritdoc cref="ICurrentUserProvider"/>
 public class CurrentUserProvider : ICurrentUserProvider
 {
+    private readonly ICurrentUser currentUser;
     private readonly UserManager<User> userManager;
     private readonly ILogger<CurrentUserProvider> logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CurrentUserProvider"/> class.
     /// </summary>
-    /// <param name="httpAccessor"></param>
+    /// <param name="currentUser"></param>
     /// <param name="userManager"></param>
     /// <param name="logger"></param>
     public CurrentUserProvider(
-        IHttpContextAccessor httpAccessor,
+        ICurrentUser currentUser,
         UserManager<User> userManager,
         ILogger<CurrentUserProvider> logger)
     {
-        this.CurrentUserId = httpAccessor.GetCurrentUserId() ?? httpAccessor.HttpContext.GetJwtUserId();
+        this.currentUser = currentUser;
         this.userManager = userManager;
         this.logger = logger;
     }
 
     /// <inheritdoc/>
-    public Guid? CurrentUserId { get; }
+    public Guid? CurrentUserId => this.currentUser.Id;
 
     /// <inheritdoc/>
     public async Task<IUser> GetCurrentUserAsync()
     {
         try
         {
-            if (this.CurrentUserId.HasValue)
+            if (this.currentUser.Id.HasValue)
             {
-                return await this.userManager.FindByIdAsync(this.CurrentUserId.Value.ToString());
+                return await this.userManager.FindByIdAsync(this.currentUser.Id.Value.ToString());
             }
 
             return null;

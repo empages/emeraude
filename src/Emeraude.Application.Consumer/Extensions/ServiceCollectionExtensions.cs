@@ -1,5 +1,6 @@
 ﻿using System;
 using Emeraude.Application.Consumer.Adapters;
+using Emeraude.Application.Consumer.Options;
 using Emeraude.Essentials.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,9 @@ public static class ServiceCollectionExtensions
     /// <param name="clientOptions"></param>
     public static void AddEmeraudeConsumer(this IServiceCollection services, EmConsumerOptions clientOptions)
     {
-        services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
+        if (clientOptions.SitemapCompositionType != null)
+        {
+            services.AddScoped(typeof(ISitemapComposition), clientOptions.SitemapCompositionType);
+        }
     }
 }

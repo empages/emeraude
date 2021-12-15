@@ -64,15 +64,21 @@ public class EmPageService : IEmPageService
     {
         var modelType = typeof(TEmPageModel);
         var propertiesValuePipes = this.ExtractPropertiesValuePipes(viewItems);
+
+        // Each property of the model is evaluated separately.
         foreach (var propertyValuePipes in propertiesValuePipes)
         {
             var modelProperty = modelType.GetProperty(propertyValuePipes.PropertyName);
             var currentPropertyValues = models.Select(x => modelProperty?.GetValue(x));
+
+            // We are preparing the data in the value pipes in order to minimize work with the database.
+            // Duplicated value pipes will be prepared with same values. Consider cache in the pipe implementation.
             foreach (var (valuePipe, valuePipeParameters) in propertyValuePipes.ValuePipes)
             {
                 await valuePipe.PrepareAsync(currentPropertyValues, valuePipeParameters);
             }
 
+            // For each model we are executing value pipes for each piped item.
             foreach (var model in models)
             {
                 foreach (var (valuePipe, _) in propertyValuePipes.ValuePipes)
@@ -89,7 +95,8 @@ public class EmPageService : IEmPageService
     {
         await this.LoadSchemasIfEmptyAsync();
         var resultModels = new List<EmPageSimpleModel>();
-        foreach (var schemaDescription in this.schemaDescriptions)
+        var orderedSchemaDescriptions = this.schemaDescriptions.OrderByDescending(x => x.PriorityIndex);
+        foreach (var schemaDescription in orderedSchemaDescriptions)
         {
             if (!schemaDescription.UseAsFeature)
             {

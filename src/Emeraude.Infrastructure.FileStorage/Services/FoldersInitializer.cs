@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.FileStorage.Extensions;
+using Emeraude.Infrastructure.FileStorage.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 

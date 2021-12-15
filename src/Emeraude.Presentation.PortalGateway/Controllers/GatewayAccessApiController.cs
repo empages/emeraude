@@ -1,8 +1,8 @@
-﻿using Emeraude.Essentials.Base;
+﻿using System.Reflection;
 using Emeraude.Presentation.PortalGateway.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace Emeraude.Presentation.PortalGateway.Controllers;
 
@@ -34,6 +34,8 @@ public class GatewayAccessApiController : EmPortalGatewayApiController
         {
             Verified = true,
             Environment = this.hostEnvironment.EnvironmentName,
+            FrameworkVersion = Assembly.GetExecutingAssembly().GetName()?.Version?.ToString() ?? "0.0.0",
+            IsDevelopment = this.hostEnvironment.IsDevelopment(),
         };
 
         return this.Ok(response);

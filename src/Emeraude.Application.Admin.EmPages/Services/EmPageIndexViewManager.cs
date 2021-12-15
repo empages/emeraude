@@ -27,7 +27,13 @@ public partial class EmPageManager
         EmPageDataFilter filter = null,
         bool featureMode = false)
     {
-        return await this.RetrieveTableViewModelAsync(route, query, filter, featureMode);
+        var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
+        if (schemaDescription.IndexView.CustomViewComponent == null)
+        {
+            return await this.RetrieveTableViewModelAsync(route, query, filter, featureMode);
+        }
+
+        return await this.RetrieveCustomViewModelAsync(route, query, filter, featureMode);
     }
 
     /// <inheritdoc/>
@@ -36,7 +42,50 @@ public partial class EmPageManager
         EmPageDetailsViewModel parentDetailsViewModel,
         IDictionary<string, StringValues> query)
     {
-        return await this.RetrieveFeatureTableViewModelAsync(feature, parentDetailsViewModel, query);
+        var viewModel = await this.RetrieveIndexViewModelAsync(feature.Context.Route, query, feature.Filter, true);
+        if (viewModel == null)
+        {
+            throw new EmPageNotFoundException($"A feature model for schema with route '{feature.Context.Route}' cannot be found");
+        }
+
+        var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(parentDetailsViewModel.Context.Route);
+
+        await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModels, schemaDescription);
+
+        var dataManager = this.GetDataManagerInstance(schemaDescription);
+        var parentModel = await dataManager.GetRawModelAsync(parentDetailsViewModel.Identifier);
+        this.SetDataRelatedPlaceholders(viewModel.Context.Breadcrumbs, parentModel, schemaDescription);
+
+        return viewModel;
+    }
+
+    private async Task<EmPageIndexViewModel> RetrieveCustomViewModelAsync(
+        string route,
+        IDictionary<string, StringValues> query,
+        EmPageDataFilter filter,
+        bool featureMode)
+    {
+        var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
+        await this.RetrieveIndexViewGuard(schemaDescription, featureMode);
+
+        var modelContext = new EmPageViewContext
+        {
+            Route = schemaDescription.Route,
+            Title = schemaDescription.Title,
+        };
+
+        var model = new EmPageIndexViewModel(modelContext)
+        {
+            CustomViewModel = new EmPageCustomViewModel
+            {
+                ComponentName = schemaDescription.IndexView.CustomViewComponent.Name,
+                Parameters = schemaDescription.IndexView.CustomViewComponent.Parameters.Select(x => new PropertyMap<object>(x.Key, x.Value)).ToList(),
+            },
+        };
+
+        this.MapToViewModel(schemaDescription.IndexView, model);
+
+        return model;
     }
 
     private async Task<EmPageIndexViewModel> RetrieveTableViewModelAsync(
@@ -46,17 +95,7 @@ public partial class EmPageManager
         bool featureMode)
     {
         var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(route);
-        if (!schemaDescription.IndexView.IsActive)
-        {
-            throw new EmPageNotFoundException($"There is no active 'Index View' for schema with route '{route}'");
-        }
-
-        if (!featureMode && schemaDescription.UseAsFeature)
-        {
-            throw new EmPageNotFoundException($"The schema with route '{route}' is defined to be used as a feature so it cannot be used for 'Index View'");
-        }
-
-        await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModels, schemaDescription);
+        await this.RetrieveIndexViewGuard(schemaDescription, featureMode);
 
         var modelContext = new EmPageViewContext
         {
@@ -94,6 +133,11 @@ public partial class EmPageManager
 
         this.MapToViewModel(schemaDescription.IndexView, model);
 
+        foreach (var orderProperty in schemaDescription.IndexView.OrderProperties)
+        {
+            model.TableViewModel.OrderProperties[orderProperty.Key] = orderProperty.Value;
+        }
+
         if (schemaDescription.DataManagerType != null)
         {
             var dataManager = this.GetDataManagerInstance(schemaDescription);
@@ -118,26 +162,19 @@ public partial class EmPageManager
         return model;
     }
 
-    private async Task<EmPageIndexViewModel> RetrieveFeatureTableViewModelAsync(
-        EmPageDetailsFeatureModel feature,
-        EmPageDetailsViewModel parentDetailsViewModel,
-        IDictionary<string, StringValues> query)
+    private async Task RetrieveIndexViewGuard(EmPageSchemaDescription schemaDescription, bool featureMode)
     {
-        var viewModel = await this.RetrieveTableViewModelAsync(feature.Context.Route, query, feature.Filter, true);
-        if (viewModel == null)
+        if (!schemaDescription.IndexView.IsActive)
         {
-            throw new EmPageNotFoundException($"A feature model for schema with route '{feature.Context.Route}' cannot be found");
+            throw new EmPageNotFoundException($"There is no active 'Index View' for schema with route '{schemaDescription.Route}'");
         }
 
-        var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(parentDetailsViewModel.Context.Route);
+        if (!featureMode && schemaDescription.UseAsFeature)
+        {
+            throw new EmPageNotFoundException($"The schema with route '{schemaDescription.Route}' is defined to be used as a feature so it cannot be used for 'Index View'");
+        }
 
         await this.EmPageOperationAuthorizationGuardAsync(EmPageOperation.GetModels, schemaDescription);
-
-        var dataManager = this.GetDataManagerInstance(schemaDescription);
-        var parentModel = await dataManager.GetRawModelAsync(parentDetailsViewModel.Identifier);
-        this.SetDataRelatedPlaceholders(viewModel.Context.Breadcrumbs, parentModel, schemaDescription);
-
-        return viewModel;
     }
 
     private ActionModel BuildRowAction(EmPageAction action, string route)
