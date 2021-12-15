@@ -32,7 +32,7 @@ internal class ActionProvider
     }
 
     /// <summary>
-    /// Parse and executes the inputed command.
+    /// Parse and executes the input command.
     /// </summary>
     internal void Execute()
     {

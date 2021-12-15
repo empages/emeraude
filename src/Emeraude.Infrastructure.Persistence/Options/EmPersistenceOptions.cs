@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Emeraude.Configuration.Exceptions;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.Persistence.Context;
 using Emeraude.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Emeraude.Infrastructure.Persistence;
+namespace Emeraude.Infrastructure.Persistence.Options;
 
 /// <summary>
 /// Options for persistence infrastructure of Emeraude.

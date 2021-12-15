@@ -16,6 +16,7 @@ namespace Emeraude;
 /// <summary>
 /// Emeraude initial class used for start the web application.
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public static class EmeraudeApplication
 {
     /// <summary>

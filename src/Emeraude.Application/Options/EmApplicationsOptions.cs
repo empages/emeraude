@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Emeraude.Configuration.Options;
 
-namespace Emeraude.Application;
+namespace Emeraude.Application.Options;
 
 /// <summary>
 /// Options for application architectural part of the Emeraude.

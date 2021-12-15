@@ -3,6 +3,7 @@ using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.FileStorage.Services;
 using Emeraude.Presentation.Controllers;
 using Emeraude.Presentation.PortalGateway.Extensions;
+using Emeraude.Presentation.PortalGateway.Options;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

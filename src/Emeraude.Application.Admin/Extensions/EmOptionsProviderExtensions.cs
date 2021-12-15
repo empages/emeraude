@@ -1,4 +1,5 @@
-﻿using Emeraude.Configuration.Options;
+﻿using Emeraude.Application.Admin.Options;
+using Emeraude.Configuration.Options;
 
 namespace Emeraude.Application.Admin.Extensions;
 

@@ -3,6 +3,7 @@ using Emeraude.Configuration.Options;
 using Emeraude.Essentials.Enumerations;
 using Emeraude.Essentials.Validation;
 using Emeraude.Infrastructure.FileStorage.Extensions;
+using Emeraude.Infrastructure.FileStorage.Options;
 using Emeraude.Infrastructure.FileStorage.Validation.Handlers;
 using Microsoft.AspNetCore.Http;
 

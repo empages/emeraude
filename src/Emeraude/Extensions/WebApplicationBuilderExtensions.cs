@@ -16,6 +16,7 @@ using Emeraude.Application.ClientBuilder.Options;
 using Emeraude.Application.Consumer.Extensions;
 using Emeraude.Application.Consumer.Mapping;
 using Emeraude.Application.Mapping;
+using Emeraude.Application.Options;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.FileStorage.Extensions;
 using Emeraude.Infrastructure.Identity.Entities;
@@ -28,6 +29,7 @@ using Emeraude.Presentation;
 using Emeraude.Presentation.ActionFilters;
 using Emeraude.Presentation.Converters;
 using Emeraude.Presentation.ModelBinders;
+using Emeraude.Presentation.Options;
 using Emeraude.Presentation.PlatformBase.Constraints;
 using Emeraude.Presentation.PortalGateway.ActionFilters;
 using Emeraude.Presentation.PortalGateway.Extensions;
@@ -56,11 +58,11 @@ public static class WebApplicationBuilderExtensions
     /// <param name="builder"></param>
     /// <param name="setupAction"></param>
     /// <returns></returns>
-    public static EmeraudeSettingsBuilder ConfigureEmeraude(
+    public static EmSettingsBuilder ConfigureEmeraude(
         this WebApplicationBuilder builder,
         Action<EmOptionsSetup> setupAction = null)
     {
-        var settingsBuilder = new EmeraudeSettingsBuilder();
+        var settingsBuilder = new EmSettingsBuilder();
 
         var applicationAssembly = Assembly.GetCallingAssembly().GetName().Name;
 
@@ -121,14 +123,14 @@ public static class WebApplicationBuilderExtensions
 
     private static void ApplyEmeraudeBaseOptions(this EmOptionsSetup setup)
     {
+        setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
+        setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdmin);
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationAdminEmPages);
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationClientBuilder);
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationConsumer);
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplicationIdentity);
         setup.MainOptions.AddAssembly(FrameworkAssemblies.EmeraudeApplication);
-        setup.MainOptions.SetEmeraudeAssembly(Assembly.GetExecutingAssembly());
-        setup.MainOptions.AddAssembly(Assembly.GetCallingAssembly());
     }
 
     private static void PostOperationalEmeraudeOptions(this EmOptionsSetup setup)
@@ -146,13 +148,7 @@ public static class WebApplicationBuilderExtensions
 
     private static void RegisterMediatR(this IServiceCollection services, List<Assembly> assemblies)
     {
-        var assembliesList = new List<Assembly>
-        {
-            AdminAssembly.GetAssembly(), Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly(),
-        };
-        assembliesList.AddRange(assemblies);
-
-        services.AddMediatR(assembliesList.ToArray());
+        services.AddMediatR(assemblies.ToArray());
     }
 
     private static void AddCqrsBehaviours(this IServiceCollection services)

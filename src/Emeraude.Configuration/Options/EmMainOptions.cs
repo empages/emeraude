@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Emeraude.Configuration.Options;
@@ -9,6 +10,7 @@ namespace Emeraude.Configuration.Options;
 /// </summary>
 public class EmMainOptions : IEmOptions
 {
+    private List<Assembly> assemblies;
     private string domainAssembly;
     private string applicationAssembly;
     private string infrastructureAssembly;
@@ -19,7 +21,7 @@ public class EmMainOptions : IEmOptions
     /// </summary>
     public EmMainOptions()
     {
-        this.Assemblies = new List<Assembly>();
+        this.assemblies = new List<Assembly>();
     }
 
     /// <summary>
@@ -92,7 +94,7 @@ public class EmMainOptions : IEmOptions
     /// <summary>
     /// List with all assemblies used for registration of execution services and requests.
     /// </summary>
-    public List<Assembly> Assemblies { get; set; }
+    public List<Assembly> Assemblies => this.assemblies;
 
     /// <summary>
     /// Execution assembly of the application.
@@ -115,7 +117,7 @@ public class EmMainOptions : IEmOptions
     /// <param name="assemblyName"></param>
     public void AddAssembly(string assemblyName)
     {
-        this.Assemblies.Add(Assembly.Load(assemblyName));
+        this.assemblies.Add(Assembly.Load(assemblyName));
     }
 
     /// <summary>
@@ -124,7 +126,8 @@ public class EmMainOptions : IEmOptions
     /// <param name="assembly"></param>
     public void AddAssembly(Assembly assembly)
     {
-        this.Assemblies.Add(assembly);
+        this.assemblies.Add(assembly);
+        this.assemblies = this.assemblies.DistinctBy(x => x.FullName).ToList();
     }
 
     /// <summary>

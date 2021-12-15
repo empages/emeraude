@@ -1,4 +1,5 @@
-﻿using Emeraude.Infrastructure.FileStorage.Services;
+﻿using Emeraude.Infrastructure.FileStorage.Options;
+using Emeraude.Infrastructure.FileStorage.Services;
 using Emeraude.Infrastructure.FileStorage.Validation;
 using Microsoft.Extensions.DependencyInjection;
 

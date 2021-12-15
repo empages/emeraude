@@ -5,7 +5,7 @@ using Emeraude.Configuration.Exceptions;
 using Emeraude.Configuration.Options;
 using Emeraude.Presentation.PortalGateway.Strategies;
 
-namespace Emeraude.Presentation.PortalGateway;
+namespace Emeraude.Presentation.PortalGateway.Options;
 
 /// <summary>
 /// Options for Emeraude portal.

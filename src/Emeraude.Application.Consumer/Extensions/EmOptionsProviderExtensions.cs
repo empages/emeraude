@@ -1,4 +1,5 @@
-﻿using Emeraude.Configuration.Options;
+﻿using Emeraude.Application.Consumer.Options;
+using Emeraude.Configuration.Options;
 
 namespace Emeraude.Application.Consumer.Extensions;
 

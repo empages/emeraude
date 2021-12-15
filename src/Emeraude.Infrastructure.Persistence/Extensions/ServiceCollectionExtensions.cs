@@ -3,6 +3,7 @@ using Emeraude.Configuration.Options;
 using Emeraude.Essentials.Extensions;
 using Emeraude.Infrastructure.Identity.Persistence;
 using Emeraude.Infrastructure.Persistence.Context;
+using Emeraude.Infrastructure.Persistence.Options;
 using Emeraude.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

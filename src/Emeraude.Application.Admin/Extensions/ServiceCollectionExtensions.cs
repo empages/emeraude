@@ -1,4 +1,5 @@
 ﻿using Emeraude.Application.Admin.Adapters;
+using Emeraude.Application.Admin.Options;
 using Emeraude.Configuration.Options;
 using Microsoft.Extensions.DependencyInjection;
 

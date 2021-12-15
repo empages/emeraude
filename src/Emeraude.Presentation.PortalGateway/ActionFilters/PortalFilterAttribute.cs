@@ -1,5 +1,6 @@
 ﻿using Emeraude.Configuration.Options;
 using Emeraude.Presentation.PortalGateway.Extensions;
+using Emeraude.Presentation.PortalGateway.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

@@ -8,7 +8,7 @@ namespace Emeraude;
 /// <summary>
 /// Helper class that contains all additional registration models for applying additional settings.
 /// </summary>
-public class EmeraudeSettingsBuilder
+public class EmSettingsBuilder
 {
     /// <inheritdoc cref="AuthenticationBuilder" />
     public AuthenticationBuilder AuthenticationBuilder { get; set; }
@@ -23,7 +23,7 @@ public class EmeraudeSettingsBuilder
     /// Execute post configuration over the already setup builders.
     /// </summary>
     /// <param name="settingsBuilder"></param>
-    public void EmeraudePostConfigure(Action<EmeraudeSettingsBuilder> settingsBuilder)
+    public void EmeraudePostConfigure(Action<EmSettingsBuilder> settingsBuilder)
     {
         settingsBuilder?.Invoke(this);
     }

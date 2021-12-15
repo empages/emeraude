@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Emeraude.Presentation.PortalGateway.ActionFilters;
+using Emeraude.Presentation.PortalGateway.Options;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 
