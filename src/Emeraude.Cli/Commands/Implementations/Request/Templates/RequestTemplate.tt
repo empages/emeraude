@@ -3,10 +3,8 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>
-{
-    public class <#=Session["RequestName"]#>Request
-    {
+namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>;
 
-    }
+public class <#=Session["RequestName"]#>Request
+{
 }

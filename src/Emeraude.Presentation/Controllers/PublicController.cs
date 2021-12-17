@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Emeraude.Configuration.Extensions;
-using Emeraude.Configuration.Options;
-using Emeraude.Essentials.Base;
 using Emeraude.Infrastructure.Identity.Services;
-using Emeraude.Infrastructure.Localization.Extensions;
 using Emeraude.Infrastructure.Localization.Services;
-using Microsoft.AspNetCore.Authentication;
+using Emeraude.Presentation.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

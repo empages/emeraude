@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Emeraude.Infrastructure.Localization.Extensions;
 using Emeraude.Infrastructure.Localization.Persistence;
 using Emeraude.Infrastructure.Localization.Persistence.Entities;
+using Emeraude.Infrastructure.Persistence.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 

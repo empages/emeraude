@@ -3,7 +3,7 @@
 /// <summary>
 /// Emeraude CLI constants.
 /// </summary>
-public class Constants
+public static class Constants
 {
     /// <summary>
     /// Name of the source folder for project.

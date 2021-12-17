@@ -11,9 +11,9 @@ public class CurrentUser : ICurrentUser
     /// Initializes a new instance of the <see cref="CurrentUser"/> class.
     /// </summary>
     /// <param name="httpContextAccessor"></param>
-    public CurrentUser(IHttpContextAccessor httpContextAccessor)
+    public CurrentUser(IHttpContextAccessor httpContextAccessor = null)
     {
-        this.Id = httpContextAccessor.GetCurrentUserId() ?? httpContextAccessor.HttpContext.GetJwtUserId();
+        this.Id = httpContextAccessor.GetCurrentUserId() ?? httpContextAccessor?.HttpContext?.GetJwtUserId();
     }
 
     /// <inheritdoc/>

@@ -90,6 +90,15 @@ public static class StringUtilities
     }
 
     /// <summary>
+    /// Converts string to slug. Changes the case and places '-' between the words.
+    /// Example 'DogFriend' will become 'dog-friend'.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    public static string SimpleConvertToSlug(string text) =>
+        ConvertToKey(text)?.ToLower().Replace('_', '-');
+
+    /// <summary>
     /// Trim useless intervals from a string.
     /// </summary>
     /// <param name="value"></param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Emeraude.Cli.Commands;
 
 namespace Emeraude.Cli;
 
@@ -18,16 +19,35 @@ internal static class StaticConsolePrints
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion;
 
-        Console.WriteLine($"Emeraude Framework .NET Command-line Tools {versionString} (https://emeraude.dev/)");
+        Console.WriteLine($"Emeraude Framework .NET Command-Line Tools {versionString} (https://emeraude.dev/)");
+        Console.WriteLine();
         Console.WriteLine("- - - - - -");
+        Console.WriteLine();
         Console.WriteLine("Usage: em [command] [parameters]");
+        Console.WriteLine();
         Console.WriteLine("- - - - - -");
+        Console.WriteLine();
         Console.WriteLine("Commands:");
-        Console.WriteLine("=> create -n projectName(PascalCase)");
-        Console.WriteLine("=> page -n pageName(PascalCase) -c configurationDirectory(optional)");
-        Console.WriteLine("=> request -n requestName(PascalCase, must ends with Query or Command) -c configurationDirectory(optional)");
+        Console.WriteLine();
+        PrintCommandDetails(
+            $"create {CommandParameters.Name} projectName",
+            $"Make sure the project name is in PascalCase format.",
+            $"em create {CommandParameters.Name} MyAwesomeProject");
+
+        PrintCommandDetails(
+            $"em-page {CommandParameters.Name} pageName {CommandParameters.ConfigurationDirectory} configurationDirectory",
+            "Make sure the page name is in PascalCase format. Configuration path is optional.",
+            $"em em-page {CommandParameters.Name} Dog");
+
+        PrintCommandDetails(
+            $"request {CommandParameters.Name} requestName {CommandParameters.ConfigurationDirectory} configurationDirectory",
+            "Make sure the page name is in PascalCase format and ends with Query or Command suffix. Configuration path is optional.",
+            $"em request {CommandParameters.Name} CreateDogCommand");
+
         Console.WriteLine("- - - - - -");
+        Console.WriteLine();
         Console.WriteLine("=> help");
+        Console.WriteLine();
         Console.WriteLine("- - - - - -");
     }
 
@@ -39,5 +59,23 @@ internal static class StaticConsolePrints
         Console.WriteLine("Help:");
         Console.WriteLine(" - Upgrade Command: 'dotnet tool update --global Emeraude.Cli'");
         Console.WriteLine();
+    }
+
+    private static void PrintCommandDetails(string command, string help, string example)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.Write("Command: ");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(command);
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write("Help: ");
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine(help);
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write("Example: ");
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine(example);
+        Console.WriteLine();
+        Console.ResetColor();
     }
 }

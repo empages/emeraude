@@ -2,31 +2,33 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateLanguage;
+namespace Emeraude.Application.ClientBuilder.Requests.Commands.EditLanguage;
 
 /// <summary>
-/// Command validator for <see cref="CreateLanguageCommand"/>.
+/// Command validator for <see cref="EditLanguageCommand"/>.
 /// </summary>
-public class CreateLanguageCommandValidator : AbstractValidator<CreateLanguageCommand>
+public class EditLanguageCommandValidator : AbstractValidator<EditLanguageCommand>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateLanguageCommandValidator"/> class.
+    /// Initializes a new instance of the <see cref="EditLanguageCommandValidator"/> class.
     /// </summary>
     /// <param name="context"></param>
-    public CreateLanguageCommandValidator(ILocalizationContext context)
+    public EditLanguageCommandValidator(ILocalizationContext context)
     {
         this.RuleFor(x => x.Code)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage("Language code is a required field")
+            .WithMessage("Language code is a required")
             .Must(x => x.Length == 2)
-            .WithMessage("Language code must be 2-symbols long")
+            .WithMessage("Language code must be 2-symbols long");
+
+        this.RuleFor(x => x)
             .MustAsync(async (x, c) =>
             {
-                var languageCode = x?.Trim().ToLowerInvariant();
+                var languageCode = x.Code?.Trim().ToLowerInvariant();
                 return !await context
                     .Languages
-                    .AnyAsync(y => y.Code == languageCode, c);
+                    .AnyAsync(y => y.Id != x.Id && y.Code == languageCode, c);
             })
             .WithMessage("Language with that code already exists");
 

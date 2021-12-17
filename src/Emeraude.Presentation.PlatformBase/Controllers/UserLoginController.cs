@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Emeraude.Application.Exceptions;
 using Emeraude.Application.Identity.Requests.Commands.Login;
 using Emeraude.Infrastructure.Localization.Extensions;
+using Emeraude.Infrastructure.Persistence.Extensions;
 using Emeraude.Presentation.Extensions;
 using Emeraude.Presentation.PlatformBase.Attributes;
 using Emeraude.Presentation.PlatformBase.Models;

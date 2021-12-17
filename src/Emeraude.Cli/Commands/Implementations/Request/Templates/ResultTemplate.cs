@@ -49,14 +49,14 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n    public class ");
+            this.Write(";\r\n\r\npublic class ");
             
             #line 8 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\ResultTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
-            this.Write("Result\r\n    {\r\n\r\n    }\r\n}\r\n");
+            this.Write("Result\r\n{\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

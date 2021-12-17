@@ -55,6 +55,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResultTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Update="Commands\Implementations\EmPage\Templates\DataManagerTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataManagerTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Commands\Implementations\EmPage\Templates\DataStrategyTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataStrategyTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Commands\Implementations\EmPage\Templates\ModelTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Commands\Implementations\EmPage\Templates\SchemaTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SchemaTemplate.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 
@@ -87,6 +107,27 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ResultTemplate.cs</LastGenOutput>
     </None>
+    <None Update="Commands\Implementations\EmPage\Templates\DataManagerTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DataManagerTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Commands\Implementations\EmPage\Templates\DataStrategyTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DataStrategyTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Commands\Implementations\EmPage\Templates\ModelTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Commands\Implementations\EmPage\Templates\SchemaTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SchemaTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Emeraude.Essentials\Emeraude.Essentials.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\Emeraude.targets" />

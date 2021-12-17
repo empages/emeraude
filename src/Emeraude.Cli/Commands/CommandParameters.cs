@@ -8,10 +8,10 @@ internal static class CommandParameters
     /// <summary>
     /// Alias for 'Name'.
     /// </summary>
-    internal const string Name = "-n";
+    internal const string Name = "--name";
 
     /// <summary>
     /// Alias for 'ConfigurationDirectory'.
     /// </summary>
-    internal const string ConfigurationDirectory = "-c";
+    internal const string ConfigurationDirectory = "--config";
 }

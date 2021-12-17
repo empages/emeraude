@@ -34,20 +34,22 @@ internal abstract class Command
     internal void LoadCliConfig(string configurationDirectory)
     {
         string workingDirectory = Directory.GetCurrentDirectory();
-
         if (!string.IsNullOrEmpty(configurationDirectory) && Directory.Exists(configurationDirectory))
         {
             workingDirectory = configurationDirectory;
         }
 
-        Console.WriteLine(configurationDirectory);
+        if (string.IsNullOrEmpty(workingDirectory))
+        {
+            Console.WriteLine(Messages.CliFileNotFound);
+        }
 
-        Console.WriteLine($"Scanning '{workingDirectory}' for '{CliConfig.FileName}'");
+        Console.WriteLine(Messages.ScanningForConfig, workingDirectory, CliConfig.FileName);
         var files = Directory.GetFiles(workingDirectory, CliConfig.FileName, SearchOption.AllDirectories);
-        if (files != null && files.Length > 0)
+        if (files.Length > 0)
         {
             this.CliConfig = JsonConvert.DeserializeObject<CliConfig>(File.ReadAllText(files[0]));
-            this.CliConfigDirectory = new FileInfo(files[0]).Directory.FullName;
+            this.CliConfigDirectory = new FileInfo(files[0]).Directory?.FullName;
             Console.WriteLine(Messages.CliFileFound);
         }
         else

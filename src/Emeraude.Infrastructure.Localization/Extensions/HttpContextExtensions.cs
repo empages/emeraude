@@ -1,6 +1,5 @@
 ﻿using Emeraude.Essentials.Extensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 
 namespace Emeraude.Infrastructure.Localization.Extensions;
 
