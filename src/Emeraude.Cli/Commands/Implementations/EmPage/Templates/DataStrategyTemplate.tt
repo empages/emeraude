@@ -1,0 +1,49 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+using Emeraude.Application.Admin.EmPages.Data;
+using Emeraude.Application.Admin.EmPages.Data.Requests;
+using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
+using Emeraude.Application.Admin.EmPages.Utilities;
+
+namespace <#=Session["ProjectName"]#>.Admin.EmPages.<#=Session["PageName"]#>;
+
+public class <#=Session["PageName"]#>EmPageDataStrategy : IEmPageDataStrategy<<#=Session["PageName"]#>EmPageModel>
+{
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildRawModelQuery(EmPageDataFilter filter)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildRawModelQuery(string modelId)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildFetchQuery(EmPageDataFetchQueryBody body)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildDetailsQuery(string modelId)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildCreateCommand(<#=Session["PageName"]#>EmPageModel model)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildEditCommand(string modelId, <#=Session["PageName"]#>EmPageModel model)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEmPageRequest<<#=Session["PageName"]#>EmPageModel> BuildDeleteCommand(string modelId)
+    {
+        throw new System.NotImplementedException();
+    }
+}

@@ -3,31 +3,23 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-using AutoMapper;
-using <#=Session["ProjectName"]#>.Application.Interfaces;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 
-namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>
+namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>;
+
+public class <#=Session["RequestName"]#>Command : <#=Session["RequestName"]#>Request, IRequest<<#=Session["RequestName"]#>Result>
 {
-    public class <#=Session["RequestName"]#>Command : <#=Session["RequestName"]#>Request, IRequest<<#=Session["RequestName"]#>Result>
+    public class <#=Session["RequestName"]#>CommandHandler : IRequestHandler<<#=Session["RequestName"]#>Command, <#=Session["RequestName"]#>Result>
     {
-        public class <#=Session["RequestName"]#>CommandHandler : IRequestHandler<<#=Session["RequestName"]#>Command, <#=Session["RequestName"]#>Result>
+        public <#=Session["RequestName"]#>CommandHandler()
         {
-            private readonly IEntityContext context;
-            private readonly IMapper mapper;
+        }
 
-            public <#=Session["RequestName"]#>CommandHandler(IEntityContext context, IMapper mapper)
-            {
-                this.context = context;
-                this.mapper = mapper;
-            }
-
-            public async Task<<#=Session["RequestName"]#>Result> Handle(<#=Session["RequestName"]#>Command request, CancellationToken cancellationToken)
-            {
-                return new <#=Session["RequestName"]#>Result();
-            }
+        public async Task<<#=Session["RequestName"]#>Result> Handle(<#=Session["RequestName"]#>Command request, CancellationToken cancellationToken)
+        {
+            return new <#=Session["RequestName"]#>Result();
         }
     }
 }

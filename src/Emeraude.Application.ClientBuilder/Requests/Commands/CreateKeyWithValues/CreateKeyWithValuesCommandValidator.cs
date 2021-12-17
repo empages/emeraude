@@ -1,5 +1,6 @@
 ﻿using Emeraude.Infrastructure.Localization.Persistence;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Emeraude.Application.ClientBuilder.Requests.Commands.CreateKeyWithValues;
 
@@ -14,5 +15,17 @@ public class CreateKeyWithValuesCommandValidator : AbstractValidator<CreateKeyWi
     /// <param name="context"></param>
     public CreateKeyWithValuesCommandValidator(ILocalizationContext context)
     {
+        this.RuleFor(x => x.Key)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .WithMessage("Key is a required field")
+            .MustAsync(async (x, c) =>
+            {
+                var key = x?.Trim().ToUpperInvariant();
+                return !await context
+                    .Keys
+                    .AnyAsync(y => y.Key == key, c);
+            })
+            .WithMessage("Key already exists");
     }
 }

@@ -5,13 +5,11 @@
 <#@ import namespace="System.Collections.Generic" #>
 using FluentValidation;
 
-namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>
-{
-    public class <#=Session["RequestName"]#>CommandValidator : AbstractValidator<<#=Session["RequestName"]#>Command>
-    {
-        public <#=Session["RequestName"]#>CommandValidator()
-        {
+namespace <#=Session["ProjectName"]#>.Application.Requests.<#=Session["RequestFolder"]#>.<#=Session["RequestName"]#>;
 
-        }
+public class <#=Session["RequestName"]#>CommandValidator : AbstractValidator<<#=Session["RequestName"]#>Command>
+{
+    public <#=Session["RequestName"]#>CommandValidator()
+    {
     }
 }

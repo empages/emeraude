@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Emeraude.Cli.Commands;
 using Emeraude.Cli.Commands.Implementations.Create;
+using Emeraude.Cli.Commands.Implementations.EmPage;
 using Emeraude.Cli.Commands.Implementations.Request;
 using Emeraude.Cli.Properties;
 
@@ -14,7 +15,7 @@ namespace Emeraude.Cli;
 internal class ActionProvider
 {
     private readonly string[] args;
-    private readonly Dictionary<string, Command> commandFactories;
+    private readonly Dictionary<string, Command> commandFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionProvider"/> class.
@@ -24,10 +25,11 @@ internal class ActionProvider
     {
         this.args = args;
 
-        this.commandFactories = new Dictionary<string, Command>
+        this.commandFactory = new Dictionary<string, Command>
         {
             { CommandsNames.Create, new CreateCommand() },
             { CommandsNames.Request, new RequestCommand() },
+            { CommandsNames.EmPage, new EmPageCommand() },
         };
     }
 
@@ -47,8 +49,8 @@ internal class ActionProvider
             ConsoleCommand consoleCommand = new ConsoleCommand(this.args);
             if (consoleCommand.IsValid)
             {
-                this.commandFactories[consoleCommand.Command].LoadCliConfig(consoleCommand.GetParameter(CommandParameters.ConfigurationDirectory));
-                this.commandFactories[consoleCommand.Command].Execute(consoleCommand.Parameters);
+                this.commandFactory[consoleCommand.Command].LoadCliConfig(consoleCommand.GetParameter(CommandParameters.ConfigurationDirectory));
+                this.commandFactory[consoleCommand.Command].Execute(consoleCommand.Parameters);
             }
             else
             {

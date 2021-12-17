@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Emeraude.Cli.Commands.Implementations.Request.Templates
+namespace Emeraude.Cli.Commands.Implementations.EmPage.Templates
 {
     using System.Linq;
     using System.Text;
@@ -18,9 +18,9 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
+    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class QueryTemplate : QueryTemplateBase
+    public partial class SchemaTemplate : SchemaTemplateBase
     {
 #line hidden
         /// <summary>
@@ -28,91 +28,70 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Threading;\r\nusing System.Threading.Tasks;\r\nusing MediatR;\r\n\r\nnamespace ");
+            this.Write("using System.Threading.Tasks;\r\nusing Emeraude.Application.Admin.EmPages.Components.Renderers;\r\nusing Emeraude.Application.Admin.EmPages.Schema;\r\nusing Emeraude.Defaults.Extensions;\r\n\r\nnamespace ");
             
-            #line 10 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
+            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
-            this.Write(".Application.Requests.");
+            this.Write(".Admin.EmPages.");
             
-            #line 10 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestFolder"]));
-            
-            #line default
-            #line hidden
-            this.Write(".");
-            
-            #line 10 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\npublic class ");
             
-            #line 12 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
-            this.Write("Query : IRequest<");
+            this.Write("EmPageSchema : IEmPageSchema<");
             
-            #line 12 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
-            
-            #line default
-            #line hidden
-            this.Write("Result>\r\n{\r\n    public class ");
-            
-            #line 14 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
-            this.Write("QueryHandler : IRequestHandler<");
+            this.Write("EmPageModel>\r\n{\r\n    public async Task<EmPageSchemaSettings<");
             
-            #line 14 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
-            
-            #line default
-            #line hidden
-            this.Write("Query, ");
-            
-            #line 14 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 15 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
-            this.Write("Result>\r\n    {\r\n        public ");
+            this.Write("EmPageModel>> SetupAsync()\r\n    {\r\n        var settings = new EmPageSchemaSettings<");
             
-            #line 16 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
-            
-            #line default
-            #line hidden
-            this.Write("QueryHandler()\r\n        {\r\n        }\r\n\r\n        public async Task<");
-            
-            #line 20 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 17 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
-            this.Write("Result> Handle(");
+            this.Write("EmPageModel>\r\n        {\r\n            Route = \"");
             
-            #line 20 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
-            
-            #line default
-            #line hidden
-            this.Write("Query request, CancellationToken cancellationToken)\r\n        {\r\n            return new ");
-            
-            #line 22 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\QueryTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
+            #line 19 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageRoute"]));
             
             #line default
             #line hidden
-            this.Write("Result();\r\n        }\r\n    }\r\n}");
+            this.Write("\",\r\n            Title = \"");
+            
+            #line 20 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageTitle"]));
+            
+            #line default
+            #line hidden
+            this.Write("\",\r\n            Description = @\"");
+            
+            #line 21 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageTitle"]));
+            
+            #line default
+            #line hidden
+            this.Write(" description.\",\r\n        };\r\n\r\n        settings\r\n            .ConfigureIndexView(indexView =>\r\n            {\r\n                indexView.PageActions.Clear();\r\n\r\n                indexView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ConfigureDetailsView(detailsView =>\r\n            {\r\n                detailsView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ApplyDefaultEmPageBreadcrumbs()\r\n            .ApplyDefaultEmPageActions();\r\n\r\n        settings.ModelActions.RemoveAt(1);\r\n\r\n        return settings;\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -124,7 +103,7 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class QueryTemplateBase
+    public class SchemaTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

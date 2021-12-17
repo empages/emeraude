@@ -159,4 +159,10 @@
   <data name="SomethingUnexpectedHappened" xml:space="preserve">
     <value>Something unexpected happened. :(</value>
   </data>
+  <data name="InvalidEmPageName" xml:space="preserve">
+    <value>Provided EmPage name already exists.</value>
+  </data>
+  <data name="ScanningForConfig" xml:space="preserve">
+    <value>Scanning '{0}' for '{1}'...</value>
+  </data>
 </root>

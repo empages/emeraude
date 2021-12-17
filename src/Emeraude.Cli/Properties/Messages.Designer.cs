@@ -106,6 +106,15 @@ namespace Emeraude.Cli.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provided EmPage name already exists..
+        /// </summary>
+        internal static string InvalidEmPageName {
+            get {
+                return ResourceManager.GetString("InvalidEmPageName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request name must ends with Query or Command - example: GetSomethingQuery or MakeSomethingCommand.
         /// </summary>
         internal static string InvalidRequestCommand {
@@ -165,6 +174,15 @@ namespace Emeraude.Cli.Properties {
         internal static string RequestCannotBeCreated {
             get {
                 return ResourceManager.GetString("RequestCannotBeCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanning &apos;{0}&apos; for &apos;{1}&apos;....
+        /// </summary>
+        internal static string ScanningForConfig {
+            get {
+                return ResourceManager.GetString("ScanningForConfig", resourceCulture);
             }
         }
         

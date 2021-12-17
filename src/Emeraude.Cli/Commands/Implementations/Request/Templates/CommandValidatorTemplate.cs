@@ -28,49 +28,49 @@ namespace Emeraude.Cli.Commands.Implementations.Request.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using FluentValidation;\r\n\r\n\r\nnamespace ");
+            this.Write("using FluentValidation;\r\n\r\nnamespace ");
             
-            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 8 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
             this.Write(".Application.Requests.");
             
-            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 8 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestFolder"]));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 9 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 8 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n    public class ");
+            this.Write(";\r\n\r\npublic class ");
             
-            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 10 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
             this.Write("CommandValidator : AbstractValidator<");
             
-            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 10 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
-            this.Write("Command>\r\n    {\r\n        public ");
+            this.Write("Command>\r\n{\r\n    public ");
             
-            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
+            #line 12 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\Request\Templates\CommandValidatorTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["RequestName"]));
             
             #line default
             #line hidden
-            this.Write("CommandValidator()\r\n        {\r\n\r\n        }\r\n    }\r\n}");
+            this.Write("CommandValidator()\r\n    {\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

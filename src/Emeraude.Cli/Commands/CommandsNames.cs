@@ -16,6 +16,11 @@ internal static class CommandsNames
     internal const string Request = "request";
 
     /// <summary>
+    /// Name of the 'EmPage' command.
+    /// </summary>
+    internal const string EmPage = "em-page";
+
+    /// <summary>
     /// Name of the 'Help' command.
     /// </summary>
     internal const string Help = "help";
@@ -27,5 +32,6 @@ internal static class CommandsNames
     {
         Create,
         Request,
+        EmPage,
     };
 }
