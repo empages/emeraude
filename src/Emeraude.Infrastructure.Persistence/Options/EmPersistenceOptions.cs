@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Emeraude.Configuration.Exceptions;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.Persistence.Context;
 using Emeraude.Infrastructure.Persistence.Seed;
@@ -75,10 +76,17 @@ public class EmPersistenceOptions : IEmOptions
         this.databaseInitializers.Add(typeof(TDatabaseInitializer));
     }
 
-    /// <summary>
     /// <inheritdoc />
-    /// </summary>
     public void Validate()
     {
+        if (string.IsNullOrWhiteSpace(this.ConnectionString))
+        {
+            throw new EmInvalidConfigurationException("Connection string is not set properly");
+        }
+
+        if (this.ContextInterfaceType == null || this.ContextImplementationType == null)
+        {
+            throw new EmInvalidConfigurationException("There isn't a correct setup for persistence context (Use 'SetContext' of the persistence options)");
+        }
     }
 }

@@ -14,6 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\Emeraude.Infrastructure\Emeraude.Infrastructure.csproj" />
     <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />
   </ItemGroup>
 

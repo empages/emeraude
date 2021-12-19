@@ -10,6 +10,7 @@ namespace Emeraude.Presentation.PortalGateway.Controllers;
 /// </summary>
 [ServiceFilter(typeof(PortalFilterAttribute))]
 [EnableCors(EmPortalConstants.CorsPolicyName)]
+[ApiExplorerSettings(IgnoreApi = true)]
 public abstract class EmPortalGatewayApiController : EmApiController
 {
 }
