@@ -46,7 +46,7 @@ public class ApplicationDatabaseInitializer : IDatabaseInitializer
     /// <inheritdoc/>
     public async Task SeedAsync()
     {
-        if (!await this.context.Set<Role>().AsQueryable().AnyAsync())
+        if (!await this.context.Set<Role>().AnyAsync())
         {
             await this.EnsureRoleAsync(EmRoles.Admin, EmPermissions.GetAllPermissionValues());
             await this.EnsureRoleAsync(EmRoles.User, new string[] { });
@@ -59,7 +59,7 @@ public class ApplicationDatabaseInitializer : IDatabaseInitializer
             }
         }
 
-        if (!await this.context.Set<User>().AsQueryable().AnyAsync())
+        if (!await this.context.Set<User>().AnyAsync())
         {
             await this.CreateUserAsync(
                 DefaultUsers.DefaultEmeraudeAdminEmail,
@@ -77,7 +77,7 @@ public class ApplicationDatabaseInitializer : IDatabaseInitializer
 
     private async Task EnsureRoleAsync(string roleName, string[] claims)
     {
-        if (!await this.context.Set<Role>().AsQueryable().Where(x => x.Name == roleName).AnyAsync())
+        if (!await this.context.Set<Role>().Where(x => x.Name == roleName).AnyAsync())
         {
             await this.roleManager.CreateRoleAsync(roleName, claims);
         }
