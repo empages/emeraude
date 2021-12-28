@@ -8,6 +8,8 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Emeraude.Application.Consumer\Emeraude.Application.Consumer.csproj" />
+      <ProjectReference Include="..\Emeraude.Application.Identity\Emeraude.Application.Identity.csproj" />
+      <ProjectReference Include="..\Emeraude.Presentation\Emeraude.Presentation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -36,7 +36,7 @@ public class EmOptionsProviderTests
             .Be(true);
         
     private IEmOptionsProvider GetSubject(EmOptionsSetup setup)
-        => new EmOptionsProvider(setup);
+        => new EmOptionsProvider(setup, true);
 
     private static EmOptionsSetup GetDefaultOptionsSetup()
         => new()
@@ -45,6 +45,6 @@ public class EmOptionsProviderTests
             {
                 ProjectName = "Test",
                 TestMode = true,
-            }
+            },
         };
 }

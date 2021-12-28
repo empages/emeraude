@@ -17,12 +17,13 @@ public class EmOptionsProvider : IEmOptionsProvider
     /// Initializes a new instance of the <see cref="EmOptionsProvider"/> class.
     /// </summary>
     /// <param name="setup"></param>
-    public EmOptionsProvider(EmOptionsSetup setup)
+    /// <param name="ignoreValidation"></param>
+    public EmOptionsProvider(EmOptionsSetup setup, bool ignoreValidation = false)
     {
         this.optionsFactory = new Dictionary<Type, IEmOptions>();
         this.optionsByAddress = new Dictionary<string, object>();
 
-        this.LoadOptions(setup);
+        this.LoadOptions(setup, ignoreValidation);
     }
 
     /// <summary>
@@ -54,7 +55,7 @@ public class EmOptionsProvider : IEmOptionsProvider
         return (TValue)this.optionsByAddress[optionAddress];
     }
 
-    private void LoadOptions(EmOptionsSetup setup)
+    private void LoadOptions(EmOptionsSetup setup, bool ignoreValidation = false)
     {
         var setupProperties = typeof(EmOptionsSetup).GetProperties();
         foreach (var setupProperty in setupProperties)
@@ -65,7 +66,11 @@ public class EmOptionsProvider : IEmOptionsProvider
                 throw new EmMissingConfigurationException($"'{setupProperty.Name}' is missing. Please check your application startup setup.");
             }
 
-            optionsValue.Validate();
+            if (!ignoreValidation)
+            {
+                optionsValue.Validate();
+            }
+
             this.optionsFactory[setupProperty.PropertyType] = optionsValue;
             var propertyProperties = setupProperty.PropertyType.GetProperties();
             foreach (var property in propertyProperties)

@@ -23,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Emeraude.Application.ClientBuilder\Emeraude.Application.ClientBuilder.csproj" />
-    <ProjectReference Include="..\Emeraude.Application.Identity\Emeraude.Application.Identity.csproj" />
+    <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
     <ProjectReference Include="..\Emeraude.Configuration\Emeraude.Configuration.csproj" />
     <ProjectReference Include="..\Emeraude.Infrastructure.Identity\Emeraude.Infrastructure.Identity.csproj" />
     <ProjectReference Include="..\Emeraude.Infrastructure.Localization\Emeraude.Infrastructure.Localization.csproj" />

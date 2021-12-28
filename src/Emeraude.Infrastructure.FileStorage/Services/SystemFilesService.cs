@@ -100,7 +100,7 @@ public class SystemFilesService : ISystemFilesService
                 this.GetTemporaryFile(id);
             }
 
-            return default;
+            return new List<string>();
         }
         catch (Exception ex)
         {

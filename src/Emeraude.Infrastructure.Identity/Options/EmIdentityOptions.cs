@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Emeraude.Configuration.Exceptions;
 using Emeraude.Configuration.Options;
 using Emeraude.Infrastructure.Identity.ExternalProviders;
 using Microsoft.AspNetCore.Identity;
@@ -55,7 +56,7 @@ public class EmIdentityOptions : IEmOptions
     public List<IExternalProviderAuthenticator> ExternalProvidersAuthenticators { get; }
 
     /// <summary>
-    /// Add additional role to the roles of the system. It is prefered to be added before first initialization of the system.
+    /// Add additional role to the roles of the system. It is preferred to be added before first initialization of the system.
     /// </summary>
     /// <param name="roleName"></param>
     /// <param name="claims"></param>
@@ -64,11 +65,15 @@ public class EmIdentityOptions : IEmOptions
         this.AdditionalRoles[roleName] = claims;
     }
 
-    /// <summary>
-    /// <inheritdoc />
-    /// </summary>
+    /// <inheritdoc/>
     public void Validate()
     {
+        if (this.AccessTokenOptions == null ||
+            string.IsNullOrWhiteSpace(this.AccessTokenOptions.Key) ||
+            string.IsNullOrWhiteSpace(this.AccessTokenOptions.Issuer))
+        {
+            throw new EmInvalidConfigurationException("There is not a correct setup for the access token options of the identity infrastructure");
+        }
     }
 
     private void SetDefaults()
