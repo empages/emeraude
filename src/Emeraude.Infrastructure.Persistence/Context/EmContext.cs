@@ -27,10 +27,10 @@ public abstract class EmContext<TContext> : IdentityContext<TContext>, IEmContex
     /// <param name="currentUser"></param>
     protected EmContext(
         DbContextOptions<TContext> options,
-        ICurrentUser currentUser)
+        ICurrentUser currentUser = null)
         : base(options)
     {
-        this.currentUserId = currentUser.Id;
+        this.currentUserId = currentUser?.Id;
     }
 
     /// <inheritdoc cref="IDatabaseContext.SaveChanges()" />
