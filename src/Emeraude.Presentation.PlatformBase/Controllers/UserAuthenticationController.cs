@@ -18,7 +18,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers;
 /// <summary>
 /// User authentication controller.
 /// </summary>
-public abstract partial class UserAuthenticationController : PublicController
+public abstract partial class UserAuthenticationController : EmPublicController
 {
     private const string LogoutRoute = "/logout";
 
@@ -102,11 +102,12 @@ public abstract partial class UserAuthenticationController : PublicController
             this.AuthenticationProperties);
     }
 
-    private IActionResult RedirectToDefault()
+    /// <summary>
+    /// Redirect to default action provider.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IActionResult RedirectToDefault()
     {
-        var redirectCallback = this.OptionsProvider.GetPresentationOptions().AuthenticationDefaultRedirectCallback;
-        return redirectCallback != null
-            ? redirectCallback.Invoke(this.HttpContext)
-            : this.LocalRedirect("/");
+        return this.LocalRedirect("/");
     }
 }

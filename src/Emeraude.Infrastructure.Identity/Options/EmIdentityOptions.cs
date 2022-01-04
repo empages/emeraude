@@ -26,11 +26,6 @@ public class EmIdentityOptions : IEmOptions
     }
 
     /// <summary>
-    /// Flag that indicates whether to be registered external authentication from the settings.
-    /// </summary>
-    public bool HasExternalAuthentication { get; set; }
-
-    /// <summary>
     /// Dictionary that contains all additional roles and their claims.
     /// </summary>
     public Dictionary<string, string[]> AdditionalRoles { get; set; }

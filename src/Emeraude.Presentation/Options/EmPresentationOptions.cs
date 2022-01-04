@@ -21,11 +21,6 @@ public class EmPresentationOptions : IEmOptions
     }
 
     /// <summary>
-    /// Default redirect function that compute the action result redirection after login. If callback is null redirection will be executed to Index of HomeController if exists.
-    /// </summary>
-    public Func<HttpContext, IActionResult> AuthenticationDefaultRedirectCallback { get; set; }
-
-    /// <summary>
     /// List of additional feature providers for extending the MVC configuration.
     /// </summary>
     public IList<IApplicationFeatureProvider> FeatureProviders { get; }

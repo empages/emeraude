@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Emeraude.Infrastructure.Identity.ExternalProviders.Facebook;
+namespace Emeraude.Defaults.Identity.ExternalProviders.Facebook;
 
 /// <summary>
 /// Helper class for mapping Facebook profile picture data.

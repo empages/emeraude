@@ -1,7 +1,7 @@
 ﻿using Emeraude.Infrastructure.Identity.Services;
 using Newtonsoft.Json;
 
-namespace Emeraude.Infrastructure.Identity.ExternalProviders.Google;
+namespace Emeraude.Defaults.Identity.ExternalProviders.Google;
 
 /// <summary>
 /// Google external user implementation.

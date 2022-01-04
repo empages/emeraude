@@ -11,6 +11,7 @@ ProjectSection(SolutionItems) = preProject
 	appveyor.yml = appveyor.yml
 	.github\workflows\dotnet-core.yml = .github\workflows\dotnet-core.yml
 	Emeraude.ruleset = Emeraude.ruleset
+	README.md = README.md
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emeraude", "src\Emeraude\Emeraude.csproj", "{EBD0BDA8-0B66-4D8E-9151-65E55857A549}"

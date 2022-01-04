@@ -12,5 +12,9 @@
       <ProjectReference Include="..\Emeraude.Application.Admin.EmPages\Emeraude.Application.Admin.EmPages.csproj" />
       <ProjectReference Include="..\Emeraude\Emeraude.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Identity\ExternalProviders" />
+    </ItemGroup>
     
 </Project>

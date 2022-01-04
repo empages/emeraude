@@ -16,7 +16,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers;
 /// Client controller for MVC user management.
 /// </summary>
 [Authorize(AuthenticationSchemes = EmAuthenticationDefaults.CookieAuthenticationScheme)]
-public abstract class UserManagementController : PublicController
+public abstract class UserManagementController : EmPublicController
 {
     private const string ChangeEmailRoute = "/confirm-change-email";
 
