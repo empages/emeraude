@@ -26,11 +26,6 @@ public abstract partial class UserAuthenticationController
     [ValidateAntiForgeryToken]
     public virtual IActionResult ExternalLogin([FromForm(Name = "externalProvider")]string externalProvider, string returnUrl = "")
     {
-        if (!this.OptionsProvider.GetIdentityOptions().HasExternalAuthentication)
-        {
-            return this.NotFound();
-        }
-
         if (this.IsAuthenticated)
         {
             return this.RedirectToDefault();

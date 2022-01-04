@@ -23,7 +23,7 @@ public static class ControllerExtensions
     /// <param name="reference"></param>
     /// <returns></returns>
     public static async Task<IActionResult> RedirectToExecutionResultAsync(
-        this PublicController controller,
+        this EmPublicController controller,
         bool succeeded,
         string successTitle,
         string failedTitle,
@@ -47,7 +47,7 @@ public static class ControllerExtensions
     /// <param name="reference"></param>
     /// <returns></returns>
     public static async Task<IActionResult> RedirectToSucceededExecutionResultAsync(
-        this PublicController controller,
+        this EmPublicController controller,
         string title,
         string message,
         string reference)

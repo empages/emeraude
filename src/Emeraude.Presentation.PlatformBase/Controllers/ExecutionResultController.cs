@@ -10,7 +10,7 @@ namespace Emeraude.Presentation.PlatformBase.Controllers;
 /// <summary>
 /// Execution result abstract controller.
 /// </summary>
-public abstract class ExecutionResultController : PublicController
+public abstract class ExecutionResultController : EmPublicController
 {
     private const string ResultRoute = "/execution/result";
     private const string HandleRoute = "/execution/handle";

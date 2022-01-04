@@ -11,10 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Emeraude.Presentation.Controllers;
 
 /// <summary>
-/// Abstraction for controllers which will be used on the client side of the application (not for the administration).
+/// Abstraction for controllers which will be used on the customer side of the application.
 /// </summary>
 [ApiExplorerSettings(IgnoreApi = true)]
-public abstract class PublicController : EmController
+public abstract class EmPublicController : EmController
 {
     private const string LanguageCookieName = ".Emeraude.Language";
 

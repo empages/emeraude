@@ -7,7 +7,7 @@ namespace Emeraude.Presentation.Controllers;
 /// <summary>
 /// Generic error controller which is triggered by the error interceptor.
 /// </summary>
-public sealed class ErrorController : PublicController
+public sealed class ErrorController : EmPublicController
 {
     /// <summary>
     /// Error index action that returns a status code result if there no defined error view or the view placed on 'Views/Client/Error/Index.cshtml'.

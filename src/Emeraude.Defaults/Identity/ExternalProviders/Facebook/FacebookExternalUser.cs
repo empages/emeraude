@@ -1,7 +1,7 @@
 ﻿using Emeraude.Infrastructure.Identity.Services;
 using Newtonsoft.Json;
 
-namespace Emeraude.Infrastructure.Identity.ExternalProviders.Facebook;
+namespace Emeraude.Defaults.Identity.ExternalProviders.Facebook;
 
 /// <summary>
 /// Facebook external user implementation.
