@@ -23,7 +23,7 @@ internal static class StaticConsolePrints
         Console.WriteLine();
         Console.WriteLine("- - - - - -");
         Console.WriteLine();
-        Console.WriteLine("Usage: em [command] [parameters]");
+        Console.WriteLine("Usage: emeraude [command] [parameters]");
         Console.WriteLine();
         Console.WriteLine("- - - - - -");
         Console.WriteLine();
@@ -32,17 +32,17 @@ internal static class StaticConsolePrints
         PrintCommandDetails(
             $"create {CommandParameters.Name} projectName",
             $"Make sure the project name is in PascalCase format.",
-            $"em create {CommandParameters.Name} MyAwesomeProject");
+            $"emeraude create {CommandParameters.Name} MyAwesomeProject");
 
         PrintCommandDetails(
             $"em-page {CommandParameters.Name} pageName {CommandParameters.ConfigurationDirectory} configurationDirectory",
             "Make sure the page name is in PascalCase format. Configuration path is optional.",
-            $"em em-page {CommandParameters.Name} Dog");
+            $"emeraude em-page {CommandParameters.Name} Dog");
 
         PrintCommandDetails(
             $"request {CommandParameters.Name} requestName {CommandParameters.ConfigurationDirectory} configurationDirectory",
             "Make sure the page name is in PascalCase format and ends with Query or Command suffix. Configuration path is optional.",
-            $"em request {CommandParameters.Name} CreateDogCommand");
+            $"emeraude request {CommandParameters.Name} CreateDogCommand");
 
         Console.WriteLine("- - - - - -");
         Console.WriteLine();

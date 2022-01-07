@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Emeraude.Cli.Commands.Implementations.Request.Templates;
 using Emeraude.Cli.Properties;
+using Emeraude.Essentials.Helpers;
 
 namespace Emeraude.Cli.Commands.Implementations.Request;
 
@@ -93,8 +94,8 @@ internal class RequestCommand : Command
                 return;
             }
 
-            File.WriteAllText(queryFilePath, TemplateRenderer.RenderTemplate(typeof(QueryTemplate), sessionDictionary));
-            File.WriteAllText(resultFilePath, TemplateRenderer.RenderTemplate(typeof(ResultTemplate), sessionDictionary));
+            File.WriteAllText(queryFilePath, T4TemplateRenderer.RenderTemplate(typeof(QueryTemplate), sessionDictionary));
+            File.WriteAllText(resultFilePath, T4TemplateRenderer.RenderTemplate(typeof(ResultTemplate), sessionDictionary));
 
             Console.WriteLine(Messages.QuerySuccessfullyCreated);
         }
@@ -110,10 +111,10 @@ internal class RequestCommand : Command
                 return;
             }
 
-            File.WriteAllText(requestFilePath, TemplateRenderer.RenderTemplate(typeof(RequestTemplate), sessionDictionary));
-            File.WriteAllText(commandFilePath, TemplateRenderer.RenderTemplate(typeof(CommandTemplate), sessionDictionary));
-            File.WriteAllText(commandValidatorFilePath, TemplateRenderer.RenderTemplate(typeof(CommandValidatorTemplate), sessionDictionary));
-            File.WriteAllText(resultFilePath, TemplateRenderer.RenderTemplate(typeof(ResultTemplate), sessionDictionary));
+            File.WriteAllText(requestFilePath, T4TemplateRenderer.RenderTemplate(typeof(RequestTemplate), sessionDictionary));
+            File.WriteAllText(commandFilePath, T4TemplateRenderer.RenderTemplate(typeof(CommandTemplate), sessionDictionary));
+            File.WriteAllText(commandValidatorFilePath, T4TemplateRenderer.RenderTemplate(typeof(CommandValidatorTemplate), sessionDictionary));
+            File.WriteAllText(resultFilePath, T4TemplateRenderer.RenderTemplate(typeof(ResultTemplate), sessionDictionary));
 
             Console.WriteLine(Messages.CommandSuccessfullyCreated);
         }

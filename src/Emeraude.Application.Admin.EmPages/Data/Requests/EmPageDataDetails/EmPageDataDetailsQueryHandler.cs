@@ -19,7 +19,6 @@ public class EmPageDataDetailsQueryHandler<TEntity, TModel> : IEmPageDataDetails
     private readonly IEmContext context;
     private readonly IMapper mapper;
     private readonly ILogger<EmPageDataDetailsQueryHandler<TEntity, TModel>> logger;
-    private readonly IEmPageService emPageService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageDataDetailsQueryHandler{TEntity,TModel}"/> class.
@@ -27,17 +26,14 @@ public class EmPageDataDetailsQueryHandler<TEntity, TModel> : IEmPageDataDetails
     /// <param name="context"></param>
     /// <param name="mapper"></param>
     /// <param name="logger"></param>
-    /// <param name="emPageService"></param>
     public EmPageDataDetailsQueryHandler(
         IEmContext context,
         IMapper mapper,
-        ILogger<EmPageDataDetailsQueryHandler<TEntity, TModel>> logger,
-        IEmPageService emPageService)
+        ILogger<EmPageDataDetailsQueryHandler<TEntity, TModel>> logger)
     {
         this.context = context;
         this.mapper = mapper;
         this.logger = logger;
-        this.emPageService = emPageService;
     }
 
     /// <inheritdoc/>
@@ -49,12 +45,7 @@ public class EmPageDataDetailsQueryHandler<TEntity, TModel> : IEmPageDataDetails
                 .Set<TEntity>()
                 .FirstOrDefaultAsync(x => x.Id == request.EntityId, cancellationToken);
 
-            var requestModel = this.mapper.Map<TModel>(entity);
-
-            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
-            await this.emPageService.ApplyValuePipesAsync(new[] { requestModel }, schemaDescription.DetailsView.ViewItems);
-
-            return requestModel;
+            return this.mapper.Map<TModel>(entity);
         }
         catch (Exception ex)
         {

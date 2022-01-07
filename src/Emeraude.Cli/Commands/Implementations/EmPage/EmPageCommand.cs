@@ -64,9 +64,9 @@ internal class EmPageCommand : Command
         var dataManagerFilePath = Path.Combine(pagePath, $"{pageName}EmPageDataManager.cs");
         var dataStrategyFilePath = Path.Combine(pagePath, $"{pageName}EmPageDataStrategy.cs");
 
-        File.WriteAllText(schemaFilePath, TemplateRenderer.RenderTemplate(typeof(SchemaTemplate), sessionDictionary));
-        File.WriteAllText(modelFilePath, TemplateRenderer.RenderTemplate(typeof(ModelTemplate), sessionDictionary));
-        File.WriteAllText(dataManagerFilePath, TemplateRenderer.RenderTemplate(typeof(DataManagerTemplate), sessionDictionary));
-        File.WriteAllText(dataStrategyFilePath, TemplateRenderer.RenderTemplate(typeof(DataStrategyTemplate), sessionDictionary));
+        File.WriteAllText(schemaFilePath, T4TemplateRenderer.RenderTemplate(typeof(SchemaTemplate), sessionDictionary));
+        File.WriteAllText(modelFilePath, T4TemplateRenderer.RenderTemplate(typeof(ModelTemplate), sessionDictionary));
+        File.WriteAllText(dataManagerFilePath, T4TemplateRenderer.RenderTemplate(typeof(DataManagerTemplate), sessionDictionary));
+        File.WriteAllText(dataStrategyFilePath, T4TemplateRenderer.RenderTemplate(typeof(DataStrategyTemplate), sessionDictionary));
     }
 }
