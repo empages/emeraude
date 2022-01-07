@@ -98,6 +98,8 @@ public abstract class EmPageDataManager<TModel> : IEmPageDataManager
         var schema = await this.GetSchemaAsync();
         request.OrderBy ??= string.Empty;
         var entitiesResult = await this.FetchEntitiesAsync(request);
+        await this.EmPageService.ApplyValuePipesAsync(entitiesResult.Items, schema.IndexView.ViewItems);
+
         var result = new TableViewDataRequestGenericResult<TModel>(entitiesResult);
 
         result.Items = this.ConsolidateModelResponsesFields(result.Items, schema.IndexView.ViewItems);
@@ -118,6 +120,8 @@ public abstract class EmPageDataManager<TModel> : IEmPageDataManager
         {
             throw new EmPageNotFoundException($"Details page for model with ID: {modelId} of {this.GetType().FullName} is not found");
         }
+
+        await this.EmPageService.ApplyValuePipesAsync(new List<TModel>() { model }, schema.DetailsView.ViewItems);
 
         var modelResponse = new EmPageModelResponse(model);
         modelResponse = this.ConsolidateModelResponseFields(modelResponse, schema.DetailsView.ViewItems);

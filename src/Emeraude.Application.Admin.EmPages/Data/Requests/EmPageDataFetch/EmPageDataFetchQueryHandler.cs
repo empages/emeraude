@@ -9,6 +9,7 @@ using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Services;
 using Emeraude.Contracts;
 using Emeraude.Essentials.Enumerations;
+using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Helpers;
 using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Persistence.Context;
@@ -24,7 +25,6 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
     private readonly IEmContext context;
     private readonly IMapper mapper;
     private readonly ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger;
-    private readonly IEmPageService emPageService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageDataFetchQueryHandler{TEntity,TModel}"/> class.
@@ -32,17 +32,14 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
     /// <param name="context"></param>
     /// <param name="mapper"></param>
     /// <param name="logger"></param>
-    /// <param name="emPageService"></param>
     public EmPageDataFetchQueryHandler(
         IEmContext context,
         IMapper mapper,
-        ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger,
-        IEmPageService emPageService)
+        ILogger<EmPageDataFetchQueryHandler<TEntity, TModel>> logger)
     {
         this.context = context;
         this.mapper = mapper;
         this.logger = logger;
-        this.emPageService = emPageService;
     }
 
     /// <inheritdoc/>
@@ -66,7 +63,6 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
             result.CurrentPage = request.Page;
             result.PageSize = request.PageSize;
 
-            var orderType = this.GetOrderTypeByString(request.OrderType);
             var entitiesQuery = this.context
                 .Set<TEntity>()
                 .Where(requestExpression);
@@ -77,20 +73,13 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
                 orderExpression = request.OrderBy;
             }
 
-            IOrderedQueryable<TEntity> orderedEntitiesQuery = orderType != OrderType.Descending
-                ? entitiesQuery.OrderBy(orderExpression)
-                : entitiesQuery.OrderByDescending(orderExpression);
-
-            var entities = orderedEntitiesQuery
+            var entities = entitiesQuery
+                .OrderByType(request.OrderType, orderExpression)
                 .Skip(result.StartRow)
                 .Take(request.PageSize)
                 .ToList();
 
-            var entitiesModels = this.mapper.Map<IEnumerable<TModel>>(entities);
-
-            var schemaDescription = await this.emPageService.FindSchemaDescriptionAsync(typeof(TModel));
-            await this.emPageService.ApplyValuePipesAsync(entitiesModels, schemaDescription.IndexView.ViewItems);
-            result.Items = entitiesModels;
+            result.Items = this.mapper.Map<IEnumerable<TModel>>(entities);
         }
         catch (Exception ex)
         {
@@ -98,24 +87,6 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
         }
 
         return result;
-    }
-
-    private OrderType GetOrderTypeByString(string orderTypeString)
-    {
-        var orderType = OrderType.Unspecified;
-        if (!string.IsNullOrEmpty(orderTypeString))
-        {
-            if (orderTypeString.ToLower() == "asc")
-            {
-                orderType = OrderType.Ascending;
-            }
-            else if (orderTypeString.ToLower() == "desc")
-            {
-                orderType = OrderType.Descending;
-            }
-        }
-
-        return orderType;
     }
 
     private Expression<Func<TEntity, bool>> BuildRequestExpression(EmPageDataFetchQuery<TEntity, TModel> request)

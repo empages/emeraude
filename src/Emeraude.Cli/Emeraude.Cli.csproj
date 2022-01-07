@@ -9,7 +9,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
 	<PackAsTool>true</PackAsTool>
-    <ToolCommandName>em</ToolCommandName>
+    <ToolCommandName>emeraude</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
   

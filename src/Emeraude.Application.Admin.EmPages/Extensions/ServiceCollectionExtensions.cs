@@ -72,6 +72,7 @@ public static class ServiceCollectionExtensions
     {
         var managerTypes = new List<Type>();
         var entityDataStrategiesTypes = new List<Type>();
+        var customDataStrategiesTypes = new List<Type>();
 
         foreach (var assembly in assemblies)
         {
@@ -84,6 +85,10 @@ public static class ServiceCollectionExtensions
                 .GetTypes()
                 .Where(x => !x.IsInterface && !x.IsAbstract && x.GetInterfaces().Any(xx => xx == typeof(IEmPageEntityDataStrategy)));
             entityDataStrategiesTypes.AddRange(assemblyEntityDataStrategiesTypes);
+
+            customDataStrategiesTypes.AddRange(assembly
+                .GetTypes()
+                .Where(x => !x.IsInterface && !x.IsAbstract && x.GetInterfaces().Any(xx => xx == typeof(IEmPageCustomDataStrategy))));
         }
 
         if (!managerTypes.Any())
@@ -114,6 +119,11 @@ public static class ServiceCollectionExtensions
             services.RegisterCreateCommands(entityType, modelType);
             services.RegisterEditCommands(entityType, modelType);
             services.RegisterDeleteCommands(entityType, modelType);
+        }
+
+        foreach (var customDataStrategyType in customDataStrategiesTypes)
+        {
+            services.AddTransient(customDataStrategyType);
         }
     }
 

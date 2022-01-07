@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Emeraude.Essentials.Attributes;
+using Emeraude.Essentials.Enumerations;
 using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Models;
 
@@ -192,5 +193,32 @@ public static class EnumUtilities
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Get order type by string.
+    /// </summary>
+    /// <param name="orderTypeString">Possible options might be case insensitive - a, asc, ascending, d, desc, descending.</param>
+    /// <returns></returns>
+    public static OrderType GetOrderTypeByString(string orderTypeString)
+    {
+        var orderType = OrderType.Unspecified;
+        if (string.IsNullOrWhiteSpace(orderTypeString))
+        {
+            return orderType;
+        }
+
+        orderType = orderTypeString.ToLower() switch
+        {
+            "a" => OrderType.Ascending,
+            "asc" => OrderType.Ascending,
+            "ascending" => OrderType.Ascending,
+            "d" => OrderType.Descending,
+            "desc" => OrderType.Descending,
+            "descending" => OrderType.Descending,
+            _ => orderType
+        };
+
+        return orderType;
     }
 }
