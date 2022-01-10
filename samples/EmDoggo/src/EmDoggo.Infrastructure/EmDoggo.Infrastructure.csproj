@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Emeraude.Infrastructure.Persistence" Version="2.0.0.52-preview" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmDoggo.Application\EmDoggo.Application.csproj" />
+    </ItemGroup>
+
+</Project>
