@@ -349,8 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-.idea/
-
+.idea
 appsettings.Development.json
-samples/**/*/wwwroot/uploads/
-samples/**/*/privateroot/uploads/
+yarn.lock
+
+/wwwroot/uploads
+/privateroot/uploads

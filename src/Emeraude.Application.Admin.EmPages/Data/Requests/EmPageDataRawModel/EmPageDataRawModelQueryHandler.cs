@@ -46,11 +46,12 @@ public class EmPageDataRawModelQueryHandler<TEntity, TModel> : IEmPageDataRawMod
                 filterExpression = request.FilterExpression;
             }
 
-            return await this.context
+            var modelEntity = await this.context
                 .Set<TEntity>()
                 .Where(filterExpression)
-                .ProjectTo<TModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            return this.mapper.Map<TModel>(modelEntity);
         }
         catch (Exception ex)
         {
