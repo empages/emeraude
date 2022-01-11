@@ -177,6 +177,7 @@ public partial class EmPageManager
         {
             Label = formViewItem.Title ?? formViewItem.SourceName,
             Readonly = formViewItem.Readonly,
+            Hidden = formViewItem.Hidden,
             AllowNullValue = formViewItem.IsNullable,
             Required = formViewItem.Required,
             Order = formViewItem.Order,

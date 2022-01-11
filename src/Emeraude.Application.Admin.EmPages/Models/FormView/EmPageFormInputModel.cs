@@ -26,6 +26,11 @@ public class EmPageFormInputModel : EmPageViewItemContextModel
     public bool Required { get; set; }
 
     /// <summary>
+    /// Indicates whether the input must be hidden or not.
+    /// </summary>
+    public bool Hidden { get; set; }
+
+    /// <summary>
     /// Indicates whether the input could contains null or not.
     /// </summary>
     public bool AllowNullValue { get; set; }
