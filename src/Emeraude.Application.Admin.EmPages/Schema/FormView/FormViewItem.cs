@@ -29,6 +29,11 @@ public class FormViewItem : ViewItem
     public bool Readonly { get; set; }
 
     /// <summary>
+    /// Hides the view item from the form.
+    /// </summary>
+    public bool Hidden { get; set; }
+
+    /// <summary>
     /// Flag that indicates whether the item could be null or not.
     /// </summary>
     public bool IsNullable => this.SourceType?.IsNullableType() ?? false;
