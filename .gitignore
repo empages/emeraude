@@ -352,5 +352,3 @@ MigrationBackup/
 .idea/
 
 appsettings.Development.json
-samples/**/*/wwwroot/uploads/
-samples/**/*/privateroot/uploads/
