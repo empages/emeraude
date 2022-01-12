@@ -189,14 +189,4 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
 
         return description;
     }
-
-    /// <summary>
-    /// Gets model property placeholder.
-    /// </summary>
-    /// <param name="property"></param>
-    /// <returns></returns>
-    public string GetModelPlaceholder(Expression<Func<TModel, object>> property)
-    {
-        return EmPagesPlaceholders.GetModelPlaceholder(this.Route, property);
-    }
 }

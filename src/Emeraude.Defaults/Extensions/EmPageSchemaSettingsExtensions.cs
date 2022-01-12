@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Shared;
+using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Defaults.Options;
 using Emeraude.Essentials.Extensions;
 
@@ -65,7 +66,7 @@ public static class EmPageSchemaSettingsExtensions
             Title = defaultOptions.CurrentBreadcrumbTitle,
             Order = 1,
             IsActive = true,
-            Href = $"/admin/{settings.Route}/{settings.GetModelPlaceholder(x => x.Id)}",
+            Href = $"/admin/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<TModel>(settings.Route, x => x.Id)}",
             HideContextually = true,
         };
 
@@ -95,21 +96,21 @@ public static class EmPageSchemaSettingsExtensions
         {
             Order = 0,
             Name = "Details",
-            RelativeUrlFormat = $"/{settings.GetModelPlaceholder(x => x.Id)}",
+            RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<TModel>(settings.Route, x => x.Id)}",
         });
 
         settings.ModelActions.Add(new EmPageAction()
         {
             Order = 10,
             Name = "Edit",
-            RelativeUrlFormat = $"/{settings.GetModelPlaceholder(x => x.Id)}/edit",
+            RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<TModel>(settings.Route, x => x.Id)}/edit",
         });
 
         settings.ModelActions.Add(new EmPageAction()
         {
             Order = 20,
             Name = "Delete",
-            RelativeUrl = $"/_em/api/admin/em-pages/delete/{settings.Route}/{settings.GetModelPlaceholder(x => x.Id)}",
+            RelativeUrl = $"/_em/api/admin/em-pages/delete/{settings.Route}/{EmPagesPlaceholders.GetModelPlaceholder<TModel>(settings.Route, x => x.Id)}",
             Method = HttpMethod.Delete,
             ConfirmationMessage = "Are you sure you want to delete this entity?",
         });
@@ -120,7 +121,7 @@ public static class EmPageSchemaSettingsExtensions
             {
                 Order = 1,
                 Name = "Edit",
-                RelativeUrlFormat = $"/{settings.GetModelPlaceholder(x => x.Id)}/edit",
+                RelativeUrlFormat = $"/{EmPagesPlaceholders.GetModelPlaceholder<TModel>(settings.Route, x => x.Id)}/edit",
             });
         }
 
