@@ -11,6 +11,7 @@ using Emeraude.Application.Admin.EmPages.Schema.FormView;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Exceptions;
+using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Helpers;
 using Microsoft.Extensions.Primitives;
 
@@ -99,10 +100,13 @@ public partial class EmPageManager
                 model.Identifier = rawModel?.Id;
                 this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
                 this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
+
+        await this.AssignParentModelAsync(model, schemaDescription, query);
 
         foreach (var formViewItem in formViewItems)
         {
@@ -186,6 +190,21 @@ public partial class EmPageManager
             Component = viewModel.PropertyComponentMap.FirstOrDefault(x => x.Property == formViewItem.SourceName)?.Value,
             Parameters = viewModel.PropertyParametersMap.FirstOrDefault(x => x.Property == formViewItem.SourceName)?.Value,
         };
+
+    private async Task AssignParentModelAsync(EmPageViewModel model, EmPageSchemaDescription schemaDescription, IDictionary<string, StringValues> query)
+    {
+        var parentId = query.GetValueOrDefault(EmPagesConstants.ParentQueryParam).FirstOrDefault();
+        if (schemaDescription.ParentSchema != null && !string.IsNullOrWhiteSpace(parentId))
+        {
+            var parentDataManager = this.GetDataManagerInstance(schemaDescription.ParentSchema);
+            var parentRawModel = await parentDataManager.GetRawModelAsync(parentId);
+            if (parentRawModel != null)
+            {
+                this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, parentRawModel, schemaDescription.ParentSchema);
+                this.SetDataRelatedPlaceholders(model.Context.NavbarActions, parentRawModel, schemaDescription.ParentSchema);
+            }
+        }
+    }
 
     private IEmPageModel GetModelFromPayload(JsonElement payload, EmPageSchemaDescription schemaDescription)
     {
