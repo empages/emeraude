@@ -11,6 +11,7 @@ using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Application.Admin.EmPages.Shared;
 using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Application.Admin.Models;
+using Emeraude.Essentials.Extensions;
 using Microsoft.Extensions.Primitives;
 
 namespace Emeraude.Application.Admin.EmPages.Services;
@@ -151,9 +152,17 @@ public partial class EmPageManager
             var requestResult = await dataManager.FetchAsync(fetchQuery);
             if (requestResult != null)
             {
+                IEmPageModel parentRawModel = null;
+                var parentId = query.GetValueOrDefault(EmPagesConstants.ParentQueryParam).FirstOrDefault();
+                if (schemaDescription.ParentSchema != null && !string.IsNullOrWhiteSpace(parentId))
+                {
+                    var parentDataManager = this.GetDataManagerInstance(schemaDescription.ParentSchema);
+                    parentRawModel = await parentDataManager.GetRawModelAsync(parentId);
+                }
+
                 foreach (var item in requestResult.Items)
                 {
-                    var rowModel = this.BuildTableRow(item, model, schemaDescription);
+                    var rowModel = await this.BuildTableRowAsync(item, model, schemaDescription, parentRawModel);
                     model.TableViewModel.Rows.Add(rowModel);
                 }
 
@@ -192,7 +201,7 @@ public partial class EmPageManager
         };
     }
 
-    private EmPageTableRowModel BuildTableRow(EmPageModelResponse item, EmPageIndexViewModel model, EmPageSchemaDescription schemaDescription)
+    private async Task<EmPageTableRowModel> BuildTableRowAsync(EmPageModelResponse item, EmPageIndexViewModel model, EmPageSchemaDescription schemaDescription, IEmPageModel parentModel)
     {
         var rowModel = new EmPageTableRowModel
         {
@@ -215,6 +224,11 @@ public partial class EmPageManager
 
         rowModel.Actions.AddRange(model.TableViewModel.RowActions.Select(this.BuildRowAction));
         this.SetDataRelatedPlaceholders(rowModel.Actions, item, schemaDescription);
+
+        if (schemaDescription.ParentSchema != null && parentModel != null)
+        {
+            this.SetDataRelatedPlaceholders(rowModel.Actions, parentModel, schemaDescription.ParentSchema);
+        }
 
         return rowModel;
     }
