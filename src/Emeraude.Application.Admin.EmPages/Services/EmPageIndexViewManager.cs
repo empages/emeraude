@@ -54,7 +54,9 @@ public partial class EmPageManager
 
         var dataManager = this.GetDataManagerInstance(schemaDescription);
         var parentModel = await dataManager.GetRawModelAsync(parentDetailsViewModel.Identifier);
+
         this.SetDataRelatedPlaceholders(viewModel.Context.Breadcrumbs, parentModel, schemaDescription);
+        this.SetDataRelatedPlaceholders(viewModel.Context.NavbarActions, parentModel, schemaDescription);
 
         return viewModel;
     }
