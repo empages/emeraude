@@ -23,7 +23,6 @@ public class DetailsViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigur
     {
         this.viewItems = new List<DetailsViewItem>();
         this.PageActions = new List<EmPageAction>();
-        this.Breadcrumbs = new List<EmPageBreadcrumb>();
         this.Features = new List<EmPageFeature<TModel>>();
     }
 
@@ -32,9 +31,6 @@ public class DetailsViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigur
 
     /// <inheritdoc/>
     public IList<EmPageAction> PageActions { get; }
-
-    /// <inheritdoc/>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
     /// <summary>
     /// List of all features for specified details view.

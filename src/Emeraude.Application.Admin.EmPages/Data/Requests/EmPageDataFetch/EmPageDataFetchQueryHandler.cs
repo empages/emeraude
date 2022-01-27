@@ -13,6 +13,7 @@ using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Helpers;
 using Emeraude.Essentials.Models;
 using Emeraude.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
@@ -73,11 +74,17 @@ public class EmPageDataFetchQueryHandler<TEntity, TModel> : IEmPageDataFetchQuer
                 orderExpression = request.OrderBy;
             }
 
-            var entities = entitiesQuery
+            entitiesQuery = entitiesQuery
                 .OrderByType(request.OrderType, orderExpression)
                 .Skip(result.StartRow)
-                .Take(request.PageSize)
-                .ToList();
+                .Take(request.PageSize);
+
+            if (request.QueryInterceptor != null)
+            {
+                entitiesQuery = request.QueryInterceptor(request, entitiesQuery);
+            }
+
+            var entities = await entitiesQuery.ToListAsync(cancellationToken);
 
             result.Items = this.mapper.Map<IEnumerable<TModel>>(entities);
         }

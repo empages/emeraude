@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Pluralize.NET;
 
 namespace Emeraude.Essentials.Extensions;
 
@@ -7,24 +8,26 @@ namespace Emeraude.Essentials.Extensions;
 /// </summary>
 public static class StringExtensions
 {
+    private static readonly IPluralize Pluralizer = new Pluralizer();
+
     /// <summary>
-    /// Get plural of the string.
+    /// Get plural form of string.
     /// </summary>
     /// <param name="targetString"></param>
     /// <returns></returns>
     public static string ToPluralString(this string targetString)
     {
-        string resultString = $"{targetString}s";
-        if (targetString.EndsWith("s", System.StringComparison.OrdinalIgnoreCase) ||
-            targetString.EndsWith("sh", System.StringComparison.OrdinalIgnoreCase) ||
-            targetString.EndsWith("ch", System.StringComparison.OrdinalIgnoreCase) ||
-            targetString.EndsWith("x", System.StringComparison.OrdinalIgnoreCase) ||
-            targetString.EndsWith("z", System.StringComparison.OrdinalIgnoreCase))
-        {
-            resultString = $"{targetString}es";
-        }
+        return Pluralizer.Pluralize(targetString);
+    }
 
-        return resultString;
+    /// <summary>
+    /// Get singular form of a string.
+    /// </summary>
+    /// <param name="targetString"></param>
+    /// <returns></returns>
+    public static string ToSingularString(this string targetString)
+    {
+        return Pluralizer.Singularize(targetString);
     }
 
     /// <summary>

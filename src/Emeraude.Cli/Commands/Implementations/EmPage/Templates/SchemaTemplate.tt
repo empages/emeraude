@@ -40,7 +40,6 @@ public class <#=Session["PageName"]#>EmPageSchema : IEmPageSchema<<#=Session["Pa
                         item.SetComponent<EmPageTextRenderer>();
                     });
             })
-            .ApplyDefaultEmPageBreadcrumbs()
             .ApplyDefaultEmPageActions();
 
         settings.ModelActions.RemoveAt(1);

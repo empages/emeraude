@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Contracts;
 using MediatR;
@@ -18,4 +20,9 @@ public interface IEmPageDataDetailsQuery<TEntity, TModel> : IRequest<TModel>, IE
     /// Id of the entity.
     /// </summary>
     Guid EntityId { get; set; }
+
+    /// <summary>
+    /// Interceptor of the current query. This property contains a function that allows manual logic injection.
+    /// </summary>
+    Func<IEmPageDataDetailsQuery<TEntity, TModel>, IQueryable<TEntity>, IQueryable<TEntity>> QueryInterceptor { get; set; }
 }

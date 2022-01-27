@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -41,9 +42,16 @@ public class EmPageDataDetailsQueryHandler<TEntity, TModel> : IEmPageDataDetails
     {
         try
         {
-            var entity = await this.context
+            var entityQuery = this.context
                 .Set<TEntity>()
-                .FirstOrDefaultAsync(x => x.Id == request.EntityId, cancellationToken);
+                .Where(x => x.Id == request.EntityId);
+
+            if (request.QueryInterceptor != null)
+            {
+                entityQuery = request.QueryInterceptor(request, entityQuery);
+            }
+
+            var entity = await entityQuery.FirstOrDefaultAsync(x => x.Id == request.EntityId, cancellationToken);
 
             return this.mapper.Map<TModel>(entity);
         }

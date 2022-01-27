@@ -57,28 +57,6 @@ public partial class EmPageManager
         this.MapToViewModel(schemaDescription.FormView, model);
         await this.MapToFormViewModelAsync(schemaDescription.FormView, model);
 
-        var breadcrumbsIndicesForHide = schemaDescription
-            .FormView
-            .Breadcrumbs
-            .Select((x, i) => new { Index = i, Hide = x.HideContextually })
-            .Where(x => x.Hide && type == EmPageFormType.CreateForm)
-            .Select(x => x.Index);
-
-        model.Context.Breadcrumbs = model.Context.Breadcrumbs
-            .Where((_, i) => !breadcrumbsIndicesForHide.Contains(i)).ToList();
-
-        // Set built-in placeholders
-        foreach (var breadcrumb in model.Context.Breadcrumbs)
-        {
-            if (EmPagesPlaceholders.TryGetFormActionPlaceholder(
-                    breadcrumb.Title,
-                    type,
-                    out var foundPlaceholderValue))
-            {
-                breadcrumb.Title = foundPlaceholderValue;
-            }
-        }
-
         // Retrieve data
         var dataManager = this.GetDataManagerInstance(schemaDescription);
         IEnumerable<FormViewItem> formViewItems;
@@ -98,7 +76,6 @@ public partial class EmPageManager
                 }
 
                 model.Identifier = rawModel?.Id;
-                this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
                 this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
 
                 break;
@@ -200,7 +177,6 @@ public partial class EmPageManager
             var parentRawModel = await parentDataManager.GetRawModelAsync(parentId);
             if (parentRawModel != null)
             {
-                this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, parentRawModel, schemaDescription.ParentSchema);
                 this.SetDataRelatedPlaceholders(model.Context.NavbarActions, parentRawModel, schemaDescription.ParentSchema);
             }
         }

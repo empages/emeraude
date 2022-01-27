@@ -24,7 +24,6 @@ public class FormViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurati
     public FormViewConfigurationBuilder()
     {
         this.PageActions = new List<EmPageAction>();
-        this.Breadcrumbs = new List<EmPageBreadcrumb>();
         this.viewItems = new List<FormViewItem>();
     }
 
@@ -33,9 +32,6 @@ public class FormViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurati
 
     /// <inheritdoc/>
     public IList<EmPageAction> PageActions { get; }
-
-    /// <inheritdoc/>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
     /// <summary>
     /// Model validator action.

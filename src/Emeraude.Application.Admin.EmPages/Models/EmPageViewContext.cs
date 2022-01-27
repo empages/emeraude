@@ -14,7 +14,6 @@ public class EmPageViewContext
     public EmPageViewContext()
     {
         this.NavbarActions = new List<ActionModel>();
-        this.Breadcrumbs = new List<BreadcrumbItemModel>();
     }
 
     /// <summary>
@@ -31,9 +30,4 @@ public class EmPageViewContext
     /// Actions placed in the navbar.
     /// </summary>
     public IList<ActionModel> NavbarActions { get; }
-
-    /// <summary>
-    /// Breadcrumbs list.
-    /// </summary>
-    public IList<BreadcrumbItemModel> Breadcrumbs { get; set; }
 }

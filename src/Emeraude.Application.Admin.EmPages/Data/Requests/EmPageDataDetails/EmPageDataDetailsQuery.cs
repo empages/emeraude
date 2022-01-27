@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Emeraude.Application.Admin.EmPages.Data.Requests.EmPageDataFetch;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Contracts;
 
@@ -22,4 +24,7 @@ public class EmPageDataDetailsQuery<TEntity, TModel> : IEmPageDataDetailsQuery<T
     /// Id of the entity.
     /// </summary>
     public Guid EntityId { get; set; }
+
+    /// <inheritdoc/>
+    public Func<IEmPageDataDetailsQuery<TEntity, TModel>, IQueryable<TEntity>, IQueryable<TEntity>> QueryInterceptor { get; set; }
 }

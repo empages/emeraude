@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Contracts;
@@ -24,4 +25,9 @@ public interface IEmPageDataRawModelQuery<TEntity, TModel> : IRequest<TModel>, I
     /// Expression for finding an entity.
     /// </summary>
     Expression<Func<TEntity, bool>> FilterExpression { get; set; }
+
+    /// <summary>
+    /// Interceptor of the current query. This property contains a function that allows manual logic injection.
+    /// </summary>
+    Func<IEmPageDataRawModelQuery<TEntity, TModel>, IQueryable<TEntity>, IQueryable<TEntity>> QueryInterceptor { get; set; }
 }

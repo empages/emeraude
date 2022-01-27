@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Emeraude.Application.Admin.EmPages.Schema;
 using Emeraude.Contracts;
@@ -33,4 +34,7 @@ public class EmPageDataRawModelQuery<TEntity, TModel> : IEmPageDataRawModelQuery
 
     /// <inheritdoc/>
     public Expression<Func<TEntity, bool>> FilterExpression { get; set; }
+
+    /// <inheritdoc/>
+    public Func<IEmPageDataRawModelQuery<TEntity, TModel>, IQueryable<TEntity>, IQueryable<TEntity>> QueryInterceptor { get; set; }
 }

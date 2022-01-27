@@ -49,7 +49,7 @@ public class EmPageSchemaFactory : IEmPageSchemaFactory
             if (schemaSetupResultTask != null)
             {
                 await schemaSetupResultTask.ConfigureAwait(false);
-                var userDefinedSchemaSettings = (object)((dynamic)schemaSetupResultTask).Result as IEmPageSchemaSettings;
+                var userDefinedSchemaSettings = (object)(await ((dynamic)schemaSetupResultTask)) as IEmPageSchemaSettings;
                 var schemaDescription = userDefinedSchemaSettings?.BuildDescription(this.mainOptions.Assemblies);
                 if (schemaDescription != null)
                 {
@@ -96,26 +96,6 @@ public class EmPageSchemaFactory : IEmPageSchemaFactory
 
                 var relatedFeature = schemaDescription.ParentSchema.DetailsView.Features.First(x => x.Route == schemaDescription.Route);
                 schemaDescription.ParentRelation = relatedFeature.EmPageBasedRelation;
-
-                var newBreadcrumbIndex = 0;
-                var parentSchemaFeatureBreadcrumbs = relatedFeature.Breadcrumbs;
-
-                foreach (var parentDetailsViewBreadcrumb in parentSchemaFeatureBreadcrumbs)
-                {
-                    var currentParentBreadcrumb = new EmPageBreadcrumb
-                    {
-                        Title = parentDetailsViewBreadcrumb.Title,
-                        Href = parentDetailsViewBreadcrumb.Href,
-                        IsActive = true,
-                        HideContextually = parentDetailsViewBreadcrumb.HideContextually,
-                        Order = parentDetailsViewBreadcrumb.Order - 1000,
-                    };
-
-                    schemaDescription.IndexView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                    schemaDescription.DetailsView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                    schemaDescription.FormView.Breadcrumbs.Insert(newBreadcrumbIndex, currentParentBreadcrumb);
-                    newBreadcrumbIndex++;
-                }
             }
         }
     }
