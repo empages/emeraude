@@ -23,7 +23,7 @@ public abstract partial class UserAuthenticationController
     [HttpGet]
     [Route(ForgotPasswordRoute)]
     [LanguageRoute(ForgotPasswordRoute)]
-    public virtual IActionResult ForgotPassword()
+    public virtual async Task<IActionResult> ForgotPassword()
     {
         if (this.IsAuthenticated)
         {
@@ -38,13 +38,13 @@ public abstract partial class UserAuthenticationController
     /// <summary>
     /// Forgot password action for POST request.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="viewModel"></param>
     /// <returns></returns>
     [HttpPost]
     [Route(ForgotPasswordRoute)]
     [LanguageRoute(ForgotPasswordRoute)]
     [ValidateAntiForgeryToken]
-    public virtual async Task<IActionResult> ForgotPassword(ForgotPasswordCommand request)
+    public virtual async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
     {
         if (this.IsAuthenticated)
         {
@@ -53,10 +53,14 @@ public abstract partial class UserAuthenticationController
 
         try
         {
-            var result = await this.Mediator.Send(request);
+            var result = await this.Mediator.Send(new ForgotPasswordCommand
+            {
+                Email = viewModel?.Email,
+                AdditionalParameters = viewModel?.AdditionalParameters,
+            });
             if (!result.Succeeded)
             {
-                this.logger.LogWarning("Invalid email {Email} from reset password form", request.Email);
+                this.logger.LogWarning("Invalid email {Email} from reset password form", viewModel.Email);
             }
 
             return await this.RedirectToSucceededExecutionResultAsync(
@@ -73,10 +77,17 @@ public abstract partial class UserAuthenticationController
             this.ModelState.AddModelError(string.Empty, Strings.YourPasswordCannotBeReset);
         }
 
-        return this.ForgotPasswordView(request as ForgotPasswordViewModel);
+        return this.ForgotPasswordView(viewModel);
     }
 
-    private ViewResult ForgotPasswordView(ForgotPasswordViewModel model)
+    /// <summary>
+    /// Returns forgot password view.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <typeparam name="TViewModel">View model.</typeparam>
+    /// <returns></returns>
+    protected virtual ViewResult ForgotPasswordView<TViewModel>(TViewModel model)
+        where TViewModel : ForgotPasswordViewModel
     {
         return this.View("ForgotPassword", model);
     }

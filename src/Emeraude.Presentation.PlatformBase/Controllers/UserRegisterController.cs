@@ -22,7 +22,7 @@ public abstract partial class UserAuthenticationController
     [HttpGet]
     [Route(RegisterRoute)]
     [LanguageRoute(RegisterRoute)]
-    public IActionResult Register()
+    public virtual async Task<IActionResult> Register()
     {
         if (this.IsAuthenticated)
         {
@@ -37,13 +37,13 @@ public abstract partial class UserAuthenticationController
     /// <summary>
     /// Register action for POST request.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="viewModel"></param>
     /// <returns></returns>
     [HttpPost]
     [Route(RegisterRoute)]
     [LanguageRoute(RegisterRoute)]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegisterCommand request)
+    public virtual async Task<IActionResult> Register(RegisterViewModel viewModel)
     {
         if (this.IsAuthenticated)
         {
@@ -52,7 +52,14 @@ public abstract partial class UserAuthenticationController
 
         try
         {
-            var result = await this.Mediator.Send(request);
+            var result = await this.Mediator.Send(new RegisterCommand
+            {
+                Name = viewModel?.Name,
+                Email = viewModel?.Email,
+                Password = viewModel?.Password,
+                ConfirmedPassword = viewModel?.ConfirmedPassword,
+                AdditionalParameters = viewModel?.AdditionalParameters,
+            });
 
             if (result.Result.Succeeded)
             {
@@ -73,10 +80,17 @@ public abstract partial class UserAuthenticationController
             this.ModelState.AddModelError(string.Empty, Strings.UserCannotBeRegistered);
         }
 
-        return this.RegisterView(request as RegisterViewModel);
+        return this.RegisterView(viewModel);
     }
 
-    private ViewResult RegisterView(RegisterViewModel model)
+    /// <summary>
+    /// Returns register view.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <typeparam name="TViewModel">View model.</typeparam>
+    /// <returns></returns>
+    protected virtual ViewResult RegisterView<TViewModel>(TViewModel model)
+        where TViewModel : RegisterViewModel
     {
         return this.View("Register", model);
     }

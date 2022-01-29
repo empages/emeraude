@@ -9,7 +9,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.ConfirmEmail;
 /// <summary>
 /// Command for confirming email of specified user.
 /// </summary>
-public class ConfirmEmailCommand : IRequest<ConfirmEmailRequestResult>
+public class ConfirmEmailCommand : IdentityCommand, IRequest<ConfirmEmailRequestResult>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ConfirmEmailCommand"/> class.
@@ -58,7 +58,12 @@ public class ConfirmEmailCommand : IRequest<ConfirmEmailRequestResult>
                 var result = await this.userManager.ConfirmEmailAsync(user, request.Token);
                 if (result.Succeeded)
                 {
-                    await this.identityEventManager.TriggerConfirmedEmailEventAsync(user.Id);
+                    await this.identityEventManager.TriggerEventAsync<IConfirmedEmailEventHandler, ConfirmedEmailEventArgs>(new ConfirmedEmailEventArgs
+                    {
+                        UserId = user.Id,
+                        AdditionalArgs = request.AdditionalParameters,
+                    });
+
                     return new ConfirmEmailRequestResult(true);
                 }
             }

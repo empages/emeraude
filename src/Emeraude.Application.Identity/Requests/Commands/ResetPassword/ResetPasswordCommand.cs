@@ -13,7 +13,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.ResetPassword;
 /// <summary>
 /// Command for client reset password of user.
 /// </summary>
-public class ResetPasswordCommand : IRequest<ResetPasswordRequestResult>
+public class ResetPasswordCommand : IdentityCommand, IRequest<ResetPasswordRequestResult>
 {
     /// <summary>
     /// Email of the user.
@@ -79,7 +79,13 @@ public class ResetPasswordCommand : IRequest<ResetPasswordRequestResult>
                     string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
                     string passwordResetToken = this.urlEncoder.Encode(await this.userManager.GeneratePasswordResetTokenAsync(user));
                     string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/reset-password?token={passwordResetToken}&email={user.Email}");
-                    await this.identityEventManager.TriggerForgotPasswordEventAsync(user.Id, resetPasswordLink);
+                    await this.identityEventManager
+                        .TriggerEventAsync<IResetPasswordEventHandler, ResetPasswordEventArgs>(
+                            new ResetPasswordEventArgs
+                            {
+                                UserId = user.Id,
+                                AdditionalArgs = request.AdditionalParameters,
+                            });
 
                     return new ResetPasswordRequestResult(true);
                 }

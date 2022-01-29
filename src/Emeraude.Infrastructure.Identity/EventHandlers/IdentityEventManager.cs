@@ -29,90 +29,7 @@ public class IdentityEventManager : IIdentityEventManager
     }
 
     /// <inheritdoc/>
-    public async Task TriggerLoginEventAsync(Guid userId)
-    {
-        await this.TriggerEventAsync<ILoginEventHandler, LoginEventArgs>(new LoginEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerExternalLoginEventAsync(Guid userId)
-    {
-        await this.TriggerEventAsync<IExternalLoginEventHandler, ExternalLoginEventArgs>(new ExternalLoginEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerRegisterEventAsync(Guid userId, string confirmationLink)
-    {
-        await this.TriggerEventAsync<IRegisterEventHandler, RegisterEventArgs>(new RegisterEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-            EmailConfirmationLink = confirmationLink,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerExternalRegisterEventAsync(Guid userId)
-    {
-        await this.TriggerEventAsync<IExternalRegisterEventHandler, ExternalRegisterEventArgs>(new ExternalRegisterEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerForgotPasswordEventAsync(Guid userId, string resetPasswordLink)
-    {
-        await this.TriggerEventAsync<IForgotPasswordEventHandler, ForgotPasswordEventArgs>(new ForgotPasswordEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-            ResetPasswordLink = resetPasswordLink,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerResetPasswordEventAsync(Guid userId)
-    {
-        await this.TriggerEventAsync<IResetPasswordEventHandler, ResetPasswordEventArgs>(new ResetPasswordEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-        });
-    }
-
-    /// <inheritdoc/>
-    public async Task TriggerConfirmedEmailEventAsync(Guid userId)
-    {
-        await this.TriggerEventAsync<IConfirmedEmailEventHandler, ConfirmedEmailEventArgs>(new ConfirmedEmailEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-        });
-    }
-
-    /// <inheritdoc/>
-    public Task TriggerRequestChangeEmailEventAsync(Guid userId, string newEmail, string changeEmailConfirmationLink)
-    {
-        return this.TriggerEventAsync<IRequestChangeEmailEventHandler, RequestChangeEmailEventArgs>(new RequestChangeEmailEventArgs
-        {
-            UserId = userId,
-            HttpContext = this.httpContextAccessor.HttpContext,
-            EmailConfirmationLink = changeEmailConfirmationLink,
-            NewEmail = newEmail,
-        });
-    }
-
-    private async Task TriggerEventAsync<THandler, TEventArgs>(TEventArgs args)
+    public async Task TriggerEventAsync<THandler, TEventArgs>(TEventArgs args)
         where THandler : class, IIdentityEventHandler<TEventArgs>
         where TEventArgs : IdentityEventArgs
     {
@@ -120,6 +37,8 @@ public class IdentityEventManager : IIdentityEventManager
         {
             if (this.TryGetEventHandler<THandler, TEventArgs>(out THandler handler))
             {
+                args.HttpContext = this.httpContextAccessor.HttpContext;
+
                 await handler.HandleAsync(args);
             }
         }

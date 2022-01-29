@@ -27,16 +27,16 @@ public static class ControllerExtensions
     /// <returns></returns>
     public static string GetRouteWithAppliedLanguage(this Controller controller, string route, Language language)
     {
-        if (language != null && !language.IsDefault)
+        if (language == null || language.IsDefault)
         {
-            if (route.StartsWith("/"))
-            {
-                route = route.Substring(1);
-            }
-
-            return $"/{language.Code}/{route}";
+            return route;
         }
 
-        return route;
+        if (route.StartsWith("/"))
+        {
+            route = route.Substring(1);
+        }
+
+        return $"/{language.Code}/{route}";
     }
 }
