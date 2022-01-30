@@ -54,6 +54,7 @@ public abstract partial class UserAuthenticationController
     [HttpPost]
     [Route(ResetPasswordRoute)]
     [LanguageRoute(ResetPasswordRoute)]
+    [ValidateAntiForgeryToken]
     public virtual async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
     {
         if (this.IsAuthenticated &&

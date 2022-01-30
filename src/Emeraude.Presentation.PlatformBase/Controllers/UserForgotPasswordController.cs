@@ -17,6 +17,11 @@ public abstract partial class UserAuthenticationController
     private const string ForgotPasswordRoute = "/forgot-password";
 
     /// <summary>
+    /// Reset password route part.
+    /// </summary>
+    protected virtual string ResetPasswordRoutePart => "reset-password";
+
+    /// <summary>
     /// Forgot password action for GET request.
     /// </summary>
     /// <returns></returns>
@@ -56,6 +61,7 @@ public abstract partial class UserAuthenticationController
             var result = await this.Mediator.Send(new ForgotPasswordCommand
             {
                 Email = viewModel?.Email,
+                ResetPasswordRoutePart = this.ResetPasswordRoutePart,
                 AdditionalParameters = viewModel?.AdditionalParameters,
             });
             if (!result.Succeeded)

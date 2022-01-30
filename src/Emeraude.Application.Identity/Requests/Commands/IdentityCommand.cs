@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Emeraude.Application.Identity.Requests.Commands;
 
@@ -19,6 +18,5 @@ public abstract class IdentityCommand
     /// <summary>
     /// Additional parameters useful for the need of identity events.
     /// </summary>
-    [BindNever]
     public IDictionary<string, object> AdditionalParameters { get; set; }
 }

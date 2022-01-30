@@ -36,6 +36,11 @@ public class RegisterCommand : IdentityCommand, IRequest<RegisterRequestResult>
     /// </summary>
     public string ConfirmedPassword { get; set; }
 
+    /// <summary>
+    /// Confirm email route used for confirmation link generation.
+    /// </summary>
+    public string ConfirmEmailRoutePart { get; set; }
+
     /// <inheritdoc/>
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterRequestResult>
     {
@@ -81,7 +86,7 @@ public class RegisterCommand : IdentityCommand, IRequest<RegisterRequestResult>
                 var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
                 string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
                 string confirmationToken = this.urlEncoder.Encode(await this.userManager.GenerateEmailConfirmationTokenAsync(user));
-                string confirmationLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/confirm-email?token={confirmationToken}&email={user.Email}");
+                string confirmationLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.ConfirmEmailRoutePart}?token={confirmationToken}&email={user.Email}");
 
                 await this.eventManager.TriggerEventAsync<IRegisterEventHandler, RegisterEventArgs>(new RegisterEventArgs
                 {

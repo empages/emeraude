@@ -16,6 +16,11 @@ public abstract partial class UserAuthenticationController
     private const string RegisterRoute = "/register";
 
     /// <summary>
+    /// Confirm email route part.
+    /// </summary>
+    protected virtual string ConfirmEmailRoutePart => "confirm-email";
+
+    /// <summary>
     /// Register action for GET request.
     /// </summary>
     /// <returns></returns>
@@ -59,6 +64,7 @@ public abstract partial class UserAuthenticationController
                 Password = viewModel?.Password,
                 ConfirmedPassword = viewModel?.ConfirmedPassword,
                 AdditionalParameters = viewModel?.AdditionalParameters,
+                ConfirmEmailRoutePart = this.ConfirmEmailRoutePart,
             });
 
             if (result.Result.Succeeded)

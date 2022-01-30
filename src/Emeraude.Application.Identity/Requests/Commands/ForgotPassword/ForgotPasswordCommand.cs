@@ -20,6 +20,11 @@ public class ForgotPasswordCommand : IdentityCommand, IRequest<ForgotPasswordReq
     /// </summary>
     public string Email { get; set; }
 
+    /// <summary>
+    /// Reset password route used for confirmation link generation.
+    /// </summary>
+    public string ResetPasswordRoutePart { get; set; }
+
     /// <inheritdoc/>
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordRequestResult>
     {
@@ -61,7 +66,7 @@ public class ForgotPasswordCommand : IdentityCommand, IRequest<ForgotPasswordReq
                 string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
 
                 string passwordResetToken = this.urlEncoder.Encode(await this.userManager.GeneratePasswordResetTokenAsync(user));
-                string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/reset-password?token={passwordResetToken}&email={user.Email}");
+                string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.ResetPasswordRoutePart}?token={passwordResetToken}&email={user.Email}");
                 await this.identityEventManager.TriggerEventAsync<IForgotPasswordEventHandler, ForgotPasswordEventArgs>(
                     new ForgotPasswordEventArgs
                     {
