@@ -86,8 +86,13 @@ public static class DescriptionExtractor
     /// Extract description from type.
     /// </summary>
     /// <param name="type"></param>
+    /// <param name="parentType"></param>
+    /// <param name="parentDescription"></param>
     /// <returns></returns>
-    public static TypeDescription ExtractTypeDescription(Type type)
+    public static TypeDescription ExtractTypeDescription(
+        Type type,
+        Type parentType = null,
+        TypeDescription parentDescription = null)
     {
         try
         {
@@ -113,6 +118,11 @@ public static class DescriptionExtractor
             description.IsNullable = Nullable.GetUnderlyingType(type) != null;
             description.IsEnum = type.IsEnum;
             bool isPrimitiveType = false;
+
+            if (type == parentType)
+            {
+                return parentDescription;
+            }
 
             if (PrimitiveTypes.ContainsKey(type))
             {
@@ -173,7 +183,7 @@ public static class DescriptionExtractor
                         PropertyDescription propertyDescription = new PropertyDescription();
                         propertyDescription.Name = propertyInfo.Name;
                         propertyDescription.ReadOnly = propertyInfo.HasAttribute<ReadOnlyAttribute>();
-                        propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType);
+                        propertyDescription.Type = ExtractTypeDescription(propertyInfo.PropertyType, type, description);
                         propertyDescription.DefaultValue = DefaultValues.ContainsKey(propertyInfo.PropertyType) ? DefaultValues[propertyInfo.PropertyType] : "null";
                         description.Properties.Add(propertyDescription);
                     }
@@ -263,7 +273,7 @@ public static class DescriptionExtractor
         var classProperties = classDescription.Properties;
         foreach (var property in classProperties)
         {
-            if (property.Type.IsComplex)
+            if (property.Type.IsComplex && property.Type.FullName != classDescription.FullName)
             {
                 resultClasses.Add(property.Type);
                 resultClasses.AddRange(ExtractInnerClassDescriptions(property.Type));
