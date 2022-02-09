@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Emeraude.Application.Admin.EmPages.Data.Requests;
@@ -15,7 +16,6 @@ using Emeraude.Application.Admin.EmPages.Utilities;
 using Emeraude.Contracts;
 using Emeraude.Essentials.Extensions;
 using Emeraude.Essentials.Helpers;
-using Emeraude.Infrastructure.Persistence.Seed;
 
 namespace Emeraude.Application.Admin.EmPages.Data;
 
@@ -34,6 +34,7 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     protected EmPageEntityDataStrategy()
     {
         this.CustomFilterExpressionsBuilders = new Dictionary<PropertyInfo, Func<object, Expression<Func<TEntity, bool>>>>();
+        this.CustomFilterExpressionsCollection = new List<Func<object, Expression<Func<TEntity, bool>>>>();
         this.AvailableOrderExpressions = new Dictionary<string, Expression<Func<TEntity, object>>>();
     }
 
@@ -41,6 +42,11 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     /// Dictionary that contains filter expressions for model properties.
     /// </summary>
     protected IDictionary<PropertyInfo, Func<object, Expression<Func<TEntity, bool>>>> CustomFilterExpressionsBuilders { get; }
+
+    /// <summary>
+    /// Collection that contains custom filter expressions for manual filtration.
+    /// </summary>
+    protected IList<Func<object, Expression<Func<TEntity, bool>>>> CustomFilterExpressionsCollection { get; }
 
     /// <summary>
     /// Dictionary that contains order expressions for current model.
@@ -102,12 +108,19 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     }
 
     /// <summary>
-    /// Registers a custom filter expression for manual filtration.
+    /// Registers a custom filter expression for manual filtration. If you specify a null for the property then the system will
+    /// include the filter with no parameter.
     /// </summary>
     /// <param name="property"></param>
     /// <param name="expressionFunction"></param>
     protected void AddCustomFilterExpression(Expression<Func<TModel, object>> property, Func<object, Expression<Func<TEntity, bool>>> expressionFunction)
     {
+        if (property == null)
+        {
+            this.CustomFilterExpressionsCollection.Add(expressionFunction);
+            return;
+        }
+
         var propertyInfo = ReflectionHelpers.GetCorrectPropertyMember(property) as PropertyInfo;
         this.CustomFilterExpressionsBuilders.Add(propertyInfo, expressionFunction);
     }
@@ -129,21 +142,32 @@ public abstract class EmPageEntityDataStrategy<TEntity, TModel> : IEmPageDataStr
     /// <returns></returns>
     protected Expression<Func<TEntity, bool>> BuildFilterExpression(EmPageDataFilter filter)
     {
-        if (filter == null)
+        if (filter == null && !this.CustomFilterExpressionsCollection.Any())
         {
             return null;
         }
 
         Expression<Func<TEntity, bool>> resultExpression = x => true;
-        foreach (var (property, value) in filter)
+        if (filter != null)
         {
-            if (!this.CustomFilterExpressionsBuilders.ContainsKey(property))
+            foreach (var (property, value) in filter)
             {
-                throw new EmPageMissingConfigurationException($"There is not defined custom filter expression for property info of '{property.Name}' of '{this.GetType().Name}'");
-            }
+                if (!this.CustomFilterExpressionsBuilders.ContainsKey(property))
+                {
+                    throw new EmPageMissingConfigurationException($"There is not defined custom filter expression for property info of '{property.Name}' of '{this.GetType().Name}'");
+                }
 
-            var currentFilterExpression = this.CustomFilterExpressionsBuilders[property];
-            resultExpression = ExpressionBuilders.AndAlso(resultExpression, currentFilterExpression(value));
+                var currentFilterExpression = this.CustomFilterExpressionsBuilders[property];
+                resultExpression = ExpressionBuilders.AndAlso(resultExpression, currentFilterExpression(value));
+            }
+        }
+
+        if (this.CustomFilterExpressionsCollection.Any())
+        {
+            foreach (var customExpressions in this.CustomFilterExpressionsCollection)
+            {
+                resultExpression = ExpressionBuilders.AndAlso(resultExpression, customExpressions(null));
+            }
         }
 
         return resultExpression;

@@ -12,7 +12,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.Login;
 /// <summary>
 /// Command for user login.
 /// </summary>
-public class LoginCommand : IRequest<LoginRequestResult>
+public class LoginCommand : IdentityCommand, IRequest<LoginRequestResult>
 {
     /// <summary>
     /// Email of the user.
@@ -78,7 +78,11 @@ public class LoginCommand : IRequest<LoginRequestResult>
 
             if (result.Result == SignInResult.Success)
             {
-                await this.eventManager.TriggerLoginEventAsync(user.Id);
+                await this.eventManager.TriggerEventAsync<ILoginEventHandler, LoginEventArgs>(new LoginEventArgs
+                {
+                    UserId = user.Id,
+                    AdditionalArgs = request.AdditionalParameters,
+                });
             }
 
             return result;

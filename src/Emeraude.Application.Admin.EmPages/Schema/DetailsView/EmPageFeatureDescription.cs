@@ -17,7 +17,6 @@ public class EmPageFeatureDescription
     public EmPageFeatureDescription()
     {
         this.PageActions = new List<EmPageAction>();
-        this.Breadcrumbs = new List<EmPageBreadcrumb>();
     }
 
     /// <inheritdoc cref="EmPageFeature{TModel}.Route"/>
@@ -31,9 +30,6 @@ public class EmPageFeatureDescription
 
     /// <inheritdoc cref="EmPageFeature{TModel}.PageActions"/>
     public IList<EmPageAction> PageActions { get; set; }
-
-    /// <inheritdoc cref="EmPageFeature{TModel}.Breadcrumbs"/>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; set; }
 
     /// <inheritdoc cref="FeatureComponentConfigurationBuilder{TComponent,TModel}"/>
     public EmPageFeatureSourceToParentRelation EmPageBasedRelation { get; set; }

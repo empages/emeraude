@@ -27,14 +27,12 @@ public class EmPageSchemaTests
         schemaDescription.Description.Should().Be(settings.Description);
         schemaDescription.IndexView.IsActive.Should().Be(true);
         schemaDescription.IndexView.OrderProperties.Should().HaveCount(0);
-        schemaDescription.IndexView.Breadcrumbs.Should().HaveCount(0);
         schemaDescription.IndexView.PageActions.Should().HaveCount(1);
         schemaDescription.IndexView.ViewItems
             .Should()
             .BeEquivalentTo(settings.IndexViewConfigurationBuilder.ViewItems);
 
         schemaDescription.DetailsView.IsActive.Should().Be(true);
-        schemaDescription.DetailsView.Breadcrumbs.Should().HaveCount(0);
         schemaDescription.DetailsView.PageActions.Should().HaveCount(0);
         schemaDescription.DetailsView.Features.Should().HaveCount(0);
         schemaDescription.DetailsView.ViewItems
@@ -42,7 +40,6 @@ public class EmPageSchemaTests
             .BeEquivalentTo(settings.DetailsViewConfigurationBuilder.ViewItems);
         
         schemaDescription.FormView.IsActive.Should().Be(false);
-        schemaDescription.FormView.Breadcrumbs.Should().HaveCount(0);
         schemaDescription.FormView.PageActions.Should().HaveCount(0);
         schemaDescription.FormView.ViewItems.Should().HaveCount(0);
         schemaDescription.FormView.IsCreateFormActive.Should().Be(false);

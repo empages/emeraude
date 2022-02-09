@@ -16,7 +16,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.RequestChangeEmail;
 /// <summary>
 /// Command that send request for change email for specified user.
 /// </summary>
-public class RequestChangeEmailCommand : IRequest<SimpleResult>
+public class RequestChangeEmailCommand : IdentityCommand, IRequest<SimpleResult>
 {
     /// <summary>
     /// Id of the target user.
@@ -101,7 +101,15 @@ public class RequestChangeEmailCommand : IRequest<SimpleResult>
 
                     var changeEmailToken = this.urlEncoder.Encode(await this.userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail));
                     string changeEmailLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.LocalCallbackUrl}?token={changeEmailToken}&email={request.NewEmail}");
-                    await this.identityEventManager.TriggerRequestChangeEmailEventAsync(user.Id, request.NewEmail, changeEmailLink);
+                    await this.identityEventManager
+                        .TriggerEventAsync<IRequestChangeEmailEventHandler, RequestChangeEmailEventArgs>(
+                            new RequestChangeEmailEventArgs
+                            {
+                                UserId = user.Id,
+                                NewEmail = request.NewEmail,
+                                EmailConfirmationLink = changeEmailLink,
+                                AdditionalArgs = request.AdditionalParameters,
+                            });
 
                     return SimpleResult.SuccessfulResult;
                 }

@@ -24,7 +24,7 @@ public abstract partial class UserAuthenticationController
     [Route(ExternalLoginRoute)]
     [LanguageRoute(ExternalLoginRoute)]
     [ValidateAntiForgeryToken]
-    public virtual IActionResult ExternalLogin([FromForm(Name = "externalProvider")]string externalProvider, string returnUrl = "")
+    public virtual async Task<IActionResult> ExternalLogin([FromForm(Name = "externalProvider")]string externalProvider, string returnUrl = "")
     {
         if (this.IsAuthenticated)
         {

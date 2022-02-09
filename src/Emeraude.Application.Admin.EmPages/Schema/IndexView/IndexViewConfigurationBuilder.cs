@@ -31,7 +31,6 @@ public class IndexViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurat
             },
         };
 
-        this.Breadcrumbs = new List<EmPageBreadcrumb>();
         this.OrderProperties = new Dictionary<string, string>();
     }
 
@@ -40,9 +39,6 @@ public class IndexViewConfigurationBuilder<TModel> : IEmPageSchemaViewConfigurat
 
     /// <inheritdoc/>
     public IList<EmPageAction> PageActions { get; }
-
-    /// <inheritdoc/>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
     /// <summary>
     /// Dictionary that contains possible order properties for the current view.

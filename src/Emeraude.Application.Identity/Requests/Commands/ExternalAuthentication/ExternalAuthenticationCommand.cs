@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.ExternalAuthentication
 /// <summary>
 /// Command for external authentication of user.
 /// </summary>
-public class ExternalAuthenticationCommand : IRequest<ExternalAuthenticationRequestResult>
+public class ExternalAuthenticationCommand : IdentityCommand, IRequest<ExternalAuthenticationRequestResult>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ExternalAuthenticationCommand"/> class.
@@ -122,6 +123,8 @@ public class ExternalAuthenticationCommand : IRequest<ExternalAuthenticationRequ
                 User = user,
             };
 
+            var additionalArgs = new Dictionary<string, object>(request.AdditionalParameters);
+
             if (user != null)
             {
                 bool isProviderRegistered = await this.userManager.FindUserByLoginAsync(externalUser.Provider, externalUser.Id) != null;
@@ -131,7 +134,13 @@ public class ExternalAuthenticationCommand : IRequest<ExternalAuthenticationRequ
                 }
 
                 result.Result = SignInResult.Success;
-                await this.eventManager.TriggerExternalLoginEventAsync(user.Id);
+
+                additionalArgs["ExternalUser"] = externalUser;
+                await this.eventManager.TriggerEventAsync<IExternalLoginEventHandler, ExternalLoginEventArgs>(new ExternalLoginEventArgs
+                {
+                    UserId = user.Id,
+                    AdditionalArgs = additionalArgs,
+                });
             }
             else
             {
@@ -140,7 +149,14 @@ public class ExternalAuthenticationCommand : IRequest<ExternalAuthenticationRequ
                 {
                     result.Result = SignInResult.Success;
                     result.User = newUser;
-                    await this.eventManager.TriggerExternalRegisterEventAsync(newUser.Id);
+
+                    additionalArgs["ExternalUser"] = externalUser;
+                    await this.eventManager.TriggerEventAsync<IExternalRegisterEventHandler, ExternalRegisterEventArgs>(
+                        new ExternalRegisterEventArgs
+                        {
+                            UserId = newUser.Id,
+                            AdditionalArgs = additionalArgs,
+                        });
                 }
             }
 

@@ -75,22 +75,6 @@ public partial class EmPageManager : IEmPageManager
         return dataManager;
     }
 
-    private void SetDataRelatedPlaceholders(IEnumerable<BreadcrumbItemModel> breadcrumbs, IEmPageModel model, EmPageSchemaDescription schemaDescription)
-    {
-        foreach (var breadcrumb in breadcrumbs)
-        {
-            if (!string.IsNullOrWhiteSpace(breadcrumb.Title) && EmPagesPlaceholders.TryApplyModelPropertiesPlaceholders(breadcrumb.Title, model, schemaDescription.Route, out var convertedTitle))
-            {
-                breadcrumb.Title = convertedTitle;
-            }
-
-            if (!string.IsNullOrWhiteSpace(breadcrumb.ActionUrl) && EmPagesPlaceholders.TryApplyModelPropertiesPlaceholders(breadcrumb.ActionUrl, model, schemaDescription.Route, out var convertedUrl))
-            {
-                breadcrumb.ActionUrl = convertedUrl;
-            }
-        }
-    }
-
     private void SetDataRelatedPlaceholders(IEnumerable<ActionModel> actions, IEmPageModel model, EmPageSchemaDescription schemaDescription)
     {
         foreach (var actionModel in actions)
@@ -139,11 +123,6 @@ public partial class EmPageManager : IEmPageManager
             model.Context.NavbarActions.Add(this.MapAction(pageAction, model.Context.Route));
         }
 
-        foreach (var breadcrumb in sourceDescription.Breadcrumbs)
-        {
-            model.Context.Breadcrumbs.Add(this.MapBreadcrumb(breadcrumb));
-        }
-
         foreach (var viewItem in sourceDescription.ViewItems)
         {
             model.PropertyComponentMap.Add(new PropertyMap<EmPageComponent>(viewItem.SourceName, viewItem.Component));
@@ -157,15 +136,6 @@ public partial class EmPageManager : IEmPageManager
             }
         }
     }
-
-    private BreadcrumbItemModel MapBreadcrumb(EmPageBreadcrumb breadcrumb) =>
-        new ()
-        {
-            Title = breadcrumb.Title,
-            ActionUrl = breadcrumb.Href,
-            IsActive = breadcrumb.IsActive,
-            Order = breadcrumb.Order,
-        };
 
     private ActionModel MapAction(EmPageAction action, string contextRoute) =>
         new ()

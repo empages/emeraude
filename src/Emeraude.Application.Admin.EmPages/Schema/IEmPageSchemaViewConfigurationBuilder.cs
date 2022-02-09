@@ -24,11 +24,6 @@ public interface IEmPageSchemaViewConfigurationBuilder<out TViewItem, TModel>
     IList<EmPageAction> PageActions { get; }
 
     /// <summary>
-    /// List of all page breadcrumbs for the current EmPage.
-    /// </summary>
-    IList<EmPageBreadcrumb> Breadcrumbs { get; }
-
-    /// <summary>
     /// Register model property as a view item of the current schema configuration.
     /// </summary>
     /// <param name="property"></param>

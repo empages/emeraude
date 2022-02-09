@@ -161,7 +161,6 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
             {
                 ViewItems = this.indexViewConfigurationBuilder.ViewItems,
                 PageActions = this.indexViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
-                Breadcrumbs = this.indexViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
                 CustomViewComponent = this.indexViewConfigurationBuilder.CustomViewComponent,
                 OrderProperties = this.indexViewConfigurationBuilder.OrderProperties,
             },
@@ -169,14 +168,12 @@ public class EmPageSchemaSettings<TModel> : IEmPageSchemaSettings
             {
                 ViewItems = this.detailsViewConfigurationBuilder.ViewItems,
                 PageActions = this.detailsViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
-                Breadcrumbs = this.detailsViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
                 Features = this.detailsViewConfigurationBuilder.Features.Select(x => x.ToDescription()).ToList(),
             },
             FormView = new FormViewDescription
             {
                 ViewItems = this.formViewConfigurationBuilder.ViewItems,
                 PageActions = this.formViewConfigurationBuilder.PageActions.OrderBy(x => x.Order).ToList(),
-                Breadcrumbs = this.formViewConfigurationBuilder.Breadcrumbs.OrderBy(x => x.Order).ToList(),
             },
         };
 

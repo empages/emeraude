@@ -24,7 +24,7 @@ public abstract partial class UserAuthenticationController
     [HttpGet]
     [Route(ResetPasswordRoute)]
     [LanguageRoute(ResetPasswordRoute)]
-    public virtual IActionResult ResetPassword([FromQuery]string token, [FromQuery]string email)
+    public virtual async Task<IActionResult> ResetPassword([FromQuery]string token, [FromQuery]string email)
     {
         if (this.IsAuthenticated &&
             !string.Equals(this.User.Identity.Name?.Trim(), email?.Trim(), StringComparison.CurrentCultureIgnoreCase))
@@ -49,22 +49,30 @@ public abstract partial class UserAuthenticationController
     /// <summary>
     /// Reset password action for POST request.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="viewModel"></param>
     /// <returns></returns>
     [HttpPost]
     [Route(ResetPasswordRoute)]
     [LanguageRoute(ResetPasswordRoute)]
-    public virtual async Task<IActionResult> ResetPassword(ResetPasswordCommand request)
+    [ValidateAntiForgeryToken]
+    public virtual async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
     {
         if (this.IsAuthenticated &&
-            this.User.Identity.Name?.Trim().ToLower() != request.Email?.Trim().ToLower())
+            this.User.Identity.Name?.Trim().ToLower() != viewModel.Email?.Trim().ToLower())
         {
             return this.RedirectToDefault();
         }
 
         try
         {
-            var result = await this.Mediator.Send(request);
+            var result = await this.Mediator.Send(new ResetPasswordCommand
+            {
+                Email = viewModel?.Email,
+                Token = viewModel?.Token,
+                Password = viewModel?.Password,
+                ConfirmedPassword = viewModel?.ConfirmedPassword,
+                AdditionalParameters = viewModel?.AdditionalParameters,
+            });
 
             if (result.Succeeded)
             {
@@ -87,10 +95,17 @@ public abstract partial class UserAuthenticationController
             this.ModelState.AddModelError(string.Empty, Strings.YourPasswordCannotBeReset);
         }
 
-        return this.ResetPasswordView(request as ResetPasswordViewModel);
+        return this.ResetPasswordView(viewModel);
     }
 
-    private ViewResult ResetPasswordView(ResetPasswordViewModel model)
+    /// <summary>
+    /// Returns reset password view.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <typeparam name="TViewModel">View model.</typeparam>
+    /// <returns></returns>
+    protected virtual ViewResult ResetPasswordView<TViewModel>(TViewModel model)
+        where TViewModel : ResetPasswordViewModel
     {
         return this.View("ResetPassword", model);
     }

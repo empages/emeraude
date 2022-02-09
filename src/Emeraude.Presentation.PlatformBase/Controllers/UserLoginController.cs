@@ -24,7 +24,7 @@ public abstract partial class UserAuthenticationController
     [HttpGet]
     [Route(LoginRoute)]
     [LanguageRoute(LoginRoute)]
-    public virtual IActionResult Login(string returnUrl = null)
+    public virtual async Task<IActionResult> Login(string returnUrl = null)
     {
         if (this.IsAuthenticated)
         {
@@ -45,14 +45,14 @@ public abstract partial class UserAuthenticationController
     /// <summary>
     /// Login action for GET request.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="viewModel"></param>
     /// <param name="returnUrl"></param>
     /// <returns></returns>
     [HttpPost]
     [Route(LoginRoute)]
     [LanguageRoute(LoginRoute)]
     [ValidateAntiForgeryToken]
-    public virtual async Task<IActionResult> Login(LoginCommand request, string returnUrl = "")
+    public virtual async Task<IActionResult> Login(LoginViewModel viewModel, string returnUrl = "")
     {
         if (this.IsAuthenticated)
         {
@@ -61,7 +61,12 @@ public abstract partial class UserAuthenticationController
 
         try
         {
-            var result = await this.Mediator.Send(request);
+            var result = await this.Mediator.Send(new LoginCommand
+            {
+                Email = viewModel?.Email,
+                Password = viewModel?.Password,
+                AdditionalParameters = viewModel?.AdditionalParameters,
+            });
 
             if (result.Result.Succeeded)
             {
@@ -92,10 +97,17 @@ public abstract partial class UserAuthenticationController
 
         this.ViewData["ReturnUrl"] = returnUrl;
 
-        return this.LoginView(request as LoginViewModel);
+        return this.LoginView(viewModel);
     }
 
-    private ViewResult LoginView(LoginViewModel model)
+    /// <summary>
+    /// Returns login view.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <typeparam name="TViewModel">View model.</typeparam>
+    /// <returns></returns>
+    protected virtual ViewResult LoginView<TViewModel>(TViewModel model)
+        where TViewModel : LoginViewModel
     {
         return this.View("Login", model);
     }

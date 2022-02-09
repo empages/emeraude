@@ -21,11 +21,6 @@ public abstract class ViewDescription<TViewItem>
     public IList<EmPageAction> PageActions { get; set; }
 
     /// <summary>
-    /// Page breadcrumbs of the current view.
-    /// </summary>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; set; }
-
-    /// <summary>
     /// Indicates whether the current view is active or not.
     /// </summary>
     public virtual bool IsActive => this.ViewItems != null && this.ViewItems.Any();

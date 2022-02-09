@@ -13,12 +13,17 @@ namespace Emeraude.Application.Identity.Requests.Commands.ForgotPassword;
 /// <summary>
 /// Command for forgot password request.
 /// </summary>
-public class ForgotPasswordCommand : IRequest<ForgotPasswordRequestResult>
+public class ForgotPasswordCommand : IdentityCommand, IRequest<ForgotPasswordRequestResult>
 {
     /// <summary>
     /// Email of the user.
     /// </summary>
     public string Email { get; set; }
+
+    /// <summary>
+    /// Reset password route used for confirmation link generation.
+    /// </summary>
+    public string ResetPasswordRoutePart { get; set; }
 
     /// <inheritdoc/>
     public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, ForgotPasswordRequestResult>
@@ -61,8 +66,14 @@ public class ForgotPasswordCommand : IRequest<ForgotPasswordRequestResult>
                 string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
 
                 string passwordResetToken = this.urlEncoder.Encode(await this.userManager.GeneratePasswordResetTokenAsync(user));
-                string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/reset-password?token={passwordResetToken}&email={user.Email}");
-                await this.identityEventManager.TriggerForgotPasswordEventAsync(user.Id, resetPasswordLink);
+                string resetPasswordLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.ResetPasswordRoutePart}?token={passwordResetToken}&email={user.Email}");
+                await this.identityEventManager.TriggerEventAsync<IForgotPasswordEventHandler, ForgotPasswordEventArgs>(
+                    new ForgotPasswordEventArgs
+                    {
+                        UserId = user.Id,
+                        ResetPasswordLink = resetPasswordLink,
+                        AdditionalArgs = request.AdditionalParameters,
+                    });
             }
 
             return new ForgotPasswordRequestResult(true);

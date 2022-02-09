@@ -1,4 +1,7 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using Emeraude.Essentials.Extensions;
 
 namespace Emeraude.Application.Admin.EmPages.Schema;
 
@@ -7,6 +10,14 @@ namespace Emeraude.Application.Admin.EmPages.Schema;
 /// </summary>
 public class EmPageAction
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmPageAction"/> class.
+    /// </summary>
+    public EmPageAction()
+    {
+        this.QueryStringParameters = new Dictionary<string, string>();
+    }
+
     /// <summary>
     /// Order of the action.
     /// </summary>
@@ -23,9 +34,29 @@ public class EmPageAction
     public string RelativeUrlFormat { get; set; }
 
     /// <summary>
+    /// Dictionary that contains the query string parameters.
+    /// </summary>
+    public IDictionary<string, string> QueryStringParameters { get; }
+
+    /// <summary>
     /// Relative URL of the action.
     /// </summary>
     public string RelativeUrl { get; set; }
+
+    /// <summary>
+    /// Gets or set the redirect URL after the execution of the action.
+    /// </summary>
+    public string RedirectTo
+    {
+        get => this.QueryStringParameters.GetValueOrDefault("redirectTo");
+        set
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                this.QueryStringParameters["redirectTo"] = value;
+            }
+        }
+    }
 
     /// <summary>
     /// Represents a flag that indicates whether the action be executed separately or not.
@@ -59,8 +90,8 @@ public class EmPageAction
             return this.RelativeUrl;
         }
 
-        var urlBase = $"/admin/{entityKey}";
         var relativeUrl = this.RelativeUrlFormat ?? string.Empty;
+        var urlBase = relativeUrl.StartsWith("/admin/") ? string.Empty : $"/admin/{entityKey}";
         if (!relativeUrl.StartsWith("/"))
         {
             relativeUrl = "/" + relativeUrl;
@@ -71,6 +102,8 @@ public class EmPageAction
             relativeUrl = string.Empty;
         }
 
-        return $"{urlBase}{relativeUrl}";
+        var queryString = string.Join('&', this.QueryStringParameters.Select(x => $"{x.Key}={x.Value}"));
+
+        return $"{urlBase}{relativeUrl}?{queryString}";
     }
 }

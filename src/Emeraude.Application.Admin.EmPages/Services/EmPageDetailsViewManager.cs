@@ -59,15 +59,7 @@ public partial class EmPageManager
             model.Features.Add(detailsFeature);
         }
 
-        this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, rawModel, schemaDescription);
         this.SetDataRelatedPlaceholders(model.Context.NavbarActions, rawModel, schemaDescription);
-        if (model.Features.Any())
-        {
-            foreach (var feature in model.Features)
-            {
-                this.SetDataRelatedPlaceholders(feature.Context.Breadcrumbs, rawModel, schemaDescription);
-            }
-        }
 
         var detailsResult = await dataManager.DetailsAsync(modelId);
         if (detailsResult != null)
@@ -98,15 +90,7 @@ public partial class EmPageManager
                 });
             }
 
-            this.SetDataRelatedPlaceholders(model.Context.Breadcrumbs, parentRawModel, parentSchemaDescription);
             this.SetDataRelatedPlaceholders(model.Context.NavbarActions, parentRawModel, parentSchemaDescription);
-            if (model.Features.Any())
-            {
-                foreach (var feature in model.Features)
-                {
-                    this.SetDataRelatedPlaceholders(feature.Context.Breadcrumbs, parentRawModel, parentSchemaDescription);
-                }
-            }
         }
 
         return model;
@@ -148,11 +132,6 @@ public partial class EmPageManager
         foreach (var pageAction in feature.PageActions)
         {
             detailsFeature.Context.NavbarActions.Add(this.MapAction(pageAction, detailsFeature.Context.Route));
-        }
-
-        foreach (var breadcrumb in feature.Breadcrumbs)
-        {
-            detailsFeature.Context.Breadcrumbs.Add(this.MapBreadcrumb(breadcrumb));
         }
 
         return detailsFeature;

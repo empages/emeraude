@@ -46,10 +46,16 @@ public class EmPageDataRawModelQueryHandler<TEntity, TModel> : IEmPageDataRawMod
                 filterExpression = request.FilterExpression;
             }
 
-            var modelEntity = await this.context
+            var modelEntityQuery = this.context
                 .Set<TEntity>()
-                .Where(filterExpression)
-                .FirstOrDefaultAsync(cancellationToken);
+                .Where(filterExpression);
+
+            if (request.QueryInterceptor != null)
+            {
+                modelEntityQuery = request.QueryInterceptor(request, modelEntityQuery);
+            }
+
+            var modelEntity = await modelEntityQuery.FirstOrDefaultAsync(cancellationToken);
 
             return this.mapper.Map<TModel>(modelEntity);
         }

@@ -1,7 +1,6 @@
 ﻿using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Emeraude.Essentials.Base;
 using Emeraude.Essentials.Extensions;
 using Emeraude.Infrastructure.Identity.Common;
 using Emeraude.Infrastructure.Identity.EventHandlers;
@@ -15,7 +14,7 @@ namespace Emeraude.Application.Identity.Requests.Commands.Register;
 /// <summary>
 /// Command for client user registration.
 /// </summary>
-public class RegisterCommand : IRequest<RegisterRequestResult>
+public class RegisterCommand : IdentityCommand, IRequest<RegisterRequestResult>
 {
     /// <summary>
     /// Name of the user.
@@ -36,6 +35,11 @@ public class RegisterCommand : IRequest<RegisterRequestResult>
     /// Confirmed password of the user.
     /// </summary>
     public string ConfirmedPassword { get; set; }
+
+    /// <summary>
+    /// Confirm email route used for confirmation link generation.
+    /// </summary>
+    public string ConfirmEmailRoutePart { get; set; }
 
     /// <inheritdoc/>
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterRequestResult>
@@ -82,9 +86,14 @@ public class RegisterCommand : IRequest<RegisterRequestResult>
                 var currentLanguage = await this.currentLanguageProvider.GetCurrentLanguageAsync();
                 string languageUrlPrefix = currentLanguage.IsDefault ? string.Empty : $"/{currentLanguage.Code.ToLower()}";
                 string confirmationToken = this.urlEncoder.Encode(await this.userManager.GenerateEmailConfirmationTokenAsync(user));
-                string confirmationLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/confirm-email?token={confirmationToken}&email={user.Email}");
+                string confirmationLink = this.httpContextAccessor.HttpContext.GetAbsoluteRoute($"{languageUrlPrefix}/{request.ConfirmEmailRoutePart}?token={confirmationToken}&email={user.Email}");
 
-                await this.eventManager.TriggerRegisterEventAsync(user.Id, confirmationLink);
+                await this.eventManager.TriggerEventAsync<IRegisterEventHandler, RegisterEventArgs>(new RegisterEventArgs
+                {
+                    UserId = user.Id,
+                    EmailConfirmationLink = confirmationLink,
+                    AdditionalArgs = request.AdditionalParameters,
+                });
                 result.User = user;
             }
 

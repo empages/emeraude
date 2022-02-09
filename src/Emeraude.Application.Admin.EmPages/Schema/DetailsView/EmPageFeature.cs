@@ -24,7 +24,6 @@ public class EmPageFeature<TModel>
     public EmPageFeature()
     {
         this.PageActions = new List<EmPageAction>();
-        this.Breadcrumbs = new List<EmPageBreadcrumb>();
     }
 
     /// <summary>
@@ -46,11 +45,6 @@ public class EmPageFeature<TModel>
     /// List of all page actions for the current EmPage.
     /// </summary>
     public IList<EmPageAction> PageActions { get; }
-
-    /// <summary>
-    /// List of all page breadcrumbs for the current EmPage.
-    /// </summary>
-    public IList<EmPageBreadcrumb> Breadcrumbs { get; }
 
     /// <summary>
     /// Maps external EmPage model to the feature.
@@ -106,7 +100,6 @@ public class EmPageFeature<TModel>
             Route = this.Route,
             Title = this.Title,
             FeatureComponentType = this.FeatureComponentType,
-            Breadcrumbs = this.Breadcrumbs,
             PageActions = this.PageActions,
             EmPageBasedRelation = this.emPageBasedRelation,
         };

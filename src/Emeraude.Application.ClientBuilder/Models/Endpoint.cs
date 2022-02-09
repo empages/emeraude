@@ -117,4 +117,21 @@ public class Endpoint
             return string.Join(", ", this.Arguments.Select(x => $"{x.Type.Name} {x.Name}"));
         }
     }
+
+    /// <summary>
+    /// Arguments names of the endpoint in JavaScript format, separated with comma and join into a string with their types.
+    /// </summary>
+    [JsonIgnore]
+    public string StrongTypedJavaScriptArgumentsListString
+    {
+        get
+        {
+            if (this.Arguments == null || this.Arguments.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(", ", this.Arguments.Select(x => $"{x.Name}: {x.Type.JavaScriptTypeName}"));
+        }
+    }
 }

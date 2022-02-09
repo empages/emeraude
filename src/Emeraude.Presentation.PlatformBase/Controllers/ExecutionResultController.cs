@@ -29,7 +29,7 @@ public abstract class ExecutionResultController : EmPublicController
     /// <returns></returns>
     [Route(HandleRoute)]
     [LanguageRoute(HandleRoute)]
-    public async Task<IActionResult> Handle(
+    public virtual async Task<IActionResult> Handle(
         [FromQuery]string title,
         [FromQuery]string message,
         [FromQuery]bool succeeded,

@@ -18,7 +18,7 @@ namespace Emeraude.Cli.Commands.Implementations.EmPage.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+    #line 1 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class SchemaTemplate : SchemaTemplateBase
     {
@@ -30,68 +30,68 @@ namespace Emeraude.Cli.Commands.Implementations.EmPage.Templates
         {
             this.Write("using System.Threading.Tasks;\r\nusing Emeraude.Application.Admin.EmPages.Components.Renderers;\r\nusing Emeraude.Application.Admin.EmPages.Schema;\r\nusing Emeraude.Defaults.Extensions;\r\n\r\nnamespace ");
             
-            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 11 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["ProjectName"]));
             
             #line default
             #line hidden
             this.Write(".Admin.EmPages.");
             
-            #line 11 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 11 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\npublic class ");
             
-            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 13 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write("EmPageSchema : IEmPageSchema<");
             
-            #line 13 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 13 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write("EmPageModel>\r\n{\r\n    public async Task<EmPageSchemaSettings<");
             
-            #line 15 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 15 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write("EmPageModel>> SetupAsync()\r\n    {\r\n        var settings = new EmPageSchemaSettings<");
             
-            #line 17 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 17 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageName"]));
             
             #line default
             #line hidden
             this.Write("EmPageModel>\r\n        {\r\n            Route = \"");
             
-            #line 19 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 19 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageRoute"]));
             
             #line default
             #line hidden
             this.Write("\",\r\n            Title = \"");
             
-            #line 20 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 20 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageTitle"]));
             
             #line default
             #line hidden
             this.Write("\",\r\n            Description = @\"");
             
-            #line 21 "D:\GitHub\Emeraude\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
+            #line 21 "C:\Users\gsk567\Workspace\emeraudeframework\emeraude\src\Emeraude.Cli\Commands\Implementations\EmPage\Templates\SchemaTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Session["PageTitle"]));
             
             #line default
             #line hidden
-            this.Write(" description.\",\r\n        };\r\n\r\n        settings\r\n            .ConfigureIndexView(indexView =>\r\n            {\r\n                indexView.PageActions.Clear();\r\n\r\n                indexView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ConfigureDetailsView(detailsView =>\r\n            {\r\n                detailsView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ApplyDefaultEmPageBreadcrumbs()\r\n            .ApplyDefaultEmPageActions();\r\n\r\n        settings.ModelActions.RemoveAt(1);\r\n\r\n        return settings;\r\n    }\r\n}");
+            this.Write(" description.\",\r\n        };\r\n\r\n        settings\r\n            .ConfigureIndexView(indexView =>\r\n            {\r\n                indexView.PageActions.Clear();\r\n\r\n                indexView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ConfigureDetailsView(detailsView =>\r\n            {\r\n                detailsView\r\n                    .Use(x => x.Id, item =>\r\n                    {\r\n                        item.SetComponent<EmPageTextRenderer>();\r\n                    });\r\n            })\r\n            .ApplyDefaultEmPageActions();\r\n\r\n        settings.ModelActions.RemoveAt(1);\r\n\r\n        return settings;\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

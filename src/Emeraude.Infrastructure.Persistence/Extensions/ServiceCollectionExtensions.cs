@@ -41,7 +41,8 @@ public static class ServiceCollectionExtensions
                     persistenceOptions.ContextOptionsBuilder = contextOptions =>
                         contextOptions.UseNpgsql(
                             connectionString,
-                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly));
+                            b => b.MigrationsAssembly(mainOptions.InfrastructureAssembly))
+                            .EnableSensitiveDataLogging();
                     break;
                 case DatabaseContextProvider.InMemoryDatabase:
                     persistenceOptions.ContextOptionsBuilder = contextOptions =>
