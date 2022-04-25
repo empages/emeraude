@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Emeraude.Pages\Emeraude.Pages.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages" />
+    </ItemGroup>
+    
+</Project>

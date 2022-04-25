@@ -8,8 +8,12 @@
     <Import Project="..\..\Emeraude.targets" />
 
     <ItemGroup>
-      <ProjectReference Include="..\Emeraude.Identity\Emeraude.Identity.csproj" />
-      <ProjectReference Include="..\Emeraude.Pages\Emeraude.Pages.csproj" />
+      <PackageReference Include="Essentials" Version="0.0.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components" />
+      <Folder Include="MappingStrategies" />
+    </ItemGroup>
+    
 </Project>

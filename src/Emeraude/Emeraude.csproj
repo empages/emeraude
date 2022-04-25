@@ -1,50 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>10.0</LangVersion>
-    <Version>$(PACKAGE_VERSION)</Version>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="FluentValidation" Version="10.3.3" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
-    <PackageReference Include="IdentityServer4" Version="4.1.2" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization.Policy" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Emeraude.Application.Admin\Emeraude.Application.Admin.csproj" />
-    <ProjectReference Include="..\Emeraude.Application.Consumer\Emeraude.Application.Consumer.csproj" />
-    <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
-    <ProjectReference Include="..\Emeraude.Infrastructure.FileStorage\Emeraude.Infrastructure.FileStorage.csproj" />
-    <ProjectReference Include="..\Emeraude.Infrastructure.Localization\Emeraude.Infrastructure.Localization.csproj" />
-    <ProjectReference Include="..\Emeraude.Infrastructure.Persistence\Emeraude.Infrastructure.Persistence.csproj" />
-    <ProjectReference Include="..\Emeraude.Infrastructure\Emeraude.Infrastructure.csproj" />
-    <ProjectReference Include="..\Emeraude.Presentation.PlatformBase\Emeraude.Presentation.PlatformBase.csproj" />
-    <ProjectReference Include="..\Emeraude.Presentation.PortalGateway\Emeraude.Presentation.PortalGateway.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    </ItemGroup>
 
-  <Import Project="..\..\Emeraude.targets" />
-  
+    <ItemGroup>
+      <ProjectReference Include="..\Emeraude.Application\Emeraude.Application.csproj" />
+      <ProjectReference Include="..\Emeraude.Identity\Emeraude.Identity.csproj" />
+      <ProjectReference Include="..\Emeraude.Pages\Emeraude.Pages.csproj" />
+      <ProjectReference Include="..\Emeraude.PortalGateway\Emeraude.PortalGateway.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\Emeraude.targets" />
 </Project>
