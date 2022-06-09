@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+
+    <Import Project="..\..\EmPages.targets" />
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
+      <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
+    </ItemGroup>
+
+</Project>

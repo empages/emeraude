@@ -1,0 +1,39 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Copyright>2021 EmPages</Copyright>
+		<Company>EmPages</Company>
+		<Authors>Georgi Karagogov</Authors>
+		<Product>EmPages</Product>
+		<PackageProjectUrl>https://empages.net</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/empages/core</RepositoryUrl>
+		<Description>A lightweight ASP.NET framework for creating successful products</Description>
+		<PackageTags>empages, framework, aspnet, aspnetmvc, razor, mvc, administration, localization, authentication, authorization, portal gateway</PackageTags>
+		<PackagemLicenseFile>LICENSE</PackagemLicenseFile>
+		<PackageIcon>logo_128.jpg</PackageIcon>
+		<PackageIconUrl />
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<CodeAnalysisRuleSet>../../EmPages.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="..\..\art\logo_128.jpg">
+		  <Pack>True</Pack>
+		  <!--suppress CheckTagEmptyBody -->
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+  	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+</Project>

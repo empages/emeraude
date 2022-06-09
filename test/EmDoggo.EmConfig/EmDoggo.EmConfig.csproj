@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\EmPages.Pages\EmPages.Pages.csproj" />
+      <ProjectReference Include="..\EmDoggo.Core\EmDoggo.Core.csproj" />
+    </ItemGroup>
+    
+</Project>

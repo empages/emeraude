@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmPages.Application\EmPages.Application.csproj" />
+      <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
+      <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
+      <ProjectReference Include="..\EmPages.PortalGateway\EmPages.PortalGateway.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\EmPages.targets" />
+</Project>

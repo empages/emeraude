@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+
+    <Import Project="..\..\EmPages.targets" />
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
+      <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
+    </ItemGroup>
+
+</Project>
