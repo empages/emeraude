@@ -1,11 +1,9 @@
 ﻿using System.Linq;
-using EmPages.Identity;
-using EmPages.Identity.Entities;
-using EmPages.Identity.Services;
+using System.Reflection;
 using EmPages.PortalGateway.ActionFilters;
-using Microsoft.AspNetCore.Identity;
+using EmPages.PortalGateway.Controllers;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace EmPages.PortalGateway.Extensions;
 

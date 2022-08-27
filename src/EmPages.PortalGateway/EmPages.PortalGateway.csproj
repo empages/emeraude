@@ -8,12 +8,16 @@
     <Import Project="..\..\EmPages.targets" />
 
     <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\EmPages.Common\EmPages.Common.csproj" />
       <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
       <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
     </ItemGroup>
 

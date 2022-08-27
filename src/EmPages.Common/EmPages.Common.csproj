@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Essentials" Version="0.0.5" />
+    </ItemGroup>
+
+    <Import Project="..\..\EmPages.targets" />
+
+</Project>

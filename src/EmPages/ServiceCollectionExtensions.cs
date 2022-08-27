@@ -33,7 +33,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services"></param>
     /// <param name="optionsAction"></param>
     /// <returns></returns>
-    public static IServiceCollection AddEmeraude(this IServiceCollection services, Action<EmOptions> optionsAction)
+    public static IServiceCollection AddEmeraldPages(this IServiceCollection services, Action<EmOptions> optionsAction)
     {
         var options = new EmOptions();
         DefaultOptionsAction?.Invoke(options);

@@ -15,7 +15,7 @@ builder.Services.AddDbContext<EntityContext>(b =>
 
 builder.Services.AddTransient<DataSeeder>();
 
-builder.Services.AddEmeraude(options =>
+builder.Services.AddEmeraldPages(options =>
 {
     options.ConfigureIdentityDbContext(b =>
     {
@@ -25,6 +25,8 @@ builder.Services.AddEmeraude(options =>
     options.GatewayId = "test-id-123";
 });
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -32,6 +34,10 @@ var app = builder.Build();
 await app.PrepareDataAsync();
 
 await app.StartEmeraudeAsync();
+
+app.UseSwagger();
+
+app.UseSwaggerUI();
 
 app.UseCors();
 

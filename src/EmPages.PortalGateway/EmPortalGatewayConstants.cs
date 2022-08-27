@@ -8,7 +8,7 @@ public static class EmPortalGatewayConstants
     /// <summary>
     /// EmPages portal identification header.
     /// </summary>
-    public const string GatewayIdentificationHeader = "Em-Portal-Gateway-Id";
+    public const string GatewayIdentificationHeader = "X-Em-Portal-Gateway-Id";
 
     /// <summary>
     /// EmPages portal CORS policy name.
@@ -18,5 +18,5 @@ public static class EmPortalGatewayConstants
     /// <summary>
     /// Portal gateway route prefix.
     /// </summary>
-    public const string RoutePrefix = "/_em/api";
+    public const string RoutePrefix = "/_em";
 }
