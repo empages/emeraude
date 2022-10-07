@@ -39,6 +39,21 @@ public class EmConfigurationController : EmPortalGatewayController
             {
                 BaseUrl = this.GetBaseUrl(),
                 Environment = this.hostEnvironment.EnvironmentName,
+                Endpoints = new List<EmPortalConfiguration.EmPortalSourceConfigurationApiEndpoint>
+                {
+                    new ()
+                    {
+                        Id = "identity.auth.login",
+                        Route = "/__em/identity/auth/login",
+                        Method = "POST",
+                    },
+                    new ()
+                    {
+                        Id = "identity.auth.login.mfa",
+                        Route = "/__em/identity/auth/login-mfa",
+                        Method = "POST",
+                    },
+                },
             },
             Identity = new EmPortalConfiguration.EmPortalIdentityConfiguration
             {

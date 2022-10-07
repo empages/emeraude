@@ -57,6 +57,32 @@ public class EmPortalConfiguration
         /// Source application environment.
         /// </summary>
         public string Environment { get; init; }
+
+        /// <summary>
+        /// Collection of endpoints exposed by the framework.
+        /// </summary>
+        public IEnumerable<EmPortalSourceConfigurationApiEndpoint> Endpoints { get; init; }
+    }
+
+    /// <summary>
+    /// Source API endpoint definition.
+    /// </summary>
+    public class EmPortalSourceConfigurationApiEndpoint
+    {
+        /// <summary>
+        /// Identifier that is used by the portal.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Route that links the portal with the API.
+        /// </summary>
+        public string Route { get; set; }
+
+        /// <summary>
+        /// HTTP method that links the portal with the API route.
+        /// </summary>
+        public string Method { get; set; }
     }
 
     /// <summary>

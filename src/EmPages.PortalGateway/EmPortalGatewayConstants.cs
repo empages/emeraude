@@ -18,5 +18,5 @@ public static class EmPortalGatewayConstants
     /// <summary>
     /// Portal gateway route prefix.
     /// </summary>
-    public const string RoutePrefix = "/_em";
+    public const string RoutePrefix = "/__em";
 }

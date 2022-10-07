@@ -25,7 +25,7 @@ public class EmPortalFilterAttribute : ActionFilterAttribute
         if (!context.HttpContext.Request.Headers.ContainsKey(EmPortalGatewayConstants.GatewayIdentificationHeader) ||
             !context.HttpContext.Request.Headers[EmPortalGatewayConstants.GatewayIdentificationHeader].Equals(this.options.GatewayId))
         {
-            context.Result = new BadRequestResult();
+            context.Result = new NotFoundResult();
         }
 
         base.OnActionExecuting(context);
