@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 	ProjectSection(SolutionItems) = preProject
 		EmPages.ruleset = EmPages.ruleset
 		EmPages.targets = EmPages.targets
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9AE5F245-12DF-48A4-9218-1A8082B169B0}"

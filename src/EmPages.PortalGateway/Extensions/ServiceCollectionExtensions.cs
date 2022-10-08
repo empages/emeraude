@@ -2,6 +2,7 @@
 using System.Reflection;
 using EmPages.PortalGateway.ActionFilters;
 using EmPages.PortalGateway.Controllers;
+using EmPages.PortalGateway.Services;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddEmeraudePortalGateway(this IServiceCollection services, IEmPortalGatewayOptions options)
     {
+        services.AddSingleton<IGatewayEndpointsRetriever, GatewayEndpointRetriever>();
         services.AddScoped<EmPortalFilterAttribute>();
         services.AddCors(corsOptions =>
         {

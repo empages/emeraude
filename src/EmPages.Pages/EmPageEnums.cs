@@ -1,4 +1,5 @@
 ﻿namespace EmPages.Pages;
+#pragma warning disable SA1602
 
 /// <summary>
 /// Page action type.
@@ -27,3 +28,4 @@ public enum ComponentType
     Renderer = 1,
     Mutator = 2,
 }
+#pragma warning restore SA1602

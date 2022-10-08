@@ -20,7 +20,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\EmPages.Identity\EmPages.Identity.csproj" />
       <ProjectReference Include="..\..\src\EmPages.Pages\EmPages.Pages.csproj" />
+      <ProjectReference Include="..\..\src\EmPages\EmPages.csproj" />
     </ItemGroup>
 
 </Project>

@@ -104,8 +104,8 @@ public class EmPageViewContextStrategyTests
     public void ConfigureAll_OnNotSpecifiedOptions_ShouldConfigureValidViewItems()
     {
         var viewContext = this.GetSubject<TestPageModel>();
-        // viewContext.ConfigureAll(new IEmPagesOptions());
-
+        viewContext.ConfigureAll(new EmOptions());
+        
         viewContext
             .ViewItems
             .Should()

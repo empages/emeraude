@@ -75,7 +75,7 @@ public abstract class EmPageViewContextStrategy<TViewItem, TModel> : IEmPageView
     /// </summary>
     /// <param name="options"></param>
     /// <returns></returns>
-    internal IEmPageViewContextStrategy<TViewItem, TModel> ConfigureAll(IEmPagesOptions options)
+    public IEmPageViewContextStrategy<TViewItem, TModel> ConfigureAll(IEmPagesOptions options)
     {
         var modelProperties = typeof(TModel).GetProperties();
         foreach (var propertyInfo in modelProperties)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EmPages.Common;
+using EmPages.PortalGateway.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,14 +13,17 @@ namespace EmPages.PortalGateway.Controllers;
 public class EmConfigurationController : EmPortalGatewayController
 {
     private readonly IWebHostEnvironment hostEnvironment;
+    private readonly IGatewayEndpointsRetriever gatewayEndpointsRetriever;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmConfigurationController"/> class.
     /// </summary>
     /// <param name="hostEnvironment"></param>
-    public EmConfigurationController(IWebHostEnvironment hostEnvironment)
+    /// <param name="gatewayEndpointsRetriever"></param>
+    public EmConfigurationController(IWebHostEnvironment hostEnvironment, IGatewayEndpointsRetriever gatewayEndpointsRetriever)
     {
         this.hostEnvironment = hostEnvironment;
+        this.gatewayEndpointsRetriever = gatewayEndpointsRetriever;
     }
 
     /// <summary>
@@ -39,21 +43,7 @@ public class EmConfigurationController : EmPortalGatewayController
             {
                 BaseUrl = this.GetBaseUrl(),
                 Environment = this.hostEnvironment.EnvironmentName,
-                Endpoints = new List<EmPortalConfiguration.EmPortalSourceConfigurationApiEndpoint>
-                {
-                    new ()
-                    {
-                        Id = "identity.auth.login",
-                        Route = "/__em/identity/auth/login",
-                        Method = "POST",
-                    },
-                    new ()
-                    {
-                        Id = "identity.auth.login.mfa",
-                        Route = "/__em/identity/auth/login-mfa",
-                        Method = "POST",
-                    },
-                },
+                Endpoints = this.gatewayEndpointsRetriever.RetrieveApiEndpoints(),
             },
             Identity = new EmPortalConfiguration.EmPortalIdentityConfiguration
             {

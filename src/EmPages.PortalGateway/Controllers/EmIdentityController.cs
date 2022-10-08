@@ -13,7 +13,9 @@ public class EmIdentityController : EmPortalGatewayController
     /// Login to the application.
     /// </summary>
     /// <returns></returns>
-    [HttpPost("auth/login")]
+    [EmPortalEndpoint("identity.auth.login")]
+    [Route("auth/login")]
+    [HttpPost]
     public async Task<IActionResult> AuthLogin()
     {
         return this.Ok();
@@ -23,7 +25,9 @@ public class EmIdentityController : EmPortalGatewayController
     /// Login to the application with second factor.
     /// </summary>
     /// <returns></returns>
-    [HttpPost("auth/login-mfa")]
+    [EmPortalEndpoint("identity.auth.login.mfa")]
+    [Route("auth/login-mfa")]
+    [HttpPost]
     public async Task<IActionResult> AuthLoginMfa()
     {
         return this.Ok();

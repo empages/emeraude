@@ -35,7 +35,9 @@ public class EmPageController : EmPortalGatewayController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpPost("retrieve")]
+    [EmPortalEndpoint("pages.retrieve")]
+    [Route("retrieve")]
+    [HttpPost]
     public async Task<IActionResult> RetrievePage([FromBody]EmRequest request)
     {
         var pageDescriptor = this.FindPage(request.Route);
@@ -49,7 +51,9 @@ public class EmPageController : EmPortalGatewayController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpPost("command")]
+    [EmPortalEndpoint("pages.command")]
+    [Route("command")]
+    [HttpPost]
     public async Task<IActionResult> ExecutePageCommand([FromBody]EmRequest request)
     {
         var pageDescriptor = this.FindPage(request.Route);

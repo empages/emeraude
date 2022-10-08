@@ -78,11 +78,6 @@ public class EmPortalConfiguration
         /// Route that links the portal with the API.
         /// </summary>
         public string Route { get; set; }
-
-        /// <summary>
-        /// HTTP method that links the portal with the API route.
-        /// </summary>
-        public string Method { get; set; }
     }
 
     /// <summary>
