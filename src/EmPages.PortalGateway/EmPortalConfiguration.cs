@@ -18,11 +18,6 @@ public class EmPortalConfiguration
     public EmPortalSourceConfiguration Source { get; init; }
 
     /// <summary>
-    /// Identity configuration.
-    /// </summary>
-    public EmPortalIdentityConfiguration Identity { get; init; }
-
-    /// <summary>
     /// Pages configurations.
     /// </summary>
     public IEnumerable<EmPortalPageConfiguration> Pages { get; init; }
@@ -78,43 +73,6 @@ public class EmPortalConfiguration
         /// Route that links the portal with the API.
         /// </summary>
         public string Route { get; set; }
-    }
-
-    /// <summary>
-    /// Identity configuration.
-    /// </summary>
-    public class EmPortalIdentityConfiguration
-    {
-        /// <summary>
-        /// Flag that returns whether the request is made from authenticated user.
-        /// </summary>
-        public bool IsAuthenticated { get; init; }
-
-        /// <summary>
-        /// Current identity user.
-        /// </summary>
-        public EmPortalConfigurationIdentityUser CurrentUser { get; set; }
-
-        /// <summary>
-        /// Identity user of the configuration.
-        /// </summary>
-        public class EmPortalConfigurationIdentityUser
-        {
-            /// <summary>
-            /// Email of the current request user.
-            /// </summary>
-            public string Email { get; init; }
-
-            /// <summary>
-            /// Name of the current request user.
-            /// </summary>
-            public string Name { get; init; }
-
-            /// <summary>
-            /// Flag that indicates whether the MFA is enabled.
-            /// </summary>
-            public bool IsMultiFactorAuthenticationEnabled { get; init; }
-        }
     }
 
     /// <summary>

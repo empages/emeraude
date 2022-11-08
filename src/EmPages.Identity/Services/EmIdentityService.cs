@@ -248,11 +248,9 @@ internal class EmIdentityService : IEmIdentityService
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var expirationDate = DateTime.UtcNow.Add(this.identityOptions.AccessTokenExpirationSpan);
-        var schema = this.httpContextAccessor.HttpContext.Request.IsHttps ? "https" : "http";
-        var issuer = $"{schema}://{this.httpContextAccessor.HttpContext.Request.Host.Value}";
 
         var token = new JwtSecurityToken(
-            issuer: issuer,
+            issuer: this.identityOptions.AccessTokenIssuer,
             audience: EmConstants.FrameworkId,
             claims,
             expires: expirationDate,

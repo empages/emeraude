@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using EmPages.Identity;
 using EmPages.PortalGateway.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmPages.PortalGateway.Controllers;
@@ -27,7 +28,7 @@ public class EmIdentityController : EmPortalGatewayController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityAuthLogin)]
+    [AllowAnonymous]
     [Route("auth/login")]
     [HttpPost]
     public async Task<IActionResult> AuthLogin([FromBody]EmTokenBaseCredentialsRequest request)
@@ -51,7 +52,7 @@ public class EmIdentityController : EmPortalGatewayController
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityAuthLoginMfa)]
+    [AllowAnonymous]
     [Route("auth/login-mfa")]
     [HttpPost]
     public async Task<IActionResult> AuthLoginMfa([FromBody]EmTokenBaseCredentialsRequest request)
@@ -74,7 +75,6 @@ public class EmIdentityController : EmPortalGatewayController
     /// Changes the password for current user.
     /// </summary>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityManageChangePassword)]
     [Route("manage/change-password")]
     [HttpPost]
     public async Task<IActionResult> ManageChangePassword()
@@ -86,7 +86,6 @@ public class EmIdentityController : EmPortalGatewayController
     /// Changes the email for current user.
     /// </summary>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityManageChangeEmail)]
     [Route("manage/change-email")]
     [HttpPost]
     public async Task<IActionResult> ManageChangeEmail()
@@ -98,7 +97,6 @@ public class EmIdentityController : EmPortalGatewayController
     /// Retrieves the MFA description.
     /// </summary>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityManageMfaDescription)]
     [Route("manage/mfa-description")]
     [HttpPost]
     public async Task<IActionResult> ManageMfaDescription()
@@ -110,7 +108,6 @@ public class EmIdentityController : EmPortalGatewayController
     /// Activates the MFA.
     /// </summary>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityManageMfaActivate)]
     [Route("manage/mfa-activate")]
     [HttpPost]
     public async Task<IActionResult> ManageMfaActivate()
@@ -122,7 +119,6 @@ public class EmIdentityController : EmPortalGatewayController
     /// Reset the MFA.
     /// </summary>
     /// <returns></returns>
-    [EmPortalEndpoint(EmPortalGatewayEndpointsIds.IdentityManageMfaReset)]
     [Route("manage/mfa-reset")]
     [HttpPost]
     public async Task<IActionResult> ManageMfaReset()

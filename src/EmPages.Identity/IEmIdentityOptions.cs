@@ -25,6 +25,11 @@ public interface IEmIdentityOptions
     string AccessTokenSecurityKey { get; }
 
     /// <summary>
+    /// Access token issuer.
+    /// </summary>
+    string AccessTokenIssuer { get; }
+
+    /// <summary>
     /// Access token expiration time.
     /// </summary>
     TimeSpan AccessTokenExpirationSpan { get; }

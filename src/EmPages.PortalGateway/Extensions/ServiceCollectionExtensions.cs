@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using System.Reflection;
+using System.Text;
+using EmPages.Common;
+using EmPages.Identity;
 using EmPages.PortalGateway.ActionFilters;
-using EmPages.PortalGateway.Controllers;
-using EmPages.PortalGateway.Services;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EmPages.PortalGateway.Extensions;
 
@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddEmeraudePortalGateway(this IServiceCollection services, IEmPortalGatewayOptions options)
     {
-        services.AddSingleton<IGatewayEndpointsRetriever, GatewayEndpointRetriever>();
+        var identityOptions = options as IEmIdentityOptions;
         services.AddScoped<EmPortalFilterAttribute>();
         services.AddCors(corsOptions =>
         {
@@ -33,6 +33,22 @@ public static class ServiceCollectionExtensions
                     .AllowAnyMethod();
             });
         });
+
+        services
+            .AddAuthentication()
+            .AddJwtBearer(EmPortalGatewayConstants.AuthenticationScheme, opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = identityOptions.AccessTokenIssuer,
+                    ValidAudience = EmConstants.FrameworkId,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityOptions.AccessTokenSecurityKey)),
+                };
+            });
 
         return services;
     }

@@ -45,6 +45,9 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     /// <inheritdoc cref="IEmIdentityOptions.AccessTokenSecurityKey"/>
     public string AccessTokenSecurityKey { get; set; }
 
+    /// <inheritdoc cref="IEmIdentityOptions.AccessTokenIssuer"/>
+    public string AccessTokenIssuer { get; set; }
+
     /// <inheritdoc cref="IEmIdentityOptions.AccessTokenExpirationSpan"/>
     public TimeSpan AccessTokenExpirationSpan { get; set; }
 

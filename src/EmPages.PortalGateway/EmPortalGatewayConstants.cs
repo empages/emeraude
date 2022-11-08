@@ -19,4 +19,9 @@ public static class EmPortalGatewayConstants
     /// Portal gateway route prefix.
     /// </summary>
     public const string RoutePrefix = "/__em";
+
+    /// <summary>
+    /// Default gateway authentication scheme.
+    /// </summary>
+    public const string AuthenticationScheme = "Em_Bearer";
 }
