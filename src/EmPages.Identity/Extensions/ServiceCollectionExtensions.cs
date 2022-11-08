@@ -2,6 +2,7 @@
 using EmPages.Identity.Entities;
 using EmPages.Identity.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -21,17 +22,18 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddEmeraudeIdentity(this IServiceCollection services, IEmIdentityOptions options)
     {
-        services.AddDbContext<IdentityContext>(options.DbContextOptionsBuilder);
+        services.AddDbContext<EmIdentityContext>(options.DbContextOptionsBuilder);
 
         services
-            .AddIdentityCore<User>()
-            .AddEntityFrameworkStores<IdentityContext>()
+            .AddIdentityCore<EmIdentityUser>()
+            .AddEntityFrameworkStores<EmIdentityContext>()
             .AddDefaultTokenProviders();
 
         services.AddDataProtection();
 
-        services.TryAddScoped<IEmIdentityService, IdentityService>();
-        services.TryAddTransient<IEmIdentityInitializer, IdentityInitializer>();
+        services.TryAddScoped<EmUserManager>();
+        services.TryAddScoped<IEmIdentityService, EmIdentityService>();
+        services.TryAddTransient<IEmIdentityInitializer, EmIdentityInitializer>();
 
         return services;
     }

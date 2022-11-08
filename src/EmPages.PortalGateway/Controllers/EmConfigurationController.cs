@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EmPages.PortalGateway.Controllers;
 
 /// <summary>
-/// Gateway access controller.
+/// Gateway configuration controller.
 /// </summary>
 [Route($"{EmPortalGatewayConstants.RoutePrefix}/config")]
 public class EmConfigurationController : EmPortalGatewayController

@@ -9,4 +9,9 @@ public static class EmConstants
     /// Name of the framework.
     /// </summary>
     public const string FrameworkName = "Emerald Pages";
+
+    /// <summary>
+    /// Identification name.
+    /// </summary>
+    public const string FrameworkId = "empages";
 }

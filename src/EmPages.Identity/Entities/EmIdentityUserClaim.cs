@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 namespace EmPages.Identity.Entities;
 
 /// <summary>
-/// <inheritdoc cref="IdentityUserLogin{TKey}"/>
+/// <inheritdoc cref="IdentityUserClaim{TKey}"/>
 /// </summary>
-internal class UserLogin : IdentityUserLogin<Guid>
+internal class EmIdentityUserClaim : IdentityUserClaim<Guid>
 {
 }

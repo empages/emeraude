@@ -4,6 +4,7 @@ using System.Reflection;
 using EmPages.Identity;
 using EmPages.Pages;
 using EmPages.PortalGateway;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmPages;
@@ -25,6 +26,8 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
         this.pagesAssemblies = new List<Assembly>();
         this.defaultTypesToComponentsMapping = new Dictionary<Type, (Type Renderer, Type Mutator)>();
         this.portalUrls = new List<string>();
+        this.IdentityOptions = new IdentityOptions();
+        this.ConfigureDefaultIdentityOptions();
     }
 
     /// <inheritdoc cref="IEmPagesOptions.PagesAssemblies"/>
@@ -38,6 +41,15 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
 
     /// <inheritdoc cref="IEmIdentityOptions.DefaultUserPassword"/>
     public string DefaultUserPassword { get; set; } = "Admin123!";
+
+    /// <inheritdoc cref="IEmIdentityOptions.AccessTokenSecurityKey"/>
+    public string AccessTokenSecurityKey { get; set; }
+
+    /// <inheritdoc cref="IEmIdentityOptions.AccessTokenExpirationSpan"/>
+    public TimeSpan AccessTokenExpirationSpan { get; set; }
+
+    /// <inheritdoc cref="IEmIdentityOptions.IdentityOptions"/>
+    public IdentityOptions IdentityOptions { get; }
 
     /// <inheritdoc/>
     public IReadOnlyList<string> PortalUrls => this.portalUrls;
@@ -124,5 +136,14 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     public void Dispose()
     {
         // nothing to dispose
+    }
+
+    private void ConfigureDefaultIdentityOptions()
+    {
+        this.IdentityOptions.Password.RequireDigit = true;
+        this.IdentityOptions.Password.RequireNonAlphanumeric = true;
+        this.IdentityOptions.Password.RequireLowercase = true;
+        this.IdentityOptions.Password.RequireUppercase = true;
+        this.IdentityOptions.Password.RequiredLength = 8;
     }
 }

@@ -9,13 +9,13 @@ namespace EmPages.Identity.Entities;
 /// <summary>
 /// Identity database context.
 /// </summary>
-internal class IdentityContext : IdentityUserContext<User, Guid, UserClaim, UserLogin, UserToken>
+internal class EmIdentityContext : IdentityUserContext<EmIdentityUser, Guid, EmIdentityUserClaim, EmIdentityUserLogin, EmIdentityUserToken>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="IdentityContext"/> class.
+    /// Initializes a new instance of the <see cref="EmIdentityContext"/> class.
     /// </summary>
     /// <param name="options"></param>
-    public IdentityContext(DbContextOptions<IdentityContext> options)
+    public EmIdentityContext(DbContextOptions<EmIdentityContext> options)
         : base(options)
     {
     }
@@ -25,15 +25,10 @@ internal class IdentityContext : IdentityUserContext<User, Guid, UserClaim, User
     {
         base.OnModelCreating(builder);
 
-        builder
-            .Entity<User>()
-            .Property(x => x.Name)
-            .IsRequired();
-
-        this.ConfigureTableNames<User>(builder);
-        this.ConfigureTableNames<UserClaim>(builder);
-        this.ConfigureTableNames<UserLogin>(builder);
-        this.ConfigureTableNames<UserToken>(builder);
+        this.ConfigureTableNames<EmIdentityUser>(builder);
+        this.ConfigureTableNames<EmIdentityUserClaim>(builder);
+        this.ConfigureTableNames<EmIdentityUserLogin>(builder);
+        this.ConfigureTableNames<EmIdentityUserToken>(builder);
     }
 
     private void ConfigureTableNames<TEntity>(ModelBuilder builder)
@@ -44,7 +39,7 @@ internal class IdentityContext : IdentityUserContext<User, Guid, UserClaim, User
             .Replace(" ", "_")
             .ToLower();
 
-        builder.Entity<TEntity>().ToTable($"em_{tableName}");
+        builder.Entity<TEntity>().ToTable(tableName);
         var propertiesNames = typeof(TEntity).GetProperties().Select(x => x.Name);
         foreach (var propertyName in propertiesNames)
         {

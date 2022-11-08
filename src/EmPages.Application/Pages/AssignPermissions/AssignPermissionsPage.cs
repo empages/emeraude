@@ -27,7 +27,7 @@ public class AssignPermissionsPage : EmFormPage<AssignPermissionsPageModel>
     }
 
     public override string ComputeTitle(AssignPermissionsPageModel model) =>
-        $"Assign Permissions For {model.UserName}";
+        $"Assign Permissions For {model.UserEmail}";
 
     public override async Task<EmFormPageResult<AssignPermissionsPageModel>> FetchDataAsync(EmPageRequest request)
     {
@@ -39,7 +39,6 @@ public class AssignPermissionsPage : EmFormPage<AssignPermissionsPageModel>
             Model = new AssignPermissionsPageModel
             {
                 Id = user.Id.ToString(),
-                UserName = user.Name,
                 UserEmail = user.Email,
                 UserPermissions = user.Permissions,
             },

@@ -1,3 +1,4 @@
+using System;
 using EmDoggo.Core.Data;
 using EmDoggo.WebHost.Extensions;
 using EmPages;
@@ -21,8 +22,11 @@ builder.Services.AddEmeraldPages(options =>
     {
         b.UseSqlite(builder.Configuration.GetConnectionString("EmeraudeIdentityContext"));
     });
-
+    options.AccessTokenSecurityKey = "23f78223-83af-471c-8e7c-082b0df857ed";
+    options.AccessTokenExpirationSpan = TimeSpan.FromHours(1);
+    
     options.GatewayId = "test-id-123";
+    options.AddPortalUrl("http://localhost:3000");
 });
 
 builder.Services.AddSwaggerGen();

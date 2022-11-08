@@ -60,7 +60,6 @@ public class UsersPage : EmTablePage<UsersPageModel>, IEmLayoutItem
             Models = users.Select(x => new UsersPageModel
             {
                 Id = x.Id.ToString(),
-                Name = x.Name,
                 Email = x.Email,
                 IsLockedOut = x.IsLockedOut,
                 TwoFactorEnabled = x.TwoFactorEnabled,

@@ -44,6 +44,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IEmPagesOptions>(x => x.GetRequiredService<EmOptions>());
         services.AddSingleton<IEmPortalGatewayOptions>(x => x.GetRequiredService<EmOptions>());
 
+        services.AddHttpContextAccessor();
+
         services.AddEmeraudePages(options);
         services.AddEmeraudeIdentity(options);
         services.AddEmeraudePortalGateway(options);
