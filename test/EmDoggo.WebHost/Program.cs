@@ -24,6 +24,8 @@ builder.Services.AddEmeraldPages(options =>
         b.UseSqlite(builder.Configuration.GetConnectionString("EmeraudeIdentityContext"));
     });
 
+    options.AddPagesAssembly("EmDoggo.EmConfig");
+    
     options.AccessTokenIssuer = "http://localhost:5155";
     options.AccessTokenSecurityKey = "23f78223-83af-471c-8e7c-082b0df857ed";
     options.AccessTokenExpirationSpan = TimeSpan.FromHours(1);

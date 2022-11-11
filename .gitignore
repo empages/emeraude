@@ -352,3 +352,6 @@ MigrationBackup/
 .idea/
 
 appsettings.Development.json
+
+app.db-*
+entities.db-*

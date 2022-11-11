@@ -14,6 +14,9 @@ public class EmPageRouteTests
     [InlineData("/dogs//items")]
     [InlineData("/dogs/{{id}")]
     [InlineData("/dogs$/{id}")]
+    [InlineData("/auth")]
+    [InlineData("/manage")]
+    [InlineData("/settings")]
     [Theory]
     public void Initialization_OnRouteRawTemplate_ShouldThrows(string routeRawTemplate)
     {

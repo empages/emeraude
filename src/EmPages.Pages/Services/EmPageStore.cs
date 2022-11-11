@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace EmPages.Pages.Services;
 
 /// <inheritdoc cref="IEmPageStore" />
-internal class PageStore : IEmPageStore, IDisposable
+internal class EmPageStore : IEmPageStore, IDisposable
 {
     private readonly IEmPagesOptions options;
     private readonly HashSet<EmPageDescriptor> pageDescriptors;
@@ -14,10 +14,10 @@ internal class PageStore : IEmPageStore, IDisposable
     private bool initialized = false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageStore"/> class.
+    /// Initializes a new instance of the <see cref="EmPageStore"/> class.
     /// </summary>
     /// <param name="options"></param>
-    public PageStore(IEmPagesOptions options)
+    public EmPageStore(IEmPagesOptions options)
     {
         this.options = options;
         this.pageDescriptors = new HashSet<EmPageDescriptor>();
