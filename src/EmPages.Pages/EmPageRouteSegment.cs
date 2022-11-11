@@ -9,13 +9,14 @@ public class EmPageRouteSegment
 {
     private const string DynamicSegmentStartSymbol = "{";
     private const string DynamicSegmentEndSymbol = "}";
-    private const string AllowedSegmentSymbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789-~";
+    private const string AllowedSegmentSymbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-~";
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageRouteSegment"/> class.
     /// </summary>
     /// <param name="rawValue"></param>
-    public EmPageRouteSegment(string rawValue)
+    /// <param name="ignoreSymbolsProtection"></param>
+    public EmPageRouteSegment(string rawValue, bool ignoreSymbolsProtection)
     {
         if (string.IsNullOrWhiteSpace(rawValue))
         {
@@ -32,10 +33,13 @@ public class EmPageRouteSegment
             this.Value = rawValue;
         }
 
-        var allowedSegmentsSymbols = AllowedSegmentSymbols.ToCharArray();
-        if (!this.Value.All(x => allowedSegmentsSymbols.Contains(x)))
+        if (!ignoreSymbolsProtection)
         {
-            throw new EmSetupException($"Route segment must be built only with the following symbols: {AllowedSegmentSymbols}");
+            var allowedSegmentsSymbols = AllowedSegmentSymbols.ToCharArray();
+            if (!this.Value.All(x => allowedSegmentsSymbols.Contains(x)))
+            {
+                throw new EmSetupException($"Route segment must be built only with the following symbols: {AllowedSegmentSymbols}");
+            }
         }
     }
 

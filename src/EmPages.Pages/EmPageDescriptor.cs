@@ -40,6 +40,13 @@ public class EmPageDescriptor
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="EmPageDescriptor"/> class.
+    /// </summary>
+    internal EmPageDescriptor()
+    {
+    }
+
+    /// <summary>
     /// Type of the page.
     /// </summary>
     public Type PageType { get; }
@@ -57,7 +64,7 @@ public class EmPageDescriptor
     /// <summary>
     /// Route of the page.
     /// </summary>
-    public EmPageRoute PageRoute { get; }
+    public EmPageRoute PageRoute { get; internal set; }
 
     /// <summary>
     /// Finds a command from the registered for the current page.

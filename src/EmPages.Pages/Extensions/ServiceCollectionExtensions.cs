@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IEmMappingStrategy, DetailsMappingStrategy>();
         services.TryAddSingleton<IEmMappingStrategy, FormMappingStrategy>();
         services.TryAddSingleton<IEmPageMapper, PageMapper>();
-        services.TryAddSingleton<IEmRouter, Router>();
+        services.TryAddSingleton<IEmRouter, EmRouter>();
 
         return services;
     }

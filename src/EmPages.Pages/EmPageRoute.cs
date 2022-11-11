@@ -13,9 +13,10 @@ public class EmPageRoute
     /// Initializes a new instance of the <see cref="EmPageRoute"/> class.
     /// </summary>
     /// <param name="value"></param>
-    public EmPageRoute(string value)
+    /// <param name="ignoreSymbolsProtection"></param>
+    public EmPageRoute(string value, bool ignoreSymbolsProtection = false)
     {
-        string template = value;
+        string template = value ?? string.Empty;
         if (template.StartsWith("/"))
         {
             template = template.Substring(1);
@@ -31,7 +32,7 @@ public class EmPageRoute
         var segments = new List<EmPageRouteSegment>();
         foreach (var segmentsValue in segmentsValues)
         {
-            segments.Add(new EmPageRouteSegment(segmentsValue));
+            segments.Add(new EmPageRouteSegment(segmentsValue, ignoreSymbolsProtection));
         }
 
         this.Segments = segments;
