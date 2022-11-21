@@ -9,7 +9,7 @@ namespace EmPages.Pages.Pages;
 /// Abstract implementation of page for table presentation.
 /// </summary>
 /// <typeparam name="TModel">Model type.</typeparam>
-public abstract class EmTablePage<TModel> : EmPage<TModel, EmTableViewContext<TModel>, EmTablePageResult<TModel>>
+public abstract class EmTablePage<TModel> : EmPage<TModel, EmTableViewContext<TModel>, EmTablePageResult>
     where TModel : class, IEmPageModel, new()
 {
     /// <summary>
@@ -40,6 +40,6 @@ public abstract class EmTablePage<TModel> : EmPage<TModel, EmTableViewContext<TM
     /// Adds row action for current page.
     /// </summary>
     /// <param name="actionBuilder"></param>
-    public void AddRowAction(Func<TModel, EmPageRequest, EmAction> actionBuilder) =>
+    protected void AddRowAction(Func<TModel, EmPageRequest, EmAction> actionBuilder) =>
         this.ViewContext.AddRowAction(actionBuilder);
 }

@@ -24,4 +24,9 @@ public static class EmPortalGatewayConstants
     /// Default gateway authentication scheme.
     /// </summary>
     public const string AuthenticationScheme = "Em_Bearer";
+
+    /// <summary>
+    /// Default Emerald Pages Portal URL.
+    /// </summary>
+    public const string DefaultPortalUrl = "https://portal.empages.net";
 }

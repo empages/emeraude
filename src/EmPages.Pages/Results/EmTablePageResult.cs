@@ -5,27 +5,17 @@ namespace EmPages.Pages.Results;
 /// <summary>
 /// Table page result.
 /// </summary>
-/// <typeparam name="TModel">Model type.</typeparam>
-public class EmTablePageResult<TModel> : IEmPageResult
-    where TModel : class, IEmPageModel, new()
+public class EmTablePageResult : IEmTablePageResult
 {
-    /// <summary>
-    /// Data of the result.
-    /// </summary>
-    public IEnumerable<TModel> Models { get; set; }
+    /// <inheritdoc/>
+    public IEnumerable<IEmPageModel> Models { get; set; }
 
-    /// <summary>
-    /// Total count of all models.
-    /// </summary>
+    /// <inheritdoc/>
     public int TotalCount { get; set; }
 
-    /// <summary>
-    /// Count of the requested models.
-    /// </summary>
+    /// <inheritdoc/>
     public int TakenCount { get; set; }
 
-    /// <summary>
-    /// Count of the skipped models.
-    /// </summary>
+    /// <inheritdoc/>
     public int SkippedCount { get; set; }
 }

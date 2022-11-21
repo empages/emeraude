@@ -16,8 +16,6 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     where TViewContext : class, IEmPageViewContextStrategy<TModel>, new()
     where TPageResult : class, IEmPageResult, new()
 {
-    private readonly List<Func<EmPageRequest, EmAction>> actionsBuilders;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPage{TModel, TViewContext, TPageResult}"/> class.
     /// </summary>
@@ -25,16 +23,12 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     protected EmPage(IEmPagesOptions options)
     {
         this.Options = options;
-        this.actionsBuilders = new List<Func<EmPageRequest, EmAction>>();
         this.Permissions = new List<string>();
         this.ViewContext = new TViewContext();
     }
 
     /// <inheritdoc/>
     public string Title { get; protected set; }
-
-    /// <inheritdoc/>
-    public IReadOnlyList<Func<EmPageRequest, EmAction>> ActionsBuilders => this.actionsBuilders;
 
     /// <inheritdoc/>
     public IList<string> Permissions { get; }
@@ -67,9 +61,9 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     public abstract Task<TPageResult> FetchDataAsync(EmPageRequest request);
 
     /// <summary>
-    /// Adds action for current page.
+    /// Adds an action for current page.
     /// </summary>
     /// <param name="actionBuilder"></param>
-    public void AddAction(Func<EmPageRequest, EmAction> actionBuilder) =>
-        this.actionsBuilders.Add(actionBuilder);
+    protected void AddAction(Func<IEnumerable<TModel>, EmPageRequest, EmAction> actionBuilder) =>
+        this.ViewContext.AddAction(actionBuilder);
 }

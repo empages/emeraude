@@ -16,6 +16,7 @@ public abstract class EmPageViewContextStrategy<TViewItem, TModel> : IEmPageView
     where TViewItem : class, IEmPageViewItem, new()
     where TModel : class, IEmPageModel, new()
 {
+    private readonly List<Func<IEnumerable<TModel>, EmPageRequest, EmAction>> actionsBuilders;
     private readonly List<TViewItem> viewItems;
 
     /// <summary>
@@ -24,6 +25,7 @@ public abstract class EmPageViewContextStrategy<TViewItem, TModel> : IEmPageView
     protected EmPageViewContextStrategy()
     {
         this.viewItems = new List<TViewItem>();
+        this.actionsBuilders = new List<Func<IEnumerable<TModel>, EmPageRequest, EmAction>>();
     }
 
     /// <inheritdoc/>
@@ -31,6 +33,16 @@ public abstract class EmPageViewContextStrategy<TViewItem, TModel> : IEmPageView
 
     /// <inheritdoc/>
     public Type ViewItemType => typeof(TViewItem);
+
+    /// <inheritdoc/>
+    public IEnumerable<EmAction> GetPageActions(IEnumerable<IEmPageModel> models, EmPageRequest request) =>
+        this.actionsBuilders.Select(x => x.Invoke(models.Select(m => m as TModel), request));
+
+    /// <inheritdoc/>
+    public void AddAction(Func<IEnumerable<TModel>, EmPageRequest, EmAction> actionBuilder)
+    {
+        this.actionsBuilders.Add(actionBuilder);
+    }
 
     /// <inheritdoc/>
     public virtual IEmPageViewContextStrategy<TViewItem, TModel> Configure(

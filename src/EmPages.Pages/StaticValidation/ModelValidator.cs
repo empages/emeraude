@@ -9,13 +9,13 @@ namespace EmPages.Pages.StaticValidation;
 /// <summary>
 /// Requirements for model supported by the framework.
 /// </summary>
-public static class ModelValidator
+internal static class ModelValidator
 {
     /// <summary>
     /// Validates whether a specified model type is valid due the framework requirements.
     /// </summary>
     /// <param name="modelType"></param>
-    public static void ValidateModelType(Type modelType)
+    internal static void ValidateModelType(Type modelType)
     {
         if (!modelType.HasInterface<IEmPageModel>())
         {

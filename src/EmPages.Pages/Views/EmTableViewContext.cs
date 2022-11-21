@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EmPages.Pages.Views;
 
@@ -7,7 +8,7 @@ namespace EmPages.Pages.Views;
 /// Page view context representing table view.
 /// </summary>
 /// <typeparam name="TModel">Model type.</typeparam>
-public class EmTableViewContext<TModel> : EmPageViewContextStrategy<EmTableViewItem, TModel>
+public class EmTableViewContext<TModel> : EmPageViewContextStrategy<EmTableViewItem, TModel>, IEmTableViewContext
     where TModel : class, IEmPageModel, new()
 {
     private readonly List<Func<TModel, EmPageRequest, EmAction>> rowActionsBuilders;
@@ -21,14 +22,20 @@ public class EmTableViewContext<TModel> : EmPageViewContextStrategy<EmTableViewI
     }
 
     /// <summary>
-    /// List of all action that each row has.
-    /// </summary>
-    public IReadOnlyList<Func<TModel, EmPageRequest, EmAction>> RowActions => this.rowActionsBuilders;
-
-    /// <summary>
     /// Adds row action for current table view.
     /// </summary>
     /// <param name="actionBuilder"></param>
     public void AddRowAction(Func<TModel, EmPageRequest, EmAction> actionBuilder) =>
         this.rowActionsBuilders.Add(actionBuilder);
+
+    /// <summary>
+    /// Gets row actions.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public IEnumerable<EmAction> GetRowActions(IEmPageModel model, EmPageRequest request) =>
+        this.rowActionsBuilders
+            .Select(x => x.Invoke(model as TModel, request))
+            .ToList();
 }

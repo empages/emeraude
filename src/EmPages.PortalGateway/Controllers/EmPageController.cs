@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EmPages.Pages;
+using EmPages.Pages.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmPages.PortalGateway.Controllers;
@@ -11,23 +12,19 @@ namespace EmPages.PortalGateway.Controllers;
 public class EmPageController : EmPortalGatewayController
 {
     private readonly IEmRouter router;
-    private readonly IEmPageMapper pageMapper;
-    private readonly IEmServiceFactory serviceFactory;
+    private readonly IEmPageHandler pageHandler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageController"/> class.
     /// </summary>
     /// <param name="router"></param>
-    /// <param name="pageMapper"></param>
-    /// <param name="serviceFactory"></param>
+    /// <param name="pageHandler"></param>
     public EmPageController(
         IEmRouter router,
-        IEmPageMapper pageMapper,
-        IEmServiceFactory serviceFactory)
+        IEmPageHandler pageHandler)
     {
         this.router = router;
-        this.pageMapper = pageMapper;
-        this.serviceFactory = serviceFactory;
+        this.pageHandler = pageHandler;
     }
 
     /// <summary>
@@ -40,9 +37,8 @@ public class EmPageController : EmPortalGatewayController
     public async Task<IActionResult> RetrievePage([FromBody]EmRequest request)
     {
         var pageDescriptor = this.FindPage(request.Route);
-        var pageInstance = this.serviceFactory.CreatePage(pageDescriptor.PageType);
-        await pageInstance.SetupAsync();
-        var pageResponse = await this.pageMapper.MapAsync(pageInstance, request.ToPageRequest());
+        var pageInstance = this.HttpContext.RequestServices.GetPage(pageDescriptor.PageType);
+        var pageResponse = await this.pageHandler.HandleAsync(pageInstance, request.ToPageRequest());
         return this.Ok(pageResponse);
     }
 
@@ -62,7 +58,7 @@ public class EmPageController : EmPortalGatewayController
             throw new EmNotRegisteredCommandException($"There is not registered command '{request.Command}' for page with route '{request.Route}'");
         }
 
-        var commandInstance = this.serviceFactory.CreateCommand(commandType);
+        var commandInstance = this.HttpContext.RequestServices.GetPageCommand(commandType);
         var result = await commandInstance.HandleAsync(request.ToCommandPageRequest());
         return this.Ok(result);
     }

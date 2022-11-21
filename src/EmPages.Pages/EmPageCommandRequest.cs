@@ -12,14 +12,12 @@ public class EmPageCommandRequest : EmPageRequest
     /// </summary>
     /// <param name="model"></param>
     /// <param name="modelsIds"></param>
-    /// <param name="routeParameters"></param>
-    /// <param name="queryParameters"></param>
+    /// <param name="parameters"></param>
     public EmPageCommandRequest(
         IEmPageModel model,
         IEnumerable<string> modelsIds,
-        IDictionary<string, object> routeParameters,
-        IDictionary<string, object> queryParameters)
-        : base(routeParameters, queryParameters)
+        IDictionary<string, object> parameters)
+        : base(parameters)
     {
         this.Model = model;
         this.ModelsIds = modelsIds;

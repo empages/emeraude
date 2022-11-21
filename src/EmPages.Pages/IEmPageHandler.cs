@@ -6,7 +6,7 @@ namespace EmPages.Pages;
 /// Page mapper is a service that converts business abstraction defined by the model
 /// to a page abstraction by using the defined schema.
 /// </summary>
-public interface IEmPageMapper
+public interface IEmPageHandler
 {
     /// <summary>
     /// Converts page to response model.
@@ -14,5 +14,5 @@ public interface IEmPageMapper
     /// <param name="page"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    Task<IEmResponseModel> MapAsync(IEmPage page, EmPageRequest request);
+    Task<IEmResponseModel> HandleAsync(IEmPage page, EmPageRequest request);
 }

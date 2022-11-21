@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EmPages.Pages.Extensions;
 using Essentials.Extensions;
 
 namespace EmPages.Pages;
@@ -25,7 +26,7 @@ public class EmPageDescriptor
                 .First(x => x.GetGenericTypeDefinition() == typeof(IEmPage<,,>));
             this.ModelType = pageInterface?.GetGenericArguments().First();
 
-            this.PageRoute = new EmPageRoute(pageType.GetAttribute<EmRouteAttribute>().Template);
+            this.PageRoute = pageType.ExtractRouteFromPageType();
 
             var expectedCommandType = typeof(IEmPageCommand);
             this.CommandsTypes = pageType

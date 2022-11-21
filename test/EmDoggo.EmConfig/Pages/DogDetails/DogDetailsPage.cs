@@ -17,7 +17,7 @@ public class DogDetailsPage : EmDetailsPage<DogDetailsPageModel>
         throw new System.NotImplementedException();
     }
 
-    public override async Task<EmDetailsPageResult<DogDetailsPageModel>> FetchDataAsync(EmPageRequest request)
+    public override async Task<EmDetailsPageResult> FetchDataAsync(EmPageRequest request)
     {
         throw new System.NotImplementedException();
     }

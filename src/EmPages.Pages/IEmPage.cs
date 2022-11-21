@@ -15,11 +15,6 @@ public interface IEmPage
     string Title { get; }
 
     /// <summary>
-    /// List of all page actions builders for the current schema.
-    /// </summary>
-    IReadOnlyList<Func<EmPageRequest, EmAction>> ActionsBuilders { get; }
-
-    /// <summary>
     /// List of permissions that user have to have in order to access the page behind that schema.
     /// </summary>
     IList<string> Permissions { get; }

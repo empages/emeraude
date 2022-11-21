@@ -9,6 +9,14 @@ namespace EmPages.Pages;
 public class EmRequest
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="EmRequest"/> class.
+    /// </summary>
+    public EmRequest()
+    {
+        this.Parameters = new List<EmParameter>();
+    }
+
+    /// <summary>
     /// Request route.
     /// </summary>
     public string Route { get; set; }
@@ -19,14 +27,9 @@ public class EmRequest
     public string Command { get; set; }
 
     /// <summary>
-    /// Parameters extracted by the query string.
+    /// Request parameters.
     /// </summary>
-    public IEnumerable<EmParameter> QueryParameters { get; set; }
-
-    /// <summary>
-    /// Parameters extracted by the route.
-    /// </summary>
-    public IEnumerable<EmParameter> RouteParameters { get; set; }
+    public IEnumerable<EmParameter> Parameters { get; set; }
 
     /// <summary>
     /// Model passed by the page.
@@ -44,9 +47,7 @@ public class EmRequest
     /// <returns></returns>
     public EmPageRequest ToPageRequest()
     {
-        return new EmPageRequest(
-            this.RouteParameters.ToDictionary(x => x.Key, x => x.Value),
-            this.QueryParameters.ToDictionary(x => x.Key, x => x.Value));
+        return new EmPageRequest(this.Parameters.ToDictionary(x => x.Key, x => x.Value));
     }
 
     /// <summary>
@@ -58,7 +59,6 @@ public class EmRequest
         return new EmPageCommandRequest(
             this.Model,
             this.ModelsIds,
-            this.RouteParameters.ToDictionary(x => x.Key, x => x.Value),
-            this.QueryParameters.ToDictionary(x => x.Key, x => x.Value));
+            this.Parameters.ToDictionary(x => x.Key, x => x.Value));
     }
 }

@@ -27,7 +27,7 @@ public class EmAction
 
     /// <summary>
     /// Target value that can be different based on the action type.
-    /// For routing type the target is route value.
+    /// For redirection type the target is the page route or absolute URL value.
     /// For command type the target is command name.
     /// </summary>
     public string Target { get; set; }

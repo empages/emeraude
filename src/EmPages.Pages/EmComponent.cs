@@ -31,7 +31,6 @@ public abstract class EmComponent
     /// <summary>
     /// Type of the source.
     /// </summary>
-    [JsonIgnore]
     public Type SourceType { get; set; }
 
     /// <summary>

@@ -3,8 +3,10 @@
 /// <summary>
 /// Details page result.
 /// </summary>
-public class EmDetailsPageResult : IEmDetailsPageResult
+public interface IEmDetailsPageResult : IEmPageResult
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Data of the result.
+    /// </summary>
     public IEmPageModel Model { get; set; }
 }

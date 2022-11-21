@@ -9,7 +9,7 @@ namespace EmPages.Pages.Pages;
 /// Abstract implementation of page for form presentation.
 /// </summary>
 /// <typeparam name="TModel">Model type.</typeparam>
-public abstract class EmFormPage<TModel> : EmPage<TModel, EmFormViewContext<TModel>, EmFormPageResult<TModel>>
+public abstract class EmFormPage<TModel> : EmPage<TModel, EmFormViewContext<TModel>, EmFormPageResult>
     where TModel : class, IEmPageModel, new()
 {
     /// <summary>

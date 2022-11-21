@@ -18,6 +18,14 @@ public interface IEmPageViewContextStrategy
     /// Type of the view model related to that view context.
     /// </summary>
     Type ViewItemType { get; }
+
+    /// <summary>
+    /// Gets page actions.
+    /// </summary>
+    /// <param name="models"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    IEnumerable<EmAction> GetPageActions(IEnumerable<IEmPageModel> models, EmPageRequest request);
 }
 
 /// <summary>
@@ -27,6 +35,11 @@ public interface IEmPageViewContextStrategy
 public interface IEmPageViewContextStrategy<TModel> : IEmPageViewContextStrategy
     where TModel : class, IEmPageModel, new()
 {
+    /// <summary>
+    /// Adds action builder for the view context.
+    /// </summary>
+    /// <param name="actionBuilder"></param>
+    void AddAction(Func<IEnumerable<TModel>, EmPageRequest, EmAction> actionBuilder);
 }
 
 /// <inheritdoc />

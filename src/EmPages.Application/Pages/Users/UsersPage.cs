@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EmPages.Application.Common;
 using EmPages.Identity;
 using EmPages.Pages;
+using EmPages.Pages.Extensions;
 using EmPages.Pages.Pages;
 using EmPages.Pages.Results;
 
@@ -32,7 +33,7 @@ public class UsersPage : EmTablePage<UsersPageModel>, IEmLayoutItem
         {
             Title = "Assign Permissions",
             Order = 1,
-            Type = PageActionType.Routing,
+            Type = PageActionType.Redirection,
             Target = $"/~/users/{model.Id}/assign-permissions",
         });
 
@@ -46,16 +47,16 @@ public class UsersPage : EmTablePage<UsersPageModel>, IEmLayoutItem
         });
     }
 
-    public override async Task<EmTablePageResult<UsersPageModel>> FetchDataAsync(EmPageRequest request)
+    public override async Task<EmTablePageResult> FetchDataAsync(EmPageRequest request)
     {
-        var searchText = request.GetQueryParameter<string>("searchText");
-        var pageSize = request.GetQueryParameter<int>("pageSize");
-        var page = request.GetQueryParameter<int>("page");
+        var searchText = request.GetParameter<string>("searchText");
+        var pageSize = request.GetPaginationPageSize();
+        var page = request.GetPaginationPageIndex();
         var skippedCount = (page - 1) * pageSize;
         var totalUsersCount = await this.identityService.CountUsersAsync(searchText);
         var users = await this.identityService.FetchUsersAsync(searchText, skippedCount, pageSize);
 
-        return new EmTablePageResult<UsersPageModel>
+        return new EmTablePageResult
         {
             Models = users.Select(x => new UsersPageModel
             {

@@ -29,12 +29,12 @@ public class AssignPermissionsPage : EmFormPage<AssignPermissionsPageModel>
     public override string ComputeTitle(AssignPermissionsPageModel model) =>
         $"Assign Permissions For {model.UserEmail}";
 
-    public override async Task<EmFormPageResult<AssignPermissionsPageModel>> FetchDataAsync(EmPageRequest request)
+    public override async Task<EmFormPageResult> FetchDataAsync(EmPageRequest request)
     {
-        var userId = request.GetRouteParameter<Guid>("userId");
+        var userId = request.GetParameter<Guid>("userId");
         var user = await this.identityService.FindUserAsync(userId);
 
-        return new EmFormPageResult<AssignPermissionsPageModel>
+        return new EmFormPageResult
         {
             Model = new AssignPermissionsPageModel
             {

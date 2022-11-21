@@ -22,7 +22,7 @@ public class RegisterUserPage : EmFormPage<RegisterUserPageModel>
         this.Permissions.Add(ApplicationPermissions.IdentityManagement);
     }
 
-    public override async Task<EmFormPageResult<RegisterUserPageModel>> FetchDataAsync(EmPageRequest request)
+    public override async Task<EmFormPageResult> FetchDataAsync(EmPageRequest request)
     {
         throw new System.NotImplementedException();
     }

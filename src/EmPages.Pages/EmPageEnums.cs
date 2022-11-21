@@ -6,7 +6,14 @@
 /// </summary>
 public enum PageActionType
 {
-    Routing = 1,
+    /// <summary>
+    /// Action is going to redirect user to another page/URL.
+    /// </summary>
+    Redirection = 1,
+
+    /// <summary>
+    /// Action is going to executes a command.
+    /// </summary>
     Command = 2,
 }
 

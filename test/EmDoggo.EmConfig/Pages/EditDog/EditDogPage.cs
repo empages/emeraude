@@ -17,7 +17,7 @@ public class EditDogPage : EmFormPage<EditDogPageModel>
         throw new System.NotImplementedException();
     }
 
-    public override async Task<EmFormPageResult<EditDogPageModel>> FetchDataAsync(EmPageRequest request)
+    public override async Task<EmFormPageResult> FetchDataAsync(EmPageRequest request)
     {
         throw new System.NotImplementedException();
     }

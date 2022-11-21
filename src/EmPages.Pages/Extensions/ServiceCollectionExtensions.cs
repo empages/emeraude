@@ -20,12 +20,11 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddEmeraudePages(this IServiceCollection services, IEmPagesOptions options)
     {
-        services.TryAddSingleton<IEmServiceFactory, ServiceFactory>();
         services.TryAddSingleton<IEmPageStore, EmPageStore>();
-        services.TryAddSingleton<IEmMappingStrategy, TableMappingStrategy>();
-        services.TryAddSingleton<IEmMappingStrategy, DetailsMappingStrategy>();
-        services.TryAddSingleton<IEmMappingStrategy, FormMappingStrategy>();
-        services.TryAddSingleton<IEmPageMapper, PageMapper>();
+        services.TryAddSingleton<IEmMappingStrategy, EmTableMappingStrategy>();
+        services.TryAddSingleton<IEmMappingStrategy, EmDetailsMappingStrategy>();
+        services.TryAddSingleton<IEmMappingStrategy, EmFormMappingStrategy>();
+        services.TryAddSingleton<IEmPageHandler, EmPageHandler>();
         services.TryAddSingleton<IEmRouter, EmRouter>();
 
         services.RegisterAssembliesPages(options);

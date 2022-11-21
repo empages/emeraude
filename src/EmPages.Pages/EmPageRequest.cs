@@ -12,51 +12,34 @@ public class EmPageRequest
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageRequest"/> class.
     /// </summary>
-    /// <param name="routeParameters"></param>
-    /// <param name="queryParameters"></param>
-    public EmPageRequest(IDictionary<string, object> routeParameters, IDictionary<string, object> queryParameters)
+    /// <param name="parameters"></param>
+    public EmPageRequest(IDictionary<string, object> parameters)
     {
-        this.RouteParameters = new ReadOnlyDictionary<string, object>(routeParameters);
-        this.QueryParameters = new ReadOnlyDictionary<string, object>(queryParameters);
+        this.Parameters = new ReadOnlyDictionary<string, object>(parameters);
     }
 
     /// <summary>
     /// Parameters extracted from the request route.
     /// </summary>
-    public IReadOnlyDictionary<string, object> RouteParameters { get; }
-
-    /// <summary>
-    /// Parameters extracted from the query string of the request.
-    /// </summary>
-    public IReadOnlyDictionary<string, object> QueryParameters { get; }
+    public IReadOnlyDictionary<string, object> Parameters { get; }
 
     /// <summary>
     /// Gets casted route parameter.
     /// </summary>
     /// <param name="key"></param>
+    /// <param name="defaultValue"></param>
     /// <typeparam name="TType">Type of the parameter.</typeparam>
     /// <returns></returns>
-    public TType GetRouteParameter<TType>(string key)
+    public TType GetParameter<TType>(string key, TType defaultValue = default)
     {
-        return this.GetDictionaryValue<TType>(key, this.RouteParameters);
+        return this.GetDictionaryValue<TType>(key, this.Parameters, defaultValue);
     }
 
-    /// <summary>
-    /// Gets casted query parameter.
-    /// </summary>
-    /// <param name="key"></param>
-    /// <typeparam name="TType">Type of the parameter.</typeparam>
-    /// <returns></returns>
-    public TType GetQueryParameter<TType>(string key)
-    {
-        return this.GetDictionaryValue<TType>(key, this.QueryParameters);
-    }
-
-    private TType GetDictionaryValue<TType>(string key, IReadOnlyDictionary<string, object> dictionary)
+    private TType GetDictionaryValue<TType>(string key, IReadOnlyDictionary<string, object> dictionary, TType defaultValue)
     {
         if (!dictionary.ContainsKey(key))
         {
-            return default;
+            return defaultValue;
         }
 
         var value = dictionary[key];

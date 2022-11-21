@@ -3,8 +3,10 @@
 /// <summary>
 /// Form page result.
 /// </summary>
-public class EmFormPageResult : IEmFormPageResult
+public interface IEmFormPageResult : IEmPageResult
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Data of the result.
+    /// </summary>
     public IEmPageModel Model { get; set; }
 }

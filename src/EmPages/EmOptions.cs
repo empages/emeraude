@@ -25,7 +25,7 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     {
         this.pagesAssemblies = new List<Assembly>();
         this.defaultTypesToComponentsMapping = new Dictionary<Type, (Type Renderer, Type Mutator)>();
-        this.portalUrls = new List<string>();
+        this.portalUrls = new List<string> { EmPortalGatewayConstants.DefaultPortalUrl };
         this.IdentityOptions = new IdentityOptions();
         this.ConfigureDefaultIdentityOptions();
     }

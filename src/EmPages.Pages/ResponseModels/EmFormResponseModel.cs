@@ -3,6 +3,6 @@
 /// <summary>
 /// Model representing form model response expected by the page request.
 /// </summary>
-public class EmFormResponseModel : IEmResponseModel
+public class EmFormResponseModel : EmResponseModel
 {
 }

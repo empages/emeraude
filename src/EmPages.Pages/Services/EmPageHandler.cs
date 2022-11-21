@@ -7,28 +7,28 @@ using EmPages.Pages.Views;
 namespace EmPages.Pages.Services;
 
 /// <inheritdoc />
-internal class PageMapper : IEmPageMapper
+internal class EmPageHandler : IEmPageHandler
 {
     private readonly IEnumerable<IEmMappingStrategy> mappingStrategies;
     private readonly IDictionary<Type, Type> viewItemToStrategyMap;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageMapper"/> class.
+    /// Initializes a new instance of the <see cref="EmPageHandler"/> class.
     /// </summary>
     /// <param name="mappingStrategies"></param>
-    public PageMapper(IEnumerable<IEmMappingStrategy> mappingStrategies)
+    public EmPageHandler(IEnumerable<IEmMappingStrategy> mappingStrategies)
     {
         this.mappingStrategies = mappingStrategies;
         this.viewItemToStrategyMap = new Dictionary<Type, Type>
         {
-            { typeof(EmTableViewItem), typeof(TableMappingStrategy) },
-            { typeof(EmDetailsViewItem), typeof(DetailsMappingStrategy) },
-            { typeof(EmFormViewItem), typeof(FormMappingStrategy) },
+            { typeof(EmTableViewItem), typeof(EmTableMappingStrategy) },
+            { typeof(EmDetailsViewItem), typeof(EmDetailsMappingStrategy) },
+            { typeof(EmFormViewItem), typeof(EmFormMappingStrategy) },
         };
     }
 
     /// <inheritdoc/>
-    public async Task<IEmResponseModel> MapAsync(IEmPage page, EmPageRequest request) =>
+    public async Task<IEmResponseModel> HandleAsync(IEmPage page, EmPageRequest request) =>
         await this.GetPageConversionStrategy(page).MapAsync(page, request);
 
     private IEmMappingStrategy GetPageConversionStrategy(IEmPage page)
