@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmDoggo.Core.Data;
 using EmPages.Pages;
-using EmPages.Pages.Extensions;
 using EmPages.Pages.Pages;
-using EmPages.Pages.Results;
+using EmPages.Pages.Pages.Table;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmDoggo.EmConfig.Pages.Dogs;
@@ -23,6 +22,7 @@ public class DogsPage : EmTablePage<DogsPageModel>
 
     public override async Task SetupAsync()
     {
+        this.Title = "Dogs";
         this.ViewContext.ConfigureAll(this.Options);
         
         this.AddAction((_, _) => new EmAction

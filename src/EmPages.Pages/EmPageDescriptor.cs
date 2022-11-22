@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmPages.Pages.Extensions;
 using Essentials.Extensions;
 
 namespace EmPages.Pages;
@@ -26,7 +25,7 @@ public class EmPageDescriptor
                 .First(x => x.GetGenericTypeDefinition() == typeof(IEmPage<,,>));
             this.ModelType = pageInterface?.GetGenericArguments().First();
 
-            this.PageRoute = pageType.ExtractRouteFromPageType();
+            this.PageRoute = ExtractRouteFromPageType(pageType);
 
             var expectedCommandType = typeof(IEmPageCommand);
             this.CommandsTypes = pageType
@@ -74,4 +73,15 @@ public class EmPageDescriptor
     /// <returns></returns>
     public Type FindCommandType(string command) =>
         this.CommandsTypes.FirstOrDefault(x => x.Name == command);
+
+    private static EmPageRoute ExtractRouteFromPageType(Type type)
+    {
+        var routeAttribute = type.GetAttribute<EmRouteAttribute>();
+        if (routeAttribute == null)
+        {
+            throw new EmSetupException("Cannot extract route from page that is not decorated with 'EmRouteAttribute'");
+        }
+
+        return new EmPageRoute(routeAttribute.Template);
+    }
 }

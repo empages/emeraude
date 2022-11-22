@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EmPages.Pages;
-using EmPages.Pages.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmPages.PortalGateway.Controllers;
 
@@ -37,7 +38,7 @@ public class EmPageController : EmPortalGatewayController
     public async Task<IActionResult> RetrievePage([FromBody]EmRequest request)
     {
         var pageDescriptor = this.FindPage(request.Route);
-        var pageInstance = this.HttpContext.RequestServices.GetPage(pageDescriptor.PageType);
+        var pageInstance = this.GetPage(pageDescriptor.PageType);
         var pageResponse = await this.pageHandler.HandleAsync(pageInstance, request.ToPageRequest());
         return this.Ok(pageResponse);
     }
@@ -58,7 +59,7 @@ public class EmPageController : EmPortalGatewayController
             throw new EmNotRegisteredCommandException($"There is not registered command '{request.Command}' for page with route '{request.Route}'");
         }
 
-        var commandInstance = this.HttpContext.RequestServices.GetPageCommand(commandType);
+        var commandInstance = this.GetPageCommand(commandType);
         var result = await commandInstance.HandleAsync(request.ToCommandPageRequest());
         return this.Ok(result);
     }
@@ -73,4 +74,10 @@ public class EmPageController : EmPortalGatewayController
 
         return pageDescriptor;
     }
+
+    private IEmPage GetPage(Type pageType) =>
+        (IEmPage)this.HttpContext.RequestServices.GetRequiredService(pageType);
+
+    private IEmPageCommand GetPageCommand(Type commandType) =>
+        (IEmPageCommand)this.HttpContext.RequestServices.GetRequiredService(commandType);
 }

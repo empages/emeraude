@@ -42,8 +42,8 @@ public class EmPageRequest
             return defaultValue;
         }
 
-        var value = dictionary[key];
+        var value = dictionary[key]?.ToString();
 
-        return (TType)Convert.ChangeType(value, typeof(TType));
+        return EmPageTypeConverter.ConvertToType<TType>(value);
     }
 }

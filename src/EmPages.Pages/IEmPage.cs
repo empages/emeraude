@@ -31,6 +31,13 @@ public interface IEmPage
     Task SetupAsync();
 
     /// <summary>
+    /// Validates the page setup.
+    /// Please consider that validation will be invoked by the framework.
+    /// You do not need to invoked it manually.
+    /// </summary>
+    void ValidatePageSetup();
+
+    /// <summary>
     /// Fetch data required for the page.
     /// </summary>
     /// <param name="request"></param>
@@ -42,6 +49,14 @@ public interface IEmPage
     /// </summary>
     /// <returns></returns>
     IEmPageViewContextStrategy GetViewContext();
+
+    /// <summary>
+    /// Computes title to use runtime value from the page model.
+    /// Consider that method is invoked by the framework.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    string ComputeTitle(IEmPageModel model);
 }
 
 /// <summary>
@@ -62,6 +77,8 @@ public interface IEmPage<TModel, out TViewContext, TPageResult> : IEmPage
 
     /// <summary>
     /// Computes title to use runtime value from the page model.
+    /// Consider that method is invoked by the framework.
+    /// Override the implementation in case of need of title customization.
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>

@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using EmPages.Application.Common;
 using EmPages.Identity;
 using EmPages.Pages;
-using EmPages.Pages.Extensions;
 using EmPages.Pages.Pages;
-using EmPages.Pages.Results;
+using EmPages.Pages.Pages.Table;
 
 namespace EmPages.Application.Pages.Users;
 

@@ -55,10 +55,17 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     public IEmPageViewContextStrategy GetViewContext() => this.ViewContext;
 
     /// <inheritdoc/>
+    public string ComputeTitle(IEmPageModel model) =>
+        this.ComputeTitle(model as TModel);
+
+    /// <inheritdoc/>
     public virtual string ComputeTitle(TModel model) => this.Title;
 
     /// <inheritdoc/>
     public abstract Task<TPageResult> FetchDataAsync(EmPageRequest request);
+
+    /// <inheritdoc/>
+    public abstract void ValidatePageSetup();
 
     /// <summary>
     /// Adds an action for current page.

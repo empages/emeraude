@@ -1,24 +1,50 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using EmDoggo.Core.Data;
 using EmPages.Pages;
 using EmPages.Pages.Pages;
-using EmPages.Pages.Results;
+using EmPages.Pages.Pages.Details;
 
 namespace EmDoggo.EmConfig.Pages.DogDetails;
 
 [EmRoute("/dogs/{dogId}")]
 public class DogDetailsPage : EmDetailsPage<DogDetailsPageModel>
 {
-    public DogDetailsPage(IEmPagesOptions options) : base(options)
+    private readonly EntityContext context;
+
+    public DogDetailsPage(EntityContext context, IEmPagesOptions options)
+        : base(options)
     {
+        this.context = context;
     }
 
     public override async Task SetupAsync()
     {
-        throw new System.NotImplementedException();
+        this.ViewContext.ConfigureAll(this.Options);
     }
 
     public override async Task<EmDetailsPageResult> FetchDataAsync(EmPageRequest request)
     {
-        throw new System.NotImplementedException();
+        var dogId = request.GetParameter<Guid>("dogId");
+        var dog = await this.context.Dogs.FindAsync(dogId);
+        if (dog is null)
+        {
+            throw new EmPageNotFoundException($"Cannot be found a dog for ID: {dogId}");
+        }
+        
+        return new EmDetailsPageResult
+        {
+            Model = new DogDetailsPageModel
+            {
+                Id = dog.Id.ToString(),
+                Name = dog.Name,
+                Breed = dog.Breed,
+            },
+        };
+    }
+    
+    public override string ComputeTitle(DogDetailsPageModel model)
+    {
+        return $"Dog '{model.Name}'";
     }
 }

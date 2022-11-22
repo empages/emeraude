@@ -5,7 +5,7 @@ using EmPages.Pages;
 namespace EmPages.Application.Pages.RegisterUser;
 
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600", MessageId = "Elements should be documented", Justification = "Internal framework usage")]
-public class RegisterUserPageSubmitCommand : IEmPageSubmitCommand
+public class RegisterUserPageSubmitCommand : IEmPageCommand
 {
     public async Task<EmPageCommandResult> HandleAsync(EmPageCommandRequest request)
     {

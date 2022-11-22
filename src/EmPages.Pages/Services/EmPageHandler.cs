@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmPages.Pages.Views;
+using EmPages.Pages.Pages.Details;
+using EmPages.Pages.Pages.Form;
+using EmPages.Pages.Pages.Table;
 
 namespace EmPages.Pages.Services;
 
