@@ -3,7 +3,7 @@
 /// <summary>
 /// Renderer for HTML.
 /// </summary>
-public class HtmlRenderer : EmRenderer
+public class EmHtmlRenderer : EmRenderer
 {
     /// <summary>
     /// Flag that indicates whether the HTML is encoded or not.

@@ -17,7 +17,7 @@ public static class DependencyInjection
     /// <param name="services"></param>
     /// <param name="options"></param>
     /// <returns></returns>
-    public static IServiceCollection AddEmeraudeIdentity(this IServiceCollection services, IEmIdentityOptions options)
+    public static IServiceCollection AddIdentity(this IServiceCollection services, IEmIdentityOptions options)
     {
         services.AddDbContext<EmIdentityContext>(options.DbContextOptionsBuilder);
 

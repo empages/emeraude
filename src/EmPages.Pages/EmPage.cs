@@ -22,6 +22,8 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     /// <param name="options"></param>
     protected EmPage(IEmPagesOptions options)
     {
+        EmPageValidators.ValidateModelType(typeof(TModel));
+
         this.Options = options;
         this.Permissions = new List<string>();
         this.ViewContext = new TViewContext();

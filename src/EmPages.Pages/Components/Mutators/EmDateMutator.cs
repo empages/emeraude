@@ -6,14 +6,14 @@ namespace EmPages.Pages.Components.Mutators;
 /// <summary>
 /// Component that mutate dates.
 /// </summary>
-public class DateMutator : EmMutator
+public class EmDateMutator : EmMutator
 {
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.SourceType != typeof(DateTime) || this.SourceType != typeof(DateOnly))
+        if (this.SourceType.Group == TypeGroup.DateTimes && this.SourceType.SourceType != typeof(DateOnly))
         {
-            throw new EmSetupException("DateMutator supports only source of type DateTime or DateOnly.");
+            throw new EmSetupException("DateMutator supports only source of type DateOnly.");
         }
     }
 }

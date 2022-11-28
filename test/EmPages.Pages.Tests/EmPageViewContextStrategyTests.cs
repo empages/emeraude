@@ -115,7 +115,7 @@ public class EmPageViewContextStrategyTests
             .ViewItems
             .Select(x => x.Component)
             .Should()
-            .AllBeOfType<TextRenderer>();
+            .AllBeOfType<EmTextRenderer>();
 
         viewContext
             .ViewItems

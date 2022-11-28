@@ -3,7 +3,7 @@
 /// <summary>
 /// Renderer for images.
 /// </summary>
-public class ImageRenderer : EmRenderer
+public class EmImageRenderer : EmRenderer
 {
     /// <summary>
     /// Width of the image.

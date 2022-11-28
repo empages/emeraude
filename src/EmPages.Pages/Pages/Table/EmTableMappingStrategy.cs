@@ -77,6 +77,12 @@ internal class EmTableMappingStrategy : IEmMappingStrategy
             response.Actions.Add(new EmResponseAction(pageAction));
         }
 
+        var typeDescriptions = viewContext.ExtractTypeDescriptions(request);
+        foreach (var typeDescription in typeDescriptions)
+        {
+            response.TypeDescriptions.Add(typeDescription);
+        }
+
         return response;
     }
 }

@@ -12,5 +12,5 @@ public interface IEmPageCommand
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    Task<EmPageCommandResult> HandleAsync(EmPageCommandRequest request);
+    Task<EmPageCommandResult> HandleAsync(EmPageRequest request);
 }

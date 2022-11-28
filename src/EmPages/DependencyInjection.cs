@@ -23,8 +23,12 @@ public static class DependencyInjection
         {
             options.AddPagesAssembly(ApplicationAssembly.Assembly);
 
-            options.ConfigureDefaultTypeToComponentMap<string, TextRenderer, TextMutator>();
-            options.ConfigureDefaultTypeToComponentMap<DateOnly, TextRenderer, DateMutator>();
+            options.ConfigureDefaultTypeToComponentMap<string, EmTextRenderer, EmTextMutator>();
+            options.ConfigureDefaultTypeToComponentMap<bool, EmFlagRenderer, EmFlagMutator>();
+            options.ConfigureDefaultTypeToComponentMap<DateOnly, EmTextRenderer, EmDateMutator>();
+            options.ConfigureDefaultTypeToComponentMap<TimeOnly, EmTextRenderer, EmTimeMutator>();
+            options.ConfigureDefaultTypeToComponentMap<DateTime, EmTextRenderer, EmDateTimeMutator>();
+            options.ConfigureDefaultTypeToComponentMap<DateTimeOffset, EmTextRenderer, EmDateTimeMutator>();
         };
 
     /// <summary>
@@ -46,9 +50,9 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
 
-        services.AddEmeraudePages(options);
-        services.AddEmeraudeIdentity(options);
-        services.AddEmeraudePortalGateway(options);
+        services.AddPages(options);
+        services.AddIdentity(options);
+        services.AddPortalGateway(options);
 
         return services;
     }

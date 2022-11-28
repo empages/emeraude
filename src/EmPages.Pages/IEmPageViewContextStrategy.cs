@@ -26,6 +26,27 @@ public interface IEmPageViewContextStrategy
     /// <param name="request"></param>
     /// <returns></returns>
     IEnumerable<EmAction> GetPageActions(IEnumerable<IEmPageModel> models, EmPageRequest request);
+
+    /// <summary>
+    /// Adds a custom type description.
+    /// </summary>
+    /// <param name="dictionary"></param>
+    /// <returns>Id of the type.</returns>
+    string AddCustomTypeDescription(IDictionary<object, string> dictionary);
+
+    /// <summary>
+    /// Adds a custom type description.
+    /// </summary>
+    /// <param name="typeDescriptionFunc"></param>
+    /// <returns>Id of the type.</returns>
+    string AddCustomTypeDescription(Func<EmPageRequest, IDictionary<object, string>> typeDescriptionFunc);
+
+    /// <summary>
+    /// Extracts type descriptions from current view context.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    ICollection<EmTypeDescription> ExtractTypeDescriptions(EmPageRequest request);
 }
 
 /// <summary>

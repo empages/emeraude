@@ -5,7 +5,7 @@ namespace EmDoggo.EmConfig.Pages.Dogs;
 
 public class DogsPageDeleteCommand : IEmPageCommand
 {
-    public async Task<EmPageCommandResult> HandleAsync(EmPageCommandRequest request)
+    public async Task<EmPageCommandResult> HandleAsync(EmPageRequest request)
     {
         return new EmPageCommandResult();
     }

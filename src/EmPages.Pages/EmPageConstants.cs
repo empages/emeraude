@@ -6,9 +6,9 @@
 public static class EmPageConstants
 {
     /// <summary>
-    /// Pagination page query key.
+    /// Pagination page parameter key.
     /// </summary>
-    public const string PaginationPageQueryKey = "page";
+    public const string PaginationPageParameterKey = "page";
 
     /// <summary>
     /// Default pagination page index.
@@ -16,12 +16,22 @@ public static class EmPageConstants
     public const int PaginationPageDefaultIndex = 1;
 
     /// <summary>
-    /// Pagination page size query key.
+    /// Pagination page size parameter key.
     /// </summary>
-    public const string PaginationPageSizeQueryKey = "page-size";
+    public const string PaginationPageSizeParameterKey = "page-size";
 
     /// <summary>
     /// Default pagination page size.
     /// </summary>
     public const int PaginationPageDefaultSize = 25;
+
+    /// <summary>
+    /// Request model parameter key.
+    /// </summary>
+    public const string RequestModelParameterKey = "model";
+
+    /// <summary>
+    /// Request models parameter key.
+    /// </summary>
+    public const string RequestModelsParameterKey = "models";
 }

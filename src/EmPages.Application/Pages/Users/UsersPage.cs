@@ -10,8 +10,9 @@ using EmPages.Pages.Pages.Table;
 namespace EmPages.Application.Pages.Users;
 
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600", MessageId = "Elements should be documented", Justification = "Internal framework usage")]
+[EmNavigationItem(int.MaxValue, "Users", "account-group", ApplicationPermissions.IdentityManagement)]
 [EmRoute("/~/users")]
-public class UsersPage : EmTablePage<UsersPageModel>, IEmLayoutItem
+public class UsersPage : EmTablePage<UsersPageModel>
 {
     private readonly IEmIdentityService identityService;
 
@@ -69,13 +70,4 @@ public class UsersPage : EmTablePage<UsersPageModel>, IEmLayoutItem
             TotalCount = totalUsersCount,
         };
     }
-
-    public EmLayoutContext BuildLayoutContext() =>
-        new ()
-        {
-            Title = this.Title,
-            Icon = "account-group",
-            Order = int.MaxValue,
-            Permissions = this.Permissions.ToList(),
-        };
 }

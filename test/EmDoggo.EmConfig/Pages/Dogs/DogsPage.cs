@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using EmDoggo.Core.Data;
 using EmPages.Pages;
-using EmPages.Pages.Pages;
 using EmPages.Pages.Pages.Table;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmDoggo.EmConfig.Pages.Dogs;
 
+[EmNavigationItem(100, "Dogs", "dogs")]
 [EmRoute("/dogs")]
 public class DogsPage : EmTablePage<DogsPageModel>
 {
@@ -24,6 +23,8 @@ public class DogsPage : EmTablePage<DogsPageModel>
     {
         this.Title = "Dogs";
         this.ViewContext.ConfigureAll(this.Options);
+
+        this.ViewContext.Exclude(x => x.Id);
         
         this.AddAction((_, _) => new EmAction
         {
@@ -31,6 +32,14 @@ public class DogsPage : EmTablePage<DogsPageModel>
             Order = 1,
             Type = PageActionType.Redirection,
             Target = "/dogs/create"
+        });
+        
+        this.AddRowAction((model, _) => new EmAction
+        {
+            Title = "Details",
+            Order = 0,
+            Type = PageActionType.Redirection,
+            Target = $"/dogs/{model.Id}"
         });
         
         this.AddRowAction((model, _) => new EmAction

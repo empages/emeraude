@@ -3,7 +3,7 @@
 /// <summary>
 /// Component that mutate booleans.
 /// </summary>
-public class FlagMutator : EmMutator
+public class EmFlagMutator : EmMutator
 {
     /// <summary>
     /// Text that will be visualized for true option. The default is 'Yes'.
@@ -25,7 +25,7 @@ public class FlagMutator : EmMutator
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.SourceType != typeof(bool))
+        if (this.SourceType.SourceType != typeof(bool))
         {
             throw new EmSetupException("FlagMutator supports only source of type bool.");
         }

@@ -9,13 +9,6 @@ namespace EmPages.Pages;
 /// </summary>
 public class EmPageRoute
 {
-    private static readonly string[] ReservedFirstSegments = new string[]
-    {
-        "settings",
-        "auth",
-        "manage",
-    };
-
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPageRoute"/> class.
     /// </summary>
@@ -37,11 +30,6 @@ public class EmPageRoute
         this.Template = template;
         var segmentsValues = template.Split('/');
         var segments = new List<EmPageRouteSegment>();
-
-        if (ReservedFirstSegments.Contains(segmentsValues.FirstOrDefault()?.ToLowerInvariant()))
-        {
-            throw new ArgumentException($"First route segment should not be [{string.Join(',', ReservedFirstSegments)}] because these segments are reserved");
-        }
 
         foreach (var segmentsValue in segmentsValues)
         {

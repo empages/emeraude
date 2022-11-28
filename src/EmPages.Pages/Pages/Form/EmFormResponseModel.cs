@@ -11,6 +11,7 @@ public class EmFormResponseModel : EmResponseModel
     /// Initializes a new instance of the <see cref="EmFormResponseModel"/> class.
     /// </summary>
     public EmFormResponseModel()
+        : base("EmFormPage")
     {
         this.Inputs = new HashSet<EmFormResponseInput>();
     }

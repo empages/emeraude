@@ -29,7 +29,7 @@ public abstract class EmPageViewItem : IEmPageViewItem
     public Type SourceType { get; private set; }
 
     /// <inheritdoc/>
-    public virtual EmComponent DefaultComponent => new TextRenderer();
+    public virtual EmComponent DefaultComponent => new EmTextRenderer();
 
     /// <inheritdoc/>
     public void LoadSourceInfo(PropertyInfo propertyInfo)
@@ -71,7 +71,7 @@ public abstract class EmPageViewItem : IEmPageViewItem
         }
 
         this.Component = component;
-        this.Component.SourceType = this.SourceType;
+        this.Component.SourceType = new EmType(this.SourceType);
         this.Parameters = this.Component.GetParametersObject();
         this.Component.ValidateSetup();
     }
@@ -90,7 +90,7 @@ public abstract class EmPageViewItem : IEmPageViewItem
         var component = new TComponent();
         componentAction?.Invoke(component);
         this.Component = component;
-        this.Component.SourceType = this.SourceType;
+        this.Component.SourceType = new EmType(this.SourceType);
         postConfigurationComponentAction?.Invoke(component);
         this.Parameters = this.Component.GetParametersObject();
         this.Component.ValidateSetup();

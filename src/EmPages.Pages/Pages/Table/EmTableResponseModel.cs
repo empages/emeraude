@@ -11,6 +11,7 @@ public class EmTableResponseModel : EmResponseModel
     /// Initializes a new instance of the <see cref="EmTableResponseModel"/> class.
     /// </summary>
     public EmTableResponseModel()
+        : base("EmTablePage")
     {
         this.Header = new EmTableResponseHeader();
         this.Rows = new HashSet<EmTableResponseRow>();

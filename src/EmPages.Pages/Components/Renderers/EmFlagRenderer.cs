@@ -3,12 +3,12 @@
 /// <summary>
 /// Renderer for booleans.
 /// </summary>
-public class FlagRenderer : EmRenderer
+public class EmFlagRenderer : EmRenderer
 {
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.SourceType != typeof(bool))
+        if (this.SourceType.SourceType != typeof(bool))
         {
             throw new EmSetupException("FlagRenderer supports only source of type bool.");
         }

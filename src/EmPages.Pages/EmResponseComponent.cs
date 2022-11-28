@@ -13,8 +13,8 @@ public class EmResponseComponent
     public EmResponseComponent(EmComponent component, int index)
     {
         this.SourceName = component.SourceName;
-        this.SourceTypeName = component.SourceTypeName;
         this.Type = component.Type;
+        this.SourceTypeGroup = component.SourceType.Group;
         this.IsNullable = component.IsNullable;
         this.Parameters = component.GetParametersObject();
         this.Index = index;
@@ -36,9 +36,9 @@ public class EmResponseComponent
     public ComponentType Type { get; }
 
     /// <summary>
-    /// <inheritdoc cref="EmComponent.SourceTypeName"/>
+    /// Group of the source type.
     /// </summary>
-    public string SourceTypeName { get; }
+    public TypeGroup SourceTypeGroup { get; set; }
 
     /// <summary>
     /// <inheritdoc cref="EmComponent.IsNullable"/>

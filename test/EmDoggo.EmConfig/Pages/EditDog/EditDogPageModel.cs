@@ -1,4 +1,5 @@
-﻿using EmDoggo.Core.Data;
+﻿using System.Collections.Generic;
+using EmDoggo.Core.Data;
 using EmPages.Pages;
 
 namespace EmDoggo.EmConfig.Pages.EditDog;
@@ -11,6 +12,7 @@ public class EditDogPageModel : IEmPageModel
 
     public DogBreed Breed { get; set; }
 
+    
     public int Age { get; set; }
 
     public bool Active { get; set; }

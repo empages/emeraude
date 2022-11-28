@@ -11,6 +11,7 @@ public class EmDetailsResponseModel : EmResponseModel
     /// Initializes a new instance of the <see cref="EmDetailsResponseModel"/> class.
     /// </summary>
     public EmDetailsResponseModel()
+        : base("EmDetailsPage")
     {
         this.Fields = new HashSet<EmDetailsResponseField>();
     }

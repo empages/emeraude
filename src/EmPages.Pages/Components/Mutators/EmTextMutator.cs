@@ -1,18 +1,18 @@
 ﻿namespace EmPages.Pages.Components.Mutators;
 
 /// <summary>
-/// Component that mutate files.
+/// Component that mutate texts.
 /// </summary>
-public class FileMutator : EmMutator
+public class EmTextMutator : EmMutator
 {
     /// <summary>
-    /// Destination folder for saving the files.
+    /// Flag that indicates whether the text is large or not.
     /// </summary>
-    public string DestinationFolder { get; set; }
+    public bool LargeText { get; set; }
 
     /// <inheritdoc/>
     public override object GetParametersObject() => new
     {
-        this.DestinationFolder,
+        this.LargeText,
     };
 }

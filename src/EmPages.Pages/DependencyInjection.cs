@@ -20,17 +20,19 @@ public static class DependencyInjection
     /// <param name="services"></param>
     /// <param name="options"></param>
     /// <returns></returns>
-    public static IServiceCollection AddEmeraudePages(this IServiceCollection services, IEmPagesOptions options)
+    public static IServiceCollection AddPages(this IServiceCollection services, IEmPagesOptions options)
     {
         services.TryAddSingleton<IEmPageStore, EmPageStore>();
         services.TryAddSingleton<IEmPageHandler, EmPageHandler>();
         services.TryAddSingleton<IEmRouter, EmRouter>();
+        services.TryAddScoped<IEmLayoutService, EmLayoutService>();
 
         services.AddSingleton<IEmMappingStrategy, EmTableMappingStrategy>();
         services.AddSingleton<IEmMappingStrategy, EmDetailsMappingStrategy>();
         services.AddSingleton<IEmMappingStrategy, EmFormMappingStrategy>();
 
         services.RegisterAssembliesPages(options);
+        services.RegisterAssembliesCommands(options);
 
         return services;
     }
@@ -43,6 +45,18 @@ public static class DependencyInjection
             foreach (var page in assemblyPages)
             {
                 services.TryAddScoped(page);
+            }
+        }
+    }
+
+    private static void RegisterAssembliesCommands(this IServiceCollection services, IEmPagesOptions options)
+    {
+        foreach (var assembly in options.PagesAssemblies)
+        {
+            var assemblyCommands = assembly.GetTypes().Where(x => x.HasInterface<IEmPageCommand>() && !x.IsAbstract);
+            foreach (var command in assemblyCommands)
+            {
+                services.TryAddScoped(command);
             }
         }
     }

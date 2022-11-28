@@ -13,5 +13,5 @@ public class EmFormViewItem : EmPageViewItem
     public bool Required { get; set; }
 
     /// <inheritdoc/>
-    public override EmComponent DefaultComponent => new TextMutator();
+    public override EmComponent DefaultComponent => new EmTextMutator();
 }

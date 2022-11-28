@@ -5,7 +5,7 @@ namespace EmDoggo.EmConfig.Pages.EditDog;
 
 public class EditDogPageSubmitCommand : IEmPageCommand
 {
-    public async Task<EmPageCommandResult> HandleAsync(EmPageCommandRequest request)
+    public async Task<EmPageCommandResult> HandleAsync(EmPageRequest request)
     {
         throw new System.NotImplementedException();
     }

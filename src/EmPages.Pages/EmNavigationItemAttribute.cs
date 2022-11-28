@@ -1,12 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmPages.Pages;
 
 /// <summary>
-/// Context implementation for the purposes of layout visualization.
+/// Decorates an EmPage in case the page must be used as layout item.
 /// </summary>
-public class EmLayoutContext
+[AttributeUsage(AttributeTargets.Class)]
+public class EmNavigationItemAttribute : Attribute
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EmNavigationItemAttribute"/> class.
+    /// </summary>
+    /// <param name="order"></param>
+    /// <param name="title"></param>
+    /// <param name="icon"></param>
+    /// <param name="permissions"></param>
+    public EmNavigationItemAttribute(
+        int order,
+        string title,
+        string icon,
+        params string[] permissions)
+    {
+        this.Order = order;
+        this.Title = title;
+        this.Icon = icon;
+        this.Permissions = permissions;
+    }
+
     /// <summary>
     /// Order of the layout item that is represented by current context.
     /// </summary>

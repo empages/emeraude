@@ -19,7 +19,7 @@ public static class DependencyInjection
     /// <param name="services"></param>
     /// <param name="options"></param>
     /// <returns></returns>
-    public static IServiceCollection AddEmeraudePortalGateway(this IServiceCollection services, IEmPortalGatewayOptions options)
+    public static IServiceCollection AddPortalGateway(this IServiceCollection services, IEmPortalGatewayOptions options)
     {
         var identityOptions = options as IEmIdentityOptions;
         services.AddScoped<EmPortalFilterAttribute>();

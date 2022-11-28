@@ -12,69 +12,58 @@ namespace EmPages.Pages;
 public static class EmPageValidators
 {
     /// <summary>
-    /// Supported types for page models.
-    /// </summary>
-    public static readonly IReadOnlyCollection<Type> SupportedPrimitivesTypes = new[]
-    {
-        typeof(string),
-        typeof(string[]),
-        typeof(char),
-        typeof(char?),
-        typeof(char[]),
-        typeof(bool),
-        typeof(bool?),
-        typeof(bool[]),
-        typeof(byte),
-        typeof(byte?),
-        typeof(byte[]),
-        typeof(sbyte),
-        typeof(sbyte?),
-        typeof(sbyte[]),
-        typeof(short),
-        typeof(short?),
-        typeof(short[]),
-        typeof(ushort),
-        typeof(ushort?),
-        typeof(ushort[]),
-        typeof(int),
-        typeof(int?),
-        typeof(int[]),
-        typeof(uint),
-        typeof(uint?),
-        typeof(uint[]),
-        typeof(long),
-        typeof(long?),
-        typeof(long[]),
-        typeof(ulong),
-        typeof(ulong?),
-        typeof(ulong[]),
-        typeof(float),
-        typeof(float?),
-        typeof(float[]),
-        typeof(double),
-        typeof(double?),
-        typeof(double[]),
-        typeof(decimal),
-        typeof(decimal?),
-        typeof(decimal[]),
-        typeof(DateTime),
-        typeof(DateTime?),
-        typeof(DateTime[]),
-        typeof(DateOnly),
-        typeof(DateOnly?),
-        typeof(DateOnly[]),
-        typeof(TimeOnly),
-        typeof(TimeOnly?),
-        typeof(TimeOnly[]),
-    };
-
-    /// <summary>
     /// Checks whether the specified type is supported by the framework.
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static bool IsTypeSupported(Type type) =>
-        SupportedPrimitivesTypes.Contains(type) || type.IsEnum;
+    public static bool IsTypeSupported(Type type)
+    {
+        var supportedPrimitiveTypes = EmPageStaticData.SupportedPrimitivesTypes.ToList();
+        var isEnumerableType = type.IsEnumerableType();
+        var isGenericType = type.IsConstructedGenericType;
+        if (isEnumerableType && isGenericType && type.GetGenericArguments().First().IsEnum)
+        {
+            supportedPrimitiveTypes.Add(type.GetGenericArguments().First());
+        }
+
+        var underlyingType = type.GetTypeByIgnoreTheNullable();
+        if (underlyingType.IsEnum)
+        {
+            return true;
+        }
+
+        foreach (var supportedType in EmPageStaticData.SupportedPrimitivesTypes)
+        {
+            if (supportedType == type)
+            {
+                return true;
+            }
+        }
+
+        foreach (var supportedType in EmPageStaticData.SupportedNullablePrimitivesTypes)
+        {
+            if (supportedType == type)
+            {
+                return true;
+            }
+        }
+
+        if (isGenericType)
+        {
+            foreach (var supportedBaseGenericType in EmPageStaticData.SupportedBaseGenericTypes)
+            {
+                foreach (var supportedPrimitiveType in supportedPrimitiveTypes)
+                {
+                    if (supportedBaseGenericType.MakeGenericType(supportedPrimitiveType).FullName == type.FullName)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
     /// <summary>
     /// Validates whether a specified model type is valid due the framework requirements.
@@ -87,7 +76,7 @@ public static class EmPageValidators
             throw new EmSetupException($"Error during validation of '{modelType.FullName}'. Model must implements IEmPageModel interface.");
         }
 
-        var publicModelProperties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        var publicModelProperties = EmPageUtilities.GetEmPageModelProperties(modelType);
         var incorrectProperties = new List<string>();
         foreach (var publicProperty in publicModelProperties)
         {

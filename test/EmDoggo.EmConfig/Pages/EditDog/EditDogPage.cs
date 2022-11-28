@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmDoggo.Core.Data;
 using EmPages.Pages;
+using EmPages.Pages.Components.Mutators;
 using EmPages.Pages.Pages;
 using EmPages.Pages.Pages.Form;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,12 @@ public class EditDogPage : EmFormPage<EditDogPageModel>
     public override async Task SetupAsync()
     {
         this.ViewContext.ConfigureAll(this.Options);
+
+        this.ViewContext.Configure(x => x.Breed, viewItem =>
+        {
+            viewItem.SetComponent<EmMultiChoiceMutator>();
+        });
+
         this.SetSubmitCommand<EditDogPageSubmitCommand>();
     }
 

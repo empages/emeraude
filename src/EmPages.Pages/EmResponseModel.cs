@@ -10,11 +10,19 @@ public abstract class EmResponseModel : IEmResponseModel
     /// <summary>
     /// Initializes a new instance of the <see cref="EmResponseModel"/> class.
     /// </summary>
-    protected EmResponseModel()
+    /// <param name="pageType"></param>
+    protected EmResponseModel(string pageType)
     {
+        this.PageType = pageType;
         this.Components = new HashSet<EmResponseComponent>();
         this.Actions = new HashSet<EmResponseAction>();
+        this.TypeDescriptions = new HashSet<EmTypeDescription>();
     }
+
+    /// <summary>
+    /// Type of the page.
+    /// </summary>
+    public string PageType { get; }
 
     /// <summary>
     /// Title of the page.
@@ -30,4 +38,9 @@ public abstract class EmResponseModel : IEmResponseModel
     /// Collection of page actions.
     /// </summary>
     public ICollection<EmResponseAction> Actions { get; }
+
+    /// <summary>
+    /// Collection of type descriptions.
+    /// </summary>
+    public ICollection<EmTypeDescription> TypeDescriptions { get; }
 }

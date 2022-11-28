@@ -3,6 +3,6 @@
 /// <summary>
 /// Component that mutate HTML.
 /// </summary>
-public class HtmlMutator : EmMutator
+public class EmHtmlMutator : EmMutator
 {
 }

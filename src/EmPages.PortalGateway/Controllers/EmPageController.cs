@@ -39,7 +39,7 @@ public class EmPageController : EmPortalGatewayController
     {
         var pageDescriptor = this.FindPage(request.Route);
         var pageInstance = this.GetPage(pageDescriptor.PageType);
-        var pageResponse = await this.pageHandler.HandleAsync(pageInstance, request.ToPageRequest());
+        var pageResponse = await this.pageHandler.HandleAsync(pageInstance, request.ToPageRequest(pageDescriptor));
         return this.Ok(pageResponse);
     }
 
@@ -60,7 +60,7 @@ public class EmPageController : EmPortalGatewayController
         }
 
         var commandInstance = this.GetPageCommand(commandType);
-        var result = await commandInstance.HandleAsync(request.ToCommandPageRequest());
+        var result = await commandInstance.HandleAsync(request.ToPageRequest(pageDescriptor));
         return this.Ok(result);
     }
 

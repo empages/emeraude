@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmPages.Pages.Pages.Form;
@@ -55,6 +56,12 @@ internal class EmFormMappingStrategy : IEmMappingStrategy
         foreach (var pageAction in pageActions)
         {
             response.Actions.Add(new EmResponseAction(pageAction));
+        }
+
+        var typeDescriptions = viewContext.ExtractTypeDescriptions(request);
+        foreach (var typeDescription in typeDescriptions)
+        {
+            response.TypeDescriptions.Add(typeDescription);
         }
 
         return response;
