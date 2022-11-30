@@ -15,8 +15,7 @@ public class AssignPermissionsPage : EmFormPage<AssignPermissionsPageModel>
 {
     private readonly IEmIdentityService identityService;
 
-    public AssignPermissionsPage(IEmIdentityService identityService, IEmPagesOptions options)
-        : base(options)
+    public AssignPermissionsPage(IEmIdentityService identityService)
     {
         this.identityService = identityService;
     }

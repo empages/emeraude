@@ -13,11 +13,9 @@ public abstract class EmTablePage<TModel> : EmPage<TModel, EmTableViewContext<TM
     /// <summary>
     /// Initializes a new instance of the <see cref="EmTablePage{TModel}"/> class.
     /// </summary>
-    /// <param name="options"></param>
-    protected EmTablePage(IEmPagesOptions options)
-        : base(options)
+    protected EmTablePage()
     {
-        this.ViewContext.ConfigureAll(options);
+        this.ViewContext.ConfigureAll();
     }
 
     /// <summary>

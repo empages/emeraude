@@ -29,14 +29,14 @@ public class EmMultiChoiceMutator : EmMutator
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.MultiChoiceType == MultiChoiceType.CheckboxGroup && this.SourceType.Group != TypeGroup.Arrays)
+        if (this.MultiChoiceType == MultiChoiceType.CheckboxGroup && this.PropertyType.Group != TypeGroup.Arrays)
         {
             throw new EmSetupException($"Error configuring the component '{this.GetType().FullName}'. Cannot use MultiChoiceType.CheckboxGroup for non-iterable types.");
         }
     }
 
     /// <inheritdoc/>
-    protected override void OnAfterSourceTypeIsSet(EmType type)
+    protected override void OnAfterPropertyTypeIsSet(EmType type)
     {
         if (type.IsEnum)
         {

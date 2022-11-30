@@ -38,7 +38,7 @@ internal class EmPageStore : IEmPageStore, IDisposable
                 return;
             }
 
-            var pagesTypes = EmReflectionHelpers.GetPagesTypesFromAssemblies(this.options.PagesAssemblies);
+            var pagesTypes = EmPageUtilities.GetPagesTypesFromAssemblies(this.options.PagesAssemblies);
             foreach (var pagesType in pagesTypes)
             {
                 this.pageDescriptors.Add(new EmPageDescriptor(pagesType));

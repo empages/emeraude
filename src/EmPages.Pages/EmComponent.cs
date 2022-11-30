@@ -5,7 +5,7 @@
 /// </summary>
 public abstract class EmComponent
 {
-    private EmType sourceType;
+    private EmType propertyType;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmComponent"/> class.
@@ -19,7 +19,7 @@ public abstract class EmComponent
     /// <summary>
     /// Name of the component in the UI provider source.
     /// </summary>
-    public string SourceName => this.GetType().Name;
+    public string Name => this.GetType().Name;
 
     /// <summary>
     /// Type of the component.
@@ -27,27 +27,17 @@ public abstract class EmComponent
     public ComponentType Type { get; }
 
     /// <summary>
-    /// Type of the source.
+    /// Type of the property that is using the component.
     /// </summary>
-    public EmType SourceType
+    public EmType PropertyType
     {
-        get => this.sourceType;
+        get => this.propertyType;
         set
         {
-            this.sourceType = value;
-            this.OnAfterSourceTypeIsSet(value);
+            this.propertyType = value;
+            this.OnAfterPropertyTypeIsSet(value);
         }
     }
-
-    /// <summary>
-    /// Full name of the source type.
-    /// </summary>
-    public string SourceTypeName => this.SourceType?.SourceType.FullName;
-
-    /// <summary>
-    /// Flag that indicates whether the source type is nullable or not.
-    /// </summary>
-    public bool IsNullable => this.SourceType?.IsNullable ?? false;
 
     /// <summary>
     /// Gets parameters object based on the component.
@@ -64,10 +54,10 @@ public abstract class EmComponent
     }
 
     /// <summary>
-    /// Event that will be invoked when the source type is set.
+    /// Event that will be invoked when the property type is set.
     /// </summary>
     /// <param name="type"></param>
-    protected virtual void OnAfterSourceTypeIsSet(EmType type)
+    protected virtual void OnAfterPropertyTypeIsSet(EmType type)
     {
     }
 }

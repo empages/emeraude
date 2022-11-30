@@ -10,7 +10,7 @@ public class EmTimeMutator : EmMutator
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.SourceType.Group == TypeGroup.DateTimes && this.SourceType.SourceType != typeof(TimeOnly))
+        if (this.PropertyType.Group == TypeGroup.DateTimes && this.PropertyType.SourceType != typeof(TimeOnly))
         {
             throw new EmSetupException("TimeMutator supports only source of type TimeOnly.");
         }

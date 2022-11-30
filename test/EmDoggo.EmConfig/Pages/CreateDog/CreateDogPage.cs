@@ -8,13 +8,8 @@ namespace EmDoggo.EmConfig.Pages.CreateDog;
 [EmRoute("/dogs/create")]
 public class CreateDogPage : EmFormPage<CreateDogPageModel>
 {
-    public CreateDogPage(IEmPagesOptions options) : base(options)
-    {
-    }
-
     public override async Task SetupAsync()
     {
-        this.ViewContext.ConfigureAll(this.Options);
         this.SetSubmitCommand<CreateDogPageSubmitCommand>();
     }
 

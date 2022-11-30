@@ -9,14 +9,8 @@ namespace EmDoggo.EmConfig.Pages.TestTable;
 [EmRoute("/test/table")]
 public class TestTablePage : EmTablePage<TestTablePageModel>
 {
-    public TestTablePage(IEmPagesOptions options)
-        : base(options)
-    {
-    }
-
     public override async Task SetupAsync()
     {
-        this.ViewContext.ConfigureAll(this.Options);
     }
 
     public override async Task<EmTablePageResult> FetchDataAsync(EmPageRequest request)

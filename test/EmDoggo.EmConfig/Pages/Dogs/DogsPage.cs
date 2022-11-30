@@ -13,8 +13,7 @@ public class DogsPage : EmTablePage<DogsPageModel>
 {
     private readonly EntityContext context;
 
-    public DogsPage(EntityContext context, IEmPagesOptions options)
-        : base(options)
+    public DogsPage(EntityContext context)
     {
         this.context = context;
     }
@@ -22,7 +21,6 @@ public class DogsPage : EmTablePage<DogsPageModel>
     public override async Task SetupAsync()
     {
         this.Title = "Dogs";
-        this.ViewContext.ConfigureAll(this.Options);
 
         this.ViewContext.Exclude(x => x.Id);
         

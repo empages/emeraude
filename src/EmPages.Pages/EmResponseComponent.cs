@@ -1,4 +1,6 @@
-﻿namespace EmPages.Pages;
+﻿using EmPages.Pages.Components;
+
+namespace EmPages.Pages;
 
 /// <summary>
 /// Transfer object for <see cref="EmComponent"/> required for the response models.
@@ -12,10 +14,10 @@ public class EmResponseComponent
     /// <param name="index"></param>
     public EmResponseComponent(EmComponent component, int index)
     {
-        this.SourceName = component.SourceName;
+        this.SourceName = component.Name;
         this.Type = component.Type;
-        this.SourceTypeGroup = component.SourceType.Group;
-        this.IsNullable = component.IsNullable;
+        this.PropertyTypeGroup = component.PropertyType.Group;
+        this.IsNullable = component.PropertyType.IsNullable;
         this.Parameters = component.GetParametersObject();
         this.Index = index;
     }
@@ -26,7 +28,7 @@ public class EmResponseComponent
     public int Index { get; set; }
 
     /// <summary>
-    /// <inheritdoc cref="EmComponent.SourceName"/>
+    /// <inheritdoc cref="EmComponent.Name"/>
     /// </summary>
     public string SourceName { get; }
 
@@ -36,12 +38,12 @@ public class EmResponseComponent
     public ComponentType Type { get; }
 
     /// <summary>
-    /// Group of the source type.
+    /// Group of the property type.
     /// </summary>
-    public TypeGroup SourceTypeGroup { get; set; }
+    public TypeGroup PropertyTypeGroup { get; set; }
 
     /// <summary>
-    /// <inheritdoc cref="EmComponent.IsNullable"/>
+    /// Flag that indicates whether the component supports nulls or not.
     /// </summary>
     public bool IsNullable { get; }
 

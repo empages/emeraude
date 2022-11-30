@@ -8,14 +8,8 @@ namespace EmDoggo.EmConfig.Pages.TestDetails;
 [EmRoute("/test/details")]
 public class TestDetailsPage : EmDetailsPage<TestDetailsPageModel>
 {
-    public TestDetailsPage(IEmPagesOptions options)
-        : base(options)
-    {
-    }
-
     public override async Task SetupAsync()
     {
-        this.ViewContext.ConfigureAll(this.Options);
     }
 
     public override async Task<EmDetailsPageResult> FetchDataAsync(EmPageRequest request)

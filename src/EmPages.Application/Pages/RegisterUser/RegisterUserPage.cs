@@ -11,11 +11,6 @@ namespace EmPages.Application.Pages.RegisterUser;
 [EmRoute("/~/users/register")]
 public class RegisterUserPage : EmFormPage<RegisterUserPageModel>
 {
-    public RegisterUserPage(IEmPagesOptions options)
-        : base(options)
-    {
-    }
-
     public override async Task SetupAsync()
     {
         this.Title = "Register User";

@@ -14,7 +14,6 @@ namespace EmPages;
 /// </summary>
 public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOptions, IDisposable
 {
-    private readonly Dictionary<Type, (Type Renderer, Type Mutator)> defaultTypesToComponentsMapping;
     private readonly List<string> portalUrls;
     private readonly List<Assembly> pagesAssemblies;
 
@@ -24,7 +23,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     public EmOptions()
     {
         this.pagesAssemblies = new List<Assembly>();
-        this.defaultTypesToComponentsMapping = new Dictionary<Type, (Type Renderer, Type Mutator)>();
         this.portalUrls = new List<string> { EmPortalGatewayConstants.DefaultPortalUrl };
         this.IdentityOptions = new IdentityOptions();
         this.ConfigureDefaultIdentityOptions();
@@ -32,9 +30,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
 
     /// <inheritdoc cref="IEmPagesOptions.PagesAssemblies"/>
     public IReadOnlyCollection<Assembly> PagesAssemblies => this.pagesAssemblies;
-
-    /// <inheritdoc cref="IEmPagesOptions.DefaultTypesToComponentsMapping"/>
-    public IReadOnlyDictionary<Type, (Type Renderer, Type Mutator)> DefaultTypesToComponentsMapping => this.defaultTypesToComponentsMapping;
 
     /// <inheritdoc cref="IEmIdentityOptions.DbContextOptionsBuilder"/>
     public Action<DbContextOptionsBuilder> DbContextOptionsBuilder { get; private set; }
@@ -59,19 +54,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
 
     /// <inheritdoc/>
     public string GatewayId { get; set; }
-
-    /// <summary>
-    /// Configures specified default type to component map.
-    /// </summary>
-    /// <typeparam name="TType">Primitive type.</typeparam>
-    /// <typeparam name="TRenderer">Renderer type.</typeparam>
-    /// <typeparam name="TMutator">Mutator type.</typeparam>
-    public void ConfigureDefaultTypeToComponentMap<TType, TRenderer, TMutator>()
-        where TRenderer : EmRenderer, new()
-        where TMutator : EmMutator, new()
-    {
-        this.defaultTypesToComponentsMapping[typeof(TType)] = (typeof(TRenderer), typeof(TMutator));
-    }
 
     /// <summary>
     /// Configures database context for needs of framework identity.

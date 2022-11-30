@@ -12,15 +12,13 @@ public class DogDetailsPage : EmDetailsPage<DogDetailsPageModel>
 {
     private readonly EntityContext context;
 
-    public DogDetailsPage(EntityContext context, IEmPagesOptions options)
-        : base(options)
+    public DogDetailsPage(EntityContext context)
     {
         this.context = context;
     }
 
     public override async Task SetupAsync()
     {
-        this.ViewContext.ConfigureAll(this.Options);
     }
 
     public override async Task<EmDetailsPageResult> FetchDataAsync(EmPageRequest request)

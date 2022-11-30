@@ -16,10 +16,7 @@ public class UsersPage : EmTablePage<UsersPageModel>
 {
     private readonly IEmIdentityService identityService;
 
-    public UsersPage(
-        IEmIdentityService identityService,
-        IEmPagesOptions options)
-        : base(options)
+    public UsersPage(IEmIdentityService identityService)
     {
         this.identityService = identityService;
     }

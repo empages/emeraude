@@ -22,13 +22,6 @@ public static class DependencyInjection
         options =>
         {
             options.AddPagesAssembly(ApplicationAssembly.Assembly);
-
-            options.ConfigureDefaultTypeToComponentMap<string, EmTextRenderer, EmTextMutator>();
-            options.ConfigureDefaultTypeToComponentMap<bool, EmFlagRenderer, EmFlagMutator>();
-            options.ConfigureDefaultTypeToComponentMap<DateOnly, EmTextRenderer, EmDateMutator>();
-            options.ConfigureDefaultTypeToComponentMap<TimeOnly, EmTextRenderer, EmTimeMutator>();
-            options.ConfigureDefaultTypeToComponentMap<DateTime, EmTextRenderer, EmDateTimeMutator>();
-            options.ConfigureDefaultTypeToComponentMap<DateTimeOffset, EmTextRenderer, EmDateTimeMutator>();
         };
 
     /// <summary>

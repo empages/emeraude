@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using EmPages.Pages.Components;
 
 namespace EmPages.Pages;
 
@@ -59,8 +60,7 @@ public interface IEmPageViewItem
         where TComponent : EmComponent, new();
 
     /// <summary>
-    /// Set the default component specified by the options or item.
+    /// Set the default component.
     /// </summary>
-    /// <param name="options"></param>
-    void SetDefaultComponent(IEmPagesOptions options);
+    void SetDefaultComponent();
 }

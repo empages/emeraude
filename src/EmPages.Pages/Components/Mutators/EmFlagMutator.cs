@@ -25,7 +25,7 @@ public class EmFlagMutator : EmMutator
     /// <inheritdoc/>
     public override void ValidateSetup()
     {
-        if (this.SourceType.SourceType != typeof(bool))
+        if (this.PropertyType.SourceType != typeof(bool))
         {
             throw new EmSetupException("FlagMutator supports only source of type bool.");
         }

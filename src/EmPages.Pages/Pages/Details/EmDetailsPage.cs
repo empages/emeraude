@@ -13,11 +13,9 @@ public abstract class EmDetailsPage<TModel> : EmPage<TModel, EmDetailsViewContex
     /// <summary>
     /// Initializes a new instance of the <see cref="EmDetailsPage{TModel}"/> class.
     /// </summary>
-    /// <param name="options"></param>
-    protected EmDetailsPage(IEmPagesOptions options)
-        : base(options)
+    protected EmDetailsPage()
     {
-        this.ViewContext.ConfigureAll(options);
+        this.ViewContext.ConfigureAll();
     }
 
     /// <summary>

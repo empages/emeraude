@@ -30,6 +30,25 @@ public static class EmPageUtilities
     }
 
     /// <summary>
+    /// Gets all pages types that are registered in specified assemblies.
+    /// </summary>
+    /// <param name="assemblies"></param>
+    /// <returns></returns>
+    public static IEnumerable<Type> GetPagesTypesFromAssemblies(IEnumerable<Assembly> assemblies)
+    {
+        var types = new List<Type>();
+        foreach (var assembly in assemblies)
+        {
+            types
+                .AddRange(assembly
+                    .GetTypes()
+                    .Where(x => x.HasInterface<IEmPage>() && x.IsClass && !x.IsAbstract));
+        }
+
+        return types;
+    }
+
+    /// <summary>
     /// Extracts enum dictionary from a specified type.
     /// </summary>
     /// <param name="enumType"></param>

@@ -14,11 +14,9 @@ public abstract class EmFormPage<TModel> : EmPage<TModel, EmFormViewContext<TMod
     /// <summary>
     /// Initializes a new instance of the <see cref="EmFormPage{TModel}"/> class.
     /// </summary>
-    /// <param name="options"></param>
-    protected EmFormPage(IEmPagesOptions options)
-        : base(options)
+    protected EmFormPage()
     {
-        this.ViewContext.ConfigureAll(options);
+        this.ViewContext.ConfigureAll();
     }
 
     /// <inheritdoc/>

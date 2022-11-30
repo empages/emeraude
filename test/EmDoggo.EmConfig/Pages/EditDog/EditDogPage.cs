@@ -15,16 +15,13 @@ public class EditDogPage : EmFormPage<EditDogPageModel>
 {
     private readonly EntityContext context;
 
-    public EditDogPage(EntityContext context, IEmPagesOptions options)
-        : base(options)
+    public EditDogPage(EntityContext context)
     {
         this.context = context;
     }
 
     public override async Task SetupAsync()
     {
-        this.ViewContext.ConfigureAll(this.Options);
-
         this.ViewContext.Configure(x => x.Breed, viewItem =>
         {
             viewItem.SetComponent<EmMultiChoiceMutator>();

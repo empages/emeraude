@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using Essentials.Extensions;
 using Essentials.Functions;
@@ -119,16 +118,15 @@ public abstract class EmPageViewContextStrategy<TViewItem, TModel> : IEmPageView
     /// <summary>
     /// Configure all properties of the model with the defaults set during the startup setup.
     /// </summary>
-    /// <param name="options"></param>
     /// <returns></returns>
-    public IEmPageViewContextStrategy<TViewItem, TModel> ConfigureAll(IEmPagesOptions options)
+    public IEmPageViewContextStrategy<TViewItem, TModel> ConfigureAll()
     {
         var modelProperties = EmPageUtilities.GetEmPageModelProperties(typeof(TModel));
         foreach (var propertyInfo in modelProperties)
         {
             var viewItem = this.viewItems.FirstOrDefault(x => x.SourceName == propertyInfo.Name) ?? new TViewItem();
             viewItem.LoadSourceInfo(propertyInfo);
-            viewItem.SetDefaultComponent(options);
+            viewItem.SetDefaultComponent();
 
             if (string.IsNullOrWhiteSpace(viewItem.Label))
             {

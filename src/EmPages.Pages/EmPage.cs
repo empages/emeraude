@@ -19,12 +19,10 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
     /// <summary>
     /// Initializes a new instance of the <see cref="EmPage{TModel, TViewContext, TPageResult}"/> class.
     /// </summary>
-    /// <param name="options"></param>
-    protected EmPage(IEmPagesOptions options)
+    protected EmPage()
     {
         EmPageValidators.ValidateModelType(typeof(TModel));
 
-        this.Options = options;
         this.Permissions = new List<string>();
         this.ViewContext = new TViewContext();
     }
@@ -40,11 +38,6 @@ public abstract class EmPage<TModel, TViewContext, TPageResult> : IEmPage<TModel
 
     /// <inheritdoc/>
     public TViewContext ViewContext { get; }
-
-    /// <summary>
-    /// Page options.
-    /// </summary>
-    protected IEmPagesOptions Options { get; }
 
     /// <inheritdoc/>
     public abstract Task SetupAsync();

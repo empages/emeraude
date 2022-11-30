@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using EmPages.Pages.Components;
+using EmPages.Pages.Components.Mutators;
 using EmPages.Pages.Components.Renderers;
-using Essentials.Extensions;
 
 namespace EmPages.Pages;
 
@@ -46,13 +47,13 @@ public abstract class EmPageViewItem : IEmPageViewItem
     }
 
     /// <inheritdoc/>
-    public void SetDefaultComponent(IEmPagesOptions options)
+    public void SetDefaultComponent()
     {
         EmComponent component = this.DefaultComponent;
-        var sourceType = this.SourceType.GetTypeByIgnoreTheNullable();
-        if (sourceType != null && options.DefaultTypesToComponentsMapping.ContainsKey(sourceType))
+        var propertyType = new EmType(this.SourceType);
+        if (EmComponentsDefaults.DefaultTypesToComponentsMapping.ContainsKey(propertyType.SourceType) && !propertyType.IsEnum && !propertyType.IsEnumerable)
         {
-            var componentTypes = options.DefaultTypesToComponentsMapping[sourceType];
+            var componentTypes = EmComponentsDefaults.DefaultTypesToComponentsMapping[propertyType.SourceType];
             switch (component.Type)
             {
                 case ComponentType.Renderer:
@@ -66,12 +67,38 @@ public abstract class EmPageViewItem : IEmPageViewItem
 
             if (component == null)
             {
-                throw new EmSetupException($"Framework cannot create a component instance for primitive of type {sourceType}");
+                throw new EmSetupException($"Framework cannot create a component instance for primitive of type {propertyType}");
+            }
+        }
+
+        if (propertyType.IsEnum)
+        {
+            switch (component.Type)
+            {
+                case ComponentType.Renderer:
+                default:
+                    if (propertyType.IsEnumerable)
+                    {
+                        break;
+                    }
+
+                    component = new EmEnumRenderer();
+                    break;
+                case ComponentType.Mutator:
+                    var mutator = new EmMultiChoiceMutator();
+                    if (propertyType.IsEnumerable)
+                    {
+                        mutator.MultiChoiceType = MultiChoiceType.CheckboxGroup;
+                    }
+
+                    component = mutator;
+
+                    break;
             }
         }
 
         this.Component = component;
-        this.Component.SourceType = new EmType(this.SourceType);
+        this.Component.PropertyType = new EmType(this.SourceType);
         this.Parameters = this.Component.GetParametersObject();
         this.Component.ValidateSetup();
     }
@@ -90,7 +117,7 @@ public abstract class EmPageViewItem : IEmPageViewItem
         var component = new TComponent();
         componentAction?.Invoke(component);
         this.Component = component;
-        this.Component.SourceType = new EmType(this.SourceType);
+        this.Component.PropertyType = new EmType(this.SourceType);
         postConfigurationComponentAction?.Invoke(component);
         this.Parameters = this.Component.GetParametersObject();
         this.Component.ValidateSetup();

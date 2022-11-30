@@ -10,9 +10,5 @@
     <ItemGroup>
       <PackageReference Include="Essentials" Version="0.0.5" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Components" />
-    </ItemGroup>
     
 </Project>
