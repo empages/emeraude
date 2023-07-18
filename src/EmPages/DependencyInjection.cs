@@ -6,7 +6,7 @@ using EmPages.Identity;
 using EmPages.Pages;
 using EmPages.Pages.Components.Mutators;
 using EmPages.Pages.Components.Renderers;
-using EmPages.PortalGateway;
+using EmPages.Portal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -39,13 +39,13 @@ public static class DependencyInjection
         services.AddSingleton<EmOptions>(options);
         services.AddSingleton<IEmIdentityOptions>(x => x.GetRequiredService<EmOptions>());
         services.AddSingleton<IEmPagesOptions>(x => x.GetRequiredService<EmOptions>());
-        services.AddSingleton<IEmPortalGatewayOptions>(x => x.GetRequiredService<EmOptions>());
+        services.AddSingleton<IEmPortalOptions>(x => x.GetRequiredService<EmOptions>());
 
         services.AddHttpContextAccessor();
 
         services.AddPages(options);
         services.AddIdentity(options);
-        services.AddPortalGateway(options);
+        services.AddPortal(options);
 
         return services;
     }

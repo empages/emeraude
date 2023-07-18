@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EmDoggo.Core.Data;
 using EmPages.Pages;
+using EmPages.Pages.Components.Renderers;
 using EmPages.Pages.Pages.Table;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,11 @@ public class DogsPage : EmTablePage<DogsPageModel>
         this.Title = "Dogs";
 
         this.ViewContext.Exclude(x => x.Id);
+
+        this.ViewContext.Configure(x => x.Active, item =>
+        {
+            item.SetComponent<EmTextRenderer>();
+        });
         
         this.AddAction((_, _) => new EmAction
         {

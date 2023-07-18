@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Version>$(PACKAGE_VERSION)</Version>
+    </PropertyGroup>
+
+    <Import Project="..\..\EmPages.targets" />
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\EmPages.Common\EmPages.Common.csproj" />
+      <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
+      <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
+      <PackageReference Include="System.CodeDom" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UI\Styles\dist" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="UI\EmPages.tt">
+            <Generator>TextTemplatingFilePreprocessor</Generator>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <LastGenOutput>EmPages.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Include="UI\Scripts\dist\_EmPages.js">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="UI\Styles\dist\_EmPages.css">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="UI\EmPages.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>EmPages.tt</DependentUpon>
+        </Compile>
+        <Compile Update="UI\EmPages.cs">
+          <AutoGen>True</AutoGen>
+          <DesignTime>True</DesignTime>
+          <DependentUpon>EmPages.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    
+</Project>

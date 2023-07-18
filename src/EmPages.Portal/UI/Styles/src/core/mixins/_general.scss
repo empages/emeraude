@@ -1,0 +1,45 @@
+$breakpoints-variants: (
+        xxs: 420px,
+        xs: 576px,
+        sm: 768px,
+        md: 992px,
+        lg: 1200px,
+        xl: 1440px,
+        xxl: 1600px,
+        nav: 1060px
+);
+
+@mixin respond-below($breakpoint) {
+  @if map-has-key($breakpoints-variants, $breakpoint) {
+    $breakpoint-value: map-get(
+                    $breakpoints-variants,
+                    $breakpoint
+    );
+    @media (max-width: ($breakpoint-value - 1)) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}.";
+  }
+}
+
+
+@mixin respond-above($breakpoint) {
+  @if map-has-key($breakpoints-variants, $breakpoint) {
+    $breakpoint-value: map-get(
+                    $breakpoints-variants,
+                    $breakpoint
+    );
+    @media (min-width: ($breakpoint-value - 1)) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}.";
+  }
+}
+
+@mixin box-shadow-full ($shadow) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}

@@ -19,9 +19,4 @@ public class EmNavigationItem
     /// Title of the item.
     /// </summary>
     public string Title { get; init; }
-
-    /// <summary>
-    /// Icon of the item.
-    /// </summary>
-    public string Icon { get; init; }
 }

@@ -21,7 +21,7 @@
       <ProjectReference Include="..\EmPages.Application\EmPages.Application.csproj" />
       <ProjectReference Include="..\EmPages.Identity\EmPages.Identity.csproj" />
       <ProjectReference Include="..\EmPages.Pages\EmPages.Pages.csproj" />
-      <ProjectReference Include="..\EmPages.PortalGateway\EmPages.PortalGateway.csproj" />
+      <ProjectReference Include="..\EmPages.Portal\EmPages.Portal.csproj" />
     </ItemGroup>
 
     <Import Project="..\..\EmPages.targets" />

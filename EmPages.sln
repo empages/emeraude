@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages", "src\EmPages\EmPages.csproj", "{3A724B53-C4C4-4AC1-9D3E-7760BCF55BB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.PortalGateway", "src\EmPages.PortalGateway\EmPages.PortalGateway.csproj", "{46459A3E-5C9A-41C7-B80D-29B3AB315A6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.Portal", "src\EmPages.Portal\EmPages.Portal.csproj", "{46459A3E-5C9A-41C7-B80D-29B3AB315A6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.Identity", "src\EmPages.Identity\EmPages.Identity.csproj", "{A213B69A-A603-4222-8287-EBD062613853}"
 EndProject
@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.Application.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmDoggo.WebHost", "test\EmDoggo.WebHost\EmDoggo.WebHost.csproj", "{C149EEAB-F766-49A9-9572-8DC9ECA4F7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.PortalGateway.Tests", "test\EmPages.PortalGateway.Tests\EmPages.PortalGateway.Tests.csproj", "{14E2F7CA-591E-4472-9CE5-8E38558CD7DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.Portal.Tests", "test\EmPages.Portal.Tests\EmPages.Portal.Tests.csproj", "{14E2F7CA-591E-4472-9CE5-8E38558CD7DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmPages.Identity.Tests", "test\EmPages.Identity.Tests\EmPages.Identity.Tests.csproj", "{31454F69-54EB-444F-BFC1-07EFA624AF67}"
 EndProject

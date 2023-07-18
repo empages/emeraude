@@ -35,7 +35,6 @@ public class EmLayoutService : IEmLayoutService
                 return new EmNavigationItem
                 {
                     Title = layoutItemAttribute.Title,
-                    Icon = layoutItemAttribute.Icon,
                     Order = layoutItemAttribute.Order,
                     Route = x.PageRoute.Template,
                 };

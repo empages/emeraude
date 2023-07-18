@@ -29,9 +29,6 @@ builder.Services.AddEmeraldPages(options =>
     options.AccessTokenIssuer = "http://localhost:5155";
     options.AccessTokenSecurityKey = "23f78223-83af-471c-8e7c-082b0df857ed";
     options.AccessTokenExpirationSpan = TimeSpan.FromHours(1);
-    
-    options.GatewayId = "test-id-123";
-    options.AddPortalUrl("http://127.0.0.1:5173");
 });
 
 builder.Services.AddSwaggerGen();

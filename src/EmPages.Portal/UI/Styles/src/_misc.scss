@@ -1,0 +1,39 @@
+.mx-2px {
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+}
+
+.p-05 {
+    padding: 0.125rem !important;
+}
+
+.btn-icon {
+    padding: 0.3134rem .6rem;
+
+    .mdi {
+        font-size: 1.15rem;
+    }
+}
+
+.invalid-feedback {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.input-group {
+    .form-control {
+        &:focus {
+            border-width: 1px !important;
+        }
+    }
+}
+
+.disable-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

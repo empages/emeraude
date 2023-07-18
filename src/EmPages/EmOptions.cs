@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using EmPages.Identity;
 using EmPages.Pages;
-using EmPages.PortalGateway;
+using EmPages.Portal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +12,8 @@ namespace EmPages;
 /// <summary>
 /// EmPages Framework main options.
 /// </summary>
-public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOptions, IDisposable
+public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalOptions, IDisposable
 {
-    private readonly List<string> portalUrls;
     private readonly List<Assembly> pagesAssemblies;
 
     /// <summary>
@@ -23,7 +22,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     public EmOptions()
     {
         this.pagesAssemblies = new List<Assembly>();
-        this.portalUrls = new List<string> { EmPortalGatewayConstants.DefaultPortalUrl };
         this.IdentityOptions = new IdentityOptions();
         this.ConfigureDefaultIdentityOptions();
     }
@@ -49,12 +47,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     /// <inheritdoc cref="IEmIdentityOptions.IdentityOptions"/>
     public IdentityOptions IdentityOptions { get; }
 
-    /// <inheritdoc/>
-    public IReadOnlyList<string> PortalUrls => this.portalUrls;
-
-    /// <inheritdoc/>
-    public string GatewayId { get; set; }
-
     /// <summary>
     /// Configures database context for needs of framework identity.
     /// </summary>
@@ -62,28 +54,6 @@ public class EmOptions : IEmPagesOptions, IEmIdentityOptions, IEmPortalGatewayOp
     public void ConfigureIdentityDbContext(Action<DbContextOptionsBuilder> builder)
     {
         this.DbContextOptionsBuilder = builder;
-    }
-
-    /// <summary>
-    /// Adds a portal URL in the gateway options.
-    /// </summary>
-    /// <param name="url"></param>
-    public void AddPortalUrl(string url)
-    {
-        if (this.portalUrls.Contains(url))
-        {
-            return;
-        }
-
-        this.portalUrls.Add(url);
-    }
-
-    /// <summary>
-    /// Clears all portal URLs for the gateway options.
-    /// </summary>
-    public void ClearPortalUrls()
-    {
-        this.portalUrls.Clear();
     }
 
     /// <summary>

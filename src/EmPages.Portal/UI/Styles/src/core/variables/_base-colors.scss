@@ -1,0 +1,60 @@
+// Color system
+$base: #7eb62f;
+$base-dark: #5a9900;
+
+$base-green-color: $base;
+$secondary-green-color: $base-dark;
+
+$base-blue-color: #627d8a;
+$secondary-blue-color: #465d65;
+
+// White/Grays/Black colors
+$white:    #FFF !default;
+$gray-50:  #FAFAFA !default;    // Alternate background
+$gray-100: #F5F5F5 !default;    // Base background
+$gray-200: #eeeeee !default;
+$gray-300: #dedede !default;
+$gray-400: #c5c5c5 !default;
+$gray-500: #b0b0b0 !default;    // Disabled text
+$gray-600: #989898 !default;    // Placeholder text
+$gray-700: #818181 !default;    // Text content
+$gray-800: #494949 !default;    // Text content old(44444e)
+$gray-900: #2a2a2a !default;    // Text content
+$black:    #000 !default;
+
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio:   2 !default;
+
+// Customize the light and dark text colors for use in our color contrast function.
+$color-contrast-dark:      $black !default;
+$color-contrast-light:     $white !default;
+
+
+// fusv-disable
+$grays: (
+        "50":  $gray-50,
+        "100": $gray-100,
+        "200": $gray-200,
+        "300": $gray-300,
+        "400": $gray-400,
+        "500": $gray-500,
+        "600": $gray-600,
+        "700": $gray-700,
+        "800": $gray-800,
+        "900": $gray-900
+) !default;
+// fusv-enable
+
+// Theme colors
+
+$primary: $base;
+$secondary: #627D8A;
+$tertiary: $primary;
+$success: $base-dark;
+$info: #52adc8;
+$warning: #d89c46;
+$danger: #d9534f;
+$light: #efefef;
+$dark: #2f2f2f;

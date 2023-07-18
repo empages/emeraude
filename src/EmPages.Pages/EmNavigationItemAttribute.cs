@@ -14,17 +14,14 @@ public class EmNavigationItemAttribute : Attribute
     /// </summary>
     /// <param name="order"></param>
     /// <param name="title"></param>
-    /// <param name="icon"></param>
     /// <param name="permissions"></param>
     public EmNavigationItemAttribute(
         int order,
         string title,
-        string icon,
         params string[] permissions)
     {
         this.Order = order;
         this.Title = title;
-        this.Icon = icon;
         this.Permissions = permissions;
     }
 
@@ -42,11 +39,6 @@ public class EmNavigationItemAttribute : Attribute
     /// Title of the layout item that is represented by current context.
     /// </summary>
     public string Title { get; init; }
-
-    /// <summary>
-    /// Icon of the layout item that is represented by current context.
-    /// </summary>
-    public string Icon { get; init; }
 
     /// <summary>
     /// Permissions of the layout item that will restrict visibility based on the user permissions.
